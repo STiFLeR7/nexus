@@ -163,3 +163,18 @@ class AuditLogEntry(BaseModel):
     created_at: datetime
 
     model_config = {"from_attributes": True}
+
+
+# ---------------------------------------------------------------------------
+# Context Frames
+# ---------------------------------------------------------------------------
+
+class ContextFrame(BaseModel):
+    """Derived ephemeral prompt context frame compiled during turn execution."""
+
+    workflow_id: uuid.UUID
+    messages: list[dict[str, Any]] = Field(default_factory=list)
+    model: str
+    thinking_level: int | None = Field(default=None)
+    active_tools: list[str] = Field(default_factory=list)
+    metadata: dict[str, Any] = Field(default_factory=dict)

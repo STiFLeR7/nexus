@@ -52,6 +52,11 @@ class TaskRecord(TimestampMixin, Base):
         cascade="all, delete-orphan",
         lazy="selectin",
     )
+    research_jobs: Mapped[list[ResearchJobRecord]] = relationship(
+        back_populates="task",
+        cascade="all, delete-orphan",
+        lazy="selectin",
+    )
 
 
 # ---------------------------------------------------------------------------
@@ -138,6 +143,11 @@ class ExecutionRecord(TimestampMixin, Base):
     # Relationships
     task: Mapped[TaskRecord] = relationship(back_populates="executions")
     approval: Mapped[ApprovalRecord | None] = relationship(back_populates="executions")
+    steps: Mapped[list[ExecutionStepRecord]] = relationship(
+        back_populates="execution",
+        cascade="all, delete-orphan",
+        lazy="selectin",
+    )
 
 
 # ---------------------------------------------------------------------------
@@ -207,4 +217,89 @@ class WorkflowCheckpointRecord(TimestampMixin, Base):
     completed_at: Mapped[datetime | None] = mapped_column(
         DateTime(timezone=True),
         nullable=True,
+    )
+
+
+# ---------------------------------------------------------------------------
+# Execution Steps
+# ---------------------------------------------------------------------------
+
+class ExecutionStepRecord(TimestampMixin, Base):
+    """An individual command invocation step under an execution run."""
+
+    __tablename__ = "execution_steps"
+
+    execution_id: Mapped[uuid.UUID] = mapped_column(
+        ForeignKey("executions.id", ondelete="CASCADE"),
+        nullable=False,
+        index=True,
+    )
+    command: Mapped[str] = mapped_column(Text, nullable=False)
+    status: Mapped[str] = mapped_column(
+        String(50),
+        nullable=False,
+        default="pending",
+        index=True,
+    )
+    pid: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    exit_code: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    stdout: Mapped[str | None] = mapped_column(Text, nullable=True)
+    stderr: Mapped[str | None] = mapped_column(Text, nullable=True)
+    last_heartbeat: Mapped[datetime | None] = mapped_column(
+        DateTime(timezone=True),
+        nullable=True,
+    )
+    timeout_threshold: Mapped[int] = mapped_column(Integer, nullable=False)
+
+    # Relationships
+    execution: Mapped[ExecutionRecord] = relationship(back_populates="steps")
+
+
+# ---------------------------------------------------------------------------
+# Research Jobs
+# ---------------------------------------------------------------------------
+
+class ResearchJobRecord(TimestampMixin, Base):
+    """Schedules and tracks automated research runs."""
+
+    __tablename__ = "research_jobs"
+
+    task_id: Mapped[uuid.UUID | None] = mapped_column(
+        ForeignKey("tasks.id", ondelete="SET NULL"),
+        nullable=True,
+        index=True,
+    )
+    query: Mapped[str] = mapped_column(Text, nullable=False)
+    schedule_cron: Mapped[str | None] = mapped_column(String(100), nullable=True)
+    status: Mapped[str] = mapped_column(
+        String(50),
+        nullable=False,
+        default="scheduled",
+        index=True,
+    )
+    last_run_at: Mapped[datetime | None] = mapped_column(
+        DateTime(timezone=True),
+        nullable=True,
+    )
+
+    # Relationships
+    task: Mapped[TaskRecord | None] = relationship(back_populates="research_jobs")
+
+
+# ---------------------------------------------------------------------------
+# System Events (Outbox Cache)
+# ---------------------------------------------------------------------------
+
+class SystemEventRecord(AuditMixin, Base):
+    """Outbox cache table to track events before they are normalized/dispatched."""
+
+    __tablename__ = "system_events"
+
+    event_type: Mapped[str] = mapped_column(String(100), nullable=False)
+    payload: Mapped[dict] = mapped_column(JSON, nullable=False)  # type: ignore[type-arg]
+    status: Mapped[str] = mapped_column(
+        String(50),
+        nullable=False,
+        default="pending",
+        index=True,
     )
