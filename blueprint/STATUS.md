@@ -1,8 +1,8 @@
 # Nexus — Project Status
 
-Date: 2026-06-19
+Date: 2026-06-20
 Version: 0.1
-Phase: Phase 0 Completed (Project Foundation)
+Phase: Phase 1 Completed (Core Infrastructure)
 
 ---
 
@@ -23,16 +23,15 @@ The skeleton infrastructure has been built:
 
 ## Active Phase
 
-**Completed** — Phase 0 (Project Foundation).
+**Completed** — Phase 1 (Core Infrastructure) & Phase 8 (Pi Evaluation & Primitive Extraction).
 
-The next immediate step is **Phase 8 (Pi Evaluation)**, which has been sequenced to run before Phase 1 to determine our core orchestration engine pattern.
+The next immediate step is **Phase 2 (Task Management)**, extending task operations and timelines.
 
 ---
 
 ## Immediate Next Steps
 
-1. **Pi Evaluation (Phase 8)** — Evaluate earendil-works/pi to determine adoption, partial integration, or custom orchestration.
-2. **Begin Phase 1 (Core Infrastructure)** — Implement normalization, Event Gateway, state management, and audit layers.
+1. **Begin Phase 2 (Task Management)** — Build task priorities, Timeline interfaces, and query capabilities.
 
 ---
 
@@ -59,14 +58,14 @@ The next immediate step is **Phase 8 (Pi Evaluation)**, which has been sequenced
 | Phase | Name | Status |
 |---|---|---|
 | 0 | Project Foundation | ✅ Complete |
-| 1 | Core Infrastructure | 🔲 Not Started |
-| 2 | Task Management | 🔲 Not Started |
+| 1 | Core Infrastructure | ✅ Complete |
+| 2 | Task Management | 🔲 Not Started (Next) |
 | 3 | Approval Engine | 🔲 Not Started |
 | 4 | Execution Runtime | 🔲 Not Started |
 | 5 | Research Automation | 🔲 Not Started |
 | 6 | Intelligence Reporting | 🔲 Not Started |
 | 7 | Production Hardening | 🔲 Not Started |
-| 8 | Pi Evaluation | 🔲 Not Started (Next) |
+| 8 | Pi Evaluation | ✅ Complete |
 
 ---
 

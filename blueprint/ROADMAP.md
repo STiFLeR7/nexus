@@ -89,28 +89,26 @@ Phase 11 →  Multi-Agent Coordination (Future)
 
 **Goal:** Build Nexus Core primitives.
 
-**Status:** 🔲 Not Started
+**Status:** ✅ Complete
 
 ### Action Points
 
 | AP | Title | Status |
 |---|---|---|
-| AP-101 | Event Gateway (normalization, validation, routing) | 🔲 |
-| AP-102 | Nexus Event schema and type system | 🔲 |
-| AP-103 | Memory Manager (central state controller) | 🔲 |
-| AP-104 | Memory models (Task, Approval, Execution, Research, Audit) | 🔲 |
-| AP-105 | Audit Layer (immutable event log) | 🔲 |
-| AP-106 | Workflow Orchestrator skeleton | 🔲 |
-| AP-107 | Task Engine (creation, lifecycle state machine) | 🔲 |
-| AP-108 | Correlation ID propagation | 🔲 |
+| AP-101 | Database Foundation (executions, steps, system events, cron jobs) | ✅ |
+| AP-102 | Event System & Normalization (EventGateway, transactional outbox) | ✅ |
+| AP-103 | Memory Manager (resumable checkpoints & audit log context replay) | ✅ |
+| AP-104 | Task Engine (CRUD service, transaction locks, transition guards) | ✅ |
+| AP-105 | Approval Engine (gate checks, owner ID auth, expiration sweeps) | ✅ |
+| AP-106 | Runtime State Machines Validation (E2E workflows integration) | ✅ |
 
 ### Exit Criteria
 
-- [ ] Tasks created programmatically
-- [ ] Tasks persist across restart
-- [ ] Events persist with full audit trail
-- [ ] Audit records exist for all state transitions
-- [ ] System survives restart without state loss
+- [x] Tasks created programmatically
+- [x] Tasks persist across restart
+- [x] Events persist with full audit trail
+- [x] Audit records exist for all state transitions
+- [x] System survives restart without state loss
 
 ---
 
