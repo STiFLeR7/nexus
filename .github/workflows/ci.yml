@@ -1,0 +1,42 @@
+# =============================================================================
+# Nexus CI — GitHub Actions
+# =============================================================================
+# Runs linting, type checking, and tests on push/PR to main branches.
+# =============================================================================
+
+name: Nexus CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+jobs:
+  test:
+    name: Lint, Type Check & Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install uv
+        run: pip install uv
+
+      - name: Install dependencies
+        run: uv sync
+
+      - name: Lint with Ruff
+        run: uv run ruff check nexus/ tests/
+
+      - name: Type check with mypy
+        run: uv run mypy nexus/ --ignore-missing-imports
+
+      - name: Run tests with coverage
+        run: uv run pytest --cov=nexus --cov-report=xml -v

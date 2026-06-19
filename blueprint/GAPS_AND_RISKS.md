@@ -1,6 +1,7 @@
 # Nexus — Gaps, Risks, and Open Questions
 
 Date: 2026-06-19
+Last Updated: 2026-06-19 (all OQs resolved)
 Author: Initial Analysis
 
 ---
@@ -324,23 +325,37 @@ Nexus will hold multiple sensitive credentials (Discord token, OpenRouter API ke
 
 | # | Question | Priority |
 |---|---|---|
-| OQ-001 | What is the complete, approved tech stack? (Confirm GAP-004) | High |
-| OQ-002 | What email provider should be used for MVP? | High |
-| OQ-003 | What is the Discord bot authorization model? Who can approve? | High |
-| OQ-004 | What is the approval expiration time and behavior? | Medium |
-| OQ-005 | Should Pi evaluation run before Phase 1 (recommended) or remain at Phase 8? | Critical |
-| OQ-006 | Is there a deployment target beyond local? (affects Docker/CI design) | Medium |
-| OQ-007 | What is the maximum execution timeout for agent runners? | Medium |
-| OQ-008 | What secrets management approach should be used? | High |
+| OQ-001 | What is the complete, approved tech stack? | ✅ Resolved — ADR-006 |
+| OQ-002 | What email provider should be used for MVP? | ✅ Resolved — ADR-007 (Gmail SMTP) |
+| OQ-003 | What is the Discord bot authorization model? | ✅ Resolved — ADR-008 (User ID enforcement) |
+| OQ-004 | What is the approval expiration time and behavior? | ✅ Resolved — ADR-009 (24h, notify, no auto-reject) |
+| OQ-005 | Should Pi evaluation run before Phase 1? | ✅ Resolved — Yes, mandatory pre-Phase-1 |
+| OQ-006 | Is there a deployment target beyond local? | ✅ Resolved — ADR-011 (Local-first MVP) |
+| OQ-007 | What is the maximum execution timeout? | ✅ Resolved — ADR-010 (30/45/60 min) |
+| OQ-008 | What secrets management approach? | ✅ Resolved — .env file (gitignored) for MVP |
 
 ---
 
 ## Resolved Items
 
-*None yet.*
+| # | Item | Resolution | Date |
+|---|---|---|---|
+| OQ-001 | Tech stack | Python 3.12+, uv, FastAPI, SQLAlchemy 2.x, Pydantic v2, APScheduler, discord.py, structlog, pytest, Ruff, MyPy, Docker, GitHub Actions | 2026-06-19 |
+| OQ-002 | Email provider | Gmail SMTP (MVP) with EmailProvider abstraction. Future: Resend, SES | 2026-06-19 |
+| OQ-003 | Discord auth | User ID enforcement via OWNER_DISCORD_ID. Only owner may approve/reject | 2026-06-19 |
+| OQ-004 | Approval expiration | 24h expiration → notify only, do not auto-reject, move to review queue | 2026-06-19 |
+| OQ-005 | Pi evaluation | Mandatory before Phase 1. New order: Phase 0 → Pi Eval → Phase 1 | 2026-06-19 |
+| OQ-006 | Deployment target | Local-first for MVP. Future: Oracle Cloud Free VM hybrid | 2026-06-19 |
+| OQ-007 | Execution timeout | Research: 15m, Gemini: 30m, Claude: 45m, Hard limit: 60m | 2026-06-19 |
+| OQ-008 | Secrets management | .env file (gitignored) for MVP | 2026-06-19 |
 
 ---
 
 ## Resolution Log
 
-*Append resolutions here as items are closed.*
+### 2026-06-19 — All Open Questions Resolved
+
+Owner (Hill Patel) answered all 8 open questions.
+ADR-006 through ADR-011 created to record decisions.
+New Constraint 28 added: No execution may run indefinitely.
+Phase 0 implementation authorized to begin.

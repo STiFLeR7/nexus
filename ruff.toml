@@ -1,0 +1,14 @@
+line-length = 100
+target-version = "py312"
+
+[lint]
+select = ["E", "F", "W", "I", "N", "UP", "B", "A", "C4", "SIM", "RUF"]
+
+[lint.isort]
+known-first-party = ["nexus"]
+
+[format]
+quote-style = "double"
+indent-style = "space"
+line-ending = "lf"
+

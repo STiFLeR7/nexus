@@ -1,0 +1,90 @@
+# =============================================================================
+# Nexus AI Orchestration Control Plane — Configuration
+# =============================================================================
+# Copy this file to settings.yaml and fill in your actual values.
+# Do NOT commit settings.yaml — it contains secrets.
+# =============================================================================
+
+# -----------------------------------------------------------------------------
+# Core Nexus Settings
+# -----------------------------------------------------------------------------
+nexus:
+  name: "Nexus"
+  version: "0.1.0"
+  # Environment: development | staging | production
+  environment: "development"
+
+# -----------------------------------------------------------------------------
+# Discord Integration
+# -----------------------------------------------------------------------------
+# Bot token from https://discord.com/developers/applications
+# Guild (server) ID where the bot operates
+# Owner IDs: list of Discord user IDs with full admin access
+discord:
+  token: "YOUR_DISCORD_BOT_TOKEN"
+  guild_id: "YOUR_GUILD_ID"
+  owner_ids:
+    - "YOUR_DISCORD_USER_ID"
+  # Channel mapping — map logical channel names to Discord channel IDs
+  channels:
+    inbox: "CHANNEL_ID_INBOX"
+    tasks: "CHANNEL_ID_TASKS"
+    approvals: "CHANNEL_ID_APPROVALS"
+    execution-log: "CHANNEL_ID_EXECUTION_LOG"
+    research: "CHANNEL_ID_RESEARCH"
+    summaries: "CHANNEL_ID_SUMMARIES"
+    alerts: "CHANNEL_ID_ALERTS"
+
+# -----------------------------------------------------------------------------
+# Email Configuration
+# -----------------------------------------------------------------------------
+# Used for sending notifications, reports, and alerts via email
+email:
+  provider: "gmail_smtp"
+  smtp_host: "smtp.gmail.com"
+  smtp_port: 587
+  username: "YOUR_EMAIL@gmail.com"
+  password: "YOUR_APP_PASSWORD"
+  from_address: "YOUR_EMAIL@gmail.com"
+  to_address: "YOUR_RECIPIENT@gmail.com"
+
+# -----------------------------------------------------------------------------
+# OpenRouter API Configuration
+# -----------------------------------------------------------------------------
+# API key from https://openrouter.ai/keys
+# Primary model used for most tasks; fallbacks tried in order on failure
+openrouter:
+  api_key: "YOUR_OPENROUTER_API_KEY"
+  primary_model: "nvidia/llama-3.1-nemotron-ultra-253b-v1:free"
+  fallback_models:
+    - "deepseek/deepseek-chat-v3-0324:free"
+    - "google/gemini-2.0-flash-exp:free"
+    - "meta-llama/llama-3.3-70b-instruct:free"
+
+# -----------------------------------------------------------------------------
+# Database Configuration
+# -----------------------------------------------------------------------------
+# SQLite with async support via aiosqlite
+# For PostgreSQL: postgresql+asyncpg://user:pass@host:5432/nexus
+database:
+  url: "sqlite+aiosqlite:///./data/nexus.db"
+
+# -----------------------------------------------------------------------------
+# Execution Timeouts
+# -----------------------------------------------------------------------------
+# Maximum time (in seconds) allowed for various execution contexts
+# hard_limit_seconds is the absolute ceiling — kills any task exceeding it
+execution:
+  research_timeout_seconds: 900       # 15 minutes
+  gemini_timeout_seconds: 1800        # 30 minutes
+  claude_timeout_seconds: 2700        # 45 minutes
+  hard_limit_seconds: 3600            # 60 minutes (absolute max)
+
+# -----------------------------------------------------------------------------
+# Logging Configuration
+# -----------------------------------------------------------------------------
+# level: DEBUG | INFO | WARNING | ERROR | CRITICAL
+# format: json | text
+logging:
+  level: "INFO"
+  format: "json"

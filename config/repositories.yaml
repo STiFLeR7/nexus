@@ -1,0 +1,19 @@
+# =============================================================================
+# Repository Registry
+# =============================================================================
+# Defines the local repositories that Nexus manages and monitors.
+# Each entry maps a short name to its local path and description.
+# =============================================================================
+
+repositories:
+  nexus:
+    path: "D:/projects/nexus"
+    description: "Nexus — AI Orchestration Control Plane. Core project."
+
+  memex:
+    path: "D:/projects/memex"
+    description: "Memex — Personal knowledge management and memory system."
+
+  fosterx:
+    path: "D:/projects/fosterx"
+    description: "FosterX — Foster care management and automation platform."
