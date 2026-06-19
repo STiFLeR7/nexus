@@ -1,0 +1,87 @@
+# Secrets and credentials — NEVER commit these
+.env
+.env.local
+.env.production
+.env.*.local
+config/settings.yaml
+config/secrets.yaml
+*.key
+*.pem
+*.p12
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+.venv/
+venv/
+ENV/
+env/
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.nox/
+coverage.xml
+*.cover
+*.py,cover
+nosetests.xml
+coverage/
+
+# Database
+*.db
+*.db-wal
+*.db-shm
+nexus.db
+data/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# Docker
+.dockerignore (local overrides)
+
+# Logs
+logs/
+*.log
+
+# Distribution
+*.tar.gz
+*.zip
+
+# OS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
