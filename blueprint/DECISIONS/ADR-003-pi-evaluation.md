@@ -1,7 +1,7 @@
 # ADR-003: Pi Evaluation Requirement and Sequencing
 
 Date: 2026-06-19
-Status: Open — Evaluation Required
+Status: Closed — Rejected (Option C)
 
 ---
 
@@ -83,9 +83,21 @@ Pi evaluation findings must be available before Phase 1 design begins.
 
 ## Status
 
-**Open — Evaluation Required**
+**Closed — Rejected**
 
-This ADR will be updated with conclusions after evaluation.
+Evaluation was conducted on 2026-06-19.
+
+### Decision Outcome
+
+Option C was selected: Proceed with a custom Python-based orchestrator, utilizing the robust foundational stack established in Phase 0.
+
+### Justification
+
+1. **Tech Stack Alignment**: Pi is TypeScript-based. Integrating it into our Python control plane introduces language-bridge overhead, double container configs, and violates ADR-006.
+2. **Missing Primitives**: Pi does not provide native relational database mappings (SQLAlchemy), multi-agent event routing, task prioritization, cron scheduling (APScheduler), or Discord-based approval authorization gates.
+3. **Architectural Overhead**: Adapting Pi to fit Nexus's control plane model requires writing more interface code than implementing a lightweight, Python-native state machine.
+
+We will proceed by implementing the Event Gateway, Task Engine, and Workflow Orchestrator natively in Python during Phase 1.
 
 ---
 

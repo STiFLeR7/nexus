@@ -281,21 +281,22 @@ Phase 11 →  Multi-Agent Coordination (Future)
 
 **Goal:** Determine orchestration strategy before implementing custom orchestration.
 
-**Status:** 🔲 Not Started (should run early)
+**Status:** ✅ Complete
 
 ### Action Points
 
 | AP | Title | Status |
 |---|---|---|
-| AP-801 | Clone and analyze https://github.com/earendil-works/pi | 🔲 |
-| AP-802 | Evaluate Pi against Nexus requirements | 🔲 |
-| AP-803 | Document adoption decision (ADR) | 🔲 |
+| AP-801 | Clone and analyze https://github.com/earendil-works/pi | ✅ |
+| AP-802 | Evaluate Pi against Nexus requirements | ✅ |
+| AP-803 | Document adoption decision (ADR) | ✅ |
 
 ### Decision Outcomes
 
-- Option A: Adopt Pi as orchestration layer
-- Option B: Partial integration
-- Option C: Custom orchestration
+- Option A: Adopt Pi as orchestration layer (Rejected)
+- Option B: Partial integration (Rejected)
+- Option C: Custom orchestration (Chosen — Proceed with native Python-based orchestrator, borrow core conceptual models of event loops, queues, and parallel execution)
+
 
 ---
 
