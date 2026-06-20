@@ -1,5 +1,4 @@
-"""Execution service managing subprocess tool runs, heartbeats, and results.
-"""
+"""Execution service managing subprocess tool runs, heartbeats, and results."""
 
 from __future__ import annotations
 
@@ -47,6 +46,7 @@ class ExecutionService:
 
         # Find the latest approval gate record to link it
         from nexus.memory.models import ApprovalRecord
+
         stmt = (
             select(ApprovalRecord)
             .where(ApprovalRecord.task_id == task_id)
@@ -122,9 +122,7 @@ class ExecutionService:
     ) -> ExecutionStepRecord:
         """Finalize details of a completed execution step."""
         stmt = (
-            select(ExecutionStepRecord)
-            .where(ExecutionStepRecord.id == step_id)
-            .with_for_update()
+            select(ExecutionStepRecord).where(ExecutionStepRecord.id == step_id).with_for_update()
         )
         res = await self.session.execute(stmt)
         step = res.scalar_one_or_none()

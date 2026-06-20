@@ -1,3 +1,3 @@
-"""End-to-end tests for the Nexus application.
-"""
+"""End-to-end tests for the Nexus application."""
+
 from __future__ import annotations

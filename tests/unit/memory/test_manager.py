@@ -1,5 +1,4 @@
-"""Unit tests for the ContextCompiler memory state traversal.
-"""
+"""Unit tests for the ContextCompiler memory state traversal."""
 
 from __future__ import annotations
 

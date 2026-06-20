@@ -39,6 +39,7 @@ logger = structlog.get_logger("nexus.database")
 # Declarative base
 # ---------------------------------------------------------------------------
 
+
 class Base(AsyncAttrs, DeclarativeBase):
     """Declarative base for all Nexus ORM models."""
 
@@ -48,6 +49,7 @@ class Base(AsyncAttrs, DeclarativeBase):
 # ---------------------------------------------------------------------------
 # Common mixin
 # ---------------------------------------------------------------------------
+
 
 class TimestampMixin:
     """Mixin that adds id, created_at, updated_at, and is_archived columns."""
@@ -93,6 +95,7 @@ class AuditMixin:
 # ---------------------------------------------------------------------------
 # Engine creation
 # ---------------------------------------------------------------------------
+
 
 def _set_sqlite_pragmas(dbapi_conn: Any, _connection_record: Any) -> None:
     """Set WAL mode and enable foreign keys on every new SQLite connection."""

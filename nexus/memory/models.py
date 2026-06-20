@@ -26,6 +26,7 @@ from nexus.database import AuditMixin, Base, TimestampMixin
 # Tasks
 # ---------------------------------------------------------------------------
 
+
 class TaskRecord(TimestampMixin, Base):
     """A unit of work tracked by the orchestration layer."""
 
@@ -62,6 +63,7 @@ class TaskRecord(TimestampMixin, Base):
 # ---------------------------------------------------------------------------
 # Approvals
 # ---------------------------------------------------------------------------
+
 
 class ApprovalRecord(TimestampMixin, Base):
     """An approval gate guarding task execution."""
@@ -106,6 +108,7 @@ class ApprovalRecord(TimestampMixin, Base):
 # Executions
 # ---------------------------------------------------------------------------
 
+
 class ExecutionRecord(TimestampMixin, Base):
     """A single execution run of a task by a runner backend."""
 
@@ -148,11 +151,17 @@ class ExecutionRecord(TimestampMixin, Base):
         cascade="all, delete-orphan",
         lazy="selectin",
     )
+    artifacts: Mapped[list[ExecutionArtifactRecord]] = relationship(
+        back_populates="execution",
+        cascade="all, delete-orphan",
+        lazy="selectin",
+    )
 
 
 # ---------------------------------------------------------------------------
 # Audit log (immutable, append-only)
 # ---------------------------------------------------------------------------
+
 
 class AuditLogRecord(AuditMixin, Base):
     """Immutable, append-only audit trail of all system events.
@@ -176,6 +185,7 @@ class AuditLogRecord(AuditMixin, Base):
 # Research items
 # ---------------------------------------------------------------------------
 
+
 class ResearchItemRecord(TimestampMixin, Base):
     """A research finding or reference collected by a research agent."""
 
@@ -191,6 +201,7 @@ class ResearchItemRecord(TimestampMixin, Base):
 # Knowledge items
 # ---------------------------------------------------------------------------
 
+
 class KnowledgeItemRecord(TimestampMixin, Base):
     """A distilled knowledge item in the persistent knowledge base."""
 
@@ -205,6 +216,7 @@ class KnowledgeItemRecord(TimestampMixin, Base):
 # ---------------------------------------------------------------------------
 # Workflow checkpoints
 # ---------------------------------------------------------------------------
+
 
 class WorkflowCheckpointRecord(TimestampMixin, Base):
     """Checkpoint snapshot for resumable workflow state."""
@@ -223,6 +235,7 @@ class WorkflowCheckpointRecord(TimestampMixin, Base):
 # ---------------------------------------------------------------------------
 # Execution Steps
 # ---------------------------------------------------------------------------
+
 
 class ExecutionStepRecord(TimestampMixin, Base):
     """An individual command invocation step under an execution run."""
@@ -259,6 +272,7 @@ class ExecutionStepRecord(TimestampMixin, Base):
 # Research Jobs
 # ---------------------------------------------------------------------------
 
+
 class ResearchJobRecord(TimestampMixin, Base):
     """Schedules and tracks automated research runs."""
 
@@ -290,6 +304,7 @@ class ResearchJobRecord(TimestampMixin, Base):
 # System Events (Outbox Cache)
 # ---------------------------------------------------------------------------
 
+
 class SystemEventRecord(AuditMixin, Base):
     """Outbox cache table to track events before they are normalized/dispatched."""
 
@@ -303,3 +318,45 @@ class SystemEventRecord(AuditMixin, Base):
         default="pending",
         index=True,
     )
+
+
+# ---------------------------------------------------------------------------
+# Repository Governance Registry
+# ---------------------------------------------------------------------------
+
+
+class RepositoryRegistryRecord(TimestampMixin, Base):
+    """Registry of approved repositories and validation rules for subprocess execution."""
+
+    __tablename__ = "repository_registry"
+
+    name: Mapped[str] = mapped_column(String(200), unique=True, nullable=False)
+    absolute_path: Mapped[str] = mapped_column(String(1000), nullable=False)
+    allowed_branches: Mapped[dict] = mapped_column(JSON, nullable=False)  # type: ignore[type-arg]
+    allowed_commands: Mapped[dict] = mapped_column(JSON, nullable=False)  # type: ignore[type-arg]
+    timeout_limit_seconds: Mapped[int] = mapped_column(Integer, nullable=False, default=3600)
+    is_active: Mapped[bool] = mapped_column(nullable=False, default=True)
+
+
+# ---------------------------------------------------------------------------
+# Execution Artifacts
+# ---------------------------------------------------------------------------
+
+
+class ExecutionArtifactRecord(TimestampMixin, Base):
+    """First-class execution result artifacts (diffs, patches, outputs)."""
+
+    __tablename__ = "execution_artifacts"
+
+    execution_id: Mapped[uuid.UUID] = mapped_column(
+        ForeignKey("executions.id", ondelete="CASCADE"),
+        nullable=False,
+        index=True,
+    )
+    artifact_type: Mapped[str] = mapped_column(String(50), nullable=False)
+    name: Mapped[str] = mapped_column(String(255), nullable=False)
+    content: Mapped[str | None] = mapped_column(Text, nullable=True)
+    data: Mapped[dict | None] = mapped_column(JSON, nullable=True)  # type: ignore[type-arg]
+
+    # Relationships
+    execution: Mapped[ExecutionRecord] = relationship(back_populates="artifacts")

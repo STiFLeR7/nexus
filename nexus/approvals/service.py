@@ -1,5 +1,4 @@
-"""Approval engine service managing governance gate states and sweeps.
-"""
+"""Approval engine service managing governance gate states and sweeps."""
 
 from __future__ import annotations
 
@@ -187,9 +186,7 @@ class ApprovalService:
 
             # Cancel parent task on approval expiration
             task_stmt = (
-                select(TaskRecord)
-                .where(TaskRecord.id == approval.task_id)
-                .with_for_update()
+                select(TaskRecord).where(TaskRecord.id == approval.task_id).with_for_update()
             )
             task_res = await self.session.execute(task_stmt)
             task = task_res.scalar_one_or_none()
@@ -205,9 +202,7 @@ class ApprovalService:
                 data={
                     "approval_id": str(approval.id),
                     "expired_at": (
-                        approval.expires_at.isoformat()
-                        if approval.expires_at
-                        else now.isoformat()
+                        approval.expires_at.isoformat() if approval.expires_at else now.isoformat()
                     ),
                 },
                 source="approval_engine",

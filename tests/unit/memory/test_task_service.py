@@ -1,5 +1,4 @@
-"""Unit tests for the TaskService lifecycle and transition guards.
-"""
+"""Unit tests for the TaskService lifecycle and transition guards."""
 
 from __future__ import annotations
 

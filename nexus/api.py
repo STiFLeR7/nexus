@@ -38,6 +38,7 @@ logger = structlog.get_logger("nexus.api")
 # Application state container
 # ---------------------------------------------------------------------------
 
+
 class _AppState:
     """Holds runtime references shared across the application."""
 
@@ -54,6 +55,7 @@ _state = _AppState()
 # ---------------------------------------------------------------------------
 # Lifespan
 # ---------------------------------------------------------------------------
+
 
 @asynccontextmanager
 async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
@@ -176,6 +178,7 @@ async def system_status(request: Request) -> dict[str, Any]:
 # Application Factory
 # ---------------------------------------------------------------------------
 
+
 def create_app(settings: NexusSettings | None = None) -> FastAPI:
     """Create and configure the FastAPI application instance."""
     app = FastAPI(
@@ -190,4 +193,3 @@ def create_app(settings: NexusSettings | None = None) -> FastAPI:
 
 
 app = create_app()
-

@@ -1,5 +1,4 @@
-"""Unit tests for the ApprovalService governance workflows.
-"""
+"""Unit tests for the ApprovalService governance workflows."""
 
 from __future__ import annotations
 

@@ -1,5 +1,5 @@
-"""Unit tests for SQLAlchemy models in the memory layer.
-"""
+"""Unit tests for SQLAlchemy models in the memory layer."""
+
 from __future__ import annotations
 
 import uuid

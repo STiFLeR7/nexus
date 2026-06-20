@@ -1,5 +1,5 @@
-"""Discord communication provider and bot interface.
-"""
+"""Discord communication provider and bot interface."""
+
 from __future__ import annotations
 
 from nexus.communication.discord.bot import NexusBot

@@ -19,7 +19,6 @@ from nexus.database import get_session
 from nexus.intelligence.summary import SummaryEngine
 
 if TYPE_CHECKING:
-
     from nexus.communication.discord.service import DiscordService
     from nexus.core.events import NexusEvent
     from nexus.intelligence.openrouter import OpenRouterClient
@@ -132,8 +131,14 @@ class WorkflowOrchestrator:
                 if task.description and task.description.startswith("cmd:"):
                     command = task.description[4:].strip()
 
-                execution = await execution_service.start_execution(task_id, runner="claude_code")
+                # Determine runner (Phase 3 defaults to gemini, check description for overrides)
+                runner = "gemini"
+                if task.description and "claude" in task.description.lower():
+                    runner = "claude_code"
+
+                execution = await execution_service.start_execution(task_id, runner=runner)
                 execution_id = execution.id
+                repository_path = execution.repository or "."
 
             logger.info(
                 "spawning_subprocess_command",
@@ -141,81 +146,71 @@ class WorkflowOrchestrator:
                 execution_id=str(execution_id),
             )
 
+            # Invoke adapter contract
             async with get_session(self.session_factory) as session:
-                from nexus.approvals.service import ApprovalService
-                from nexus.execution.service import ExecutionService
-                from nexus.memory.service import MemoryService
+                from nexus.execution.runners import get_runtime_adapter
 
-                memory_service = MemoryService(session)
-                approval_service = ApprovalService(
-                    session,
-                    memory_service,
-                    self.discord_service.bot.settings.discord.owner_ids,
-                    self.event_gateway,
+                adapter = get_runtime_adapter(
+                    runner_name=runner,
+                    db_session=session,
+                    execution_id=execution_id,
+                    event_gateway=self.event_gateway,
+                    openrouter_client=self.openrouter_client,
+                    settings=self.discord_service.bot.settings,
                 )
-                execution_service = ExecutionService(
-                    session, memory_service, approval_service, self.event_gateway
-                )
-                step = await execution_service.start_step(execution_id, command=command)
-                step_id = step.id
 
-            # Execute command shell safely
-            await self.discord_service.post_message(
-                "execution_log",
-                content=f"💻 **Spawning Command**: `{command}`",
-            )
+                # Initialize and validate (Governance checks)
+                await adapter.initialize()
+                await adapter.validate(repository_path=repository_path, command=command)
 
-            proc = await asyncio.create_subprocess_shell(
-                command,
-                stdout=asyncio.subprocess.PIPE,
-                stderr=asyncio.subprocess.PIPE,
-            )
-
-            stdout_bytes, stderr_bytes = await proc.communicate()
-            stdout = stdout_bytes.decode("utf-8", errors="replace")
-            stderr = stderr_bytes.decode("utf-8", errors="replace")
-            exit_code = proc.returncode or 0
-
-            # Stream logs to Discord execution log channel
-            if stdout:
+                # Execute
                 await self.discord_service.post_message(
                     "execution_log",
-                    content=f"📄 **STDOUT output**:\n```\n{stdout[:1800]}\n```",
+                    content=f"💻 **Spawning Command**: `{command}`",
                 )
-            if stderr:
-                await self.discord_service.post_message(
-                    "execution_log",
-                    content=f"⚠️ **STDERR output**:\n```\n{stderr[:1800]}\n```",
-                )
+                result = await adapter.execute(command)
+                exit_code = result["exit_code"]
 
-            # Complete step & finalize parent execution run
-            async with get_session(self.session_factory) as session:
-                from nexus.approvals.service import ApprovalService
-                from nexus.execution.service import ExecutionService
-                from nexus.memory.service import MemoryService
+                # Post streams to Discord
+                stdout = adapter.stdout_log
+                stderr = adapter.stderr_log
+                if stdout:
+                    await self.discord_service.post_message(
+                        "execution_log",
+                        content=f"📄 **STDOUT output**:\n```\n{stdout[:1800]}\n```",
+                    )
+                if stderr:
+                    await self.discord_service.post_message(
+                        "execution_log",
+                        content=f"⚠️ **STDERR output**:\n```\n{stderr[:1800]}\n```",
+                    )
 
-                memory_service = MemoryService(session)
-                approval_service = ApprovalService(
-                    session,
-                    memory_service,
-                    self.discord_service.bot.settings.discord.owner_ids,
-                    self.event_gateway,
-                )
-                execution_service = ExecutionService(
-                    session, memory_service, approval_service, self.event_gateway
-                )
-                await execution_service.complete_step(
-                    step_id,
-                    exit_code=exit_code,
-                    stdout=stdout,
-                    stderr=stderr,
-                )
+                # Checkpoint
+                await adapter.checkpoint(step_name="command_execution", state=result)
 
+                # Persist artifacts (stdout, stderr, summary, diff)
+                await adapter.persist()
+
+                # Finalize parent execution
                 exit_status = ExitStatus.SUCCESS if exit_code == 0 else ExitStatus.FAILURE
+                from nexus.approvals.service import ApprovalService
+                from nexus.execution.service import ExecutionService
+                from nexus.memory.service import MemoryService
+
+                memory_service = MemoryService(session)
+                approval_service = ApprovalService(
+                    session,
+                    memory_service,
+                    self.discord_service.bot.settings.discord.owner_ids,
+                    self.event_gateway,
+                )
+                execution_service = ExecutionService(
+                    session, memory_service, approval_service, self.event_gateway
+                )
                 await execution_service.finalize_execution(
                     execution_id=execution_id,
                     exit_status=exit_status,
-                    result_payload={"exit_code": exit_code, "command": command},
+                    result_payload=result,
                 )
 
             logger.info(

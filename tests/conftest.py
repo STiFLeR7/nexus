@@ -1,5 +1,5 @@
-"""Shared test fixtures for Nexus test suite.
-"""
+"""Shared test fixtures for Nexus test suite."""
+
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
@@ -68,6 +68,37 @@ async def db_session(db_engine: AsyncEngine) -> AsyncGenerator[AsyncSession, Non
     """Provide an async database session with rollback."""
     session_factory = async_sessionmaker(db_engine, expire_on_commit=False)
     async with session_factory() as session:
+        # Seed default allowed repository registry for testing
+        import os
+        import sys
+        import uuid
+
+        from nexus.memory.models import RepositoryRegistryRecord
+
+        session.add(
+            RepositoryRegistryRecord(
+                id=uuid.uuid4(),
+                name="workspace_root",
+                absolute_path=os.path.abspath("."),
+                allowed_branches=["*"],
+                allowed_commands=["*"],
+                is_active=True,
+            )
+        )
+
+        root_path = "C:\\" if sys.platform == "win32" else "/"
+        session.add(
+            RepositoryRegistryRecord(
+                id=uuid.uuid4(),
+                name="testing_root",
+                absolute_path=root_path,
+                allowed_branches=["*"],
+                allowed_commands=["*"],
+                is_active=True,
+            )
+        )
+        await session.flush()
+
         yield session
         await session.rollback()
 

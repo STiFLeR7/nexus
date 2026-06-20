@@ -1,5 +1,5 @@
-"""Unit tests for the health check and status API endpoints.
-"""
+"""Unit tests for the health check and status API endpoints."""
+
 from __future__ import annotations
 
 from typing import TYPE_CHECKING

@@ -50,8 +50,7 @@ async def dispatch_outbox_event(
             await discord_service.post_message(
                 "tasks",
                 content=(
-                    f"🆕 **Task Created**: **{title}** "
-                    f"(Priority: {priority})\nID: `{entity_id}`"
+                    f"🆕 **Task Created**: **{title}** (Priority: {priority})\nID: `{entity_id}`"
                 ),
             )
 
@@ -61,8 +60,7 @@ async def dispatch_outbox_event(
                 await discord_service.post_message(
                     "tasks",
                     content=(
-                        f"🔄 **Task Status Updated**: Task `{entity_id}` "
-                        f"transitioned to `{status}`"
+                        f"🔄 **Task Status Updated**: Task `{entity_id}` transitioned to `{status}`"
                     ),
                 )
 

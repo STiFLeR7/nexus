@@ -1,5 +1,4 @@
-"""In-memory event gateway and bus routing for the Nexus Control Plane.
-"""
+"""In-memory event gateway and bus routing for the Nexus Control Plane."""
 
 from __future__ import annotations
 
@@ -22,9 +21,9 @@ class EventGateway:
 
     def __init__(self) -> None:
         """Initialize the event routing mapping dictionary."""
-        self._subscribers: dict[
-            EventType, list[Callable[[NexusEvent], Awaitable[None]]]
-        ] = defaultdict(list)
+        self._subscribers: dict[EventType, list[Callable[[NexusEvent], Awaitable[None]]]] = (
+            defaultdict(list)
+        )
 
     def subscribe(
         self,
@@ -56,9 +55,7 @@ class EventGateway:
                     "subscriber_callback_failed",
                     event_id=event.id,
                     event_type=(
-                        event_type.value
-                        if hasattr(event_type, "value")
-                        else str(event_type)
+                        event_type.value if hasattr(event_type, "value") else str(event_type)
                     ),
                     handler=callback.__name__,
                     error=str(e),

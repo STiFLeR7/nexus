@@ -1,5 +1,5 @@
-"""Unit tests for configuration loading.
-"""
+"""Unit tests for configuration loading."""
+
 from __future__ import annotations
 
 from nexus.config import NexusSettings

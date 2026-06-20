@@ -23,6 +23,7 @@ from nexus.core.types import (
 # Health
 # ---------------------------------------------------------------------------
 
+
 class HealthResponse(BaseModel):
     """Response schema for the ``/health`` endpoint."""
 
@@ -35,6 +36,7 @@ class HealthResponse(BaseModel):
 # Tasks
 # ---------------------------------------------------------------------------
 
+
 class TaskCreate(BaseModel):
     """Request body for creating a new task."""
 
@@ -43,9 +45,7 @@ class TaskCreate(BaseModel):
     priority: Priority = Field(default=Priority.MEDIUM)
 
     model_config = {
-        "json_schema_extra": {
-            "examples": [{"title": "Implement auth module", "priority": 3}]
-        }
+        "json_schema_extra": {"examples": [{"title": "Implement auth module", "priority": 3}]}
     }
 
 
@@ -78,6 +78,7 @@ class TaskResponse(BaseModel):
 # Approvals
 # ---------------------------------------------------------------------------
 
+
 class ApprovalCreate(BaseModel):
     """Request body for requesting a new approval."""
 
@@ -85,9 +86,7 @@ class ApprovalCreate(BaseModel):
     expires_at: datetime | None = Field(default=None)
 
     model_config = {
-        "json_schema_extra": {
-            "examples": [{"task_id": "550e8400-e29b-41d4-a716-446655440000"}]
-        }
+        "json_schema_extra": {"examples": [{"task_id": "550e8400-e29b-41d4-a716-446655440000"}]}
     }
 
 
@@ -112,6 +111,7 @@ class ApprovalResponse(BaseModel):
 # ---------------------------------------------------------------------------
 # Executions
 # ---------------------------------------------------------------------------
+
 
 class ExecutionCreate(BaseModel):
     """Request body for initiating a new execution."""
@@ -149,6 +149,7 @@ class ExecutionResponse(BaseModel):
 # Audit log
 # ---------------------------------------------------------------------------
 
+
 class AuditLogEntry(BaseModel):
     """Response schema for an audit log record."""
 
@@ -168,6 +169,7 @@ class AuditLogEntry(BaseModel):
 # ---------------------------------------------------------------------------
 # Context Frames
 # ---------------------------------------------------------------------------
+
 
 class ContextFrame(BaseModel):
     """Derived ephemeral prompt context frame compiled during turn execution."""

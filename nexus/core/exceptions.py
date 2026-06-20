@@ -16,6 +16,7 @@ if TYPE_CHECKING:
 # Base
 # ---------------------------------------------------------------------------
 
+
 class NexusError(Exception):
     """Root exception for all Nexus-specific errors."""
 
@@ -28,6 +29,7 @@ class NexusError(Exception):
 # Configuration
 # ---------------------------------------------------------------------------
 
+
 class ConfigurationError(NexusError):
     """Raised when application configuration is invalid or missing."""
 
@@ -35,6 +37,7 @@ class ConfigurationError(NexusError):
 # ---------------------------------------------------------------------------
 # Database
 # ---------------------------------------------------------------------------
+
 
 class DatabaseError(NexusError):
     """Raised on database connectivity or query failures."""
@@ -44,6 +47,7 @@ class DatabaseError(NexusError):
 # Event gateway
 # ---------------------------------------------------------------------------
 
+
 class EventGatewayError(NexusError):
     """Raised when the event gateway cannot dispatch an event."""
 
@@ -51,6 +55,7 @@ class EventGatewayError(NexusError):
 # ---------------------------------------------------------------------------
 # Task engine
 # ---------------------------------------------------------------------------
+
 
 class TaskEngineError(NexusError):
     """Raised on task lifecycle violations or failures."""
@@ -60,6 +65,7 @@ class TaskEngineError(NexusError):
 # Approval engine
 # ---------------------------------------------------------------------------
 
+
 class ApprovalEngineError(NexusError):
     """Raised on approval workflow violations or failures."""
 
@@ -67,6 +73,7 @@ class ApprovalEngineError(NexusError):
 # ---------------------------------------------------------------------------
 # Execution engine
 # ---------------------------------------------------------------------------
+
 
 class ExecutionEngineError(NexusError):
     """Raised on execution runner failures."""
@@ -79,6 +86,7 @@ class ExecutionTimeoutError(ExecutionEngineError):
 # ---------------------------------------------------------------------------
 # Agent router
 # ---------------------------------------------------------------------------
+
 
 class AgentRouterError(NexusError):
     """Raised when the agent router encounters a problem."""
@@ -102,6 +110,7 @@ class UnroutableEventError(AgentRouterError):
 # Model router
 # ---------------------------------------------------------------------------
 
+
 class ModelRouterError(NexusError):
     """Raised when the LLM model router cannot fulfil a request."""
 
@@ -109,6 +118,7 @@ class ModelRouterError(NexusError):
 # ---------------------------------------------------------------------------
 # Authorization
 # ---------------------------------------------------------------------------
+
 
 class UnauthorizedActionError(NexusError):
     """Raised when a caller lacks permission for an action."""
@@ -118,6 +128,7 @@ class UnauthorizedActionError(NexusError):
 # Repository
 # ---------------------------------------------------------------------------
 
+
 class RepositoryNotRegisteredError(NexusError):
     """Raised when referencing an unregistered repository."""
 
@@ -125,6 +136,7 @@ class RepositoryNotRegisteredError(NexusError):
 # ---------------------------------------------------------------------------
 # Communication
 # ---------------------------------------------------------------------------
+
 
 class CommunicationError(NexusError):
     """Base for communication subsystem errors."""

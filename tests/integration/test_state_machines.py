@@ -1,5 +1,4 @@
-"""Integration tests for the complete Task, Approval, and Execution state machine flow.
-"""
+"""Integration tests for the complete Task, Approval, and Execution state machine flow."""
 
 from __future__ import annotations
 

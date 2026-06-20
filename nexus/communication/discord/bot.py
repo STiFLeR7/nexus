@@ -221,6 +221,7 @@ class NexusBot(commands.Bot):
 # Command Tree Definitions
 # ---------------------------------------------------------------------------
 
+
 @app_commands.command(name="task_create", description="Create a new task in Nexus")
 async def task_create(
     interaction: discord.Interaction,
@@ -267,6 +268,7 @@ async def task_list(interaction: discord.Interaction) -> None:
 
     try:
         from sqlalchemy import select
+
         async with get_session(bot.session_factory) as session:
             stmt = (
                 select(TaskRecord)
@@ -283,8 +285,7 @@ async def task_list(interaction: discord.Interaction) -> None:
         lines = ["**Nexus Active Tasks:**"]
         for t in tasks[:10]:  # limit to latest 10
             lines.append(
-                f"• `{t.id}` | **{t.title}** | "
-                f"Status: `{t.status}` | Priority: {t.priority}"
+                f"• `{t.id}` | **{t.title}** | Status: `{t.status}` | Priority: {t.priority}"
             )
 
         await interaction.followup.send("\n".join(lines))

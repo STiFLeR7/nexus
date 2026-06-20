@@ -1,5 +1,5 @@
-"""Unit tests for the system enums.
-"""
+"""Unit tests for the system enums."""
+
 from __future__ import annotations
 
 from nexus.core.types import (
@@ -35,6 +35,7 @@ def test_approval_status_members() -> None:
 def test_execution_status_members() -> None:
     """Verify ExecutionStatus members exist and serialize correctly."""
     from nexus.core.types import ExecutionStatus
+
     assert ExecutionStatus.PENDING.value == "pending"
     assert ExecutionStatus.RUNNING.value == "running"
     assert ExecutionStatus.COMPLETED.value == "completed"

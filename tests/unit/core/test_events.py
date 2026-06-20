@@ -1,5 +1,5 @@
-"""Unit tests for the NexusEvent Pydantic model.
-"""
+"""Unit tests for the NexusEvent Pydantic model."""
+
 from __future__ import annotations
 
 import uuid

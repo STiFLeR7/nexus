@@ -1,5 +1,4 @@
-"""E2E workflow test validating the complete user lifecycle in a test environment.
-"""
+"""E2E workflow test validating the complete user lifecycle in a test environment."""
 
 from __future__ import annotations
 
@@ -40,12 +39,14 @@ class MockDiscordService:
         embed: Any = None,
         view: Any = None,
     ) -> Any:
-        self.posted_messages.append({
-            "channel": channel_key,
-            "content": content,
-            "embed": embed,
-            "view": view,
-        })
+        self.posted_messages.append(
+            {
+                "channel": channel_key,
+                "content": content,
+                "embed": embed,
+                "view": view,
+            }
+        )
         return MagicMock()
 
     async def send_approval_request(
@@ -56,13 +57,15 @@ class MockDiscordService:
         task_description: str | None,
         task_priority: int,
     ) -> Any:
-        self.approval_requests.append({
-            "task_id": task_id,
-            "approval_id": approval_id,
-            "title": task_title,
-            "description": task_description,
-            "priority": task_priority,
-        })
+        self.approval_requests.append(
+            {
+                "task_id": task_id,
+                "approval_id": approval_id,
+                "title": task_title,
+                "description": task_description,
+                "priority": task_priority,
+            }
+        )
         return MagicMock()
 
 
@@ -72,6 +75,7 @@ async def test_complete_mvp_workflow_e2e(
     db_session: AsyncSession,
 ) -> None:
     """Validate E2E MVP task workflow: ingest, block, approve, run command, and summarize."""
+
     class SafeSessionWrapper:
         def __init__(self, session: AsyncSession) -> None:
             self._session = session
@@ -204,7 +208,5 @@ async def test_complete_mvp_workflow_e2e(
     embed = summary_messages[0]["embed"]
     assert embed.title == "Task Run Report"
     assert embed.description == (
-        "**Execution Success Report**\n"
-        "- Spawned echo command successfully.\n"
-        "- Completed in 1 step."
+        "**Execution Success Report**\n- Spawned echo command successfully.\n- Completed in 1 step."
     )

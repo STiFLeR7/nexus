@@ -1,5 +1,4 @@
-"""Unit tests for the EventGateway and event persistence mechanisms.
-"""
+"""Unit tests for the EventGateway and event persistence mechanisms."""
 
 from __future__ import annotations
 
@@ -68,6 +67,7 @@ async def test_event_persistence_in_audit_and_outbox(db_session: AsyncSession) -
 
     # Query audit record
     from sqlalchemy import select
+
     audit_stmt = select(AuditLogRecord).where(AuditLogRecord.id == event.id)
     audit_res = await db_session.execute(audit_stmt)
     audit_record = audit_res.scalar_one()

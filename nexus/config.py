@@ -19,6 +19,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 # Nested configuration models
 # ---------------------------------------------------------------------------
 
+
 class DiscordChannels(BaseModel):
     """Channel mapping for Discord bot routing."""
 
@@ -96,6 +97,7 @@ class LoggingConfig(BaseModel):
 # Root settings
 # ---------------------------------------------------------------------------
 
+
 def _load_yaml_settings(yaml_path: Path) -> dict[str, Any]:
     """Load settings from a YAML file if it exists."""
     if yaml_path.exists():
@@ -145,6 +147,7 @@ class NexusSettings(BaseSettings):
         import os
 
         from dotenv import load_dotenv
+
         load_dotenv()
 
         # Map environment overrides directly for convenience in local development
@@ -154,6 +157,7 @@ class NexusSettings(BaseSettings):
         if os.getenv("DISCORD_BOT_TOKEN"):
             yaml_data["discord"]["token"] = os.getenv("DISCORD_BOT_TOKEN")
         import contextlib
+
         if os.getenv("DISCORD_GUILD_ID"):
             with contextlib.suppress(ValueError):
                 yaml_data["discord"]["guild_id"] = int(os.getenv("DISCORD_GUILD_ID", "0"))

@@ -1,5 +1,5 @@
-"""Unit tests for the Nexus exception hierarchy.
-"""
+"""Unit tests for the Nexus exception hierarchy."""
+
 from __future__ import annotations
 
 from nexus.core.exceptions import (
