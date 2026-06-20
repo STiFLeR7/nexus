@@ -62,7 +62,7 @@ async def test_event_persistence_in_audit_and_outbox(db_session: AsyncSession) -
     )
 
     # Persist the event to both audit_log and outbox
-    await service.log_event(event)
+    await service.log_event(event, enqueue_outbox=False)
     await service.enqueue_outbox_event(event)
     await db_session.flush()
 

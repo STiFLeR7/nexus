@@ -12,12 +12,26 @@ from pathlib import Path
 from typing import Any
 
 import yaml  # type: ignore[import-untyped]
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 # ---------------------------------------------------------------------------
 # Nested configuration models
 # ---------------------------------------------------------------------------
+
+class DiscordChannels(BaseModel):
+    """Channel mapping for Discord bot routing."""
+
+    inbox: str = "nexus-commands"
+    tasks: str = "nexus-timeline"
+    approvals: str = "nexus-approvals"
+    execution_log: str = Field("nexus-logs", alias="execution-log")
+    research: str = "nexus-research"
+    summaries: str = "nexus-reports"
+    alerts: str = "nexus-alerts"
+
+    model_config = ConfigDict(populate_by_name=True)
+
 
 class DiscordConfig(BaseModel):
     """Discord bot and channel configuration."""
@@ -25,10 +39,7 @@ class DiscordConfig(BaseModel):
     token: str = ""
     guild_id: int = 0
     owner_ids: list[int] = Field(default_factory=list)
-    command_channel: str = "nexus-commands"
-    log_channel: str = "nexus-logs"
-    alert_channel: str = "nexus-alerts"
-    report_channel: str = "nexus-reports"
+    channels: DiscordChannels = Field(default_factory=DiscordChannels)
 
 
 class EmailConfig(BaseModel):
@@ -130,6 +141,35 @@ class NexusSettings(BaseSettings):
         """Construct settings merging YAML defaults with env overrides."""
         path = yaml_path or Path("config/settings.yaml")
         yaml_data = _load_yaml_settings(path)
+
+        import os
+
+        from dotenv import load_dotenv
+        load_dotenv()
+
+        # Map environment overrides directly for convenience in local development
+        if "discord" not in yaml_data:
+            yaml_data["discord"] = {}
+
+        if os.getenv("DISCORD_BOT_TOKEN"):
+            yaml_data["discord"]["token"] = os.getenv("DISCORD_BOT_TOKEN")
+        import contextlib
+        if os.getenv("DISCORD_GUILD_ID"):
+            with contextlib.suppress(ValueError):
+                yaml_data["discord"]["guild_id"] = int(os.getenv("DISCORD_GUILD_ID", "0"))
+
+        # Load owner IDs if specified as comma-separated or JSON list
+        owners_env = os.getenv("DISCORD_OWNERS") or os.getenv("NEXUS_DISCORD__OWNER_IDS")
+        if owners_env:
+            with contextlib.suppress(ValueError):
+                yaml_data["discord"]["owner_ids"] = [int(x.strip()) for x in owners_env.split(",")]
+
+        if "openrouter" not in yaml_data:
+            yaml_data["openrouter"] = {}
+
+        if os.getenv("OPENROUTER_API_KEY"):
+            yaml_data["openrouter"]["api_key"] = os.getenv("OPENROUTER_API_KEY")
+
         return cls(**yaml_data)
 
 

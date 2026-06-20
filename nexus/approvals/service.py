@@ -106,10 +106,17 @@ class ApprovalService:
             raise ApprovalEngineError(f"Approval gate {approval_id} is already decided.")
 
         now = datetime.now(UTC)
-        if approval.expires_at and now > approval.expires_at:
-            approval.status = ApprovalStatus.EXPIRED.value
-            await self.session.flush()
-            raise ApprovalEngineError(f"Approval gate {approval_id} has expired.")
+        if approval.expires_at:
+            # Normalize both to naive UTC datetimes to prevent type errors in SQLite environments
+            now_naive = now.replace(tzinfo=None)
+            expires_naive = approval.expires_at
+            if expires_naive.tzinfo is not None:
+                expires_naive = expires_naive.astimezone(UTC).replace(tzinfo=None)
+
+            if now_naive > expires_naive:
+                approval.status = ApprovalStatus.EXPIRED.value
+                await self.session.flush()
+                raise ApprovalEngineError(f"Approval gate {approval_id} has expired.")
 
         if decision not in (ApprovalStatus.APPROVED, ApprovalStatus.REJECTED):
             raise ApprovalEngineError(f"Invalid approval decision value: {decision.value}")

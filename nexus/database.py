@@ -148,7 +148,7 @@ def async_session_factory(engine: AsyncEngine) -> async_sessionmaker[AsyncSessio
 
 @asynccontextmanager
 async def get_session(
-    session_factory: async_sessionmaker[AsyncSession],
+    session_factory: Any,
 ) -> AsyncGenerator[AsyncSession, None]:
     """Yield a database session with automatic commit / rollback.
 

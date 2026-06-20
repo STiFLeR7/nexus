@@ -30,7 +30,7 @@ class MemoryService:
         """Initialize the service with an active database session."""
         self.session = db_session
 
-    async def log_event(self, event: NexusEvent) -> None:
+    async def log_event(self, event: NexusEvent, enqueue_outbox: bool = True) -> None:
         """Persist a canonical event to the append-only, immutable audit ledger."""
         actor = event.data.get("actor") or event.data.get("decided_by")
         audit_record = AuditLogRecord(
@@ -49,6 +49,8 @@ class MemoryService:
             created_at=event.timestamp,
         )
         self.session.add(audit_record)
+        if enqueue_outbox:
+            await self.enqueue_outbox_event(event)
         await self.session.flush()
 
     async def enqueue_outbox_event(self, event: NexusEvent) -> None:

@@ -8,6 +8,7 @@ from typing import TYPE_CHECKING
 import pytest
 from sqlalchemy import select
 
+from nexus.core.events import NexusEvent
 from nexus.core.exceptions import TaskEngineError
 from nexus.core.types import EventType, TaskStatus
 from nexus.gateway.gateway import EventGateway
@@ -26,9 +27,9 @@ async def test_task_creation_flow(db_session: AsyncSession) -> None:
     gateway = EventGateway()
     task_service = TaskService(db_session, memory_service, gateway)
 
-    published_events = []
+    published_events: list[NexusEvent] = []
 
-    async def collect_events(event):
+    async def collect_events(event: NexusEvent) -> None:
         published_events.append(event)
 
     gateway.subscribe(EventType.TASK_CREATED, collect_events)

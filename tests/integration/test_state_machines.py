@@ -96,9 +96,10 @@ async def test_end_to_end_state_machine_integration(db_session: AsyncSession) ->
     assert finalized.exit_status == "success"
 
     # Assert step logs are aggregated in parent ExecutionRecord
-    assert "Command: pytest tests/unit/auth" in finalized.logs
-    assert "STDOUT:\nAll tests passed successfully." in finalized.logs
+    logs = finalized.logs or ""
+    assert "Command: pytest tests/unit/auth" in logs
+    assert "STDOUT:\nAll tests passed successfully." in logs
 
     # Assert JSON payload is stored
-    result_data = json.loads(finalized.result)
+    result_data = json.loads(finalized.result or "{}")
     assert result_data["deploy_url"] == "https://auth.nexus.test"
