@@ -12,6 +12,7 @@ from sqlalchemy import select
 from nexus.core.exceptions import ExecutionEngineError
 from nexus.core.types import ExecutionStatus
 from nexus.execution.governance import GovernanceManager
+from nexus.execution.runners import runtime_registry
 from nexus.execution.runners.base import AgentRuntimeAdapter
 from nexus.memory.models import (
     AgentStepRecord,
@@ -21,6 +22,7 @@ from nexus.memory.models import (
 )
 
 
+@runtime_registry.register("hermes")
 class HermesRuntimeAdapter(AgentRuntimeAdapter):
     """Execution adapter for the Hermes autonomous planning and research agent."""
 

@@ -6,7 +6,35 @@ import uuid
 from typing import Any
 
 from nexus.execution.runners.base import BaseRuntimeAdapter
-from nexus.execution.runners.gemini import GeminiRuntimeAdapter
+
+
+class RuntimeRegistry:
+    """Registry pattern mapping runner names to their concrete adapters."""
+
+    def __init__(self) -> None:
+        self._registry: dict[str, type[BaseRuntimeAdapter]] = {}
+
+    def register(self, runtime_id: str):
+        """Decorator to register a runtime adapter class."""
+        def decorator(cls: type[BaseRuntimeAdapter]):
+            self._registry[runtime_id.lower()] = cls
+            return cls
+        return decorator
+
+    def get_adapter_cls(self, runtime_id: str) -> type[BaseRuntimeAdapter]:
+        """Resolve a registered runtime class by its ID."""
+        clean_id = runtime_id.lower().replace("_", "").replace("-", "")
+        # Handle aliases
+        if clean_id == "claudecode":
+            clean_id = "claude"
+
+        cls = self._registry.get(clean_id)
+        if not cls:
+            raise KeyError(f"No runtime adapter registered for runner ID: {runtime_id}")
+        return cls
+
+
+runtime_registry = RuntimeRegistry()
 
 
 def get_runtime_adapter(
@@ -17,17 +45,17 @@ def get_runtime_adapter(
     openrouter_client: Any = None,
     settings: Any = None,
 ) -> BaseRuntimeAdapter:
-    """Resolve and instantiate the correct execution adapter by runner name."""
-    clean_runner = runner_name.lower().replace("_", "").replace("-", "")
-    if clean_runner in ("gemini", "claudecode", "claude"):
-        return GeminiRuntimeAdapter(
-            db_session, execution_id, event_gateway, openrouter_client, settings
-        )
-    elif clean_runner == "hermes":
-        from nexus.execution.runners.hermes import HermesRuntimeAdapter
+    """Resolve and instantiate the correct execution adapter by runner name using the registry."""
+    # Import modules to trigger registration decorators
+    from nexus.execution.runners.claude import ClaudeRuntimeAdapter  # noqa: F401
+    from nexus.execution.runners.gemini import GeminiRuntimeAdapter  # noqa: F401
+    from nexus.execution.runners.hermes import HermesRuntimeAdapter  # noqa: F401
 
-        return HermesRuntimeAdapter(
-            db_session, execution_id, event_gateway, openrouter_client, settings
-        )
-    else:
-        raise ValueError(f"Unknown execution runner: {runner_name}")
+    cls = runtime_registry.get_adapter_cls(runner_name)
+    return cls(
+        db_session=db_session,
+        execution_id=execution_id,
+        event_gateway=event_gateway,
+        openrouter_client=openrouter_client,
+        settings=settings,
+    )

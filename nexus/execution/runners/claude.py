@@ -21,9 +21,9 @@ from nexus.memory.models import (
 )
 
 
-@runtime_registry.register("gemini")
-class GeminiRuntimeAdapter(CLIRuntimeAdapter):
-    """Execution adapter for the Gemini CLI and API runtime."""
+@runtime_registry.register("claude")
+class ClaudeRuntimeAdapter(CLIRuntimeAdapter):
+    """Execution adapter for the Claude CLI and API runtime."""
 
     def __init__(
         self,
@@ -33,7 +33,7 @@ class GeminiRuntimeAdapter(CLIRuntimeAdapter):
         openrouter_client: Any = None,
         settings: Any = None,
     ) -> None:
-        """Initialize the GeminiRuntimeAdapter with execution and API references."""
+        """Initialize the ClaudeRuntimeAdapter with execution and API references."""
         self.session = db_session
         self.execution_id = execution_id
         self.event_gateway = event_gateway
@@ -48,13 +48,8 @@ class GeminiRuntimeAdapter(CLIRuntimeAdapter):
 
     async def initialize(self) -> None:
         """Verify API key availability and environment readiness."""
-        api_key = os.getenv("GEMINI_API_KEY")
-        if not api_key and self.settings and self.settings.openrouter:
-            api_key = self.settings.openrouter.api_key
-
-        if not api_key:
-            # Non-blocking warning so offline testing can run with mock wrappers
-            pass
+        # Non-blocking warning so offline testing can run with mock wrappers
+        pass
 
     async def validate(self, repository_path: str, command: str) -> None:
         """Run repository safety checks using the GovernanceManager."""
@@ -69,11 +64,11 @@ class GeminiRuntimeAdapter(CLIRuntimeAdapter):
             task_id=exec_record.task_id,
             working_dir=repository_path,
             command=command,
-            runtime="gemini",
+            runtime="claude",
         )
 
     async def execute(self, command: str) -> dict[str, Any]:
-        """Spawn the command subprocess under the Gemini execution context."""
+        """Spawn the command subprocess under the Claude execution context."""
         self.start_time = time.time()
 
         stmt = select(ExecutionRecord).where(ExecutionRecord.id == self.execution_id)
