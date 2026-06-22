@@ -415,8 +415,6 @@ async def run_scenario_d_restart_recovery(engine_url):
 
     # Verify we can reload task and state from DB
     async with session_factory2() as root_session2:
-        shared_session2 = SafeSessionWrapper(root_session2)
-
         # Verify state is re-loaded correctly
         stmt = select(TaskRecord).where(TaskRecord.title == "Recoverable Deploy")
         res = await root_session2.execute(stmt)

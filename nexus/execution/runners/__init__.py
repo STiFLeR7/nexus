@@ -23,5 +23,11 @@ def get_runtime_adapter(
         return GeminiRuntimeAdapter(
             db_session, execution_id, event_gateway, openrouter_client, settings
         )
+    elif clean_runner == "hermes":
+        from nexus.execution.runners.hermes import HermesRuntimeAdapter
+
+        return HermesRuntimeAdapter(
+            db_session, execution_id, event_gateway, openrouter_client, settings
+        )
     else:
         raise ValueError(f"Unknown execution runner: {runner_name}")

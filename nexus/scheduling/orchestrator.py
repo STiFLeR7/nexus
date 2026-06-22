@@ -130,11 +130,17 @@ class WorkflowOrchestrator:
                 command = "echo 'Hello from Nexus Control Plane!'"
                 if task.description and task.description.startswith("cmd:"):
                     command = task.description[4:].strip()
+                elif task.description and task.description.startswith("goal:"):
+                    command = task.description[5:].strip()
 
                 # Determine runner (Phase 3 defaults to gemini, check description for overrides)
                 runner = "gemini"
                 if task.description and "claude" in task.description.lower():
                     runner = "claude_code"
+                elif task.description and (
+                    "hermes" in task.description.lower() or task.description.startswith("goal:")
+                ):
+                    runner = "hermes"
 
                 execution = await execution_service.start_execution(task_id, runner=runner)
                 execution_id = execution.id
@@ -159,7 +165,7 @@ class WorkflowOrchestrator:
                     settings=self.discord_service.bot.settings,
                 )
 
-                from nexus.execution.runners.base import CLIRuntimeAdapter, AgentRuntimeAdapter
+                from nexus.execution.runners.base import AgentRuntimeAdapter, CLIRuntimeAdapter
 
                 # Initialize
                 await adapter.initialize()
