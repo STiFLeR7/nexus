@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import uuid
 from datetime import datetime
+from typing import Any
 
 from sqlalchemy import (
     DateTime,
@@ -384,10 +385,38 @@ class RepositoryRegistryRecord(TimestampMixin, Base):
 
     name: Mapped[str] = mapped_column(String(200), unique=True, nullable=False)
     absolute_path: Mapped[str] = mapped_column(String(1000), nullable=False)
-    allowed_branches: Mapped[dict] = mapped_column(JSON, nullable=False)  # type: ignore[type-arg]
-    allowed_commands: Mapped[dict] = mapped_column(JSON, nullable=False)  # type: ignore[type-arg]
+    allowed_branches: Mapped[Any] = mapped_column(JSON, nullable=False)
+    allowed_commands: Mapped[Any] = mapped_column(JSON, nullable=False)
     timeout_limit_seconds: Mapped[int] = mapped_column(Integer, nullable=False, default=3600)
     is_active: Mapped[bool] = mapped_column(nullable=False, default=True)
+
+    # AP-304 additions
+    allowed_runtimes: Mapped[Any] = mapped_column(JSON, nullable=True)
+    allowed_profiles: Mapped[Any] = mapped_column(JSON, nullable=True)
+    blocked_branches: Mapped[Any] = mapped_column(JSON, nullable=True)
+    protected_branches: Mapped[Any] = mapped_column(JSON, nullable=True)
+    owner: Mapped[str | None] = mapped_column(String(200), nullable=True)
+    status: Mapped[str] = mapped_column(String(50), nullable=False, default="active")
+
+    @property
+    def repository_id(self) -> uuid.UUID:
+        return self.id
+
+    @property
+    def repository_name(self) -> str:
+        return self.name
+
+    @repository_name.setter
+    def repository_name(self, value: str) -> None:
+        self.name = value
+
+    @property
+    def repository_path(self) -> str:
+        return self.absolute_path
+
+    @repository_path.setter
+    def repository_path(self, value: str) -> None:
+        self.absolute_path = value
 
 
 # ---------------------------------------------------------------------------
