@@ -159,31 +159,48 @@ class WorkflowOrchestrator:
                     settings=self.discord_service.bot.settings,
                 )
 
-                # Initialize and validate (Governance checks)
+                from nexus.execution.runners.base import CLIRuntimeAdapter, AgentRuntimeAdapter
+
+                # Initialize
                 await adapter.initialize()
-                await adapter.validate(repository_path=repository_path, command=command)
 
-                # Execute
-                await self.discord_service.post_message(
-                    "execution_log",
-                    content=f"💻 **Spawning Command**: `{command}`",
-                )
-                result = await adapter.execute(command)
-                exit_code = result["exit_code"]
+                result = {}
+                exit_code = 0
 
-                # Post streams to Discord
-                stdout = adapter.stdout_log
-                stderr = adapter.stderr_log
-                if stdout:
+                if isinstance(adapter, CLIRuntimeAdapter):
+                    # Validate (Governance checks)
+                    await adapter.validate(repository_path=repository_path, command=command)
+
+                    # Execute
                     await self.discord_service.post_message(
                         "execution_log",
-                        content=f"📄 **STDOUT output**:\n```\n{stdout[:1800]}\n```",
+                        content=f"💻 **Spawning Command**: `{command}`",
                     )
-                if stderr:
-                    await self.discord_service.post_message(
-                        "execution_log",
-                        content=f"⚠️ **STDERR output**:\n```\n{stderr[:1800]}\n```",
-                    )
+                    result = await adapter.execute(command)
+                    exit_code = result.get("exit_code", 0)
+
+                    # Post streams to Discord
+                    stdout = adapter.stdout_log
+                    stderr = adapter.stderr_log
+                    if stdout:
+                        await self.discord_service.post_message(
+                            "execution_log",
+                            content=f"📄 **STDOUT output**:\n```\n{stdout[:1800]}\n```",
+                        )
+                    if stderr:
+                        await self.discord_service.post_message(
+                            "execution_log",
+                            content=f"⚠️ **STDERR output**:\n```\n{stderr[:1800]}\n```",
+                        )
+                elif isinstance(adapter, AgentRuntimeAdapter):
+                    # Validate goal
+                    await adapter.validate_goal(command)
+
+                    # Execute goal
+                    result = await adapter.execute_goal(command)
+                    exit_code = result.get("exit_code", 0)
+                else:
+                    raise TypeError(f"Adapter {adapter} is of unsupported runtime type.")
 
                 # Checkpoint
                 await adapter.checkpoint(step_name="command_execution", state=result)

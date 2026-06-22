@@ -151,6 +151,11 @@ class ExecutionRecord(TimestampMixin, Base):
         cascade="all, delete-orphan",
         lazy="selectin",
     )
+    agent_steps: Mapped[list[AgentStepRecord]] = relationship(
+        back_populates="execution",
+        cascade="all, delete-orphan",
+        lazy="selectin",
+    )
     artifacts: Mapped[list[ExecutionArtifactRecord]] = relationship(
         back_populates="execution",
         cascade="all, delete-orphan",
@@ -266,6 +271,40 @@ class ExecutionStepRecord(TimestampMixin, Base):
 
     # Relationships
     execution: Mapped[ExecutionRecord] = relationship(back_populates="steps")
+
+
+# ---------------------------------------------------------------------------
+# Agent Steps
+# ---------------------------------------------------------------------------
+
+class AgentStepRecord(TimestampMixin, Base):
+    """An individual reasoning, thought, or tool execution step under an agent execution run."""
+
+    __tablename__ = "agent_steps"
+
+    execution_id: Mapped[uuid.UUID] = mapped_column(
+        ForeignKey("executions.id", ondelete="CASCADE"),
+        nullable=False,
+        index=True,
+    )
+    step_index: Mapped[int] = mapped_column(Integer, nullable=False)
+    thought: Mapped[str | None] = mapped_column(Text, nullable=True)
+    tool_name: Mapped[str | None] = mapped_column(String(100), nullable=True)
+    tool_arguments: Mapped[dict | None] = mapped_column(JSON, nullable=True)  # type: ignore[type-arg]
+    tool_result: Mapped[str | None] = mapped_column(Text, nullable=True)
+    status: Mapped[str] = mapped_column(
+        String(50),
+        nullable=False,
+        default="pending",
+        index=True,
+    )
+    last_heartbeat: Mapped[datetime | None] = mapped_column(
+        DateTime(timezone=True),
+        nullable=True,
+    )
+
+    # Relationships
+    execution: Mapped[ExecutionRecord] = relationship(back_populates="agent_steps")
 
 
 # ---------------------------------------------------------------------------

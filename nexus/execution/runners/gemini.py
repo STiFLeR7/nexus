@@ -11,7 +11,7 @@ from sqlalchemy import select
 from nexus.core.exceptions import ExecutionEngineError
 from nexus.core.types import ExecutionStatus
 from nexus.execution.governance import GovernanceManager
-from nexus.execution.runners.base import BaseRuntimeAdapter
+from nexus.execution.runners.base import CLIRuntimeAdapter
 from nexus.memory.models import (
     ExecutionArtifactRecord,
     ExecutionRecord,
@@ -20,7 +20,7 @@ from nexus.memory.models import (
 )
 
 
-class GeminiRuntimeAdapter(BaseRuntimeAdapter):
+class GeminiRuntimeAdapter(CLIRuntimeAdapter):
     """Execution adapter for the Gemini CLI and API runtime."""
 
     def __init__(
