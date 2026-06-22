@@ -43,6 +43,10 @@ class TaskCreate(BaseModel):
     title: str = Field(..., min_length=1, max_length=500)
     description: str | None = Field(default=None)
     priority: Priority = Field(default=Priority.MEDIUM)
+    runtime_type: str | None = Field(default="cli")
+    runtime_id: str | None = Field(default="gemini")
+    execution_profile: str | None = Field(default="default")
+    runtime_policy: str | None = Field(default="approved")
 
     model_config = {
         "json_schema_extra": {"examples": [{"title": "Implement auth module", "priority": 3}]}
@@ -57,6 +61,10 @@ class TaskUpdate(BaseModel):
     status: TaskStatus | None = Field(default=None)
     priority: Priority | None = Field(default=None)
     is_archived: bool | None = Field(default=None)
+    runtime_type: str | None = Field(default=None)
+    runtime_id: str | None = Field(default=None)
+    execution_profile: str | None = Field(default=None)
+    runtime_policy: str | None = Field(default=None)
 
 
 class TaskResponse(BaseModel):
@@ -67,6 +75,10 @@ class TaskResponse(BaseModel):
     description: str | None
     status: TaskStatus
     priority: int
+    runtime_type: str | None
+    runtime_id: str | None
+    execution_profile: str | None
+    runtime_policy: str | None
     created_at: datetime
     updated_at: datetime
     is_archived: bool

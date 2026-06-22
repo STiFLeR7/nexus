@@ -7,13 +7,17 @@ import asyncio
 import contextlib
 import os
 import uuid
-from datetime import datetime, UTC
 from typing import Any
 from unittest.mock import AsyncMock, MagicMock
+
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
 
+from nexus.approvals.service import ApprovalService
+from nexus.core.types import ApprovalStatus, TaskStatus
 from nexus.database import Base
+from nexus.gateway.gateway import EventGateway
+from nexus.intelligence.openrouter import OpenRouterClient
 from nexus.memory.models import (
     AgentStepRecord,
     ApprovalRecord,
@@ -22,13 +26,9 @@ from nexus.memory.models import (
     RepositoryRegistryRecord,
     TaskRecord,
 )
-from nexus.memory.task_service import TaskService
-from nexus.approvals.service import ApprovalService
-from nexus.scheduling.orchestrator import WorkflowOrchestrator
-from nexus.gateway.gateway import EventGateway
 from nexus.memory.service import MemoryService
-from nexus.core.types import TaskStatus, ApprovalStatus
-from nexus.intelligence.openrouter import OpenRouterClient
+from nexus.memory.task_service import TaskService
+from nexus.scheduling.orchestrator import WorkflowOrchestrator
 
 
 class SafeSessionWrapper:
@@ -180,6 +180,10 @@ async def run_hermes_validation(engine: Any) -> None:
             title="MCP Ecosystem Research",
             description="goal:Research latest MCP ecosystem developments",
             priority=3,
+            runtime_type="agent",
+            runtime_id="hermes",
+            execution_profile="research",
+            runtime_policy="approved",
         )
         await root_session.flush()
         await print_task_details(shared_session, task.id)
@@ -201,7 +205,10 @@ async def run_hermes_validation(engine: Any) -> None:
             rec.status = "sent"
         await root_session.flush()
 
-        print(f"  - Discord approval request cards posted: {len(discord_service.approval_requests)}")
+        print(
+            f"  - Discord approval request cards posted: "
+            f"{len(discord_service.approval_requests)}"
+        )
 
         # 3. Operator Approves
         app_stmt = select(ApprovalRecord).where(ApprovalRecord.task_id == task.id)

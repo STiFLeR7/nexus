@@ -53,7 +53,14 @@ class TaskService:
         self.event_gateway = event_gateway
 
     async def create_task(
-        self, title: str, description: str | None = None, priority: int = 2
+        self,
+        title: str,
+        description: str | None = None,
+        priority: int = 2,
+        runtime_type: str | None = "cli",
+        runtime_id: str | None = "gemini",
+        execution_profile: str | None = "default",
+        runtime_policy: str | None = "approved",
     ) -> TaskRecord:
         """Create a new task, insert it into the database, and log the created event."""
         task = TaskRecord(
@@ -61,6 +68,10 @@ class TaskService:
             description=description,
             status=TaskStatus.CREATED.value,
             priority=priority,
+            runtime_type=runtime_type,
+            runtime_id=runtime_id,
+            execution_profile=execution_profile,
+            runtime_policy=runtime_policy,
         )
         self.session.add(task)
         await self.session.flush()

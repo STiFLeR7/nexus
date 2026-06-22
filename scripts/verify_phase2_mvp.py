@@ -86,7 +86,8 @@ async def print_task_details(session, task_id):
     task = res.scalar_one_or_none()
     if task:
         print(
-            f"  [DB TaskRecord] ID: {task.id} | Title: '{task.title}' | Status: '{task.status}' | Priority: {task.priority}"
+            f"  [DB TaskRecord] ID: {task.id} | Title: '{task.title}' | "
+            f"Status: '{task.status}' | Priority: {task.priority}"
         )
     else:
         print(f"  [DB TaskRecord] NOT FOUND for ID {task_id}")
@@ -98,7 +99,8 @@ async def print_approval_details(session, task_id):
     approvals = res.scalars().all()
     for app in approvals:
         print(
-            f"  [DB ApprovalRecord] ID: {app.id} | Status: '{app.status}' | Decided By: {app.decided_by} | Reason: '{app.decision_reason}'"
+            f"  [DB ApprovalRecord] ID: {app.id} | Status: '{app.status}' | "
+            f"Decided By: {app.decided_by} | Reason: '{app.decision_reason}'"
         )
 
 
@@ -108,7 +110,8 @@ async def print_execution_details(session, task_id):
     executions = res.scalars().all()
     for ex in executions:
         print(
-            f"  [DB ExecutionRecord] ID: {ex.id} | Runner: {ex.runner} | Exit Status: '{ex.exit_status}'"
+            f"  [DB ExecutionRecord] ID: {ex.id} | "
+            f"Runner: {ex.runner} | Exit Status: '{ex.exit_status}'"
         )
         logs = ex.logs or ""
         print(f"    - Logs (truncated): {logs[:120]}...")
@@ -118,7 +121,8 @@ async def print_execution_details(session, task_id):
         steps = step_res.scalars().all()
         for st in steps:
             print(
-                f"      [DB Step] Step ID: {st.id} | Status: '{st.status}' | Exit Code: {st.exit_code}"
+                f"      [DB Step] Step ID: {st.id} | "
+                f"Status: '{st.status}' | Exit Code: {st.exit_code}"
             )
 
 
@@ -150,7 +154,11 @@ async def run_happy_path(engine):
 
         openrouter_client = MagicMock(spec=OpenRouterClient)
         openrouter_client.complete = AsyncMock(
-            return_value="**Execution Success Report**\n- Spawned echo command successfully.\n- Completed in 1 step."
+            return_value=(
+                "**Execution Success Report**\n"
+                "- Spawned echo command successfully.\n"
+                "- Completed in 1 step."
+            )
         )
 
         orchestrator = WorkflowOrchestrator(
@@ -174,6 +182,8 @@ async def run_happy_path(engine):
             title="Deploy Auth Microservice",
             description="cmd:echo 'Building docker container...'\ncmd:echo 'Testing endpoints...'",
             priority=3,
+            runtime_type="cli",
+            runtime_id="gemini",
         )
         await root_session.flush()
         await print_task_details(shared_session, task.id)
@@ -209,7 +219,8 @@ async def run_happy_path(engine):
 
         # 3. Approve via OWNER_DISCORD_ID
         print(
-            "\n[Step 4] Operator approves using OWNER_DISCORD_ID (111222333) via Discord click button..."
+            "\n[Step 4] Operator approves using OWNER_DISCORD_ID (111222333) "
+            "via Discord click button..."
         )
         await approval_service.evaluate_approval(
             approval_id=approval.id,
@@ -235,8 +246,12 @@ async def run_happy_path(engine):
 
         # Verify openrouter completion generator
         print(f"  - OpenRouter API complete called: {openrouter_client.complete.called}")
+        summary_msgs = [
+            m for m in discord_service.posted_messages
+            if m['channel'] == 'summaries'
+        ]
         print(
-            f"  - Summary report messages posted: {len([m for m in discord_service.posted_messages if m['channel'] == 'summaries'])}"
+            f"  - Summary report messages posted: {len(summary_msgs)}"
         )
 
         # Print audit logs
@@ -276,7 +291,11 @@ async def run_scenario_a_expiration(engine):
 
         # Create and queue task
         task = await task_service.create_task(
-            title="Temp Task", description="cmd:echo 'Runs'", priority=2
+            title="Temp Task",
+            description="cmd:echo 'Runs'",
+            priority=2,
+            runtime_type="cli",
+            runtime_id="gemini",
         )
         await task_service.change_status(task.id, TaskStatus.QUEUED)
         await root_session.flush()
@@ -292,7 +311,8 @@ async def run_scenario_a_expiration(engine):
 
         # Check expiration sweep
         print(
-            f"  - Prior to expiry check: Task Status: '{task.status}', Approval Status: '{approval.status}'"
+            f"  - Prior to expiry check: Task Status: '{task.status}', "
+            f"Approval Status: '{approval.status}'"
         )
         await approval_service.sweep_expired_approvals()
         await root_session.flush()
@@ -339,7 +359,11 @@ async def run_scenario_b_execution_failure(engine):
 
         # Create task with a failing command
         task = await task_service.create_task(
-            title="Compile Broken Code", description="cmd:exit 42", priority=4
+            title="Compile Broken Code",
+            description="cmd:exit 42",
+            priority=4,
+            runtime_type="cli",
+            runtime_id="gemini",
         )
         await task_service.change_status(task.id, TaskStatus.QUEUED)
         await root_session.flush()
@@ -398,7 +422,11 @@ async def run_scenario_d_restart_recovery(engine_url):
         task_service1 = TaskService(shared_session1, memory_service1, event_gateway1)
 
         task = await task_service1.create_task(
-            title="Recoverable Deploy", description="cmd:echo 'Ready'", priority=3
+            title="Recoverable Deploy",
+            description="cmd:echo 'Ready'",
+            priority=3,
+            runtime_type="cli",
+            runtime_id="gemini",
         )
         await task_service1.change_status(task.id, TaskStatus.QUEUED)
         await root_session1.commit()

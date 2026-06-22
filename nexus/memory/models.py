@@ -41,6 +41,18 @@ class TaskRecord(TimestampMixin, Base):
         index=True,
     )
     priority: Mapped[int] = mapped_column(Integer, nullable=False, default=2)
+    runtime_type: Mapped[str | None] = mapped_column(
+        String(50), nullable=True, default="cli"
+    )
+    runtime_id: Mapped[str | None] = mapped_column(
+        String(50), nullable=True, default="gemini"
+    )
+    execution_profile: Mapped[str | None] = mapped_column(
+        String(50), nullable=True, default="default"
+    )
+    runtime_policy: Mapped[str | None] = mapped_column(
+        String(100), nullable=True, default="approved"
+    )
 
     # Relationships
     approvals: Mapped[list[ApprovalRecord]] = relationship(

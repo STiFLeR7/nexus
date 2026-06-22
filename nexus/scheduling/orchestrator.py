@@ -126,21 +126,17 @@ class WorkflowOrchestrator:
                 task_res = await session.execute(task_stmt)
                 task = task_res.scalar_one()
 
-                # Parse mock command or read from task description
-                command = "echo 'Hello from Nexus Control Plane!'"
-                if task.description and task.description.startswith("cmd:"):
-                    command = task.description[4:].strip()
-                elif task.description and task.description.startswith("goal:"):
-                    command = task.description[5:].strip()
+                # Determine runner and command explicitly from task columns
+                runner = task.runtime_id or "gemini"
 
-                # Determine runner (Phase 3 defaults to gemini, check description for overrides)
-                runner = "gemini"
-                if task.description and "claude" in task.description.lower():
-                    runner = "claude_code"
-                elif task.description and (
-                    "hermes" in task.description.lower() or task.description.startswith("goal:")
-                ):
-                    runner = "hermes"
+                command = "echo 'Hello from Nexus Control Plane!'"
+                if task.description:
+                    if task.description.startswith("cmd:"):
+                        command = task.description[4:].strip()
+                    elif task.description.startswith("goal:"):
+                        command = task.description[5:].strip()
+                    else:
+                        command = task.description.strip()
 
                 execution = await execution_service.start_execution(task_id, runner=runner)
                 execution_id = execution.id
