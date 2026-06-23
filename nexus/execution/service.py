@@ -67,7 +67,7 @@ class ExecutionService:
         await self.session.flush()
 
         # Calculate and log execution start latency from approval decision (AP-317)
-        if approval and approval.decided_at:
+        if approval and approval.decided_at and execution.started_at:
             decided_at = approval.decided_at.replace(tzinfo=None)
             started_at = execution.started_at.replace(tzinfo=None)
             latency = (started_at - decided_at).total_seconds() * 1000.0

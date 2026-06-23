@@ -14,9 +14,9 @@ class RuntimeRegistry:
     def __init__(self) -> None:
         self._registry: dict[str, type[BaseRuntimeAdapter]] = {}
 
-    def register(self, runtime_id: str):
+    def register(self, runtime_id: str) -> Any:
         """Decorator to register a runtime adapter class."""
-        def decorator(cls: type[BaseRuntimeAdapter]):
+        def decorator(cls: type[BaseRuntimeAdapter]) -> type[BaseRuntimeAdapter]:
             self._registry[runtime_id.lower()] = cls
             return cls
         return decorator
@@ -47,15 +47,19 @@ def get_runtime_adapter(
 ) -> BaseRuntimeAdapter:
     """Resolve and instantiate the correct execution adapter by runner name using the registry."""
     # Import modules to trigger registration decorators
+    from typing import cast
+
     from nexus.execution.runners.claude import ClaudeRuntimeAdapter  # noqa: F401
     from nexus.execution.runners.gemini import GeminiRuntimeAdapter  # noqa: F401
     from nexus.execution.runners.hermes import HermesRuntimeAdapter  # noqa: F401
-
-    cls = runtime_registry.get_adapter_cls(runner_name)
-    return cls(
-        db_session=db_session,
-        execution_id=execution_id,
-        event_gateway=event_gateway,
-        openrouter_client=openrouter_client,
-        settings=settings,
+    cls: Any = runtime_registry.get_adapter_cls(runner_name)
+    return cast(
+        BaseRuntimeAdapter,
+        cls(
+            db_session=db_session,
+            execution_id=execution_id,
+            event_gateway=event_gateway,
+            openrouter_client=openrouter_client,
+            settings=settings,
+        ),
     )

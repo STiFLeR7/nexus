@@ -19,13 +19,12 @@ from fastapi import APIRouter, FastAPI, Request, Response, status
 from nexus import __version__
 from nexus.communication.discord import DiscordService, NexusBot, set_bot
 from nexus.config import NexusSettings, get_settings
+from nexus.core.metrics import run_metrics_flush_loop
 from nexus.database import Base, async_session_factory, create_engine
 from nexus.gateway import EventGateway, publish_outbox_loop
 from nexus.gateway.communication_outbox import run_communication_outbox_loop
-from nexus.core.metrics import run_metrics_flush_loop
 from nexus.intelligence import OpenRouterClient
 from nexus.logging_config import setup_logging
-
 from nexus.memory.schemas import HealthResponse
 from nexus.scheduling import WorkflowOrchestrator
 
@@ -103,6 +102,8 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
     _state.discord_bot = discord_bot
     set_bot(discord_bot)
     discord_service = DiscordService(discord_bot)
+    from nexus.communication.email.service import EmailService
+    email_service = EmailService(settings)
 
     # Boot workflow orchestrator
     orchestrator = WorkflowOrchestrator(

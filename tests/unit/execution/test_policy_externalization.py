@@ -162,7 +162,7 @@ async def test_hierarchy_concurrency_limits_tightening(db_session: AsyncSession)
 
     # Act & Assert: since override limit is 1, and 1 execution is active, next run must be blocked
     with patch("subprocess.run", return_value=MagicMock(returncode=0, stdout="main\n")):
-        with pytest.raises(RepositoryGovernanceError, match="Execution limit exceeded.*limit: 1"):
+        with pytest.raises(RepositoryGovernanceError, match=r"Execution limit exceeded.*limit: 1"):
             await gov.validate_execution(
                 task_id=task_id,
                 working_dir=".",
@@ -209,7 +209,7 @@ async def test_hierarchy_concurrency_limits_weakening_ignored(db_session: AsyncS
     await db_session.flush()
 
     # Seed 3 active executions
-    for i in range(3):
+    for _i in range(3):
         exec_rec = ExecutionRecord(
             id=uuid.uuid4(),
             task_id=task_id,
@@ -223,7 +223,7 @@ async def test_hierarchy_concurrency_limits_weakening_ignored(db_session: AsyncS
 
     # Act & Assert: since global limit is 3, validation must reject even though repository requested 10
     with patch("subprocess.run", return_value=MagicMock(returncode=0, stdout="main\n")):
-        with pytest.raises(RepositoryGovernanceError, match="Execution limit exceeded.*limit: 3"):
+        with pytest.raises(RepositoryGovernanceError, match=r"Execution limit exceeded.*limit: 3"):
             await gov.validate_execution(
                 task_id=task_id,
                 working_dir=".",

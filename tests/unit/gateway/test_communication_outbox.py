@@ -15,7 +15,6 @@ from nexus.communication.email.service import EmailService
 from nexus.gateway.communication_outbox import (
     lease_outbox_items,
     process_outbox_item,
-    run_communication_outbox_loop,
 )
 from nexus.memory.models import AuditLogRecord, BriefingRecord, SystemOutboxRecord
 
@@ -73,7 +72,7 @@ async def test_outbox_processing_success(
     # Create session factory
     class MockEngine:
         pass
-    engine = MockEngine()
+    MockEngine()
     session_maker = async_sessionmaker(db_session.bind, expire_on_commit=False)
 
     # Lease

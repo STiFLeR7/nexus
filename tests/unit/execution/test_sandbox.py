@@ -10,7 +10,6 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from nexus.config import NexusSettings, SandboxConfig
-from nexus.core.types import EventType
 from nexus.execution.sandbox import (
     LocalSandboxProvider,
     MockSandboxProvider,
@@ -63,8 +62,8 @@ async def test_mock_sandbox_success_execution(db_session: AsyncSession) -> None:
         timeout=10,
         correlation_id=correlation_id,
     )
-    
-    stdout, stderr = await process.communicate()
+
+    stdout, _stderr = await process.communicate()
     assert b"Mock sandbox run success" in stdout
     assert process.returncode == 0
 
@@ -72,7 +71,7 @@ async def test_mock_sandbox_success_execution(db_session: AsyncSession) -> None:
     stmt = select(AuditLogRecord).where(AuditLogRecord.correlation_id == correlation_id)
     res = await db_session.execute(stmt)
     audits = res.scalars().all()
-    
+
     # We expect: sandbox.created, sandbox.started, sandbox.terminated
     event_types = [a.event_type for a in audits]
     assert "sandbox.created" in event_types
@@ -94,8 +93,8 @@ async def test_mock_sandbox_failure_execution(db_session: AsyncSession) -> None:
         timeout=10,
         correlation_id=correlation_id,
     )
-    
-    stdout, stderr = await process.communicate()
+
+    _stdout, stderr = await process.communicate()
     assert b"Segmentation fault" in stderr
     assert process.returncode == 139
 
@@ -103,7 +102,7 @@ async def test_mock_sandbox_failure_execution(db_session: AsyncSession) -> None:
     stmt = select(AuditLogRecord).where(AuditLogRecord.correlation_id == correlation_id)
     res = await db_session.execute(stmt)
     audits = res.scalars().all()
-    
+
     event_types = [a.event_type for a in audits]
     assert "sandbox.failure" in event_types
 
@@ -122,8 +121,8 @@ async def test_mock_sandbox_timeout_execution(db_session: AsyncSession) -> None:
         timeout=1,
         correlation_id=correlation_id,
     )
-    
-    stdout, stderr = await process.communicate()
+
+    _stdout, stderr = await process.communicate()
     assert b"Timeout" in stderr
     assert process.returncode == -1
 
@@ -131,7 +130,7 @@ async def test_mock_sandbox_timeout_execution(db_session: AsyncSession) -> None:
     stmt = select(AuditLogRecord).where(AuditLogRecord.correlation_id == correlation_id)
     res = await db_session.execute(stmt)
     audits = res.scalars().all()
-    
+
     event_types = [a.event_type for a in audits]
     assert "sandbox.timeout" in event_types
 
@@ -149,7 +148,7 @@ async def test_docker_sandbox_command_construction(db_session: AsyncSession) -> 
         filesystem_policy="readonly",
         image="custom-runner:test",
     )
-    
+
     manager = SandboxManager(db_session, settings=settings)
 
     mock_process = AsyncMock()

@@ -7,7 +7,7 @@ from datetime import UTC, datetime, timedelta
 
 import pytest
 from sqlalchemy import select
-from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from nexus import __version__
 from nexus.core.metrics import (
@@ -111,7 +111,7 @@ async def test_metrics_hourly_aggregation(db_session: AsyncSession) -> None:
 async def test_metrics_retention_purging(db_session: AsyncSession) -> None:
     """Verify that raw metrics >7 days and aggregates >90 days are automatically purged."""
     now = datetime.now(UTC)
-    
+
     # 8 days old raw metric (should be deleted)
     old_raw = SystemMetricRawRecord(
         id=uuid.uuid4(),
@@ -219,7 +219,7 @@ async def test_historical_metrics_queries(db_session: AsyncSession) -> None:
 async def test_version_comparison_telemetry(db_session: AsyncSession) -> None:
     """Verify compare_metric_versions aggregates values for release comparison scopes."""
     now = datetime.now(UTC)
-    
+
     # Version A
     db_session.add(SystemMetricAggregateRecord(
         id=uuid.uuid4(),
@@ -247,7 +247,7 @@ async def test_version_comparison_telemetry(db_session: AsyncSession) -> None:
         measurement_window="hourly",
         aggregated_at=now - timedelta(hours=2),
     ))
-    
+
     await db_session.commit()
 
     comparison = await compare_metric_versions(
@@ -258,7 +258,7 @@ async def test_version_comparison_telemetry(db_session: AsyncSession) -> None:
     assert comparison["version_a"]["release_version"] == "v1_candidate_a"
     assert comparison["version_a"]["avg"] == 25.0
     assert comparison["version_a"]["count"] == 10
-    
+
     assert comparison["version_b"]["release_version"] == "v1_candidate_b"
     assert comparison["version_b"]["avg"] == 18.0
     assert comparison["version_b"]["count"] == 12

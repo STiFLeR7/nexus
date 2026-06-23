@@ -3,25 +3,20 @@
 from __future__ import annotations
 
 import uuid
-from datetime import datetime, timezone, timedelta
-from unittest.mock import AsyncMock, MagicMock, patch
+from datetime import UTC, datetime
+from unittest.mock import AsyncMock, MagicMock
 
 import pytest
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from nexus.core.events import NexusEvent
-from nexus.core.types import EventType
 from nexus.communication.discord.service import DiscordService
 from nexus.communication.email.service import EmailService
 from nexus.intelligence.briefing import BriefingService, BriefingType
 from nexus.memory.models import (
     BriefingRecord,
-    TaskRecord,
-    ApprovalRecord,
-    ExecutionRecord,
     ResearchFindingRecord,
-    AuditLogRecord,
+    TaskRecord,
     WorkflowCheckpointRecord,
 )
 from nexus.memory.service import MemoryService
@@ -69,7 +64,7 @@ async def test_briefing_generation_successful_run(
         summary="Summarized GPT5 specifications.",
         tags=["specs"],
         importance_score=5,
-        discovered_at=datetime.now(timezone.utc),
+        discovered_at=datetime.now(UTC),
     )
     db_session.add(finding)
     await db_session.flush()
@@ -184,7 +179,7 @@ async def test_briefing_delivery_recovery_resume(
     briefing_rec = BriefingRecord(
         id=briefing_id,
         briefing_type="morning",
-        generated_at=datetime.now(timezone.utc),
+        generated_at=datetime.now(UTC),
         delivery_channels=["memory"],
         content_hash="mock_hash_123",
         finding_count=0,

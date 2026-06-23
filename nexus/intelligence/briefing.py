@@ -20,6 +20,7 @@ from nexus.core.events import NexusEvent
 from nexus.core.health import get_health_reason, is_healthy
 from nexus.core.metrics import get_metrics_summary
 from nexus.core.types import EventType
+from nexus.gateway.communication_outbox import flush_outbox_synchronously
 from nexus.memory.models import (
     ApprovalRecord,
     AuditLogRecord,
@@ -27,11 +28,9 @@ from nexus.memory.models import (
     ExecutionRecord,
     KnowledgeItemRecord,
     ResearchFindingRecord,
-    TaskRecord,
     SystemOutboxRecord,
+    TaskRecord,
 )
-from nexus.gateway.communication_outbox import flush_outbox_synchronously
-
 
 if TYPE_CHECKING:
     from sqlalchemy.ext.asyncio import AsyncSession
@@ -208,7 +207,7 @@ class BriefingService:
             )
             # Re-fetch briefing record status and delivered channels
             await self.session.refresh(briefing_rec)
-            delivered = briefing_rec.delivery_channels
+            delivered = briefing_rec.delivery_channels or []
         else:
             briefing_rec.delivery_channels = delivered
             briefing_rec.status = "pending"

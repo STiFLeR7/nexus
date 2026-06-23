@@ -5,7 +5,8 @@ from __future__ import annotations
 import abc
 import asyncio
 import os
-from typing import Any, Tuple
+from typing import Any
+
 from pydantic import BaseModel
 
 
@@ -31,7 +32,7 @@ class SandboxProcess:
         self._stderr: bytes = b""
         self._completed = False
 
-    async def communicate(self) -> Tuple[bytes, bytes]:
+    async def communicate(self) -> tuple[bytes, bytes]:
         """Await process completion and return stdout/stderr logs."""
         if not self._completed:
             stdout, stderr, exit_code = await self.provider.wait_and_capture(self.pid)
@@ -44,7 +45,7 @@ class SandboxProcess:
     def terminate(self) -> None:
         """Abort execution by killing the running container/process."""
         # Non-blocking wrapper for compatibility with sync calls in adapters
-        asyncio.create_task(self.provider.terminate(self.pid))
+        self._terminate_task = asyncio.create_task(self.provider.terminate(self.pid))
 
     async def wait(self) -> int:
         """Wait for completion and return exit code."""
@@ -68,7 +69,7 @@ class SandboxProvider(abc.ABC):
         pass
 
     @abc.abstractmethod
-    async def wait_and_capture(self, process_id: str) -> Tuple[bytes, bytes, int]:
+    async def wait_and_capture(self, process_id: str) -> tuple[bytes, bytes, int]:
         """Await execution completion and capture outputs."""
         pass
 
@@ -101,7 +102,7 @@ class LocalSandboxProvider(SandboxProvider):
         self._processes[sandbox_id] = proc
         return SandboxProcess(sandbox_id, self)
 
-    async def wait_and_capture(self, process_id: str) -> Tuple[bytes, bytes, int]:
+    async def wait_and_capture(self, process_id: str) -> tuple[bytes, bytes, int]:
         proc = self._processes.get(process_id)
         if not proc:
             return b"", b"Process not found", -1
@@ -137,29 +138,29 @@ class DockerSandboxProvider(SandboxProvider):
         sandbox_id: str,
     ) -> SandboxProcess:
         container_name = f"nexus_sandbox_{sandbox_id}"
-        
+
         args = ["run", "--name", container_name, "--rm", "-i"]
-        
+
         # 1. Resource Limits (CPU, Memory)
         if policy.cpu_limit:
             args.extend(["--cpus", str(policy.cpu_limit)])
         if policy.memory_limit:
             args.extend(["--memory", policy.memory_limit])
-            
+
         # 2. Network Isolation
         if policy.network_policy:
             args.extend(["--network", policy.network_policy])
-            
+
         # 3. Filesystem Isolation (Restricted workspace volume mounting)
         host_path = os.path.abspath(cwd).replace("\\", "/")
         mount_option = f"{host_path}:/workspace"
         if policy.filesystem_policy == "readonly":
             mount_option += ":ro"
         args.extend(["-v", mount_option, "-w", "/workspace"])
-        
+
         # 4. Image definition
         args.append(policy.image)
-        
+
         # 5. Shell Command execution
         args.extend(["sh", "-c", command])
 
@@ -173,7 +174,7 @@ class DockerSandboxProvider(SandboxProvider):
         self._processes[sandbox_id] = proc
         return SandboxProcess(sandbox_id, self)
 
-    async def wait_and_capture(self, process_id: str) -> Tuple[bytes, bytes, int]:
+    async def wait_and_capture(self, process_id: str) -> tuple[bytes, bytes, int]:
         proc = self._processes.get(process_id)
         if not proc:
             return b"", b"Sandbox container not found", -1
@@ -194,7 +195,7 @@ class DockerSandboxProvider(SandboxProvider):
             await kill_proc.wait()
         except Exception:
             pass
-            
+
         proc = self._processes.get(process_id)
         if proc:
             try:
@@ -227,13 +228,13 @@ class MockSandboxProvider(SandboxProvider):
         }
         return SandboxProcess(sandbox_id, self)
 
-    async def wait_and_capture(self, process_id: str) -> Tuple[bytes, bytes, int]:
+    async def wait_and_capture(self, process_id: str) -> tuple[bytes, bytes, int]:
         run = self._runs.get(process_id)
         if not run:
             return b"", b"Mock sandbox run not found", -1
-            
+
         cmd = run["command"]
-        
+
         # Simulating behaviors based on keywords in commands
         if "timeout" in cmd.lower():
             # Simulate a timeout limit hit

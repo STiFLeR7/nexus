@@ -66,7 +66,7 @@ class PolicyService:
                 "PolicyRegistryUnavailable",
                 {"policy_key": key, "error": str(e)},
             )
-            raise RepositoryGovernanceError(f"Policy registry unavailable: {e!s}")
+            raise RepositoryGovernanceError(f"Policy registry unavailable: {e!s}") from e
 
         if policy is not None:
             val = policy.policy_value
@@ -218,11 +218,10 @@ class PolicyService:
             elif key == "default_concurrency_limit":
                 if not isinstance(value, int) or value <= 0:
                     raise TypeError("default_concurrency_limit must be a positive integer")
-            elif key == "required_runtime_policy":
-                if not isinstance(value, str):
-                    raise TypeError("required_runtime_policy must be a string")
+            elif key == "required_runtime_policy" and not isinstance(value, str):
+                raise TypeError("required_runtime_policy must be a string")
         except Exception as e:
-            raise PolicyValidationError(f"Schema validation failed for policy '{key}': {e!s}")
+            raise PolicyValidationError(f"Schema validation failed for policy '{key}': {e!s}") from e
 
     async def seed_default_policies(self) -> None:
         """Verify if system policies are seeded, and perform idempotent first-boot seeding.

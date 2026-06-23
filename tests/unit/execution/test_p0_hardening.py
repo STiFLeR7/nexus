@@ -54,7 +54,7 @@ async def test_health_startup_git_validation_failure(db_session: AsyncSession) -
     # Mock Git missing
     with patch("subprocess.run", side_effect=FileNotFoundError("git not found")):
         # Pass session factory mock or real to test audit write
-        session_factory = MagicMock()
+        MagicMock()
 
         # We can test health state directly
         is_ok = await health.run_git_startup_validation()

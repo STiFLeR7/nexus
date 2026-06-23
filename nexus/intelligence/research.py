@@ -240,7 +240,7 @@ class ResearchService:
         logger.info("starting_research_run", run_id=str(run_id))
 
         # Initialize Checkpoint state
-        checkpoint_state = {
+        checkpoint_state: dict[str, Any] = {
             "run_id": str(run_id),
             "step": "initialized",
             "findings": [],

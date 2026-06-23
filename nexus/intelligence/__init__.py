@@ -8,11 +8,11 @@ from nexus.intelligence.research import ResearchProvider, ResearchService, RSSPr
 from nexus.intelligence.summary import SummaryEngine
 
 __all__ = [
+    "BriefingService",
+    "BriefingType",
     "OpenRouterClient",
     "RSSProvider",
     "ResearchProvider",
     "ResearchService",
     "SummaryEngine",
-    "BriefingService",
-    "BriefingType",
 ]

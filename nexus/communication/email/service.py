@@ -46,7 +46,7 @@ class EmailService:
 
         # Determine TLS / SSL configurations
         use_tls = getattr(email_cfg, "use_tls", True)
-        
+
         # Connect and send
         try:
             logger.info(
@@ -54,7 +54,7 @@ class EmailService:
                 host=email_cfg.smtp_host,
                 port=email_cfg.smtp_port,
             )
-            
+
             # Connect via SMTP
             # If use_tls is True and port is 465, use direct SMTP_SSL, otherwise use STARTTLS on connect
             if use_tls and email_cfg.smtp_port == 465:
@@ -74,7 +74,7 @@ class EmailService:
 
             await smtp_client.send_message(msg)
             await smtp_client.quit()
-            
+
             logger.info("email_sent_successfully", subject=subject, recipient=email_cfg.to_address)
         except Exception as e:
             logger.error("email_delivery_failed", host=email_cfg.smtp_host, error=str(e))

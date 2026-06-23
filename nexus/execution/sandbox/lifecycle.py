@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import asyncio
+
 import structlog
 
 logger = structlog.get_logger("nexus.execution.sandbox.lifecycle")
@@ -29,10 +30,10 @@ class SandboxLifecycleService:
             if proc.returncode != 0:
                 logger.debug("docker_ps_failed", error=stderr.decode().strip())
                 return 0
-                
+
             names = [n.strip() for n in stdout.decode().splitlines() if n.strip()]
             cleaned_count = 0
-            
+
             for name in names:
                 if name.startswith("nexus_sandbox_"):
                     logger.warn("terminating_orphaned_container", container_name=name)
@@ -45,7 +46,7 @@ class SandboxLifecycleService:
                     await rm_proc.wait()
                     cleaned_count += 1
             return cleaned_count
-            
+
         except Exception as e:
             # Docker might not be installed or daemon might be offline — fail-safe
             logger.debug("sandbox_orphan_cleanup_skipped", reason=str(e))

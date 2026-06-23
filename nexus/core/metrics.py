@@ -5,6 +5,7 @@ Provides simple in-memory metrics aggregation and periodic database flushes.
 
 from __future__ import annotations
 
+import asyncio
 import collections
 import time
 import uuid
@@ -12,11 +13,12 @@ from datetime import UTC, datetime, timedelta
 from typing import Any
 
 import structlog
-from sqlalchemy import insert, select, delete, func
+from sqlalchemy import delete, func, insert, select
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from nexus import __version__
 from nexus.database import get_session
-from nexus.memory.models import SystemMetricRawRecord, SystemMetricAggregateRecord
+from nexus.memory.models import SystemMetricAggregateRecord, SystemMetricRawRecord
 
 logger = structlog.get_logger("nexus.core.metrics")
 

@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import uuid
 from typing import Any
+
 import structlog
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -120,7 +121,7 @@ class SandboxManager:
             original_communicate = process.communicate
 
             # Intercept communicate to record audit terminations or failures
-            async def wrapped_communicate() -> Tuple[bytes, bytes]:
+            async def wrapped_communicate() -> tuple[bytes, bytes]:
                 try:
                     stdout, stderr = await original_communicate()
                     err_str = stderr.decode("utf-8", errors="replace")
@@ -165,7 +166,7 @@ class SandboxManager:
                     )
                     raise ex
 
-            process.communicate = wrapped_communicate
+            process.communicate = wrapped_communicate  # type: ignore[method-assign]
             return process
 
         except Exception as spawn_err:

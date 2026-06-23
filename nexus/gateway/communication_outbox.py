@@ -86,7 +86,7 @@ async def lease_outbox_items(
         .where(
             (
                 SystemOutboxRecord.status.in_(["pending", "retrying"])
-                & ((SystemOutboxRecord.next_retry_at == None) | (SystemOutboxRecord.next_retry_at <= now))
+                & ((SystemOutboxRecord.next_retry_at.is_(None)) | (SystemOutboxRecord.next_retry_at <= now))
             )
             | (
                 (SystemOutboxRecord.status == "processing")
@@ -300,8 +300,9 @@ async def flush_outbox_synchronously(
             brief_res = await session.execute(brief_stmt)
             briefing = brief_res.scalar_one_or_none()
             if briefing:
+                current_channels = briefing.delivery_channels or []
                 briefing.delivery_channels = list(
-                    set(briefing.delivery_channels + delivered_channels)
+                    set(current_channels + delivered_channels)
                 )
                 any_failed = any(r.status == "dead_letter" for r in records)
                 if any_failed:

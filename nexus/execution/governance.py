@@ -262,13 +262,12 @@ class GovernanceManager:
         # Get concurrency retry configurations dynamically from policy service
         try:
             retry_limit = await policy_service.get_policy("concurrency_retry_count")
-            retry_timeout = await policy_service.get_policy("concurrency_retry_timeout")
+            await policy_service.get_policy("concurrency_retry_timeout")
         except Exception:
             retry_limit = 5
-            retry_timeout = 5.0
 
         # Helper to ensure the semaphore row exists
-        async def ensure_semaphore():
+        async def ensure_semaphore() -> None:
             try:
                 async with self.session.begin_nested():
                     stmt = select(GovernanceSemaphoreRecord).where(GovernanceSemaphoreRecord.name == sem_name)
@@ -447,7 +446,7 @@ class GovernanceManager:
                     "reason": "TimeoutExpired",
                 },
             )
-            raise RepositoryGovernanceError(error_msg)
+            raise RepositoryGovernanceError(error_msg) from e
         except Exception as e:
             error_msg = f"Git branch check raised exception: {e!s}"
             # Release semaphore
@@ -468,7 +467,7 @@ class GovernanceManager:
                     "reason": "ExecutionError",
                 },
             )
-            raise RepositoryGovernanceError(error_msg)
+            raise RepositoryGovernanceError(error_msg) from e
 
         if active_branch:
             # Handle detached HEAD state
@@ -494,9 +493,8 @@ class GovernanceManager:
                         is_allowed = True
 
                 is_blocked = False
-                if matching_repo.blocked_branches:
-                    if "HEAD" in matching_repo.blocked_branches or (commit_hash and commit_hash in matching_repo.blocked_branches):
-                        is_blocked = True
+                if matching_repo.blocked_branches and ("HEAD" in matching_repo.blocked_branches or (commit_hash and commit_hash in matching_repo.blocked_branches)):
+                    is_blocked = True
 
                 if is_blocked or not is_allowed:
                     # Release semaphore

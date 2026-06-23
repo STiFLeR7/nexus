@@ -39,7 +39,7 @@ class GeminiRuntimeAdapter(CLIRuntimeAdapter):
         self.event_gateway = event_gateway
         self.openrouter_client = openrouter_client
         self.settings = settings
-        self.active_process: asyncio.subprocess.Process | None = None
+        self.active_process: Any = None
         self.current_step_id: Any = None
         self.stdout_log = ""
         self.stderr_log = ""
