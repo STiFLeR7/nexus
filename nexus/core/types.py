@@ -42,6 +42,17 @@ class ExecutionStatus(enum.StrEnum):
     CANCELLED = "cancelled"
 
 
+class OutboxStatus(enum.StrEnum):
+    """Lifecycle states for an outbox message."""
+
+    PENDING = "pending"
+    PROCESSING = "processing"
+    SENT = "sent"
+    RETRYING = "retrying"
+    DEAD_LETTER = "dead_letter"
+
+
+
 class EventType(enum.StrEnum):
     """Canonical event types emitted throughout the system."""
 
@@ -82,6 +93,13 @@ class EventType(enum.StrEnum):
     # Workflow
     WORKFLOW_CHECKPOINTED = "workflow.checkpointed"
     WORKFLOW_RESUMED = "workflow.resumed"
+
+    # Sandbox lifecycle
+    SANDBOX_CREATED = "sandbox.created"
+    SANDBOX_STARTED = "sandbox.started"
+    SANDBOX_TERMINATED = "sandbox.terminated"
+    SANDBOX_TIMEOUT = "sandbox.timeout"
+    SANDBOX_FAILURE = "sandbox.failure"
 
 
 class AgentType(enum.StrEnum):

@@ -106,12 +106,14 @@ class GeminiRuntimeAdapter(CLIRuntimeAdapter):
         await self.session.flush()
 
         try:
-            # Spawn shell command
-            self.active_process = await asyncio.create_subprocess_shell(
-                command,
-                stdout=asyncio.subprocess.PIPE,
-                stderr=asyncio.subprocess.PIPE,
+            # Spawn shell command via SandboxManager
+            from nexus.execution.sandbox.manager import SandboxManager
+            sandbox_mgr = SandboxManager(self.session, self.settings)
+            self.active_process = await sandbox_mgr.execute(
+                command=command,
                 cwd=cwd,
+                timeout=timeout,
+                correlation_id=self.execution_id,
             )
             step.pid = self.active_process.pid
             await self.session.flush()

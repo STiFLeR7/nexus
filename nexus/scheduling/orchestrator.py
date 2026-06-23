@@ -102,6 +102,19 @@ class WorkflowOrchestrator:
 
     async def run_execution_flow(self, task_id: uuid.UUID) -> None:
         """Run terminal commands inside a subprocess and streams output to Discord."""
+        from nexus.core import health
+        if not health.is_healthy():
+            logger.error("orchestrator_execution_blocked_unhealthy_control_plane", task_id=str(task_id), reason=health.get_health_reason())
+            async with get_session(self.session_factory) as session:
+                from nexus.memory.models import TaskRecord
+                task_stmt = select(TaskRecord).where(TaskRecord.id == task_id)
+                res = await session.execute(task_stmt)
+                t = res.scalar_one_or_none()
+                if t:
+                    t.status = TaskStatus.FAILED.value
+                    await session.flush()
+            return
+
         logger.info("orchestrator_starting_execution_pipeline", task_id=str(task_id))
         try:
             # 1. Start parent ExecutionRecord

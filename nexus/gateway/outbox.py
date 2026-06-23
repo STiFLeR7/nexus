@@ -194,7 +194,17 @@ async def publish_outbox_loop(
                         record.status = "sent"
 
                 if records:
+                    import time
+                    flush_start = time.perf_counter()
                     await session.flush()
+                    flush_duration = (time.perf_counter() - flush_start) * 1000.0
+                    from nexus.core.metrics import record_metric
+                    record_metric("event_flush_duration_ms", flush_duration)
+                    logger.info(
+                        "outbox_events_flushed",
+                        count=len(records),
+                        event_flush_duration_ms=round(flush_duration, 2),
+                    )
 
         except Exception as e:
             logger.error("outbox_publisher_loop_failed", error=str(e))

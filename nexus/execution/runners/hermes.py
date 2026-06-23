@@ -108,10 +108,19 @@ class HermesRuntimeAdapter(AgentRuntimeAdapter):
         elif name == "execute_command":
             cmd = arguments.get("command", "")
             try:
-                proc = await asyncio.create_subprocess_shell(
-                    cmd,
-                    stdout=asyncio.subprocess.PIPE,
-                    stderr=asyncio.subprocess.PIPE,
+                # Resolve repository path
+                stmt = select(ExecutionRecord).where(ExecutionRecord.id == self.execution_id)
+                res = await self.session.execute(stmt)
+                exec_record = res.scalar_one()
+                cwd = exec_record.repository or "."
+
+                from nexus.execution.sandbox.manager import SandboxManager
+                sandbox_mgr = SandboxManager(self.session, self.settings)
+                proc = await sandbox_mgr.execute(
+                    command=cmd,
+                    cwd=cwd,
+                    timeout=300,
+                    correlation_id=self.execution_id,
                 )
                 stdout, stderr = await proc.communicate()
                 out = stdout.decode("utf-8", errors="replace")

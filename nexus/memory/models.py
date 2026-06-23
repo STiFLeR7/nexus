@@ -216,6 +216,56 @@ class ResearchItemRecord(TimestampMixin, Base):
 
 
 # ---------------------------------------------------------------------------
+# Research findings (AP-306)
+# ---------------------------------------------------------------------------
+
+
+class ResearchFindingRecord(TimestampMixin, Base):
+    """A formal research finding record containing structured discovery metadata (AP-306)."""
+
+    __tablename__ = "research_findings"
+
+    source: Mapped[str | None] = mapped_column(String(500), nullable=True)
+    title: Mapped[str] = mapped_column(String(500), nullable=False)
+    url: Mapped[str | None] = mapped_column(String(1000), nullable=True)
+    summary: Mapped[str | None] = mapped_column(Text, nullable=True)
+    tags: Mapped[list | None] = mapped_column(JSON, nullable=True)  # type: ignore[type-arg]
+    importance_score: Mapped[int | None] = mapped_column(Integer, nullable=True, default=0)
+    discovered_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True),
+        nullable=False,
+        default=datetime.utcnow,
+    )
+    published_at: Mapped[datetime | None] = mapped_column(
+        DateTime(timezone=True),
+        nullable=True,
+    )
+
+
+# ---------------------------------------------------------------------------
+# Briefings (AP-307)
+# ---------------------------------------------------------------------------
+
+
+class BriefingRecord(TimestampMixin, Base):
+    """A formal briefing record containing generated operational digests (AP-307)."""
+
+    __tablename__ = "briefings"
+
+    briefing_type: Mapped[str] = mapped_column(String(100), nullable=False)
+    generated_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True),
+        nullable=False,
+        default=datetime.utcnow,
+    )
+    delivery_channels: Mapped[list | None] = mapped_column(JSON, nullable=True)  # type: ignore[type-arg]
+    content_hash: Mapped[str] = mapped_column(String(64), nullable=False)
+    finding_count: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
+    status: Mapped[str] = mapped_column(String(50), nullable=False)
+    summary: Mapped[str] = mapped_column(Text, nullable=False)
+
+
+# ---------------------------------------------------------------------------
 # Knowledge items
 # ---------------------------------------------------------------------------
 
@@ -374,6 +424,68 @@ class SystemEventRecord(AuditMixin, Base):
 
 
 # ---------------------------------------------------------------------------
+# System Outbox (Decoupled Messaging)
+# ---------------------------------------------------------------------------
+
+
+class SystemOutboxRecord(TimestampMixin, Base):
+    """Outbox table for decoupled asynchronous message dispatch."""
+
+    __tablename__ = "system_outbox"
+
+    channel: Mapped[str] = mapped_column(String(50), nullable=False)
+    payload: Mapped[dict] = mapped_column(JSON, nullable=False)  # type: ignore[type-arg]
+    status: Mapped[str] = mapped_column(
+        String(50),
+        nullable=False,
+        default="pending",
+        index=True,
+    )
+    attempt_count: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
+    max_attempts: Mapped[int] = mapped_column(Integer, nullable=False, default=5)
+    next_retry_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+    last_error: Mapped[str | None] = mapped_column(Text, nullable=True)
+    worker_id: Mapped[str | None] = mapped_column(String(200), nullable=True)
+    correlation_id: Mapped[uuid.UUID | None] = mapped_column(nullable=True)
+    source_type: Mapped[str] = mapped_column(String(100), nullable=False)
+    source_id: Mapped[uuid.UUID | None] = mapped_column(nullable=True)
+    delivered_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+
+
+# ---------------------------------------------------------------------------
+# Persistent Telemetry Metrics (AP-502)
+# ---------------------------------------------------------------------------
+
+
+class SystemMetricRawRecord(AuditMixin, Base):
+    """Raw telemetry metric readings (7 days retention)."""
+
+    __tablename__ = "system_metrics_raw"
+
+    metric_name: Mapped[str] = mapped_column(String(100), nullable=False, index=True)
+    metric_value: Mapped[float] = mapped_column(nullable=False)
+    release_version: Mapped[str] = mapped_column(String(50), nullable=False)
+
+
+class SystemMetricAggregateRecord(TimestampMixin, Base):
+    """Aggregated historical performance telemetry (90 days retention)."""
+
+    __tablename__ = "system_metrics_aggregates"
+
+    metric_name: Mapped[str] = mapped_column(String(100), nullable=False, index=True)
+    avg_value: Mapped[float] = mapped_column(nullable=False)
+    max_value: Mapped[float] = mapped_column(nullable=False)
+    min_value: Mapped[float] = mapped_column(nullable=False)
+    entry_count: Mapped[int] = mapped_column(Integer, nullable=False)
+    baseline_version: Mapped[str] = mapped_column(String(50), nullable=False)
+    release_version: Mapped[str] = mapped_column(String(50), nullable=False)
+    measurement_window: Mapped[str] = mapped_column(String(50), nullable=False)  # 'hourly', 'daily'
+    aggregated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False, index=True)
+
+
+
+
+# ---------------------------------------------------------------------------
 # Repository Governance Registry
 # ---------------------------------------------------------------------------
 
@@ -397,6 +509,8 @@ class RepositoryRegistryRecord(TimestampMixin, Base):
     protected_branches: Mapped[Any] = mapped_column(JSON, nullable=True)
     owner: Mapped[str | None] = mapped_column(String(200), nullable=True)
     status: Mapped[str] = mapped_column(String(50), nullable=False, default="active")
+    concurrency_limit_override: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    command_blacklist_additions: Mapped[Any] = mapped_column(JSON, nullable=True)
 
     @property
     def repository_id(self) -> uuid.UUID:
@@ -441,3 +555,45 @@ class ExecutionArtifactRecord(TimestampMixin, Base):
 
     # Relationships
     execution: Mapped[ExecutionRecord] = relationship(back_populates="artifacts")
+
+
+# ---------------------------------------------------------------------------
+# Governance Semaphores
+# ---------------------------------------------------------------------------
+
+
+class GovernanceSemaphoreRecord(TimestampMixin, Base):
+    """Semaphore table for atomic concurrency validation gating."""
+
+    __tablename__ = "governance_semaphores"
+
+    name: Mapped[str] = mapped_column(String(200), unique=True, nullable=False, index=True)
+    is_locked: Mapped[bool] = mapped_column(nullable=False, default=False)
+
+
+# ---------------------------------------------------------------------------
+# System Policies
+# ---------------------------------------------------------------------------
+
+
+class SystemPolicyRecord(TimestampMixin, Base):
+    """Global platform-wide policy settings."""
+
+    __tablename__ = "system_policies"
+
+    policy_key: Mapped[str] = mapped_column(String(100), unique=True, nullable=False, index=True)
+    policy_value: Mapped[Any] = mapped_column(JSON, nullable=False)
+    version: Mapped[int] = mapped_column(Integer, nullable=False, default=1)
+    updated_by: Mapped[str | None] = mapped_column(String(200), nullable=True)
+
+
+class SystemPolicyHistoryRecord(TimestampMixin, Base):
+    """Immutable historical log of all policy modifications for auditability."""
+
+    __tablename__ = "system_policy_history"
+
+    policy_key: Mapped[str] = mapped_column(String(100), nullable=False, index=True)
+    policy_value: Mapped[Any] = mapped_column(JSON, nullable=False)
+    version: Mapped[int] = mapped_column(Integer, nullable=False)
+    updated_by: Mapped[str | None] = mapped_column(String(200), nullable=True)
+    change_type: Mapped[str] = mapped_column(String(50), nullable=False, default="update")

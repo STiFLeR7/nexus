@@ -125,6 +125,22 @@ class ApprovalService:
         approval.decided_by = decided_by
         approval.decision_reason = reason
 
+        # Calculate and log approval latency metric (AP-317)
+        import structlog
+
+        decided_naive = approval.decided_at.replace(tzinfo=None) if approval.decided_at.tzinfo is not None else approval.decided_at
+        requested_naive = approval.requested_at.replace(tzinfo=None) if approval.requested_at.tzinfo is not None else approval.requested_at
+        latency_ms = (decided_naive - requested_naive).total_seconds() * 1000.0
+
+        from nexus.core.metrics import record_metric
+        record_metric("approval_latency_ms", latency_ms)
+        structlog.get_logger("nexus.approvals.service").info(
+            "approval_decided",
+            approval_id=str(approval.id),
+            decision=decision.value,
+            approval_latency_ms=round(latency_ms, 2),
+        )
+
         # Transition parent task depending on decision
         task_stmt = select(TaskRecord).where(TaskRecord.id == approval.task_id).with_for_update()
         task_res = await self.session.execute(task_stmt)

@@ -84,6 +84,8 @@ class ExecutionConfig(BaseModel):
     gemini_timeout: int = 1800
     claude_timeout: int = 2700
     hard_limit: int = 3600
+    concurrency_retry_count: int = 5
+    concurrency_retry_timeout: float = 5.0
 
 
 class LoggingConfig(BaseModel):
@@ -91,6 +93,18 @@ class LoggingConfig(BaseModel):
 
     level: str = "INFO"
     format: str = "json"
+
+
+class SandboxConfig(BaseModel):
+    """Configuration for execution runtime sandbox containment (AP-503)."""
+
+    enabled: bool = False
+    provider: str = "local"  # 'local', 'docker', 'mock'
+    image: str = "python:3.12-slim"
+    cpu_limit: float = 1.0
+    memory_limit: str = "512m"
+    network_policy: str = "none"
+    filesystem_policy: str = "restricted"
 
 
 # ---------------------------------------------------------------------------
@@ -137,6 +151,7 @@ class NexusSettings(BaseSettings):
     database: DatabaseConfig = Field(default_factory=DatabaseConfig)
     execution: ExecutionConfig = Field(default_factory=ExecutionConfig)
     logging: LoggingConfig = Field(default_factory=LoggingConfig)
+    sandbox: SandboxConfig = Field(default_factory=SandboxConfig)
 
     @classmethod
     def from_yaml_and_env(cls, yaml_path: Path | None = None) -> NexusSettings:

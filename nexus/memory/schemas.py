@@ -192,3 +192,73 @@ class ContextFrame(BaseModel):
     thinking_level: int | None = Field(default=None)
     active_tools: list[str] = Field(default_factory=list)
     metadata: dict[str, Any] = Field(default_factory=dict)
+
+
+# ---------------------------------------------------------------------------
+# Research Findings (AP-306)
+# ---------------------------------------------------------------------------
+
+
+class ResearchFindingCreate(BaseModel):
+    """Request body/creation payload for a research finding."""
+
+    source: str | None = Field(default=None, max_length=500)
+    title: str = Field(..., min_length=1, max_length=500)
+    url: str | None = Field(default=None, max_length=1000)
+    summary: str | None = Field(default=None)
+    tags: list[str] | None = Field(default_factory=list)
+    importance_score: int | None = Field(default=0)
+    published_at: datetime | None = Field(default=None)
+
+
+class ResearchFindingResponse(BaseModel):
+    """Response schema for a research finding."""
+
+    id: uuid.UUID
+    source: str | None
+    title: str
+    url: str | None
+    summary: str | None
+    tags: list[str] | None
+    importance_score: int | None
+    discovered_at: datetime
+    published_at: datetime | None
+    created_at: datetime
+    updated_at: datetime
+    is_archived: bool
+
+    model_config = {"from_attributes": True}
+
+
+# ---------------------------------------------------------------------------
+# Briefings (AP-307)
+# ---------------------------------------------------------------------------
+
+
+class BriefingCreate(BaseModel):
+    """Request/creation payload for a briefing record."""
+
+    briefing_type: str = Field(..., min_length=1, max_length=100)
+    delivery_channels: list[str] | None = Field(default_factory=list)
+    content_hash: str = Field(..., max_length=64)
+    finding_count: int = Field(default=0)
+    status: str = Field(default="pending", max_length=50)
+    summary: str = Field(...)
+
+
+class BriefingResponse(BaseModel):
+    """Response schema for a briefing record."""
+
+    id: uuid.UUID
+    briefing_type: str
+    generated_at: datetime
+    delivery_channels: list[str] | None
+    content_hash: str
+    finding_count: int
+    status: str
+    summary: str
+    created_at: datetime
+    updated_at: datetime
+    is_archived: bool
+
+    model_config = {"from_attributes": True}

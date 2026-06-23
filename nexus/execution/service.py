@@ -66,6 +66,20 @@ class ExecutionService:
         self.session.add(execution)
         await self.session.flush()
 
+        # Calculate and log execution start latency from approval decision (AP-317)
+        if approval and approval.decided_at:
+            decided_at = approval.decided_at.replace(tzinfo=None)
+            started_at = execution.started_at.replace(tzinfo=None)
+            latency = (started_at - decided_at).total_seconds() * 1000.0
+            from nexus.core.metrics import record_metric
+            record_metric("execution_start_latency_ms", latency)
+            import structlog
+            structlog.get_logger("nexus.execution.service").info(
+                "execution_started",
+                execution_id=str(execution.id),
+                execution_start_latency_ms=round(latency, 2),
+            )
+
         # Emit ExecutionStarted event
         from nexus.core.events import NexusEvent
         from nexus.core.types import EventType

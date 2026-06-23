@@ -59,6 +59,8 @@ class OpenRouterClient:
                 }
 
                 try:
+                    import time
+                    start_time = time.perf_counter()
                     res = await client.post(
                         f"{self.settings.openrouter.base_url}/chat/completions",
                         json=payload,
@@ -78,7 +80,10 @@ class OpenRouterClient:
                         raise ModelRouterError(f"OpenRouter response contained no choices: {data}")
 
                     content = choices[0].get("message", {}).get("content", "")
-                    logger.info("llm_completion_successful", model=model)
+                    duration = (time.perf_counter() - start_time) * 1000.0
+                    from nexus.core.metrics import record_metric
+                    record_metric("openrouter_latency_ms", duration)
+                    logger.info("llm_completion_successful", model=model, openrouter_latency_ms=round(duration, 2))
                     return str(content)
 
                 except Exception as e:

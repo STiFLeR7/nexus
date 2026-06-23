@@ -153,7 +153,7 @@ def async_session_factory(engine: AsyncEngine) -> async_sessionmaker[AsyncSessio
 async def get_session(
     session_factory: Any,
 ) -> AsyncGenerator[AsyncSession, None]:
-    """Yield a database session with automatic commit / rollback.
+    """Yield a database session with automatic commit / rollback and track transaction durations.
 
     Args:
         session_factory: The session factory to use.
@@ -161,12 +161,32 @@ async def get_session(
     Yields:
         An ``AsyncSession`` that commits on success or rolls back on error.
     """
+    import time
+    start_time = time.perf_counter()
     session = session_factory()
     try:
         yield session
+        commit_start = time.perf_counter()
         await session.commit()
+        commit_duration = (time.perf_counter() - commit_start) * 1000.0
+        tx_duration = (time.perf_counter() - start_time) * 1000.0
+        from nexus.core.metrics import record_metric
+        record_metric("db_write_duration_ms", commit_duration)
+        record_metric("transaction_duration_ms", tx_duration)
+        logger.info(
+            "db_transaction_committed",
+            db_write_duration_ms=round(commit_duration, 2),
+            transaction_duration_ms=round(tx_duration, 2),
+        )
     except Exception:
         await session.rollback()
+        tx_duration = (time.perf_counter() - start_time) * 1000.0
+        from nexus.core.metrics import record_metric
+        record_metric("transaction_duration_ms", tx_duration)
+        logger.warning(
+            "db_transaction_rolled_back",
+            transaction_duration_ms=round(tx_duration, 2),
+        )
         raise
     finally:
         await session.close()
