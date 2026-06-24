@@ -19,6 +19,7 @@ from fastapi import APIRouter, FastAPI, Request, Response, status
 from nexus import __version__
 from nexus.communication.discord import DiscordService, NexusBot, set_bot
 from nexus.config import NexusSettings, get_settings
+from nexus.core.exceptions import ConfigurationError
 from nexus.core.metrics import run_metrics_flush_loop
 from nexus.database import Base, async_session_factory, create_engine
 from nexus.gateway import EventGateway, publish_outbox_loop
@@ -26,7 +27,7 @@ from nexus.gateway.communication_outbox import run_communication_outbox_loop
 from nexus.intelligence import OpenRouterClient
 from nexus.logging_config import setup_logging
 from nexus.memory.schemas import HealthResponse
-from nexus.scheduling import WorkflowOrchestrator
+from nexus.scheduling import WorkflowOrchestrator, build_scheduler
 
 if TYPE_CHECKING:
     from collections.abc import AsyncGenerator
@@ -51,10 +52,34 @@ class _AppState:
     outbox_task: asyncio.Task[Any] | None = None
     comm_outbox_task: asyncio.Task[Any] | None = None
     metrics_flush_task: asyncio.Task[Any] | None = None
+    scheduler: Any = None
 
 
 
 _state = _AppState()
+
+
+# ---------------------------------------------------------------------------
+# Startup safety validation
+# ---------------------------------------------------------------------------
+
+
+def _validate_startup_configuration(settings: NexusSettings) -> None:
+    """Fail-closed startup gate (A-001).
+
+    Refuse to start when no Discord owner IDs are configured. Without owners, approval
+    authorization is disabled (fail-open) and any actor could authorize governed execution. There
+    is intentionally no degraded, warning, or fallback mode — the application must not start.
+
+    Raises:
+        ConfigurationError: if ``settings.discord.owner_ids`` is empty.
+    """
+    if not settings.discord.owner_ids:
+        raise ConfigurationError(
+            "Startup aborted: no Discord owner IDs configured (discord.owner_ids is empty). "
+            "Approval authorization would be disabled (fail-open), which is not permitted. "
+            "Set DISCORD_OWNERS (comma-separated IDs) or discord.owner_ids and restart."
+        )
 
 
 # ---------------------------------------------------------------------------
@@ -70,6 +95,13 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
     # --- Startup ---
     setup_logging(level=settings.logging.level, log_format=settings.logging.format)
     logger.info("nexus_starting", version=__version__, environment=settings.environment)
+
+    # A-001: fail-closed safety gate — refuse to start without configured owners.
+    try:
+        _validate_startup_configuration(settings)
+    except ConfigurationError as exc:
+        logger.critical("startup_validation_failed", error=str(exc))
+        raise
 
     _state.engine = create_engine(
         database_url=settings.database.url,
@@ -126,6 +158,21 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
         run_metrics_flush_loop(_state.session_factory, interval=5.0)
     )
 
+    # AP-103: start the job scheduler (operationalizes existing engines). Jobs invoke services only.
+    _state.scheduler = build_scheduler(
+        settings,
+        _state.session_factory,
+        openrouter_client=openrouter_client,
+        discord_service=discord_service,
+        email_service=email_service,
+        owner_ids=settings.discord.owner_ids,
+        event_gateway=event_gateway,
+    )
+    if _state.scheduler is not None:
+        _state.scheduler.start()
+        logger.info("scheduler_started", jobs=_state.scheduler.job_ids)
+    else:
+        logger.info("scheduler_disabled")
 
     # Start Discord Bot thread client if credentials configured
     if settings.discord.token and settings.discord.token != "YOUR_DISCORD_BOT_TOKEN":
@@ -139,6 +186,13 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
 
     # --- Shutdown ---
     logger.info("nexus_shutting_down")
+
+    if _state.scheduler is not None:
+        try:
+            _state.scheduler.shutdown()
+            logger.info("scheduler_stopped")
+        except Exception as e:
+            logger.error("error_stopping_scheduler", error=str(e))
 
     if _state.outbox_task:
         _state.outbox_task.cancel()

@@ -12,7 +12,7 @@ from nexus.core.exceptions import ExecutionEngineError
 from nexus.core.types import ExecutionStatus
 from nexus.execution.governance import GovernanceManager
 from nexus.execution.runners import runtime_registry
-from nexus.execution.runners.base import CLIRuntimeAdapter
+from nexus.execution.runners.base import CLIRuntimeAdapter, resolve_execution_timeout
 from nexus.memory.models import (
     ExecutionArtifactRecord,
     ExecutionRecord,
@@ -82,12 +82,8 @@ class GeminiRuntimeAdapter(CLIRuntimeAdapter):
 
         cwd = exec_record.repository or "."
 
-        # Read timeout policy threshold
-        timeout = 300
-        if self.settings and hasattr(self.settings, "execution") and self.settings.execution:
-            t_val = getattr(self.settings.execution, "research_timeout_seconds", 300)
-            if isinstance(t_val, (int, float)):
-                timeout = int(t_val)
+        # Resolve the ADR-010 Gemini timeout from configuration, clamped by hard_limit (A-002)
+        timeout = resolve_execution_timeout(self.settings, "gemini_timeout")
 
         # Create step record
         step = ExecutionStepRecord(

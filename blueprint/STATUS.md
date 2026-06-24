@@ -1,80 +1,90 @@
 # Nexus — Project Status
 
-Date: 2026-06-20
-Version: 0.1
-Phase: Phase 1 Completed (Core Infrastructure)
+Date: 2026-06-24
+Release: v1.0.0 ("Operational Intelligence", git tag `v1.0.0`)
+Active line: v1.0.1 ("Alignment") — in progress
+Authoritative subsystem status: [architecture-status-summary.md](implementations/v1.0.1/architecture-status-summary.md)
+
+> This file was realigned in AP-104 (v1.0.1) after the accepted onboarding audit found it frozen at
+> "Phase 1." It now reflects the **actual** repository state, verified first-hand.
 
 ---
 
 ## Current State
 
-Nexus is in a **fully functional foundational state**.
+Nexus is a **released governed-execution control plane** (v1.0.0) currently undergoing the v1.0.1
+"Alignment" correctness/safety pass.
 
-The skeleton infrastructure has been built:
-- **Application Skeleton**: Bootstrapped under root `nexus/` package.
-- **Config & Logging**: Fully integrated using Pydantic Settings and structlog.
-- **Database**: Async engine factory and SQLite setup with WAL mode and foreign keys. ORM models mapped.
-- **API Skeleton**: FastAPI app with health checks and lifecycle session management.
-- **Infrastructure**: Ruff/MyPy configurations, Alembic template, Dockerfile, docker-compose, and GitHub Actions CI.
-- **Test Suite**: pytest async framework with 23 unit tests verifying configurations, enums, exceptions, DB schemas, and health endpoints.
-- **Quality Checks**: All Ruff lints and MyPy strict typing checks pass completely.
+It is **pilot-ready as an attended, single-operator governed-execution console** with a now-operational
+single-node autonomy layer. The production-grade core is the approval gate + 11-gate governance +
+event-sourced memory + transactional/communication outbox. The v1.0.1 line has already closed the
+three Priority-0/1 findings (fail-closed owner auth, execution-timeout correctness, and the previously
+missing scheduler).
+
+**Test suite:** 143 tests passing (v1.0.1); ruff clean; mypy strict clean (57 source files).
 
 ---
 
-## Active Phase
+## Subsystem Status
 
-**Completed** — Phase 1 (Core Infrastructure) & Phase 8 (Pi Evaluation & Primitive Extraction).
+| Subsystem | Classification | Basis |
+|---|---|---|
+| Approval System | ✅ Completed / Operational | Un-bypassable DB gate; **fail-closed** owner auth (A-001) |
+| Runtime Governance (11-gate) | ✅ Completed / Operational | Audits every decision; best-tested code |
+| Memory System (event-sourced) | ✅ Completed / Operational | Immutable `audit_log` + checkpoint replay |
+| Communication Outbox | ✅ Completed / Operational | Lease-based, backoff, dead-letter, audited |
+| Task Management | ✅ Completed / Operational | Guarded lifecycle, locking, Discord CRUD |
+| Runtime Registry + adapter split | ✅ Operational | Extensible CLI/Agent abstraction |
+| Execution timeouts | ✅ Operational | Honors ADR-010 + `hard_limit` clamp (A-002) |
+| Scheduler (single-node) | ✅ Operational | 6 audited jobs (new in v1.0.1, A-003) |
+| Metrics persistence | ✅ Operational | Collection + scheduled aggregation/retention |
+| Research engine | 🟡 Operational (latent) | Built + scheduled; empty feeds by default → audited-skip |
+| Daily briefing engine | 🟡 Operational | Built + scheduled 08:00 Asia/Kolkata |
+| Gemini runtime | 🟠 Stubbed | Generic shell runner (no real CLI binary) |
+| Claude runtime | 🟠 Stubbed | Generic shell runner (no real CLI binary) |
+| Hermes runtime | 🔴 Mocked (partial) | Simulated branches; full audit = AP-105 |
+| Sandbox isolation | 🟠 Experimental | Default `provider="local"` = no isolation; review = A-006 |
+| Health reporting | 🟠 Experimental | Boot-time boolean; `/api/v1/status` reports `"stub"` |
+| Alembic migrations | 🟠 Experimental | `create_all` is current schema source; migrations incomplete |
+| Distributed scheduling / PostgreSQL / extra integrations | ⚪ Future | Designed/aspirational |
 
-The next immediate step is **Phase 2 (Task Management)**, extending task operations and timelines.
+Classification legend: ✅ Completed/Operational · 🟡 Operational (latent/partial) · 🟠 Experimental/Stubbed ·
+🔴 Mocked · ⚪ Future. Authoritative detail in `architecture-status-summary.md`.
+
+---
+
+## v1.0.1 "Alignment" progress
+
+| AP | Scope | Status |
+|---|---|---|
+| AP-101 | Audit validation (all 6 findings confirmed first-hand) | ✅ Complete |
+| AP-102 | Critical safety fixes — A-001 fail-closed, A-002 timeout correctness | ✅ Complete |
+| AP-103 | Scheduler foundation — design + implementation (A-003) | ✅ Complete |
+| AP-104 | Documentation alignment (A-004) — this pass | 🔄 In progress |
+| AP-105 | Hermes reality audit (A-005) | 🔲 Pending |
+| A-006 | Sandbox safety review | 🔲 Pending |
 
 ---
 
 ## Immediate Next Steps
 
-1. **Begin Phase 2 (Task Management)** — Build task priorities, Timeline interfaces, and query capabilities.
-
----
-
-## Documentation Status
-
-| Document | Status |
-|---|---|
-| docs/00_BRIEF.md | ✅ Complete |
-| docs/01_ARCHITECTURE.md | ✅ Complete |
-| docs/02_TECH_STACK.md | ✅ Complete |
-| docs/03_AGENT_DESIGN.md | ✅ Complete |
-| docs/04_INTEGRATION_SPECS.md | ✅ Complete |
-| docs/05_CRITICAL_CONSTRAINTS.md | ✅ Complete |
-| docs/06_DEVELOPMENT_PHASES.md | ✅ Complete |
-| docs/07_HERMES_AGENT.md | ✅ Complete |
-| docs/08_MEMORY_ARCHITECTURE.md | ✅ Complete |
-| docs/INITIAL_PROMPT.md | ✅ Complete |
-| docs/RULES.md | ✅ Complete |
-
----
-
-## Phase Status Summary
-
-| Phase | Name | Status |
-|---|---|---|
-| 0 | Project Foundation | ✅ Complete |
-| 1 | Core Infrastructure | ✅ Complete |
-| 2 | Task Management | 🔲 Not Started (Next) |
-| 3 | Approval Engine | 🔲 Not Started |
-| 4 | Execution Runtime | 🔲 Not Started |
-| 5 | Research Automation | 🔲 Not Started |
-| 6 | Intelligence Reporting | 🔲 Not Started |
-| 7 | Production Hardening | 🔲 Not Started |
-| 8 | Pi Evaluation | ✅ Complete |
+1. **AP-105** — produce the Hermes reality audit (classify every Hermes capability with evidence).
+2. **A-006** — sandbox safety configuration review (Docker enabled/disabled, failure/fallback, host risk).
+3. **Residual code-debt** (separate code AP): sync in-code version string (`__init__.py`/`pyproject`
+   `0.1.0` → `1.0.x`), live health probing, Alembic completion.
 
 ---
 
 ## Blocking Issues
 
-None.
+None. (Known risks are tracked as v1.0.1 findings A-005/A-006 and residual debt, not blockers.)
 
 ---
 
-## Open Questions
+## Notes
 
-All 8 initial open questions are fully resolved. Decisions have been recorded in ADR-006 through ADR-011.
+- **Version-string drift:** the in-code version is still `0.1.0` while the release tag is `v1.0.0`.
+  Correcting it is a source/config change, intentionally out of AP-104's documentation-only scope; it
+  is logged as residual debt (see `documentation-drift-analysis.md`).
+- The numbered `docs/` are design-intent; this file + `architecture-status-summary.md` are the
+  authoritative status sources.

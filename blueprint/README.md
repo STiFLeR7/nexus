@@ -19,29 +19,23 @@ Every implementation decision, architectural change, phase status, action point,
 ```
 blueprint/
 ├── README.md                  # This file
-├── ROADMAP.md                 # Phased execution plan (canonical)
-├── STATUS.md                  # Current project status snapshot
-├── DECISIONS/                 # Architectural Decision Records (ADRs)
-│   ├── ADR-001-tech-stack.md
-│   ├── ADR-002-database-choice.md
-│   └── ADR-003-pi-evaluation.md
+├── STATUS.md                  # Current project status (authoritative)
+├── ROADMAP.md                 # Reconstructed history + forward direction
 ├── GAPS_AND_RISKS.md          # Identified gaps, risks, and open questions
+├── DECISIONS/                 # 21 Architectural Decision Records (ADR-001…ADR-011 +
+│                              #   runtime/scheduler/command-bus/phase ADRs) — see directory
+├── onboarding/                # Accepted v1.0.0 onboarding audit (01…15) — reality source
+├── implementations/           # Per-release implementation reports (incl. v1.0.1/)
+├── architecture/              # Architecture & design records
+├── reports/                   # Reviews, gap analyses, runtime/Hermes classifications
+├── action-points/             # Phase action-point breakdowns
 ├── phases/                    # Phase-by-phase implementation memory
-│   ├── phase-0/
-│   │   ├── OVERVIEW.md
-│   │   └── AP-001/
-│   │       ├── SPEC.md
-│   │       ├── IMPLEMENTATION.md
-│   │       ├── DECISIONS.md
-│   │       └── STATUS.md
-│   ├── phase-1/
-│   └── ...
-└── references/                # Evaluated external references
-    ├── pi-evaluation.md
-    ├── hermes-evaluation.md
-    ├── gemini-cli-evaluation.md
-    └── claude-code-evaluation.md
+└── references/                # Evaluated external references (Pi, Hermes, CLIs)
 ```
+
+> The `DECISIONS/` directory currently holds **21 ADRs** (the original landing page listed only three).
+> Treat the directory itself as the ADR index. For current subsystem status, see
+> `implementations/v1.0.1/architecture-status-summary.md`.
 
 ---
 

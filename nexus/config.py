@@ -95,6 +95,41 @@ class LoggingConfig(BaseModel):
     format: str = "json"
 
 
+class SchedulingConfig(BaseModel):
+    """Scheduler job toggles and cadences (AP-103, additive — no behavior unless enabled)."""
+
+    enabled: bool = True
+    timezone: str = "Asia/Kolkata"
+
+    # J1 — Research Collection (every 2h); requires feeds to run, else skipped.
+    research_enabled: bool = True
+    research_interval_hours: int = 2
+    research_feeds: dict[str, str] = Field(default_factory=dict)
+
+    # J2 — Daily Briefing (cron, 08:00 in `timezone`)
+    briefing_enabled: bool = True
+    briefing_hour: int = 8
+    briefing_minute: int = 0
+
+    # J3 — Approval Expiration Sweep (every 15m)
+    approval_sweep_enabled: bool = True
+    approval_sweep_interval_minutes: int = 15
+
+    # J4 — Metrics Aggregation & Retention (every 5m)
+    metrics_aggregation_enabled: bool = True
+    metrics_aggregation_interval_minutes: int = 5
+
+    # J5 — Outbox Health Monitoring (read-only; every 10m)
+    outbox_health_enabled: bool = True
+    outbox_health_interval_minutes: int = 10
+    outbox_backlog_threshold: int = 100
+
+    # J6 — Checkpoint Health Monitoring (read-only; every 30m)
+    checkpoint_health_enabled: bool = True
+    checkpoint_health_interval_minutes: int = 30
+    checkpoint_stale_minutes: int = 60
+
+
 class SandboxConfig(BaseModel):
     """Configuration for execution runtime sandbox containment (AP-503)."""
 
@@ -152,6 +187,7 @@ class NexusSettings(BaseSettings):
     execution: ExecutionConfig = Field(default_factory=ExecutionConfig)
     logging: LoggingConfig = Field(default_factory=LoggingConfig)
     sandbox: SandboxConfig = Field(default_factory=SandboxConfig)
+    scheduling: SchedulingConfig = Field(default_factory=SchedulingConfig)
 
     @classmethod
     def from_yaml_and_env(cls, yaml_path: Path | None = None) -> NexusSettings:

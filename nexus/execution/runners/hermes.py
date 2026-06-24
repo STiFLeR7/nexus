@@ -12,7 +12,7 @@ from nexus.core.exceptions import ExecutionEngineError
 from nexus.core.types import ExecutionStatus
 from nexus.execution.governance import GovernanceManager
 from nexus.execution.runners import runtime_registry
-from nexus.execution.runners.base import AgentRuntimeAdapter
+from nexus.execution.runners.base import AgentRuntimeAdapter, resolve_execution_timeout
 from nexus.memory.models import (
     AgentStepRecord,
     ExecutionArtifactRecord,
@@ -115,10 +115,12 @@ class HermesRuntimeAdapter(AgentRuntimeAdapter):
 
                 from nexus.execution.sandbox.manager import SandboxManager
                 sandbox_mgr = SandboxManager(self.session, self.settings)
+                # Resolve the ADR-010 research/agent timeout, clamped by hard_limit (A-002)
+                timeout = resolve_execution_timeout(self.settings, "research_timeout")
                 proc = await sandbox_mgr.execute(
                     command=cmd,
                     cwd=cwd,
-                    timeout=300,
+                    timeout=timeout,
                     correlation_id=self.execution_id,
                 )
                 stdout, stderr = await proc.communicate()

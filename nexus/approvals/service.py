@@ -90,8 +90,15 @@ class ApprovalService:
         reason: str | None = None,
     ) -> ApprovalRecord:
         """Authorize or reject a pending approval request, enforcing owner credentials."""
-        # Validate owner permission
-        if self.owner_ids and str(decided_by) not in self.owner_ids:
+        # Validate owner permission (A-001 defense-in-depth: fail closed).
+        # An empty owner configuration must DENY all authorization, never allow it. This guards the
+        # gate even if the startup validation in nexus.api is somehow bypassed.
+        if not self.owner_ids:
+            raise ApprovalEngineError(
+                "Approval authorization is disabled: no owner IDs are configured. "
+                "Refusing to authorize (fail-closed)."
+            )
+        if str(decided_by) not in self.owner_ids:
             raise ApprovalEngineError(f"User {decided_by} is not authorized to grant approvals.")
 
         stmt = select(ApprovalRecord).where(ApprovalRecord.id == approval_id).with_for_update()

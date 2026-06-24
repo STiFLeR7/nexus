@@ -101,6 +101,12 @@ class EventType(enum.StrEnum):
     SANDBOX_TIMEOUT = "sandbox.timeout"
     SANDBOX_FAILURE = "sandbox.failure"
 
+    # Scheduler job lifecycle (AP-103)
+    SCHEDULER_JOB_STARTED = "scheduler.job.started"
+    SCHEDULER_JOB_COMPLETED = "scheduler.job.completed"
+    SCHEDULER_JOB_FAILED = "scheduler.job.failed"
+    SCHEDULER_JOB_SKIPPED = "scheduler.job.skipped"
+
 
 class AgentType(enum.StrEnum):
     """Logical agent roles within the orchestration layer."""
