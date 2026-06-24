@@ -1,10 +1,10 @@
 from __future__ import annotations
 
+import json
 import os
 import time
 from datetime import UTC, datetime
 from typing import Any
-from unittest.mock import AsyncMock
 
 from sqlalchemy import select
 
@@ -13,6 +13,11 @@ from nexus.core.types import ExecutionStatus
 from nexus.execution.governance import GovernanceManager
 from nexus.execution.runners import runtime_registry
 from nexus.execution.runners.base import AgentRuntimeAdapter, resolve_execution_timeout
+from nexus.execution.runners.hermes_tools import (
+    ToolCallParseError,
+    extract_json_block,
+    parse_tool_call,
+)
 from nexus.execution.sandbox.confinement import resolve_in_workspace
 from nexus.memory.models import (
     AgentStepRecord,
@@ -33,6 +38,7 @@ class HermesRuntimeAdapter(AgentRuntimeAdapter):
         event_gateway: Any = None,
         openrouter_client: Any = None,
         settings: Any = None,
+        search_provider: Any = None,
     ) -> None:
         """Initialize the HermesRuntimeAdapter with database and LLM gateway references."""
         self.session = db_session
@@ -40,10 +46,13 @@ class HermesRuntimeAdapter(AgentRuntimeAdapter):
         self.event_gateway = event_gateway
         self.openrouter_client = openrouter_client
         self.settings = settings
+        self.search_provider = search_provider
         self.trajectory: list[dict[str, Any]] = []
         self.plan: list[dict[str, Any]] = []
         self.start_time: float = 0.0
         self.end_time: float = 0.0
+        self.exit_code: int = 0
+        self.status: str = ""
 
     async def initialize(self) -> None:
         """Verify LLM API key availability and gateway environment readiness."""
@@ -83,15 +92,15 @@ class HermesRuntimeAdapter(AgentRuntimeAdapter):
         """Execute local or external tools and return string outcomes."""
         if name == "web_search":
             query = arguments.get("query", "")
-            if "mcp" in query.lower():
+            if self.search_provider is None:
+                # Honest failure: no canned results when no provider is configured.
                 return (
-                    "Search results for 'MCP developments':\n"
-                    "- Model Context Protocol (MCP) is widely adopted "
-                    "by desktop and local servers.\n"
-                    "- Community adapters enable GitHub, Slack, and SQLite database actions.\n"
-                    "- FastMCP SDK has been released to simplify server integrations."
+                    f"Error: no search provider is configured; cannot search for '{query}'."
                 )
-            return f"No results found for query: '{query}'"
+            try:
+                return str(await self.search_provider.search(query))
+            except Exception as e:
+                return f"Error performing search: {e!s}"
 
         elif name == "read_file":
             path = arguments.get("path", "")
@@ -145,26 +154,57 @@ class HermesRuntimeAdapter(AgentRuntimeAdapter):
         else:
             return f"Unknown tool: '{name}'"
 
+    async def _generate_plan(self, goal: str) -> list[dict[str, Any]]:
+        """Derive an advisory plan from the goal (no decorative literal).
+
+        Uses the model when available; otherwise falls back to a minimal goal-derived plan. Either
+        way the plan is generated from the goal, never a fixed script.
+        """
+        fallback = [{"step": 1, "description": f"Work toward goal: {goal}"}]
+        if not self.openrouter_client:
+            return fallback
+        prompt = (
+            f"Goal: {goal}\n\n"
+            "Produce a short ordered plan to achieve the goal as a JSON array of step "
+            "description strings. Return only the JSON array."
+        )
+        try:
+            completion = await self.openrouter_client.complete(prompt)
+            data = json.loads(extract_json_block(completion))
+            if not isinstance(data, list) or not data:
+                return fallback
+            plan: list[dict[str, Any]] = []
+            for i, step in enumerate(data, start=1):
+                if isinstance(step, dict):
+                    plan.append(
+                        {
+                            "step": step.get("step", i),
+                            "description": str(step.get("description", step)),
+                        }
+                    )
+                else:
+                    plan.append({"step": i, "description": str(step)})
+            return plan
+        except Exception:
+            return fallback
+
     async def execute_goal(self, goal: str) -> dict[str, Any]:
-        """Run the autonomous tool loop to achieve the specified goal."""
+        """Run the autonomous tool loop to achieve the specified goal.
+
+        Decisions come from a real model completion parsed as a structured tool-call; the outcome
+        (``exit_code``/``status``) reflects whether the run genuinely completed, failed, or did not
+        finish within budget. There is no mock branch and no always-zero exit.
+        """
         self.start_time = time.time()
         self.trajectory = []
 
-        stmt = select(ExecutionRecord).where(ExecutionRecord.id == self.execution_id)
-        res = await self.session.execute(stmt)
-        exec_record = res.scalar_one()
-        cwd = exec_record.repository or "."
-
-        # Formulate execution plan steps
-        self.plan = [
-            {"step": 1, "description": "Search web for MCP ecosystem developments"},
-            {"step": 2, "description": "Write findings report to mcp_report.md"},
-            {"step": 3, "description": "Finish task and summarize findings"},
-        ]
+        # Goal-derived advisory plan (replaces the decorative literal).
+        self.plan = await self._generate_plan(goal)
 
         max_steps = 5
         step_index = 0
         finished = False
+        failed = False
 
         while step_index < max_steps and not finished:
             await self.heartbeat()
@@ -189,73 +229,39 @@ class HermesRuntimeAdapter(AgentRuntimeAdapter):
                 "Return JSON with keys: 'thought', 'tool_name', 'tool_arguments'."
             )
 
+            thought = ""
+            tool_name = ""
+            tool_args: dict[str, Any] = {}
+            step_status = ExecutionStatus.COMPLETED.value
+
             try:
-                thought = ""
-                tool_name = ""
-                tool_args: dict[str, Any] = {}
-
-                # Simulated mock parser for testing correctness
-                is_mocked = (
-                    not self.openrouter_client
-                    or isinstance(self.openrouter_client.complete, AsyncMock)
-                    or "test-key"
-                    in getattr(getattr(self.settings, "openrouter", None), "api_key", "")
-                )
-
-                if is_mocked:
-                    if step_index == 0:
-                        thought = "I need to research the latest MCP developments."
-                        tool_name = "web_search"
-                        tool_args = {"query": "MCP developments"}
-                    elif step_index == 1:
-                        thought = "I will write the research report findings to a file."
-                        tool_name = "write_file"
-                        tool_args = {
-                            "path": os.path.join(cwd, "mcp_report.md"),
-                            "content": (
-                                "# MCP Developments\n"
-                                "- Model Context Protocol adoption grows."
-                            ),
-                        }
-                    else:
-                        thought = "Task completes successfully."
-                        tool_name = "finish"
-                        tool_args = {}
-                else:
-                    completion = await self.openrouter_client.complete(prompt)
-                    import json
-
-                    try:
-                        clean_comp = completion.strip()
-                        if "```json" in clean_comp:
-                            clean_comp = clean_comp.split("```json")[1].split("```")[0].strip()
-                        elif "```" in clean_comp:
-                            clean_comp = clean_comp.split("```")[1].split("```")[0].strip()
-
-                        data = json.loads(clean_comp)
-                        thought = data.get("thought", "")
-                        tool_name = data.get("tool_name", "finish")
-                        tool_args = data.get("tool_arguments", {})
-                    except Exception:
-                        thought = "Heuristic command extraction fallback."
-                        if "web_search" in completion:
-                            tool_name = "web_search"
-                            tool_args = {"query": "MCP developments"}
-                        else:
-                            tool_name = "finish"
-                            tool_args = {}
+                completion = await self.openrouter_client.complete(prompt)
+                call = parse_tool_call(completion)
+                thought = call.thought
+                tool_name = call.tool_name
+                tool_args = call.tool_arguments
 
                 if tool_name == "finish":
                     finished = True
                     tool_result = "Agent completed execution."
                 else:
                     tool_result = await self._execute_tool(tool_name, tool_args)
-
+            except ToolCallParseError as e:
+                # A malformed/unrecognized tool call is an explicit failure — never a silent finish.
+                thought = "Malformed tool call."
+                tool_name = "error"
+                tool_args = {}
+                tool_result = f"Tool-call parse error: {e!s}"
+                step_status = ExecutionStatus.FAILED.value
+                failed = True
+                finished = True
             except Exception as e:
-                thought = "Error execution loop."
-                tool_name = "finish"
+                thought = "Execution loop error."
+                tool_name = "error"
                 tool_args = {}
                 tool_result = f"Error: {e!s}"
+                step_status = ExecutionStatus.FAILED.value
+                failed = True
                 finished = True
 
             # Save AgentStepRecord to SQLite DB
@@ -266,7 +272,7 @@ class HermesRuntimeAdapter(AgentRuntimeAdapter):
                 tool_name=tool_name,
                 tool_arguments=tool_args,
                 tool_result=tool_result,
-                status=ExecutionStatus.COMPLETED.value,
+                status=step_status,
                 last_heartbeat=datetime.now(UTC),
             )
             self.session.add(step_record)
@@ -290,11 +296,19 @@ class HermesRuntimeAdapter(AgentRuntimeAdapter):
 
             step_index += 1
 
+        # A run that exhausts its step budget without a genuine finish did not complete.
+        if not finished:
+            failed = True
+
+        self.exit_code = 0 if (finished and not failed) else 1
+        self.status = "completed" if self.exit_code == 0 else "failed"
+
         self.end_time = time.time()
         duration = self.end_time - self.start_time
 
         return {
-            "exit_code": 0,
+            "exit_code": self.exit_code,
+            "status": self.status,
             "duration_seconds": duration,
             "steps_executed": step_index,
             "trajectory_len": len(self.trajectory),
@@ -349,8 +363,6 @@ class HermesRuntimeAdapter(AgentRuntimeAdapter):
 
     async def persist(self) -> None:
         """Commit structural plans, trajectories, and report summaries as first-class artifacts."""
-        import json
-
         duration = self.end_time - self.start_time
 
         # 1. Save plan artifact
@@ -382,7 +394,7 @@ class HermesRuntimeAdapter(AgentRuntimeAdapter):
             artifact_type="summary",
             name="summary.md",
             content=summary,
-            data={"duration_seconds": duration, "exit_code": 0},
+            data={"duration_seconds": duration, "exit_code": self.exit_code},
         )
         self.session.add(summary_art)
 

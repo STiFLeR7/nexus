@@ -82,10 +82,12 @@ accepted audit finding.
 | AP-102 / A-001 | Fail-closed owner auth (startup + engine) | ✅ Complete |
 | AP-102 / A-002 | Execution-timeout correctness (ADR-010 + `hard_limit`) | ✅ Complete |
 | AP-103 / A-003 | Scheduler foundation (design + implementation, single-node, 6 jobs) | ✅ Complete |
-| AP-104 / A-004 | Documentation alignment | 🔄 In progress |
-| AP-105 / A-005 | Hermes reality audit | 🔲 Pending |
+| AP-104 / A-004 | Documentation alignment | ✅ Complete |
+| AP-105 / A-005 | Hermes reality audit (verdict: Prototype) | ✅ Complete |
 | A-006 | Sandbox safety review (verdict: Unsafe By Default) | ✅ Complete |
-| v1.1.0 Track S | Sandbox hardening (S-2/S-3/S-4) → **Pilot Safe** (`ADR-sandbox-pilot-safe`) | ✅ Complete (pending freeze commit) |
+| v1.1.0 Track S | Sandbox hardening (S-2/S-3/S-4) → **Pilot Safe** (`ADR-sandbox-pilot-safe`) | ✅ Complete (committed `b734c13`, tag `track-s-pilot-safe`) |
+| v1.1.0 Track H — H-2 | Hermes honesty fixes → **Experimental** (`ADR-hermes-experimental`) | ✅ Complete (pending freeze commit) |
+| v1.1.0 Track H — H-4 | Hermes lifecycle safety → **Pilot** (terminate/resume/budget/timeout) | 🔲 Planned (`H-4-scope-definition.md`) |
 
 ---
 
@@ -93,7 +95,7 @@ accepted audit finding.
 
 | Theme | Description | Status |
 |---|---|---|
-| Runtime de-stubbing | Real Gemini/Claude CLI integration; Hermes de-mocking | ⚪ Future (post-AP-105) |
+| Runtime de-stubbing | Real Gemini/Claude CLI integration (Hermes de-mocked in v1.1.0 H-2 → Experimental) | ⚪ Future |
 | Distributed scheduling | Cross-process lease, multi-node (see `scheduler-future-scaling.md`) | ⚪ Future |
 | PostgreSQL backend | Migrate from SQLite/WAL; complete Alembic (ADR-002) | ⚪ Future |
 | Extended integrations | WhatsApp, Slack, GitHub | ⚪ Future (Phase 9) |

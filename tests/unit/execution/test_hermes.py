@@ -4,7 +4,6 @@ from __future__ import annotations
 
 import uuid
 from datetime import UTC, datetime
-from unittest.mock import AsyncMock, MagicMock
 
 import pytest
 from sqlalchemy import select
@@ -19,6 +18,11 @@ from nexus.memory.models import (
     TaskRecord,
     WorkflowCheckpointRecord,
 )
+from tests.unit.execution.test_hermes_honesty import FakeLLMClient, FakeSearchProvider
+
+# Structured tool-call completions used to drive the real (injected) decision branch.
+_FINISH = '{"thought": "done", "tool_name": "finish", "tool_arguments": {}}'
+_SEARCH = '{"thought": "search", "tool_name": "web_search", "tool_arguments": {"query": "x"}}'
 
 
 @pytest.mark.asyncio
@@ -100,12 +104,22 @@ async def test_hermes_execute_and_checkpoint(db_session: AsyncSession) -> None:
     db_session.add(exec_record)
     await db_session.flush()
 
-    adapter = HermesRuntimeAdapter(db_session, exec_record.id)
+    # Inject a scripted client + search provider so the real decision branch drives a genuine
+    # multi-step run (web_search -> finish), then assert persistence.
+    client = FakeLLMClient(['["Investigate developments"]', _SEARCH, _FINISH])
+    adapter = HermesRuntimeAdapter(
+        db_session,
+        exec_record.id,
+        openrouter_client=client,
+        search_provider=FakeSearchProvider(),
+    )
 
     # Run execution goal
     res = await adapter.execute_goal("Research developments")
     assert res["steps_executed"] > 0
     assert res["trajectory_len"] > 0
+    assert res["exit_code"] == 0
+    assert res["status"] == "completed"
 
     # Verify agent steps persisted
     step_stmt = select(AgentStepRecord).where(AgentStepRecord.execution_id == exec_record.id)
@@ -144,13 +158,15 @@ async def test_hermes_summarize_and_persist(db_session: AsyncSession) -> None:
     db_session.add(exec_record)
     await db_session.flush()
 
-    mock_openrouter = MagicMock()
-    mock_openrouter.complete = AsyncMock(return_value="Synthesized Brief of MCP Research results")
+    # Scripted completions: plan, finish (execute_goal), then the summary text (summarize()).
+    client = FakeLLMClient(
+        ['["Verify persistence step"]', _FINISH, "Synthesized Brief of MCP Research results"]
+    )
 
     adapter = HermesRuntimeAdapter(
         db_session=db_session,
         execution_id=exec_record.id,
-        openrouter_client=mock_openrouter,
+        openrouter_client=client,
     )
 
     await adapter.execute_goal("Verify persistence")

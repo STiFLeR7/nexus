@@ -10,7 +10,13 @@
 > **Experimental → Pilot Safe** per the accepted Track S closure (S-2/S-3/S-4) and
 > `ADR-sandbox-pilot-safe`. This change is evidence-bound to the Track S source (default-secure
 > fail-closed resolution, startup validation, workspace confinement) and is **effective on commit** of
-> Track S to `v1.1.0-planning`. No other subsystem row changes.
+> Track S to `v1.1.0-planning`.
+>
+> **v1.1.0 "Containment" — Track H / H-2 update (2026-06-24):** the **Hermes Runtime** row is upgraded
+> **Mocked/Prototype → Experimental** per the accepted H-2 closure and `ADR-hermes-experimental`
+> (no prod mock, provider-backed search, goal-derived planning, structured tool-calls, truthful exit
+> status). Evidence-bound to the H-2 source; **effective on commit**. Lifecycle safety
+> (terminate/resume) remains the Pilot bar (H-4). No other subsystem row changes.
 
 ---
 
@@ -46,7 +52,7 @@
 | **Daily Briefing Engine** | 🟡 Operational | briefing service; `daily_briefing` job (08:00 Asia/Kolkata) | **Now scheduled.** Note: default briefing path uses synchronous flush (per onboarding 07). |
 | **Gemini Runtime** | 🟠 Stubbed | `runners/gemini.py` | Generic shell runner; no real `gemini` CLI binary invocation yet. |
 | **Claude Runtime** | 🟠 Stubbed | `runners/claude.py` | Generic shell runner; no real `claude` CLI binary invocation yet. |
-| **Hermes Runtime** | 🔴 Mocked (partial) | `runners/hermes.py` (AsyncMock branch, hardcoded plan/canned search) | Real loop scaffold + simulated branches in production. **Full ledger is AP-105.** Classified as Agent Runtime (`reports/hermes-runtime-classification.md`). |
+| **Hermes Runtime** | 🟠 Experimental (Track H / H-2) | `runners/hermes.py`, `runners/hermes_tools.py`, `runners/search_provider.py`; 21 hermes tests (16 honesty + 5) | **v1.1.0 H-2, effective on commit.** Was 🔴 Mocked (AsyncMock branch, canned search, decorative plan, always-`0` exit). Now **honest**: no prod mock, provider-backed search (`SearchProvider` DI), goal-derived planning, structured tool-calls, truthful exit status. Lifecycle safety (terminate/resume) still **absent** → Pilot bar (H-4). Basis: `ADR-hermes-experimental`, `hermes-experimental-closure-review.md`. |
 | **Sandbox Isolation** | 🟢 Pilot Safe (Track S) | `manager.py:34-64,196-256`, `provider.py:65,146,151-170,296-300`, `confinement.py`, `hermes.py:75-117`, `api.py:106-113`; 35 sandbox tests (9+14+12) | **v1.1.0 Track S (S-2/S-3/S-4), effective on commit.** Was Experimental (default host exec). Now **default-secure fail-closed** resolution (R-01/R-02), **boot-validated** + Docker-availability probe (R-06/R-07), **honest policy enforcement** (R-03), **workspace-confined** agent file tools (R-05). Isolation still opt-in (`enabled=true,provider=docker`); host run only by deliberate, warned, audited choice. Residual: R-04 (governance blacklist), R-08 (shell surface), R-09 (default not `readonly`). Basis: `ADR-sandbox-pilot-safe`, `track-s-closure-review.md`. |
 | **Health reporting** | 🟠 Experimental | `core/health.py:49-71`; `api.py` `/api/v1/status` returns `"stub"` | Boot-time boolean from `git --version`; not live-probed. Known gap. |
 | **Alembic migrations** | 🟠 Experimental | `api.py` `create_all`; incomplete migrations | `create_all` is the real schema source; migrations incomplete/untested. Blocks PostgreSQL path. |
@@ -62,23 +68,25 @@
 - **Operational (5):** Runtime Registry, Execution timeouts, Scheduler, Metrics, (latent) Research / Briefing.
 - **Pilot Safe (1):** Sandbox isolation (v1.1.0 Track S; effective on commit).
 - **Stubbed (2):** Gemini, Claude runtimes.
-- **Mocked (1):** Hermes runtime (full audit → AP-105).
-- **Experimental (2):** Health reporting, Alembic migrations.
+- **Experimental (3):** Hermes runtime (v1.1.0 H-2, honest; effective on commit), Health reporting, Alembic migrations.
 - **Future (3):** Distributed scheduling, PostgreSQL, extra integrations.
 
 ## One-line truth
 
 > Nexus v1.0.1 is a **production-grade governed-execution kernel** (approval + governance + memory +
 > outbox) with an **operational single-node autonomy layer** (scheduler now drives research,
-> briefing, approval-expiry, metrics, and health jobs), whose **concrete agent runtimes are still
-> stubbed/mocked** and whose **sandbox is now default-secure (Pilot Safe, v1.1.0 Track S — refuses to
-> run on the host implicitly; isolation opt-in)** — honestly pilot-ready as an
-> attended-to-lightly-autonomous single-operator control plane.
+> briefing, approval-expiry, metrics, and health jobs), whose **CLI runtimes (Gemini/Claude) are still
+> stubbed** while **Hermes is now honest (Experimental, v1.1.0 H-2 — real decisions, provider-backed
+> search, goal-derived plans, truthful outcomes; lifecycle safety still ahead at Pilot)** and whose
+> **sandbox is now default-secure (Pilot Safe, v1.1.0 Track S — refuses to run on the host implicitly;
+> isolation opt-in)** — honestly pilot-ready as an attended-to-lightly-autonomous single-operator
+> control plane.
 
 ## Especially-watched subsystems (AP-104 mandate)
 
-- **Hermes Runtime** — 🔴 Mocked. Do not represent as functional agent execution. AP-105 will produce
-  the per-capability ledger.
+- **Hermes Runtime** — 🟠 **Experimental** (v1.1.0 H-2, effective on commit): honest decisions, provider-
+  backed search, goal-derived plans, structured tool-calls, truthful exit status. **Not** lifecycle-safe
+  yet (no terminate/resume) — do not represent as Pilot/resumable; that is the H-4 bar.
 - **Research Engine** — 🟡 built + scheduled, **but empty feeds by default**; not autonomous until configured.
 - **Scheduler** — 🟢 Operational, **single-node only** (no cross-process lease yet).
 - **Sandbox Layer** — 🟢 **Pilot Safe** (v1.1.0 Track S, effective on commit): default-secure

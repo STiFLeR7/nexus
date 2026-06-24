@@ -42,7 +42,7 @@ missing scheduler).
 | Daily briefing engine | 🟡 Operational | Built + scheduled 08:00 Asia/Kolkata |
 | Gemini runtime | 🟠 Stubbed | Generic shell runner (no real CLI binary) |
 | Claude runtime | 🟠 Stubbed | Generic shell runner (no real CLI binary) |
-| Hermes runtime | 🔴 Mocked (partial) | Simulated branches; full audit = AP-105 |
+| Hermes runtime | 🟠 Experimental | Honest: no prod mock, provider-backed search, goal-derived plans, structured calls, truthful outcomes (v1.1.0 H-2, effective on commit). Lifecycle safety = Pilot/H-4 |
 | Sandbox isolation | 🟢 Pilot Safe | Default-secure fail-closed + boot-validated + workspace-confined (v1.1.0 Track S, effective on commit); isolation opt-in. Residual R-04/R-08/R-09 |
 | Health reporting | 🟠 Experimental | Boot-time boolean; `/api/v1/status` reports `"stub"` |
 | Alembic migrations | 🟠 Experimental | `create_all` is current schema source; migrations incomplete |
@@ -61,18 +61,26 @@ in `architecture-status-summary.md`.
 | AP-101 | Audit validation (all 6 findings confirmed first-hand) | ✅ Complete |
 | AP-102 | Critical safety fixes — A-001 fail-closed, A-002 timeout correctness | ✅ Complete |
 | AP-103 | Scheduler foundation — design + implementation (A-003) | ✅ Complete |
-| AP-104 | Documentation alignment (A-004) — this pass | 🔄 In progress |
-| AP-105 | Hermes reality audit (A-005) | 🔲 Pending |
-| A-006 | Sandbox safety review | 🔲 Pending |
+| AP-104 | Documentation alignment (A-004) | ✅ Complete |
+| AP-105 | Hermes reality audit (A-005) — verdict Prototype | ✅ Complete |
+| A-006 | Sandbox safety review — verdict Unsafe By Default | ✅ Complete |
+
+### v1.1.0 "Containment" (branch `v1.1.0-planning`)
+
+| Track | Scope | Status |
+|---|---|---|
+| Track S (S-2/S-3/S-4) | Sandbox hardening → **Pilot Safe** (`ADR-sandbox-pilot-safe`) | ✅ Complete (committed `b734c13`, tag `track-s-pilot-safe`) |
+| Track H — H-2 | Hermes honesty fixes → **Experimental** (`ADR-hermes-experimental`) | ✅ Complete (pending freeze commit) |
+| Track H — H-4 | Hermes lifecycle safety → **Pilot** (terminate/resume/budget/timeout) | 🔲 Planned (`H-4-scope-definition.md`) |
 
 ---
 
 ## Immediate Next Steps
 
-1. **AP-105** — produce the Hermes reality audit (classify every Hermes capability with evidence).
-2. **A-006** — sandbox safety configuration review (Docker enabled/disabled, failure/fallback, host risk).
-3. **Residual code-debt** (separate code AP): sync in-code version string (`__init__.py`/`pyproject`
-   `0.1.0` → `1.0.x`), live health probing, Alembic completion.
+1. **H-4 (Pilot)** — Hermes lifecycle safety: fail-fast init, configurable budget, terminate +
+   cancellation wiring, `TIMED_OUT`, `resume_goal`, one audited real run (`H-4-execution-roadmap.md`).
+2. **Residual code-debt** (separate code AP): sync in-code version string (`__init__.py`/`pyproject`
+   `0.1.0` → `1.x`), live health probing, Alembic completion.
 
 ---
 
