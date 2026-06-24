@@ -84,7 +84,8 @@ accepted audit finding.
 | AP-103 / A-003 | Scheduler foundation (design + implementation, single-node, 6 jobs) | ✅ Complete |
 | AP-104 / A-004 | Documentation alignment | 🔄 In progress |
 | AP-105 / A-005 | Hermes reality audit | 🔲 Pending |
-| A-006 | Sandbox safety review | 🔲 Pending |
+| A-006 | Sandbox safety review (verdict: Unsafe By Default) | ✅ Complete |
+| v1.1.0 Track S | Sandbox hardening (S-2/S-3/S-4) → **Pilot Safe** (`ADR-sandbox-pilot-safe`) | ✅ Complete (pending freeze commit) |
 
 ---
 

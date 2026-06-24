@@ -125,7 +125,7 @@ the **current built status** of every subsystem.
 | Daily briefing engine | 🟡 Operational | Built + scheduled 08:00 (Asia/Kolkata) |
 | Gemini / Claude runtimes | 🟠 Stubbed | Generic shell runners; real CLI binary integration pending |
 | Hermes runtime | 🔴 Mocked (partial) | Simulated branches in production; full audit = AP-105 |
-| Sandbox isolation | 🟠 Experimental | Default `provider="local"` = **no isolation**; review = A-006 |
+| Sandbox isolation | 🟢 Pilot Safe | **Default-secure fail-closed** + boot-validated + workspace-confined (v1.1.0 Track S). Isolation opt-in (`provider=docker`); residual R-04/R-08/R-09 |
 
 ---
 
@@ -170,9 +170,23 @@ future (see [scheduler-future-scaling.md](blueprint/implementations/v1.0.1/sched
 
 ## Sandboxing
 
-Execution sandbox is configurable (`local` / `docker` / `mock`). **The default is `local` — no
-container isolation** — with command-blacklist governance as the guard. Treat host exposure as real
-until the A-006 sandbox safety review lands. Configure Docker isolation before running untrusted commands.
+Execution sandbox is configurable (`docker` / `local` / `mock`) and is **default-secure** as of
+v1.1.0 Track S (**Pilot Safe**, `ADR-sandbox-pilot-safe`):
+
+- **Fails closed by default.** With sandboxing disabled or an unrecognized provider, the manager
+  **refuses to execute** rather than silently running on the host (no fail-open).
+- **Boot-validated.** Startup aborts on an incoherent sandbox config or an unavailable
+  policy-enforcing provider (Docker availability is probed at boot).
+- **Honest enforcement.** Each execution is audited with whether the provider actually enforces the
+  policy (`policy_enforced`); a host run is declared, never pretended.
+- **Workspace-confined file tools.** Agent `read_file`/`write_file` are confined to the approved
+  workspace (path traversal / absolute / symlink escapes fail closed).
+
+Container isolation remains **opt-in**: set `sandbox.enabled=true`, `sandbox.provider=docker` (Docker
+present), and ideally `filesystem_policy=readonly` before running untrusted commands. Running on the
+host (`provider=local`) is possible only as a deliberate, startup-warned, audited choice. Residual
+items: command-blacklist robustness (R-04, governance-owned), shell exec surface (R-08), and the
+non-readonly default mount (R-09).
 
 ---
 

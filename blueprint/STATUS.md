@@ -43,13 +43,14 @@ missing scheduler).
 | Gemini runtime | 🟠 Stubbed | Generic shell runner (no real CLI binary) |
 | Claude runtime | 🟠 Stubbed | Generic shell runner (no real CLI binary) |
 | Hermes runtime | 🔴 Mocked (partial) | Simulated branches; full audit = AP-105 |
-| Sandbox isolation | 🟠 Experimental | Default `provider="local"` = no isolation; review = A-006 |
+| Sandbox isolation | 🟢 Pilot Safe | Default-secure fail-closed + boot-validated + workspace-confined (v1.1.0 Track S, effective on commit); isolation opt-in. Residual R-04/R-08/R-09 |
 | Health reporting | 🟠 Experimental | Boot-time boolean; `/api/v1/status` reports `"stub"` |
 | Alembic migrations | 🟠 Experimental | `create_all` is current schema source; migrations incomplete |
 | Distributed scheduling / PostgreSQL / extra integrations | ⚪ Future | Designed/aspirational |
 
-Classification legend: ✅ Completed/Operational · 🟡 Operational (latent/partial) · 🟠 Experimental/Stubbed ·
-🔴 Mocked · ⚪ Future. Authoritative detail in `architecture-status-summary.md`.
+Classification legend: ✅ Completed/Operational · 🟢 Pilot Safe (default-secure, supervised-pilot grade) ·
+🟡 Operational (latent/partial) · 🟠 Experimental/Stubbed · 🔴 Mocked · ⚪ Future. Authoritative detail
+in `architecture-status-summary.md`.
 
 ---
 

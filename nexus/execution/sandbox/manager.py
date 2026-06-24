@@ -8,11 +8,11 @@ from typing import Any
 import structlog
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from nexus.core.exceptions import ConfigurationError, SandboxResolutionError
 from nexus.execution.sandbox.audit import SandboxAuditIntegration
 from nexus.execution.sandbox.provider import (
-    DockerSandboxProvider,
+    RECOGNIZED_PROVIDERS,
     LocalSandboxProvider,
-    MockSandboxProvider,
     SandboxPolicy,
     SandboxProcess,
     SandboxProvider,
@@ -32,25 +32,36 @@ class SandboxManager:
         self.provider = self._resolve_provider()
 
     def _resolve_provider(self) -> SandboxProvider:
-        """Resolve the active SandboxProvider based on configuration settings."""
-        from nexus.config import NexusSettings
-        if not isinstance(self.settings, NexusSettings):
-            return LocalSandboxProvider()
+        """Resolve the active SandboxProvider, fail-closed (S-2 / A-006 R-01, R-02).
 
-        if not self.settings.sandbox:
+        Default-secure resolution: a real configuration must explicitly enable sandboxing and name a
+        recognized provider. Isolation that is disabled, or an unrecognized provider name, raises
+        ``SandboxResolutionError`` rather than silently executing on the host.
+
+        The non-production construction path (``settings`` is not a ``NexusSettings`` — e.g. ``None``
+        or a test double) is intentionally retained as ``LocalSandboxProvider`` to preserve
+        runtime-adapter/e2e construction contracts; production always supplies ``NexusSettings``.
+        """
+        from nexus.config import NexusSettings
+        if not isinstance(self.settings, NexusSettings) or not self.settings.sandbox:
             return LocalSandboxProvider()
 
         cfg = self.settings.sandbox
         if not cfg.enabled:
-            return LocalSandboxProvider()
+            raise SandboxResolutionError(
+                "Sandbox is disabled (sandbox.enabled is False). Refusing to execute on the host "
+                "implicitly (fail-closed). Set sandbox.enabled=true and choose a provider "
+                "(docker for isolation, or local to deliberately run on the host)."
+            )
 
         provider_name = cfg.provider.lower()
-        if provider_name == "docker":
-            return DockerSandboxProvider()
-        elif provider_name == "mock":
-            return MockSandboxProvider()
-        else:
-            return LocalSandboxProvider()
+        provider_cls = RECOGNIZED_PROVIDERS.get(provider_name)
+        if provider_cls is None:
+            raise SandboxResolutionError(
+                f"Unknown sandbox provider '{cfg.provider}'. Refusing to fall back to host "
+                f"execution (fail-closed). Recognized providers: {sorted(RECOGNIZED_PROVIDERS)}."
+            )
+        return provider_cls()
 
     async def execute(
         self,
@@ -105,6 +116,9 @@ class SandboxManager:
                 "command": command,
                 "cwd": cwd,
                 "policy": policy.model_dump(),
+                # R-03: declare honestly whether the resolved provider enforces the policy, rather
+                # than recording a policy the host (local) provider silently ignores.
+                "policy_enforced": self.provider.enforces_policy,
             },
             correlation_id=correlation_id,
         )
@@ -177,3 +191,66 @@ class SandboxManager:
                 correlation_id=correlation_id,
             )
             raise spawn_err
+
+
+async def validate_sandbox_startup(settings: Any) -> None:
+    """Startup gate for execution sandboxing (S-3 / A-006 R-06, R-07).
+
+    Mirrors the A-001 owner gate: validates the sandbox configuration and the availability of the
+    configured provider at boot, so unsafe or unusable sandbox states fail fast instead of being
+    discovered at first command execution.
+
+    Behavior:
+      * Disabled / unconfigured sandbox: allowed (warned) — execution still fails closed at runtime
+        (S-2), so this is a safe, visible state, not a startup-fatal one.
+      * Unknown provider: aborts startup (``ConfigurationError``) — coherence.
+      * Policy-enforcing provider (e.g. docker) unavailable: aborts startup
+        (``ConfigurationError``) — eliminates delayed runtime discovery (R-06).
+      * Non-enforcing provider (local/host): allowed but loudly warned — deliberate, declared
+        host execution (R-03). Each actual host execution is additionally recorded in the immutable
+        audit ledger with ``policy_enforced=false``.
+
+    Raises:
+        ConfigurationError: when the sandbox configuration is incoherent or the configured
+            policy-enforcing provider is unavailable.
+    """
+    from nexus.config import NexusSettings
+
+    cfg = settings.sandbox if isinstance(settings, NexusSettings) else None
+    if cfg is None or not cfg.enabled:
+        logger.warning(
+            "sandbox_disabled_at_startup",
+            detail=(
+                "Sandbox is disabled; governed command execution will fail closed until a provider "
+                "is configured (sandbox.enabled=true)."
+            ),
+        )
+        return
+
+    provider_name = cfg.provider.lower()
+    provider_cls = RECOGNIZED_PROVIDERS.get(provider_name)
+    if provider_cls is None:
+        raise ConfigurationError(
+            f"Startup aborted: unknown sandbox provider '{cfg.provider}'. Recognized providers: "
+            f"{sorted(RECOGNIZED_PROVIDERS)}."
+        )
+
+    provider = provider_cls()
+    try:
+        await provider.ensure_available()
+    except SandboxResolutionError as exc:
+        raise ConfigurationError(
+            f"Startup aborted: sandbox provider '{provider_name}' is unavailable: {exc}"
+        ) from exc
+
+    if not provider.enforces_policy:
+        logger.warning(
+            "sandbox_host_unsafe_at_startup",
+            provider=provider_name,
+            detail=(
+                "Selected sandbox provider does not enforce isolation policy; commands run without "
+                "containment. Deliberate, audited host-execution choice."
+            ),
+        )
+    else:
+        logger.info("sandbox_startup_validated", provider=provider_name)

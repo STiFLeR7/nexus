@@ -83,6 +83,30 @@ class ExecutionTimeoutError(ExecutionEngineError):
     """Raised when an execution exceeds its timeout threshold."""
 
 
+class SandboxResolutionError(ExecutionEngineError):
+    """Raised when an execution sandbox provider cannot be resolved safely (fail-closed).
+
+    Refuses to fall back to host execution when isolation is disabled or the configured provider
+    is unrecognized (S-2 / A-006 R-01, R-02).
+    """
+
+
+class SandboxUnavailableError(SandboxResolutionError):
+    """Raised when a configured sandbox provider is unavailable at validation time (fail-closed).
+
+    Subclasses :class:`SandboxResolutionError` so existing fail-closed handling still applies. Used
+    when the policy-enforcing provider (e.g. Docker) cannot be reached (S-3 / A-006 R-06).
+    """
+
+
+class WorkspaceConfinementError(ExecutionEngineError):
+    """Raised when a file operation resolves outside the approved execution workspace (fail-closed).
+
+    Enforces a single containment boundary for runtime file operations so agent file tools cannot
+    read or write host paths beyond the approved workspace (S-4 / A-006 R-05).
+    """
+
+
 # ---------------------------------------------------------------------------
 # Agent router
 # ---------------------------------------------------------------------------

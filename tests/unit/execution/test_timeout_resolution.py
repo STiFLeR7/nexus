@@ -13,7 +13,7 @@ from typing import TYPE_CHECKING
 import pytest
 from sqlalchemy import select
 
-from nexus.config import ExecutionConfig, NexusSettings
+from nexus.config import ExecutionConfig, NexusSettings, SandboxConfig
 from nexus.execution.runners.base import resolve_execution_timeout
 from nexus.execution.runners.claude import ClaudeRuntimeAdapter
 from nexus.execution.runners.gemini import GeminiRuntimeAdapter
@@ -128,6 +128,9 @@ async def test_hermes_execute_command_uses_research_timeout(
 ) -> None:
     """Hermes' execute_command tool must use the configured research_timeout, not a hardcoded 300."""
     exec_record = await _make_exec(db_session, "hermes")
+    # S-2: sandbox must be explicitly enabled for execution to resolve a provider (fail-closed
+    # default). Provider is irrelevant here since SandboxManager.execute is monkeypatched below.
+    test_settings.sandbox = SandboxConfig(enabled=True, provider="mock")
     adapter = HermesRuntimeAdapter(db_session, exec_record.id, settings=test_settings)
 
     captured: dict[str, int] = {}

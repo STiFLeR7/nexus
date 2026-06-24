@@ -5,6 +5,12 @@
 >
 > **Basis:** Nexus v1.0.0 (tag) + v1.0.1 Alignment. Reality verified first-hand and cross-checked
 > against the accepted onboarding audit (`blueprint/onboarding/`).
+>
+> **v1.1.0 "Containment" — Track S update (2026-06-24):** the **Sandbox Isolation** row is upgraded
+> **Experimental → Pilot Safe** per the accepted Track S closure (S-2/S-3/S-4) and
+> `ADR-sandbox-pilot-safe`. This change is evidence-bound to the Track S source (default-secure
+> fail-closed resolution, startup validation, workspace confinement) and is **effective on commit** of
+> Track S to `v1.1.0-planning`. No other subsystem row changes.
 
 ---
 
@@ -15,6 +21,7 @@
 | **Production Ready** | Built, tested, safe, and genuinely relied upon in the governed path |
 | **Operational** | Built and working in-process; fit for attended/pilot use |
 | **Experimental** | Built but unproven / unsafe-by-default / needs review before trust |
+| **Pilot Safe** | Default-secure and fail-closed; safe for supervised pilot use with documented residual risks (A-006 security-classification axis) |
 | **Stubbed** | Interface exists; concrete behavior is a generic placeholder |
 | **Mocked** | Contains simulated/canned behavior in the production path |
 | **Deferred** | Intentionally postponed within v1.0.x |
@@ -40,7 +47,7 @@
 | **Gemini Runtime** | 🟠 Stubbed | `runners/gemini.py` | Generic shell runner; no real `gemini` CLI binary invocation yet. |
 | **Claude Runtime** | 🟠 Stubbed | `runners/claude.py` | Generic shell runner; no real `claude` CLI binary invocation yet. |
 | **Hermes Runtime** | 🔴 Mocked (partial) | `runners/hermes.py` (AsyncMock branch, hardcoded plan/canned search) | Real loop scaffold + simulated branches in production. **Full ledger is AP-105.** Classified as Agent Runtime (`reports/hermes-runtime-classification.md`). |
-| **Sandbox Isolation** | 🟠 Experimental (default-off) | `config.py:133-137` (`provider="local"`) | Default = **no isolation**; host execution guarded only by substring blacklist. **Review is A-006.** |
+| **Sandbox Isolation** | 🟢 Pilot Safe (Track S) | `manager.py:34-64,196-256`, `provider.py:65,146,151-170,296-300`, `confinement.py`, `hermes.py:75-117`, `api.py:106-113`; 35 sandbox tests (9+14+12) | **v1.1.0 Track S (S-2/S-3/S-4), effective on commit.** Was Experimental (default host exec). Now **default-secure fail-closed** resolution (R-01/R-02), **boot-validated** + Docker-availability probe (R-06/R-07), **honest policy enforcement** (R-03), **workspace-confined** agent file tools (R-05). Isolation still opt-in (`enabled=true,provider=docker`); host run only by deliberate, warned, audited choice. Residual: R-04 (governance blacklist), R-08 (shell surface), R-09 (default not `readonly`). Basis: `ADR-sandbox-pilot-safe`, `track-s-closure-review.md`. |
 | **Health reporting** | 🟠 Experimental | `core/health.py:49-71`; `api.py` `/api/v1/status` returns `"stub"` | Boot-time boolean from `git --version`; not live-probed. Known gap. |
 | **Alembic migrations** | 🟠 Experimental | `api.py` `create_all`; incomplete migrations | `create_all` is the real schema source; migrations incomplete/untested. Blocks PostgreSQL path. |
 | **Distributed / multi-node scheduling** | ⚪ Future | `scheduler-future-scaling.md` | Lease model + PostgreSQL coordination designed, not built. |
@@ -53,9 +60,10 @@
 
 - **Production Ready (5):** Approval, Governance, Memory, Communication Outbox, Task Management.
 - **Operational (5):** Runtime Registry, Execution timeouts, Scheduler, Metrics, (latent) Research / Briefing.
+- **Pilot Safe (1):** Sandbox isolation (v1.1.0 Track S; effective on commit).
 - **Stubbed (2):** Gemini, Claude runtimes.
 - **Mocked (1):** Hermes runtime (full audit → AP-105).
-- **Experimental (4):** Sandbox isolation, Health reporting, Alembic migrations.
+- **Experimental (2):** Health reporting, Alembic migrations.
 - **Future (3):** Distributed scheduling, PostgreSQL, extra integrations.
 
 ## One-line truth
@@ -63,7 +71,8 @@
 > Nexus v1.0.1 is a **production-grade governed-execution kernel** (approval + governance + memory +
 > outbox) with an **operational single-node autonomy layer** (scheduler now drives research,
 > briefing, approval-expiry, metrics, and health jobs), whose **concrete agent runtimes are still
-> stubbed/mocked** and whose **default sandbox is unisolated** — honestly pilot-ready as an
+> stubbed/mocked** and whose **sandbox is now default-secure (Pilot Safe, v1.1.0 Track S — refuses to
+> run on the host implicitly; isolation opt-in)** — honestly pilot-ready as an
 > attended-to-lightly-autonomous single-operator control plane.
 
 ## Especially-watched subsystems (AP-104 mandate)
@@ -72,6 +81,8 @@
   the per-capability ledger.
 - **Research Engine** — 🟡 built + scheduled, **but empty feeds by default**; not autonomous until configured.
 - **Scheduler** — 🟢 Operational, **single-node only** (no cross-process lease yet).
-- **Sandbox Layer** — 🟠 default-off isolation; treat host exposure as real until A-006.
+- **Sandbox Layer** — 🟢 **Pilot Safe** (v1.1.0 Track S, effective on commit): default-secure
+  fail-closed, boot-validated, workspace-confined. Isolation still opt-in (`provider=docker`); host
+  execution only by deliberate, audited choice. Residual R-04/R-08/R-09 disclosed.
 - **Metrics Persistence** — 🟢 now aggregated on schedule (the v1.0.0 dormancy is resolved).
 - **Outbox / Governance / Approval / Memory** — 🟢 the trustworthy core.

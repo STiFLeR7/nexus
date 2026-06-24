@@ -13,6 +13,7 @@ from nexus.core.types import ExecutionStatus
 from nexus.execution.governance import GovernanceManager
 from nexus.execution.runners import runtime_registry
 from nexus.execution.runners.base import AgentRuntimeAdapter, resolve_execution_timeout
+from nexus.execution.sandbox.confinement import resolve_in_workspace
 from nexus.memory.models import (
     AgentStepRecord,
     ExecutionArtifactRecord,
@@ -71,6 +72,13 @@ class HermesRuntimeAdapter(AgentRuntimeAdapter):
             runtime="hermes",
         )
 
+    async def _workspace_cwd(self) -> str:
+        """Return the execution's approved workspace directory (repository) for confinement (R-05)."""
+        stmt = select(ExecutionRecord).where(ExecutionRecord.id == self.execution_id)
+        res = await self.session.execute(stmt)
+        exec_record = res.scalar_one_or_none()
+        return exec_record.repository if exec_record and exec_record.repository else "."
+
     async def _execute_tool(self, name: str, arguments: dict[str, Any]) -> str:
         """Execute local or external tools and return string outcomes."""
         if name == "web_search":
@@ -88,7 +96,9 @@ class HermesRuntimeAdapter(AgentRuntimeAdapter):
         elif name == "read_file":
             path = arguments.get("path", "")
             try:
-                with open(path, encoding="utf-8") as f:
+                # R-05: confine file access to the approved workspace (fail-closed on escape).
+                resolved = resolve_in_workspace(await self._workspace_cwd(), path)
+                with open(resolved, encoding="utf-8") as f:
                     return f.read()
             except Exception as e:
                 return f"Error reading file: {e!s}"
@@ -97,8 +107,10 @@ class HermesRuntimeAdapter(AgentRuntimeAdapter):
             path = arguments.get("path", "")
             content = arguments.get("content", "")
             try:
-                os.makedirs(os.path.dirname(os.path.abspath(path)), exist_ok=True)
-                with open(path, "w", encoding="utf-8") as f:
+                # R-05: confine file access to the approved workspace (fail-closed on escape).
+                resolved = resolve_in_workspace(await self._workspace_cwd(), path)
+                os.makedirs(os.path.dirname(str(resolved)), exist_ok=True)
+                with open(resolved, "w", encoding="utf-8") as f:
                     f.write(content)
                 return f"File written successfully to {path}"
             except Exception as e:
