@@ -1,9 +1,9 @@
-# H-4 — Pilot Execution Roadmap (Hermes Experimental → Pilot)
+# H-4 — Pilot Execution Roadmap (Nexus Experimental → Pilot)
 
 > **Planning only — no implementation, no source changes, no migrations.** The final, ordered Pilot
 > implementation sequence with per-item justification, affected files, test strategy, rollback strategy,
 > and risk. Derived from `H-4-readiness-review.md`, `H-4-scope-definition.md`,
-> `ADR-hermes-v1.1-foundation`, and the H-1 lifecycle/recovery designs. Built on the H-2 freeze
+> `ADR-nexus-v1.1-foundation`, and the H-1 lifecycle/recovery designs. Built on the H-2 freeze
 > (`d6bd75d`, tag `hermes-experimental`). Each step is **separately authorized** before implementation.
 
 ---
@@ -20,7 +20,7 @@ safe wins and isolates the single orchestrator touch (cancellation wiring) to on
 - **Order justification:** smallest, independent, zero-coupling change; removes the "runs without a
   usable key" footgun and is a precondition for trusting every later lifecycle test (no silent no-key
   path). Safe first win.
-- **Affected files:** `nexus/execution/runners/hermes.py` (`initialize()` raises on missing usable key).
+- **Affected files:** `nexus/execution/runners/nexus.py` (`initialize()` raises on missing usable key).
 - **Test strategy (RED-first):** `test_init_fails_without_key` (raises `ConfigurationError`/
   `ExecutionEngineError`; run does not proceed); `test_init_proceeds_with_key`. Regression: H-2 tests
   that construct the adapter inject a client/provider, so they are unaffected.
@@ -33,7 +33,7 @@ safe wins and isolates the single orchestrator touch (cancellation wiring) to on
 
 - **Order justification:** independent, additive config; needed before TIMED_OUT (step 5) so the budget
   is operator-tunable rather than the hardcoded `max_steps = 5`. Low risk, unblocks later items.
-- **Affected files:** `hermes.py` (read budget from settings, default 5 preserved); `nexus/config.py`
+- **Affected files:** `nexus.py` (read budget from settings, default 5 preserved); `nexus/config.py`
   (**additive** field, e.g. `execution.agent_max_steps`).
 - **Test strategy:** `test_step_budget_configurable` (configured value honored); `test_budget_default_preserved`
   (unset → 5). Regression: existing execute tests still finish within budget.
@@ -46,7 +46,7 @@ safe wins and isolates the single orchestrator touch (cancellation wiring) to on
 - **Order justification:** the cancellation mechanism must exist (set a signal; kill an in-flight sandbox
   process) before it can be wired (step 4). Splitting mechanism (step 3) from wiring (step 4) keeps the
   orchestrator-touching change isolated and independently reviewable.
-- **Affected files:** `hermes.py` (`terminate()` sets a DB-observable cancel signal on `ExecutionRecord`;
+- **Affected files:** `nexus.py` (`terminate()` sets a DB-observable cancel signal on `ExecutionRecord`;
   loop checks the signal at state boundaries; in-flight `execute_command` killed via
   `SandboxProcess.terminate()` / provider terminate, `provider.py:47-50` — reused, not new).
 - **Test strategy:** `test_terminate_sets_cancel_signal`; `test_cancel_between_steps_cancels` (→
@@ -78,7 +78,7 @@ safe wins and isolates the single orchestrator touch (cancellation wiring) to on
 - **Order justification:** depends on the configurable budget (step 2) and the lifecycle plumbing
   (steps 3–4); converts "budget/wall-clock exhausted" from H-2's honest binary failure into a distinct
   terminal so timeouts are observably different from errors and completions.
-- **Affected files:** `hermes.py` (enforce ADR-010 wall-clock via the already-imported
+- **Affected files:** `nexus.py` (enforce ADR-010 wall-clock via the already-imported
   `resolve_execution_timeout`; budget/time exhaustion → `TIMED_OUT`); `core/types.py` only if an
   `ExitStatus.TIMED_OUT` is added (**additive**; `ExecutionStatus.TIMED_OUT` already exists
   `types.py:41`); `orchestrator.py` only if a distinct finalization is wanted (else maps to FAILURE).
@@ -93,7 +93,7 @@ safe wins and isolates the single orchestrator touch (cancellation wiring) to on
 - **Order justification:** independent of cancellation (a read-reconstruction), but sequenced after the
   lifecycle terminal states exist so "resumable boundary" (`CHECKPOINTED`) and terminal semantics are
   well-defined. Last code item before the audited run.
-- **Affected files:** `hermes.py` (`resume_goal(execution_id)`: rebuild trajectory from `AgentStepRecord`
+- **Affected files:** `nexus.py` (`resume_goal(execution_id)`: rebuild trajectory from `AgentStepRecord`
   ordered by `step_index`; restore plan + cursor from latest `WorkflowCheckpointRecord`; `step_index =
   max+1`; re-enter loop; re-validate goal via governance); `base.py` (`AgentRuntimeAdapter` — **additive
   optional** method; CLI adapters untouched).

@@ -23,7 +23,7 @@ nexus/memory/       ORM models, MemoryService (audit+outbox+checkpoint), TaskSer
 nexus/gateway/      EventGateway (bus) + two outboxes (system_events, system_outbox)
 nexus/scheduling/   WorkflowOrchestrator (event-driven; NOT a scheduler)
 nexus/approvals/    ApprovalService (the approval gate)
-nexus/execution/    service, governance (11-gate), runners (claude/gemini/hermes), sandbox
+nexus/execution/    service, governance (11-gate), runners (claude/gemini/nexus), sandbox
 nexus/intelligence/ openrouter, research, briefing, summary
 nexus/communication/ discord (bot/service), email (service)
 nexus/api.py        FastAPI app + lifespan wiring (read this to see what actually boots)
@@ -94,7 +94,7 @@ write through `MemoryService.log_event`, and add a subscriber in `orchestrator.r
 ## Day 5 — Gotchas inventory (read before your first PR)
 
 - ⚠ **Timeout field-name bug** (`runners/claude.py:83`, `gemini.py:88`) — don't propagate it.
-- ⚠ **`AsyncMock` in production Hermes** (`hermes.py:7,186`) — if you touch Hermes, inject a test
+- ⚠ **`AsyncMock` in production Nexus** (`nexus.py:7,186`) — if you touch Nexus, inject a test
   double instead.
 - ⚠ **Dead code:** `sandbox/collector.py`, `briefing._deliver_discord`, the selection
   description-prefix heuristic — don't build on them.

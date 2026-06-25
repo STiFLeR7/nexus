@@ -24,7 +24,7 @@ The "Unsafe By Default" label rested on four facts. Each is now reversed **in co
 | 1 | Default ran on host silently | Disabled/real config ⇒ `SandboxResolutionError` at construction | R-01 | `manager.py:50-55`; `test_disabled_sandbox_fails_closed` |
 | 2 | Unknown provider fell open to host | Unrecognized provider ⇒ fail-closed (no fallback) | R-02 | `manager.py:57-64`; `test_unknown_provider_fails_closed` |
 | 3 | Policy decorative; no startup validation | `policy_enforced` honesty + boot gate + Docker probe | R-03, R-06, R-07 | `provider.py:65,146,151-170`; `manager.py:121,196-256`; `api.py:106-113` |
-| 4 | Agent file tools bypassed containment | Workspace-confined, fail-closed, provider-independent | R-05 | `confinement.py`; `hermes.py:96-117`; `test_hermes_*_escape_denied` |
+| 4 | Agent file tools bypassed containment | Workspace-confined, fail-closed, provider-independent | R-05 | `confinement.py`; `nexus.py:96-117`; `test_nexus_*_escape_denied` |
 
 ## 3. Evidence chain (authoritative, accepted)
 

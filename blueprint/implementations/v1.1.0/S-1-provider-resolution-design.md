@@ -30,7 +30,7 @@ resolve_provider(config) :
 - `enabled=False` no longer silently means "host"; the default posture is **isolation-required**
   (boundary-model §5). Host execution requires the explicit `host-unsafe` selection.
 - `mock` is confined to test configuration and **rejected** when a production environment is detected
-  (prevents the Hermes-style "test artifact in prod" failure mode, cross-ref AP-105 Cap 4).
+  (prevents the Nexus-style "test artifact in prod" failure mode, cross-ref AP-105 Cap 4).
 
 ## 3. Availability checking (Q4, R-06)
 

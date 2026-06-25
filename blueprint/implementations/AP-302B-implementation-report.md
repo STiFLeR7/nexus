@@ -40,7 +40,7 @@ Adding the new runtime was accomplished with minimal friction, verifying the cle
 
 | Metric | Count | Details |
 | --- | --- | --- |
-| **Files Modified** | 3 | `runners/__init__.py`, `runners/gemini.py`, `runners/hermes.py` (added registry decorators) |
+| **Files Modified** | 3 | `runners/__init__.py`, `runners/gemini.py`, `runners/nexus.py` (added registry decorators) |
 | **Files Added** | 3 | `runners/claude.py`, `tests/unit/execution/test_claude.py`, `scripts/verify_claude_runtime.py` |
 | **Orchestrator Changes** | 0 | The orchestrator uses the polymorphic Runtime V2 contract and has no runner-specific code. |
 | **Schema Changes** | 0 | No changes to SQLAlchemy tables were required; Claude shares the standard CLI step/execution structures. |

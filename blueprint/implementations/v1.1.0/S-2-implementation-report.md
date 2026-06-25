@@ -3,7 +3,7 @@
 > **Release line:** v1.1.0 "Containment" · **AP:** S-2 · **Track:** S (Sandbox) · **Status:** ✅ Complete
 > **Closes:** A-006 R-01 (default host execution), R-02 (fail-open provider resolution).
 > **Method:** strict TDD (red → green → regression). Branch `v1.1.0-planning`.
-> **Authorization:** AP Authorization: S-2. Stops after S-2 (no S-3, no Hermes work).
+> **Authorization:** AP Authorization: S-2. Stops after S-2 (no S-3, no Nexus work).
 
 ---
 
@@ -39,7 +39,7 @@ case never causes a fail-open.
 | `nexus/core/exceptions.py` | **+** `SandboxResolutionError(ExecutionEngineError)` |
 | `nexus/execution/sandbox/manager.py` | `_resolve_provider` rewritten fail-closed: disabled ⇒ raise; recognized-provider map; unknown ⇒ raise; non-`NexusSettings` ⇒ Local (retained). **+** import of `SandboxResolutionError` |
 | `tests/unit/execution/test_sandbox_resolution.py` | **NEW** — 9 resolution tests (proof) |
-| `tests/unit/execution/test_timeout_resolution.py` | Regression reconciliation: the Hermes `execute_command` timeout test now explicitly enables sandbox (`SandboxConfig(enabled=True, provider="mock")`) so it reaches the monkeypatched `execute` under the new fail-closed default. **No Hermes source change.** |
+| `tests/unit/execution/test_timeout_resolution.py` | Regression reconciliation: the Nexus `execute_command` timeout test now explicitly enables sandbox (`SandboxConfig(enabled=True, provider="mock")`) so it reaches the monkeypatched `execute` under the new fail-closed default. **No Nexus source change.** |
 
 ## 4. Design rationale (why this is minimal and correct)
 
@@ -55,7 +55,7 @@ case never causes a fail-open.
 
 ## 5. Constraint compliance
 
-- TDD first ✅ · minimal diff ✅ · no opportunistic refactoring ✅ · **no Hermes changes** (source) ✅ ·
+- TDD first ✅ · minimal diff ✅ · no opportunistic refactoring ✅ · **no Nexus changes** (source) ✅ ·
   no scheduler changes ✅ · no governance redesign ✅ · no runtime feature additions ✅ ·
   **no schema changes / no migrations** ✅ (only an exception class + resolver logic) ·
   no documentation rewrites ✅ (config defaults unchanged: `enabled` still defaults `False`).
@@ -86,7 +86,7 @@ Details in `sandbox-resolution-validation.md`, `sandbox-failclosed-audit.md`,
 ## 8. Boundary / stop
 
 Stopped after S-2. **Not started:** S-3 (enforced policy, Docker availability probe, startup-validation
-gate), any Hermes work, R-04 command-policy. **No commit made** (awaiting explicit instruction).
+gate), any Nexus work, R-04 command-policy. **No commit made** (awaiting explicit instruction).
 
 ## 9. Status toward classification
 

@@ -4,7 +4,7 @@ Date: 2026-06-24
 Status: Accepted
 Release: v1.1.0 "Containment" · Track S Closure (S-2 / S-3 / S-4)
 Supersedes (classification only): ADR-sandbox-safety-review ("Unsafe By Default")
-Related: ADR-sandbox-v1.1-foundation, ADR-hermes-reality-audit, ADR-011-local-first-deployment,
+Related: ADR-sandbox-v1.1-foundation, ADR-nexus-reality-audit, ADR-011-local-first-deployment,
 ADR-010-execution-timeouts, `blueprint/implementations/v1.1.0/track-s-closure-review.md`,
 `track-s-risk-matrix.md`, `track-s-before-after.md`
 
@@ -15,7 +15,7 @@ ADR-010-execution-timeouts, `blueprint/implementations/v1.1.0/track-s-closure-re
 `ADR-sandbox-safety-review` (A-006) classified the execution sandbox **"Unsafe By Default"** on four
 evidence-pinned facts: (1) the default config executed commands on the host silently; (2) unknown
 provider names fell open to host; (3) the containment policy was decorative under Local with no startup
-validation; (4) Hermes file tools bypassed containment entirely. It produced a 9-risk register
+validation; (4) Nexus file tools bypassed containment entirely. It produced a 9-risk register
 (R-01…R-09) and authorized **no remediation**.
 
 Track S (separately authorized: S-2, S-3, S-4) remediated the Pilot-gating subset under strict TDD,
@@ -26,7 +26,7 @@ source and a live test/lint/type run.
 **Evidence basis (all in-repo, re-verified live at HEAD `2fd3ffc`):**
 - Source: `manager.py` (fail-closed resolution + `validate_sandbox_startup`), `provider.py`
   (`enforces_policy`, `ensure_available`, `RECOGNIZED_PROVIDERS`), `confinement.py`
-  (`resolve_in_workspace`), `hermes.py` (file-tool confinement), `api.py` (lifespan gate),
+  (`resolve_in_workspace`), `nexus.py` (file-tool confinement), `api.py` (lifespan gate),
   `exceptions.py` (three fail-closed exceptions).
 - Tests: `test_sandbox_resolution.py` (9), `test_sandbox_enforcement.py` (14),
   `test_workspace_confinement.py` (12) — green within **178 passed**; ruff clean; mypy clean (58 files).

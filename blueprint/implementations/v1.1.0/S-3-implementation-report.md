@@ -4,7 +4,7 @@
 > **Closes:** A-006 R-03 (decorative policy), R-06 (no Docker availability validation),
 > R-07 (no startup validation). **Preserves** all S-2 fail-closed guarantees (R-01, R-02).
 > **Method:** strict TDD (red → green → regression). Branch `v1.1.0-planning`.
-> **Authorization:** AP Authorization: S-3. Stops after S-3 (no S-4, no Hermes work).
+> **Authorization:** AP Authorization: S-3. Stops after S-3 (no S-4, no Nexus work).
 
 ---
 
@@ -68,7 +68,7 @@
 ## 5. Constraint compliance
 
 TDD-first ✅ · minimal diff ✅ · no opportunistic refactoring (registry extraction is required to avoid
-duplication) ✅ · **no Hermes changes** ✅ · no scheduler changes ✅ · no governance redesign ✅ · no
+duplication) ✅ · **no Nexus changes** ✅ · no scheduler changes ✅ · no governance redesign ✅ · no
 runtime feature additions ✅ · **no schema changes / no migrations** ✅ · no documentation rewrites ✅ ·
 **SandboxManager abstraction preserved** (signature/usage unchanged) ✅.
 
@@ -96,11 +96,11 @@ runtime feature additions ✅ · **no schema changes / no migrations** ✅ · no
 ## 8. Boundary / stop
 
 Stopped after S-3. **Not started:** S-4 (R-05 file-tool confinement seam, optional R-04 command policy),
-any Hermes work. **No commit made** (awaiting explicit instruction).
+any Nexus work. **No commit made** (awaiting explicit instruction).
 
 ## 9. Status toward classification
 
 S-3 closes R-03, R-06, R-07; with S-2 (R-01, R-02) the sandbox is now **default-secure + fail-closed +
-enforcement-honest + boot-validated**. The remaining gap to **Pilot Safe** is **R-05** (Hermes file-tool
+enforcement-honest + boot-validated**. The remaining gap to **Pilot Safe** is **R-05** (Nexus file-tool
 host bypass), owned by **S-4** (with Track H). `architecture-status-summary.md` is therefore **not yet**
 upgraded.

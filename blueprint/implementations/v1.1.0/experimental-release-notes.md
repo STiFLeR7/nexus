@@ -1,4 +1,4 @@
-# Hermes Experimental — Release Notes (v1.1.0 "Containment", H-2)
+# Nexus Experimental — Release Notes (v1.1.0 "Containment", H-2)
 
 > Audience-facing notes for the Track H / H-2 increment. H-2 is the second completed track of v1.1.0
 > (after Track S); the v1.1.0 release itself remains open pending Pilot (H-4). Documentation only.
@@ -7,7 +7,7 @@
 
 ## Headline
 
-**Hermes is now honest.** Its production path no longer simulates intelligence — it makes real model
+**Nexus is now honest.** Its production path no longer simulates intelligence — it makes real model
 decisions via structured tool-calls, searches through an injectable provider, plans from the goal, and
 reports truthful success/failure. Maturity: **Prototype → Experimental**.
 
@@ -35,12 +35,12 @@ reports truthful success/failure. Maturity: **Prototype → Experimental**.
 
 ## Operator guidance
 
-- **Experimental use:** Hermes can be exercised as an honest agent runtime; outcomes (success/failure)
+- **Experimental use:** Nexus can be exercised as an honest agent runtime; outcomes (success/failure)
   are now trustworthy and audited.
 - **Search:** inject a real `SearchProvider` for live search; bind its egress to the sandbox network
   policy. Without one, `web_search` returns an explicit "no provider configured" error (safe default).
 - **Not yet lifecycle-safe:** there is **no** cancellation and **no** resume. An interrupted run cannot
-  be stopped mid-flight and restarts from zero — do not run Hermes unattended for long tasks. That is the
+  be stopped mid-flight and restarts from zero — do not run Nexus unattended for long tasks. That is the
   Pilot bar (H-4).
 
 ## Known limitations (Pilot bar / H-4)

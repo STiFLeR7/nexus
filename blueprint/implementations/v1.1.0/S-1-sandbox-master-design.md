@@ -24,7 +24,7 @@ scheduler, memory, or events (Architecture Rules 1–10). Target verdict: **Pilo
 | Default = host execution (no isolation) | `config.py:135` `enabled=False` → `manager.py:44-45` Local → `provider.py:96` host shell | R-01 (Critical) |
 | Fail-open provider resolution | `manager.py:52-53` `else: LocalSandboxProvider()` | R-02 (Critical) |
 | Decorative policy under Local | `manager.py:91-110` builds/audits policy; `provider.py:88-101` Local ignores it | R-03 (High) |
-| Hermes file-tool host bypass | `hermes.py:88-105` | R-05 (High, **shared**) |
+| Nexus file-tool host bypass | `nexus.py:88-105` | R-05 (High, **shared**) |
 | No startup/Docker validation | none in `api.py` lifespan; no Docker probe | R-06/R-07 |
 
 What is **already good** and must be preserved: the Docker provider correctly enforces
@@ -39,7 +39,7 @@ audit logging is complete and immutable (`audit.py`, `manager.py:101-179`).
 | `S-1-provider-resolution-design.md` | Fail-closed resolution + availability | Q2, Q4 |
 | `S-1-security-policy-design.md` | Policy enforced-or-fail-closed; startup validation | Q2, Q3, Q5 |
 | `S-1-runtime-containment-design.md` | Per-runtime containment incl. file tools | Q5, Q6 |
-| `../v1.1.0/R-05-shared-resolution.md` | Hermes file-tool confinement (shared) | Q6 |
+| `../v1.1.0/R-05-shared-resolution.md` | Nexus file-tool confinement (shared) | Q6 |
 
 ## 4. Required questions — master answers (detail in sub-designs)
 
@@ -59,7 +59,7 @@ audit logging is complete and immutable (`audit.py`, `manager.py:101-179`).
 5. **Runtime containment enforcement?** Containment = the Docker boundary; the `SandboxPolicy` is
    **honored or the run fails closed** (no decorative pass); Local is reclassified as *explicitly unsafe,
    opt-in only*. (→ runtime-containment, security-policy.)
-6. **Hermes file tools participation?** File tools route through the same containment/path-confinement
+6. **Nexus file tools participation?** File tools route through the same containment/path-confinement
    boundary; owned by Track S, consumed by Track H — single resolution in `R-05-shared-resolution.md`.
 7. **Pilot Safe constitutes:** default-secure; fail-closed resolution; startup validation; enforced
    policy (or fail closed); file tools confined; audit complete (already true).

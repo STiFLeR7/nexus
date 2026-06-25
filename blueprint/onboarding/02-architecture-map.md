@@ -147,7 +147,7 @@ See `10-technical-debt-review.md` for the consolidated divergence list.
 - **Autonomy maturity: low.** Scheduling is absent; research/briefing/expiration/aggregation are
   built but un-triggered.
 - **Runtime maturity: medium.** The registry/adapter/governance abstraction is excellent; the
-  actual CLI integrations are generic shell runners and Hermes is partly simulated.
+  actual CLI integrations are generic shell runners and Nexus is partly simulated.
 
 Nexus is best described architecturally as a **well-engineered governed-execution kernel with an
 event-sourced memory backbone**, around which the autonomous-operations layer is designed and

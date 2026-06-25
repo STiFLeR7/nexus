@@ -1,6 +1,6 @@
 # Runtime Contract Review
 
-This report audits the base `BaseRuntimeAdapter` contract to identify implicit assumptions, generic behaviors, and points of friction for non-CLI runtimes (such as API-based autonomous agent runtimes like Hermes).
+This report audits the base `BaseRuntimeAdapter` contract to identify implicit assumptions, generic behaviors, and points of friction for non-CLI runtimes (such as API-based autonomous agent runtimes like Nexus).
 
 ---
 
@@ -38,7 +38,7 @@ class BaseRuntimeAdapter(ABC):
 ### 1. Which methods are truly generic?
 * **`initialize()`**: Every runtime (CLI, subprocess, API, or hybrid) must setup its keys, connections, or initial configuration parameters before starting.
 * **`heartbeat()`**: Required for all runtimes. Both background sub-processes and long-running API loops must update a temporal indicator (`last_heartbeat`) to prevent the scheduler from marking them as timed out.
-* **`checkpoint(step_name, state)`**: Generic mechanism to record intermediate progress state. Any multi-step agent loop (including Hermes or Claude) or subprocess steps should checkpoint progress.
+* **`checkpoint(step_name, state)`**: Generic mechanism to record intermediate progress state. Any multi-step agent loop (including Nexus or Claude) or subprocess steps should checkpoint progress.
 * **`summarize()`**: Generic requirement. Synthesizes run logs/traces into a clean markdown format using LLM complete APIs.
 
 ### 2. Which methods contain Gemini assumptions?
@@ -53,7 +53,7 @@ class BaseRuntimeAdapter(ABC):
 * **`validate(repository_path, command)`**: The validation of a string `command` using blacklist string filters assumes the input is a single CLI shell invocation.
 * **`execute(command)`**: Assumes that the runner accepts a single command string to execute.
 
-### 5. Which methods would fail for Hermes-style API execution?
-* **`validate()`**: Hermes receives a task prompt/goal (e.g. "Optimize query index in DB") rather than a single CLI shell command string. Validating a CLI command string fails to review what tools the autonomous agent will call dynamically during its API execution loop.
-* **`execute()`**: Passing a shell command string is inapplicable to Hermes, which executes an iterative API agent loop (Reasoning -> Action -> Observation).
-* **`stdout_log` / `stderr_log` property access**: Hermes doesn't output traditional standard output/error files. Reading these fields yields empty strings, missing vital execution trace history.
+### 5. Which methods would fail for Nexus-style API execution?
+* **`validate()`**: Nexus receives a task prompt/goal (e.g. "Optimize query index in DB") rather than a single CLI shell command string. Validating a CLI command string fails to review what tools the autonomous agent will call dynamically during its API execution loop.
+* **`execute()`**: Passing a shell command string is inapplicable to Nexus, which executes an iterative API agent loop (Reasoning -> Action -> Observation).
+* **`stdout_log` / `stderr_log` property access**: Nexus doesn't output traditional standard output/error files. Reading these fields yields empty strings, missing vital execution trace history.

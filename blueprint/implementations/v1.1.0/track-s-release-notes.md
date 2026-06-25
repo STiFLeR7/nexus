@@ -22,9 +22,9 @@ approved workspace. Maturity: **Experimental → Pilot Safe**.
 - **Honest enforcement (S-3).** Every execution records whether the provider actually enforces the
   policy (`policy_enforced`); a host run is **declared**, never pretended. Ends the "decorative policy."
   Closes R-03.
-- **Workspace-confined file tools (S-4).** Hermes `read_file`/`write_file` are confined to the approved
+- **Workspace-confined file tools (S-4).** Nexus `read_file`/`write_file` are confined to the approved
   workspace; path traversal, absolute-path, and symlink escapes fail closed — provider-independent.
-  Closes R-05 (the cross-track Hermes file-bypass).
+  Closes R-05 (the cross-track Nexus file-bypass).
 
 ## Security classification
 
@@ -77,4 +77,4 @@ approved workspace. Maturity: **Experimental → Pilot Safe**.
 ## Status
 
 Track S is **complete and frozen for commit**. The maturity upgrade is effective on commit to
-`v1.1.0-planning`. Track H (Hermes evolution) is unaffected and not started.
+`v1.1.0-planning`. Track H (Nexus evolution) is unaffected and not started.

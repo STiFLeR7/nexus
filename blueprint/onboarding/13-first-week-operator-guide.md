@@ -82,7 +82,7 @@ binaries / no local repos).
 ## Day 4 — Driving a workflow
 
 1. In Discord, `/task_create` with a title/description. Prefix the description with `cmd:` to run a
-   shell command or `goal:` for a Hermes goal (`orchestrator.py:145-152`). ⚠ With no prefix and empty
+   shell command or `goal:` for a Nexus goal (`orchestrator.py:145-152`). ⚠ With no prefix and empty
    description it runs a hardcoded `echo` (`orchestrator.py:145`).
 2. The bot posts an **approval card** to `#approvals`. Click **Approve** (only owners can).
 3. Execution runs under the governance gate; logs/diff/summary are persisted; a summary posts to

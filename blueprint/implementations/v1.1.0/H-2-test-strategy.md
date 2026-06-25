@@ -1,6 +1,6 @@
 # H-2 — Test Strategy (Track H, v1.1.0)
 
-> **Design only.** The test design that will *prove* Hermes honesty when H-2 is implemented. Defines
+> **Design only.** The test design that will *prove* Nexus honesty when H-2 is implemented. Defines
 > what to test, the RED→GREEN→regression discipline, the injection seams that replace the in-module
 > mock, and the explicit evidence each P0 gap requires. No tests are written here (no implementation).
 > Run target (at implementation time): project venv `.venv/Scripts/python.exe`.
@@ -16,12 +16,12 @@
   *transport/provider*, never the *decision logic* — so green tests evidence real reasoning paths
   (closes Gap 9).
 - **Honesty assertions are negative too:** assert simulation is *absent* (no `unittest.mock` import in
-  `hermes.py`; no canned search string in the runtime).
+  `nexus.py`; no canned search string in the runtime).
 - **Preserve the sound skeleton:** existing persistence/governance/artifact assertions must stay green.
 
 ## 2. Current baseline (what exists today)
 
-`tests/unit/execution/test_hermes.py` — 4 tests, **all through the mock path**: they assert governance,
+`tests/unit/execution/test_nexus.py` — 4 tests, **all through the mock path**: they assert governance,
 `agent_steps`/checkpoint persistence, artifact shape. They do **not** cover real reasoning, real search,
 failure, termination, or resume (Gap 9). These tests must be **migrated** to the injection seam, not
 deleted — their persistence/governance assertions remain valuable.
@@ -31,7 +31,7 @@ deleted — their persistence/governance assertions remain valuable.
 | Fake | Replaces | Shape |
 |---|---|---|
 | `FakeLLMClient` | in-module `AsyncMock` for `openrouter_client` | `async complete(prompt) -> str` returning scripted **structured** JSON tool-calls (per test) |
-| `FakeSearchProvider` | canned `web_search` text (`hermes.py:84-94`) | `async search(query) -> results` returning deterministic fixtures |
+| `FakeSearchProvider` | canned `web_search` text (`nexus.py:84-94`) | `async search(query) -> results` returning deterministic fixtures |
 | `FailingLLMClient` / `FailingSearchProvider` | — | raise/return `ok=false` to drive FAILED paths |
 
 All injected via constructor (Rule 2). Located in `tests/` (or a `conftest.py` fixture), **never** in
@@ -41,7 +41,7 @@ All injected via constructor (Rule 2). Located in `tests/` (or a `conftest.py` f
 
 | Gap | RED test(s) | Asserts (honest behavior) |
 |---|---|---|
-| **P0-1 mock removal** | `test_no_mock_import_in_runtime`; `test_real_branch_drives_loop` | `unittest.mock` not imported by `hermes.py`; loop runs via injected `FakeLLMClient` (no `is_mocked`) |
+| **P0-1 mock removal** | `test_no_mock_import_in_runtime`; `test_real_branch_drives_loop` | `unittest.mock` not imported by `nexus.py`; loop runs via injected `FakeLLMClient` (no `is_mocked`) |
 | **P0-2 structured calls** | `test_structured_toolcall_parsed`; `test_malformed_toolcall_is_error_not_finish`; `test_unknown_tool_errors` | valid `ToolCall` parsed; malformed → explicit error state (not silent `finish`); unknown tool → error `ToolResult` |
 | **P0-3 goal-derived plan** | `test_plan_derived_from_goal`; `test_no_hardcoded_plan_literal` | plan varies with goal; persisted as real `agent_plan`; the 3-step literal is gone |
 | **P0-4 exit status** | `test_failure_yields_nonzero_exit`; `test_failed_step_status_truthful`; `test_success_yields_zero` | tool/loop failure → non-zero exit + FAILURE finalization; failed step persisted non-COMPLETED; genuine finish → 0 |
@@ -61,14 +61,14 @@ All injected via constructor (Rule 2). Located in `tests/` (or a `conftest.py` f
 
 - **Full suite must stay green** (current **178 passed**) after each H-2 step; CLI runtimes
   (`test_gemini.py`, `test_claude.py`), sandbox suites (S-2/S-3/S-4), governance, scheduler, and e2e
-  (`test_mvp_workflow.py`) are unaffected by Hermes-internal honesty changes.
+  (`test_mvp_workflow.py`) are unaffected by Nexus-internal honesty changes.
 - **e2e finalization guard:** `test_mvp_workflow` exercises the orchestrator finalize path; verify a
-  Hermes failure now finalizes FAILURE (not masked SUCCESS) without breaking the success path.
+  Nexus failure now finalizes FAILURE (not masked SUCCESS) without breaking the success path.
 - **Gates:** `ruff check nexus/ tests/` clean; `mypy nexus/` clean — every step.
 
 ## 7. Coverage definition of done (Experimental)
 
-Hermes is test-qualified for Experimental when: the mock path is gone and proven absent; the real
+Nexus is test-qualified for Experimental when: the mock path is gone and proven absent; the real
 decision/search/plan/exit-status behaviors are each covered by a passing test using injected fakes;
 failure is observably non-zero; and the full suite + ruff + mypy are green with zero regressions. Pilot
 adds the P1-1/P1-2/P1-4 suites plus one audited real governed run.

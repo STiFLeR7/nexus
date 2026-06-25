@@ -1,8 +1,8 @@
-# R-05 — Shared Resolution: Hermes File-Tool Host Bypass (v1.1.0)
+# R-05 — Shared Resolution: Nexus File-Tool Host Bypass (v1.1.0)
 
 > **Cross-track (H ∩ S) · Design only.** The **single** authoritative resolution for R-05 — owned once,
 > referenced by both tracks, never duplicated. No code. Source: `../v1.0.1/sandbox-risk-register.md`
-> (R-05) ≡ `../v1.0.1/hermes-gap-analysis.md` (Gap 7).
+> (R-05) ≡ `../v1.0.1/nexus-gap-analysis.md` (Gap 7).
 
 ---
 
@@ -10,8 +10,8 @@
 
 | | |
 |---|---|
-| **Risk** | Hermes `read_file`/`write_file` touch the **host filesystem directly**, bypassing the sandbox entirely — arbitrary host file read/write regardless of provider. |
-| **Evidence** | `hermes.py:88-105` (raw `open()/read()/write()`, no `SandboxManager`, no path check). |
+| **Risk** | Nexus `read_file`/`write_file` touch the **host filesystem directly**, bypassing the sandbox entirely — arbitrary host file read/write regardless of provider. |
+| **Evidence** | `nexus.py:88-105` (raw `open()/read()/write()`, no `SandboxManager`, no path check). |
 | **Appears in** | A-006 risk register as **R-05 (High)**; AP-105 gap analysis as **Gap 7 (🟡→ High when combined)**. Same defect, two audits. |
 
 ## 2. Ownership (no duplicate solutions)
@@ -19,10 +19,10 @@
 | Concern | Owner | Consumer |
 |---|---|---|
 | The **containment/path-confinement boundary** (the mechanism) | **Track S** (`S-1-runtime-containment-design.md`) | — |
-| **File tools routed through the boundary** (the adoption) | **Track H** (`H-1-hermes-tooling-design.md`) | Track S boundary |
+| **File tools routed through the boundary** (the adoption) | **Track H** (`H-1-nexus-tooling-design.md`) | Track S boundary |
 | Network egress decision for real search | **Track S** policy, recorded here §6 | Track H search |
 
-**Rule:** the boundary is designed and built **once** in Track S; Hermes does **not** invent its own
+**Rule:** the boundary is designed and built **once** in Track S; Nexus does **not** invent its own
 confinement (Rule 9, no hidden coupling). This document is the only place the resolution is specified.
 
 ## 3. Resolution strategy (design-level)
@@ -59,12 +59,12 @@ strengths (floor + ceiling) — not two separate solutions.
    S-4 ── builds the confinement SEAM (boundary mechanism)  ◀── R-05 boundary lands here
         │
         ▼
-   H-5 ── Hermes file tools ADOPT the seam                  ◀── R-05 closed here
+   H-5 ── Nexus file tools ADOPT the seam                  ◀── R-05 closed here
 ```
 
-**Order rule:** the Track S confinement seam (S-4) **must precede** Hermes file-tool adoption (H-5).
+**Order rule:** the Track S confinement seam (S-4) **must precede** Nexus file-tool adoption (H-5).
 H-2…H-4 (honesty, search, lifecycle, resume) do **not** depend on R-05 and may proceed in parallel; only
-the *file-tool* portion of Hermes Pilot is gated on S-4.
+the *file-tool* portion of Nexus Pilot is gated on S-4.
 
 ## 6. Search egress sub-decision (one answer for both tracks)
 
@@ -76,10 +76,10 @@ so Tracks H and S do not diverge.
 
 ## 7. Definition of done (R-05)
 
-- Hermes file tools cannot read/write outside the approved workspace (floor), verified by tests.
+- Nexus file tools cannot read/write outside the approved workspace (floor), verified by tests.
 - With Docker active, file I/O is in-container (ceiling).
 - Out-of-workspace access fails closed + audited.
-- One mechanism, referenced by both `H-1-hermes-tooling-design.md` and
+- One mechanism, referenced by both `H-1-nexus-tooling-design.md` and
   `S-1-runtime-containment-design.md` — no duplicate implementation.
 
-Closing R-05 is a **Pilot** requirement for **both** Hermes (Pilot) and Sandbox (Pilot Safe).
+Closing R-05 is a **Pilot** requirement for **both** Nexus (Pilot) and Sandbox (Pilot Safe).

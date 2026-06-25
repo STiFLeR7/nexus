@@ -60,5 +60,5 @@ class ExecutionArtifactRecord(TimestampMixin, Base):
     content: Mapped[str | None]
     data: Mapped[dict | None]
 ```
-No table alterations are required. The new runtimes (Claude, Hermes) can insert artifact rows by specifying new type attributes (e.g., `trajectory`, `citations`).
+No table alterations are required. The new runtimes (Claude, Nexus) can insert artifact rows by specifying new type attributes (e.g., `trajectory`, `citations`).
 * *Classification*: **Non-Breaking / No Migration Required**.

@@ -1,15 +1,15 @@
-# H-4 — Scope Definition (Hermes Experimental → Pilot)
+# H-4 — Scope Definition (Nexus Experimental → Pilot)
 
 > **Definition only — no implementation, no source changes.** Fixes the scope, boundaries, gate, and
 > deliverables for a future, separately-authorized H-4 implementation AP. Derived from
-> `H-4-readiness-review.md`, `ADR-hermes-v1.1-foundation` (Pilot gate), and the H-1 lifecycle/recovery
+> `H-4-readiness-review.md`, `ADR-nexus-v1.1-foundation` (Pilot gate), and the H-1 lifecycle/recovery
 > designs.
 
 ---
 
 ## 1. Mission
 
-Move Hermes from **Experimental** (honest) to **Pilot** (honest **and** lifecycle-safe **and**
+Move Nexus from **Experimental** (honest) to **Pilot** (honest **and** lifecycle-safe **and**
 contained) by delivering cooperative cancellation, resumable recovery, fail-fast init, a configurable
 budget, and timeout lifecycle handling — without touching governance, scheduler, memory schema, the
 event taxonomy, or the runtime-abstraction contract beyond the minimum each item requires.
@@ -48,7 +48,7 @@ event taxonomy, or the runtime-abstraction contract beyond the minimum each item
    governance gate, RuntimeRegistry, and `AgentStepRecord` schema.
 5. **Cooperative cancellation only** — no forced async-task/thread kill.
 
-## 5. Lifecycle target (from `H-1-hermes-lifecycle-design.md`)
+## 5. Lifecycle target (from `H-1-nexus-lifecycle-design.md`)
 
 Terminal states: `COMPLETED` · `FAILED` · `TIMED_OUT` · `CANCELLED`, each mapped to a faithful exit
 status. Resume entry only from the `CHECKPOINTED` boundary. Cancellation observed at state boundaries

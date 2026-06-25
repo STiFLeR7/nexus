@@ -40,8 +40,8 @@ the suite:
 - S-2 resolution suite (`test_sandbox_resolution.py`, 9) — **all green** (S-2 preserved).
 - `test_sandbox.py` (policy defaults, fallback, mock/docker construction, mock execution audit,
   lifecycle, collector) — **green**.
-- `test_timeout_resolution.py` (incl. the S-2-reconciled Hermes test) — **green**.
-- `test_gemini.py`, `test_claude.py`, `test_hermes.py`, `test_governance.py`,
+- `test_timeout_resolution.py` (incl. the S-2-reconciled Nexus test) — **green**.
+- `test_gemini.py`, `test_claude.py`, `test_nexus.py`, `test_governance.py`,
   `test_p0_hardening.py`, `test_scheduler_foundation.py`, `test_startup_validation.py`,
   e2e `test_mvp_workflow.py` — **green**.
 
@@ -56,7 +56,7 @@ the suite:
 | `nexus/api.py` | source (lifespan gate call) |
 | `tests/unit/execution/test_sandbox_enforcement.py` | new test (14) |
 
-No changes to Hermes/Gemini/Claude source, scheduler, governance, memory, schema, migrations, or config
+No changes to Nexus/Gemini/Claude source, scheduler, governance, memory, schema, migrations, or config
 defaults.
 
 ## 5. Explicit proofs (required)

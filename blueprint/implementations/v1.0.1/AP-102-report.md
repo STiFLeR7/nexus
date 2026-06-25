@@ -37,7 +37,7 @@ No other work. Strict TDD: failing tests first, minimal root-cause fix, then ful
 ### A-002 — honor configured timeouts + hard limit
 - `nexus/execution/runners/base.py`: new `resolve_execution_timeout(settings, field, default=300)`
   helper; reads the per-runtime field, clamps to `hard_limit`.
-- `claude.py` → `claude_timeout`; `gemini.py` → `gemini_timeout`; `hermes.py` (`execute_command`) →
+- `claude.py` → `claude_timeout`; `gemini.py` → `gemini_timeout`; `nexus.py` (`execute_command`) →
   `research_timeout`. Removed the broken `research_timeout_seconds` lookups and the hardcoded 300.
 - Detail: [`runtime-timeout-validation.md`](./runtime-timeout-validation.md).
 
@@ -62,7 +62,7 @@ Full evidence: [`safety-regression-report.md`](./safety-regression-report.md).
 ## 6. Constraint compliance
 
 - ✅ Only A-001 and A-002 touched; no scope expansion.
-- ✅ No scheduler work, no Hermes redesign, no sandbox changes, no documentation
+- ✅ No scheduler work, no Nexus redesign, no sandbox changes, no documentation
   (README/STATUS/ROADMAP) updates, no runtime features, no governance/architecture changes.
 - ✅ Only root-cause fixes; no opportunistic refactoring.
 - ✅ Every change traces to an accepted finding (constraint 6).
@@ -75,7 +75,7 @@ Full evidence: [`safety-regression-report.md`](./safety-regression-report.md).
 Per instruction (additional issues documented, not fixed):
 1. `bot.py` inline owner check retains fail-open *shape* for its UX message only (authoritative
    `evaluate_approval` is now fail-closed) — cosmetic alignment **deferred**.
-2. No dedicated `hermes_timeout` config field; Hermes uses `research_timeout` — **deferred**.
+2. No dedicated `nexus_timeout` config field; Nexus uses `research_timeout` — **deferred**.
 3. Timed-out CLI steps still recorded `COMPLETED`/`exit_code=-1` (TD-21) — **deferred**.
 
 ## 8. Success criteria — met

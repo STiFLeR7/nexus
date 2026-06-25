@@ -101,7 +101,7 @@ now genuinely closed by v1.0.1, so those references became *accurate retroactive
 | `nexus/__init__.py` / `pyproject.toml` `version = "0.1.0"` vs tag `v1.0.0` | Source/config edit — AP-104 is documentation-only | A one-line version-sync change in a code AP (or the v1.0.1 release commit) |
 | `requires-python >=3.12` vs README "3.11+" | README is doc (fixed here); the *authoritative* value lives in pyproject (code) | README corrected to 3.12+; pyproject already correct |
 | `/api/v1/status` reports subsystems as literal `"stub"` | Source behavior, not a doc | Note in STATUS as a known reporting gap; fix in a future code AP |
-| Hermes precise capability ledger | Belongs to AP-105 (Hermes Reality Audit) | AP-105 |
+| Nexus precise capability ledger | Belongs to AP-105 (Nexus Reality Audit) | AP-105 |
 | Sandbox default-off security posture | Belongs to A-006 sandbox review | A-006 |
 
 These are recorded in `documentation-alignment-report.md` and the final summary as

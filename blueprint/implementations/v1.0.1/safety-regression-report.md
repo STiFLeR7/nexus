@@ -62,12 +62,12 @@ Source changes (`git diff --stat`): **6 files, +76 / −18**.
 | `nexus/execution/runners/base.py` | +`resolve_execution_timeout` helper | A-002 |
 | `nexus/execution/runners/claude.py` | use `claude_timeout` resolver | A-002 |
 | `nexus/execution/runners/gemini.py` | use `gemini_timeout` resolver | A-002 |
-| `nexus/execution/runners/hermes.py` | use `research_timeout` resolver | A-002 |
+| `nexus/execution/runners/nexus.py` | use `research_timeout` resolver | A-002 |
 
 New test files (untracked): `tests/unit/approvals/test_owner_auth_hardening.py`,
 `tests/unit/test_startup_validation.py`, `tests/unit/execution/test_timeout_resolution.py`.
 
-**No** changes to: scheduler, sandbox, governance, Hermes loop/plan/simulation, documentation
+**No** changes to: scheduler, sandbox, governance, Nexus loop/plan/simulation, documentation
 (README/STATUS/ROADMAP), or any architecture. No opportunistic refactoring.
 
 ## 5. Success-criteria matrix (AP-102)
@@ -79,7 +79,7 @@ New test files (untracked): `tests/unit/approvals/test_owner_auth_hardening.py`,
 | Valid owners unchanged | ✅ | `test_valid_owner_behaves_unchanged`, existing approval tests pass |
 | Runtime timeouts match configuration | ✅ | Claude/Gemini behavioral tests (2700/1800) |
 | Hard limit enforced | ✅ | `test_hard_limit_is_impossible_to_exceed`, `test_claude_execute_clamps_to_hard_limit` |
-| Claude/Gemini/Hermes verified | ✅ | per-runtime behavioral tests |
+| Claude/Gemini/Nexus verified | ✅ | per-runtime behavioral tests |
 | All tests pass | ✅ | 126 passed |
 | No regressions | ✅ | full suite + ruff + mypy clean |
 | Git diff tightly scoped | ✅ | 6 files, +76/−18, all traced to A-001/A-002 |
@@ -91,7 +91,7 @@ Per the "any additional issue must be documented and deferred" instruction:
 1. **`bot.py:52-58` inline owner check** retains the `if self.owner_ids and …` shape for its
    ephemeral UX reply. Not an authorization bypass (the authoritative `evaluate_approval` now fails
    closed). Cosmetic alignment **deferred**.
-2. **No dedicated `hermes_timeout` config field.** Hermes maps to `research_timeout` (rationale in
+2. **No dedicated `nexus_timeout` config field.** Nexus maps to `research_timeout` (rationale in
    `runtime-timeout-validation.md`). Introducing a dedicated tier **deferred** (config addition).
 3. **Timed-out CLI steps still recorded `COMPLETED`/`exit_code=-1`** (audit TD-21). Separate accepted
    item, not in AP-102 scope — **deferred**.

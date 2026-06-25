@@ -14,7 +14,7 @@ transactional, and tested at unit/integration/e2e levels**, and its governance a
 architecture are genuinely well-engineered. However, the documentation describes a **more complete
 system than the code runs**: the scheduling layer is absent (no APScheduler despite the dependency),
 the research and briefing engines are fully built but never triggered, the Claude/Gemini "runtimes"
-are generic shell runners, Hermes is partly simulated (including `AsyncMock` in production), and the
+are generic shell runners, Nexus is partly simulated (including `AsyncMock` in production), and the
 blueprint state files (STATUS/ROADMAP/README) are stale relative to the shipped Phase 2/3 work. The
 accurate framing of v1.0.0 is: **a pilot-ready, attended, governed-execution kernel with autonomy as
 the clearly-designed next milestone.**
@@ -41,7 +41,7 @@ ten brief-mandated subsystems is distributed across:
 | Communication Outbox | Excellent | 🟡 Live but bypassed by sync-flush default | `communication_outbox.py:79-243`, `briefing.py:201` |
 | System-events Outbox | Adequate | 🟡 Live but lossy on Discord outage | `outbox.py:159` |
 | Runtime Registry/Selection | Excellent abstraction | 🟡 Selection still uses id+prefix | `runners/__init__.py`, `orchestrator.py:143-152` |
-| Runners (Claude/Gemini/Hermes) | Mixed | 🟡 Shell stubs / partly simulated | `claude.py:107`, `hermes.py:183-209` |
+| Runners (Claude/Gemini/Nexus) | Mixed | 🟡 Shell stubs / partly simulated | `claude.py:107`, `nexus.py:183-209` |
 | Sandbox Manager | Good abstraction | 🟡 Default = no isolation | `manager.py:34-53`, `config.py:101` |
 | Metrics persistence | Good | 🟡 Raw flush only; aggregation uncalled | `metrics.py:123` vs `:142` |
 | Research Engine | Good | 🔴 Built, never triggered | `research.py:218` |

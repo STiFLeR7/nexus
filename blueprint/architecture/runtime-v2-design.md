@@ -54,7 +54,7 @@ classDiagram
     CLIRuntimeAdapter <|-- GeminiRuntimeAdapter
     CLIRuntimeAdapter <|-- ClaudeRuntimeAdapter
 
-    AgentRuntimeAdapter <|-- HermesRuntimeAdapter
+    AgentRuntimeAdapter <|-- NexusRuntimeAdapter
 ```
 
 ---

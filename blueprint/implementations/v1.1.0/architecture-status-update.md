@@ -24,7 +24,7 @@
 
 **After**
 ```
-| Sandbox Isolation | 🟢 Pilot Safe (Track S) | manager.py, provider.py, confinement.py, hermes.py,
+| Sandbox Isolation | 🟢 Pilot Safe (Track S) | manager.py, provider.py, confinement.py, nexus.py,
   api.py; 35 sandbox tests | v1.1.0 Track S (S-2/S-3/S-4), effective on commit. Default-secure
   fail-closed (R-01/R-02), boot-validated + Docker probe (R-06/R-07), honest enforcement (R-03),
   workspace-confined file tools (R-05). Isolation opt-in. Residual R-04/R-08/R-09.
@@ -58,7 +58,7 @@
 
 ## 5. Deliberately NOT changed
 
-- No other subsystem rows (Hermes still 🔴 Mocked; Gemini/Claude 🟠 Stubbed; Health/Alembic
+- No other subsystem rows (Nexus still 🔴 Mocked; Gemini/Claude 🟠 Stubbed; Health/Alembic
   Experimental) — Track S touched only the sandbox.
 - No runtime/behavior/test/config files.
 - The v1.0.1 release framing of STATUS.md/ROADMAP.md (release line, AP history) — only the

@@ -27,6 +27,10 @@ class RuntimeRegistry:
         # Handle aliases
         if clean_id == "claudecode":
             clean_id = "claude"
+        # Back-compat: the Nexus agent runtime was developed under the codename "hermes".
+        # Legacy ``runner="hermes"`` / ``"hermes_agent"`` values resolve to the renamed runtime.
+        if clean_id in ("hermes", "hermesagent"):
+            clean_id = "nexus"
 
         cls = self._registry.get(clean_id)
         if not cls:
@@ -51,7 +55,7 @@ def get_runtime_adapter(
 
     from nexus.execution.runners.claude import ClaudeRuntimeAdapter  # noqa: F401
     from nexus.execution.runners.gemini import GeminiRuntimeAdapter  # noqa: F401
-    from nexus.execution.runners.hermes import HermesRuntimeAdapter  # noqa: F401
+    from nexus.execution.runners.nexus_agent import NexusRuntimeAdapter  # noqa: F401
     cls: Any = runtime_registry.get_adapter_cls(runner_name)
     return cast(
         BaseRuntimeAdapter,

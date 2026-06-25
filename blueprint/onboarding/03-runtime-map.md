@@ -33,7 +33,7 @@ lazily inside `get_runtime_adapter` to trigger decorator registration (`runners/
 
 **Mechanism** — Global singleton `runtime_registry = RuntimeRegistry()` (`runners/__init__.py:37`);
 adapters self-register via class decorator `@runtime_registry.register("claude")` etc.
-(`claude.py:24`, `gemini.py:24`, `hermes.py:24`). Keys are lowercased + stripped of `_`/`-`; one
+(`claude.py:24`, `gemini.py:24`, `nexus.py:24`). Keys are lowercased + stripped of `_`/`-`; one
 hardcoded alias `claudecode → claude` (`runners/__init__.py:26-29`).
 
 **Critical invariants** — All adapters share the same constructor signature; keys are normalized;
@@ -126,7 +126,7 @@ never invoked — Docker-produced artifacts are never copied back to host.
 
 ---
 
-## D. Runners  (`execution/runners/{claude,gemini,hermes}.py`)
+## D. Runners  (`execution/runners/{claude,gemini,nexus}.py`)
 
 ### Claude & Gemini — generic shell runners (CLI runtime)
 
@@ -154,19 +154,19 @@ run silently uses the 300s fallback**, ignoring the ADR-010 tiers (Gemini 30m / 
 **Failure modes** — Failures are swallowed into `exit_code=-1` with a stderr string, but the step is
 still marked `COMPLETED` (`claude.py:142`) — failure is visible only via the exit code.
 
-### Hermes — agent runtime (partially simulated)
+### Nexus — agent runtime (partially simulated)
 
-**Purpose** — Bounded ReAct-style agent loop (`max_steps=5`, `hermes.py:151-155`) with per-step
-`AgentStepRecord` + `WorkflowCheckpointRecord` persistence (`hermes.py:248-275`).
+**Purpose** — Bounded ReAct-style agent loop (`max_steps=5`, `nexus.py:151-155`) with per-step
+`AgentStepRecord` + `WorkflowCheckpointRecord` persistence (`nexus.py:248-275`).
 
-**Reality** — Largely a stub: hardcoded MCP-research plan (`hermes.py:145-149`); `web_search`
-returns canned text for "mcp" queries, else "No results" (`hermes.py:76-86`); a simulation branch
+**Reality** — Largely a stub: hardcoded MCP-research plan (`nexus.py:145-149`); `web_search`
+returns canned text for "mcp" queries, else "No results" (`nexus.py:76-86`); a simulation branch
 hardcodes the action sequence when there is no OpenRouter client, the client is an `AsyncMock`, or
-the api_key contains `"test-key"` (`hermes.py:183-209`). **`from unittest.mock import AsyncMock` is
-imported in production code** (`hermes.py:7`) and referenced in the runtime branch
-(`hermes.py:186`) — confirmed. `terminate()` is a no-op `pass` (`hermes.py:310-312`), so a runaway
+the api_key contains `"test-key"` (`nexus.py:183-209`). **`from unittest.mock import AsyncMock` is
+imported in production code** (`nexus.py:7`) and referenced in the runtime branch
+(`nexus.py:186`) — confirmed. `terminate()` is a no-op `pass` (`nexus.py:310-312`), so a runaway
 loop cannot be force-stopped. `write_file` writes to arbitrary `os.path.abspath(path)` outside
-governance path containment (`hermes.py:96-105`).
+governance path containment (`nexus.py:96-105`).
 
 ---
 
@@ -176,7 +176,7 @@ governance path containment (`hermes.py:96-105`).
 |---|---|---|---|---|
 | Claude | `CLIRuntimeAdapter` | No — raw shell (`claude.py:107`) | broken 300s fallback (`claude.py:83`) | `runtime="claude"` to governance |
 | Gemini | `CLIRuntimeAdapter` | No — raw shell (`gemini.py:112`) | broken 300s fallback (`gemini.py:88`) | `runtime="gemini"` + key check for summary |
-| Hermes | `AgentRuntimeAdapter` | n/a (agent loop) | hardcoded 300s (`hermes.py:121`) | hardcoded plan + `AsyncMock` branch |
+| Nexus | `AgentRuntimeAdapter` | n/a (agent loop) | hardcoded 300s (`nexus.py:121`) | hardcoded plan + `AsyncMock` branch |
 
 ---
 
@@ -188,13 +188,13 @@ correlation-linked sandbox audit lifecycle (`manager.py:100-169`); adapter split
 (`CLIRuntimeAdapter`/`AgentRuntimeAdapter`) cleanly separates CLI vs agent concerns
 (`runners/base.py`, ratified by `ADR-runtime-abstraction-validation.md`).
 
-**Missing** — Real CLI integration (Claude/Gemini); real web search + non-simulated Hermes;
+**Missing** — Real CLI integration (Claude/Gemini); real web search + non-simulated Nexus;
 `ResearchRuntimeAdapter`; artifact copy-back (`collector.py` is dead code); a 30s heartbeat driver
 (ADR-010:49).
 
 **Risky** — Timeout config bug (300s for everything); default = zero isolation
 (`config.py:101`); substring command blacklist is bypassable (`governance.py:621`); `terminate()`
-not awaited / Hermes terminate is a no-op; Hermes `write_file` bypasses path containment; steps
+not awaited / Nexus terminate is a no-op; Nexus `write_file` bypasses path containment; steps
 always marked `COMPLETED` on failure.
 
 **Never change without extreme care** — Adapter constructor signature the factory depends on

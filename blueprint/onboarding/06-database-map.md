@@ -62,7 +62,7 @@ complicates the documented PostgreSQL migration.
 
 **Enums** (`core/types.py`, all `StrEnum` except `Priority`): `TaskStatus` (7),
 `ApprovalStatus` (5), `ExecutionStatus` (6), `OutboxStatus` (5), `EventType` (30),
-`RunnerType` (gemini_cli/claude_code/hermes_agent/research), `Priority` (1-4). Status columns are
+`RunnerType` (gemini_cli/claude_code/nexus_agent/research), `Priority` (1-4). Status columns are
 stored as plain `String(50)`, not DB enum types — validity is enforced only in application code.
 
 ---

@@ -6,7 +6,7 @@ This document details the design of the AI Runtime Adapter system, establishing 
 
 ## 1. Class Interface: BaseRuntimeAdapter
 
-All execution runtimes (Gemini CLI, Claude Code, Hermes Agent) must implement [BaseRuntimeAdapter](file:///D:/nexus/nexus/execution/runners/base.py) to decouple the workflow orchestration from runner-specific logic.
+All execution runtimes (Gemini CLI, Claude Code, Nexus Agent) must implement [BaseRuntimeAdapter](file:///D:/nexus/nexus/execution/runners/base.py) to decouple the workflow orchestration from runner-specific logic.
 
 ```python
 class BaseRuntimeAdapter(ABC):
@@ -71,8 +71,8 @@ class BaseRuntimeAdapter(ABC):
   - Employs a virtual terminal wrapper (using pseudo-terminal buffers) to capture standard streams and handle interactive prompts.
   - Restricts prompt inputs using command policy parameters.
 
-### Hermes Agent Runtime Adapter
-* **Class**: [HermesRuntimeAdapter](file:///D:/nexus/nexus/execution/runners/hermes.py)
+### Nexus Agent Runtime Adapter
+* **Class**: [NexusRuntimeAdapter](file:///D:/nexus/nexus/execution/runners/nexus.py)
 * **Implementation Details**:
   - Implements a custom Python-driven agent loop.
   - Connects to OpenRouter or local model endpoints for planning and file search.

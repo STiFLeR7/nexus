@@ -1,6 +1,6 @@
 # File-Tool Security Review (S-4)
 
-> Focused security review of the Hermes file tools after workspace confinement. Establishes the threat
+> Focused security review of the Nexus file tools after workspace confinement. Establishes the threat
 > model addressed, residual considerations, and the audit story.
 
 ---
@@ -9,8 +9,8 @@
 
 | Threat | Before (A-006 R-05 / AP-105 Gap 7) | After (S-4) |
 |---|---|---|
-| Arbitrary host file **read** (e.g. `/etc/passwd`, secrets, `.env`) | `read_file` opened any host path (`hermes.py:91`) | Confined to workspace; escape ⇒ fail-closed |
-| Arbitrary host file **write** (e.g. overwrite system/config files, plant scripts) | `write_file` wrote any host path + `makedirs` (`hermes.py:100-102`) | Confined to workspace; escape ⇒ fail-closed |
+| Arbitrary host file **read** (e.g. `/etc/passwd`, secrets, `.env`) | `read_file` opened any host path (`nexus.py:91`) | Confined to workspace; escape ⇒ fail-closed |
+| Arbitrary host file **write** (e.g. overwrite system/config files, plant scripts) | `write_file` wrote any host path + `makedirs` (`nexus.py:100-102`) | Confined to workspace; escape ⇒ fail-closed |
 | Path **traversal** (`../../`) | unmitigated | resolved + rejected |
 | **Absolute-path** escape | unmitigated | rejected unless inside workspace |
 | **Symlink** escape | unmitigated | `resolve()` follows links → escape rejected |
@@ -52,10 +52,10 @@
 | TOCTOU on resolved paths | Low risk / deferred | `resolve()` then immediate `open`; workspace is operator-approved; no privilege boundary crossed within workspace |
 | Workspace itself containing sensitive files | Out of scope | The workspace is the operator-approved repository; confinement bounds access to it by design |
 | R-04 command blacklist robustness | Out of scope | Governance-owned; separate item |
-| Hermes honesty/lifecycle (search/plan/exit/terminate/resume) | Out of scope | Track-H work (AP-105 gaps) |
+| Nexus honesty/lifecycle (search/plan/exit/terminate/resume) | Out of scope | Track-H work (AP-105 gaps) |
 
 ## 6. Verdict
 
-The Hermes file tools are now **confined, symmetric, fail-closed, and provider-independent**, closing
+The Nexus file tools are now **confined, symmetric, fail-closed, and provider-independent**, closing
 the R-05 host-bypass. Residual items are defense-in-depth enhancements or explicitly out-of-scope
 concerns, each recorded. File-tool security is sufficient for the **Pilot Safe** bar.

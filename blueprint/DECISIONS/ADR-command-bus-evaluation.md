@@ -9,7 +9,7 @@
 
 The Nexus Control Plane has successfully completed the foundation layer (Phase 1) and is productizing its core workflows (Phase 2). However, the recent integration health audit revealed that the presentation layer ([bot.py](file:///D:/nexus/nexus/communication/discord/bot.py)) directly interacts with the database persistence layer ([database.py](file:///D:/nexus/nexus/database.py)), manages context transaction loops, and instantiates operational services ([TaskService](file:///D:/nexus/nexus/memory/task_service.py), [ApprovalService](file:///D:/nexus/nexus/approvals/service.py)).
 
-As we prepare to add more communication adapters (Email, custom HTTP APIs) and diverse execution runner agents (Gemini, Claude, Hermes), continuing to execute operational logic directly inside UI controllers will lead to duplicated code and leaking boundaries.
+As we prepare to add more communication adapters (Email, custom HTTP APIs) and diverse execution runner agents (Gemini, Claude, Nexus), continuing to execute operational logic directly inside UI controllers will lead to duplicated code and leaking boundaries.
 
 ---
 

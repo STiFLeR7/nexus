@@ -16,7 +16,17 @@ from nexus.logging_config import setup_logging
 
 
 def main() -> None:
-    """Bootstrap Nexus: configure logging, then start the ASGI server."""
+    """Bootstrap Nexus: configure logging, then start the ASGI server.
+
+    ``python -m nexus onboard`` runs the operator onboarding flow (safe, read-only) instead of
+    starting the server.
+    """
+    if "onboard" in sys.argv[1:]:
+        from nexus.onboarding import main as onboarding_main
+
+        onboarding_main()
+        return
+
     settings = get_settings()
     setup_logging(
         level=settings.logging.level,

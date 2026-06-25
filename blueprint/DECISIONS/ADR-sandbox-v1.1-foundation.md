@@ -16,7 +16,7 @@ Supersedes: none (builds on the accepted Unsafe-By-Default classification)
 the shipped default (`enabled=False`, `config.py:135`) routes all runtimes to the host shell
 (`manager.py:44-45`, `provider.py:96`); provider resolution **fails open** on unknown names
 (`manager.py:52-53`); the containment policy is **decorative** under the Local provider
-(`provider.py:88-101`); Hermes file tools **bypass** the sandbox (`hermes.py:88-105`, R-05); and there is
+(`provider.py:88-101`); Nexus file tools **bypass** the sandbox (`nexus.py:88-105`, R-05); and there is
 **no startup validation** (R-07). The Docker provider, Docker-failure fail-closed behavior, and the
 audit ledger are genuinely sound and must be preserved. v1.1.0 Track S evolves the sandbox to **Pilot
 Safe** — design first, implementation separately gated — without redesigning governance, approval,
@@ -40,7 +40,7 @@ Adopt the S-1 design, founded on two inversions and one preservation:
 3. **Preserve the good** — single `SandboxManager.execute` chokepoint, the Docker provider, Docker
    fail-closed semantics, and the complete immutable audit ledger are kept (Rules 1, 2, 4, 9).
 
-**R-05 (shared):** Hermes file tools are brought under the boundary via **workspace path-confinement as
+**R-05 (shared):** Nexus file tools are brought under the boundary via **workspace path-confinement as
 an always-on floor** (plus in-container semantics when Docker is active); Track S owns the seam, Track H
 consumes it; single resolution in `R-05-shared-resolution.md`.
 
@@ -71,7 +71,7 @@ mode — all deferred.
 S-2 default-secure + fail-closed resolution (R-01/R-02) → S-3 enforced policy + Docker/startup validation
 (R-03/R-06/R-07) → S-4 file-tool confinement (R-05, with Track H) [+ optional R-04 sub-item]. Each is a
 separate, separately-approved AP. **Implementation order vs Track H:** the S containment seam (S-4 / R-05)
-precedes Hermes file-tool adoption (H-5).
+precedes Nexus file-tool adoption (H-5).
 
 ## Status
 

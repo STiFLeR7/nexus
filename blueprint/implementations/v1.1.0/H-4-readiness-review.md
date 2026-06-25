@@ -1,17 +1,17 @@
-# H-4 — Pilot Readiness Review (Hermes Lifecycle Safety)
+# H-4 — Pilot Readiness Review (Nexus Lifecycle Safety)
 
-> **Inventory only — no implementation, no source changes.** The remaining work to move Hermes
+> **Inventory only — no implementation, no source changes.** The remaining work to move Nexus
 > **Experimental → Pilot**, classified per item with root cause, implementation files, test
 > requirements, architecture impact, and risk. Sources: `H-2-gap-prioritization.md`,
-> `H-2-implementation-plan.md`, `ADR-hermes-v1.1-foundation`, `H-1-hermes-lifecycle-design.md`,
-> `H-1-hermes-recovery-design.md`, and current source at the post-H-2 working tree (`b734c13` + H-2).
+> `H-2-implementation-plan.md`, `ADR-nexus-v1.1-foundation`, `H-1-nexus-lifecycle-design.md`,
+> `H-1-nexus-recovery-design.md`, and current source at the post-H-2 working tree (`b734c13` + H-2).
 
 ---
 
-## 1. Where Hermes stands after H-2
+## 1. Where Nexus stands after H-2
 
 **Experimental achieved:** no prod mock · provider-backed search · goal-derived planning · structured
-tool-calls · truthful exit status (`ADR-hermes-experimental`). **Pilot gate (`ADR-hermes-v1.1-foundation`
+tool-calls · truthful exit status (`ADR-hermes-experimental`). **Pilot gate (`ADR-nexus-v1.1-foundation`
 Q9) still requires:** wired+tested cancellation · working+tested resume · fail-fast init · configurable
 budget · timeout lifecycle · one audited real governed run. R-05 file-confinement **floor is already done
 (S-4)**; the in-container ceiling is P2.
@@ -19,8 +19,8 @@ budget · timeout lifecycle · one audited real governed run. R-05 file-confinem
 ## 2. Pilot (P1) item inventory
 
 ### P1-1 — `terminate()` becomes functional
-- **Root cause:** `terminate()` is `pass` (`hermes.py:324-326`); no cancellation mechanism exists.
-- **Implementation files:** `nexus/execution/runners/hermes.py` (set + honor a cancel signal; kill an
+- **Root cause:** `terminate()` is `pass` (`nexus.py:324-326`); no cancellation mechanism exists.
+- **Implementation files:** `nexus/execution/runners/nexus.py` (set + honor a cancel signal; kill an
   in-flight `execute_command` via `SandboxProcess.terminate()`, `provider.py:47-50`).
 - **Test requirements:** `terminate()` sets the signal; an in-flight sandbox process is killed; idempotent
   when already terminal.
@@ -31,8 +31,8 @@ budget · timeout lifecycle · one audited real governed run. R-05 file-confinem
 ### P1-2 — Cooperative cancellation (signal + observation + wiring)
 - **Root cause:** the loop never checks for cancellation; the orchestrator agent branch never calls
   `terminate()` (`orchestrator.py:210-216`).
-- **Implementation files:** `hermes.py` (check a **DB-observable** cancel signal at state boundaries —
-  before DECIDING and before TOOL_EXECUTING, per `H-1-hermes-lifecycle-design.md` §4); `orchestrator.py`
+- **Implementation files:** `nexus.py` (check a **DB-observable** cancel signal at state boundaries —
+  before DECIDING and before TOOL_EXECUTING, per `H-1-nexus-lifecycle-design.md` §4); `orchestrator.py`
   (invoke `terminate()` on operator action / timeout — the missing wiring, one invocation point).
 - **Test requirements:** cancel between steps → `CANCELLED` terminal + `cancelled` exit; latency bounded
   to one tool execution; cancel during `execute_command` kills the subprocess.
@@ -42,21 +42,21 @@ budget · timeout lifecycle · one audited real governed run. R-05 file-confinem
   a possible **additive** `CANCELLED` exit/status value (additive enum, no schema redesign).
 
 ### P1-3 — `resume_goal()` (resumable recovery)
-- **Root cause:** checkpoints are write-only; `execute_goal` always restarts (`hermes.py` plan
+- **Root cause:** checkpoints are write-only; `execute_goal` always restarts (`nexus.py` plan
   re-derive); no `resume_goal` (only `research.py`/`briefing.py` resume).
-- **Implementation files:** `hermes.py` (`resume_goal(execution_id)`: load `AgentStepRecord`s ordered by
+- **Implementation files:** `nexus.py` (`resume_goal(execution_id)`: load `AgentStepRecord`s ordered by
   `step_index` → rebuild trajectory; load latest `WorkflowCheckpointRecord` for `workflow_id` → restore
   plan + cursor; `step_index = max+1`; re-enter loop; re-validate goal via governance); `base.py`
   (`AgentRuntimeAdapter` — **additive optional** method, default to preserve CLI adapters).
 - **Test requirements:** resume rebuilds trajectory; continues from cursor; no duplicate step;
   absent/inconsistent data → **fail closed**; governance re-validated on resume.
-- **Architecture impact:** Low — **read over existing schema** (`H-1-hermes-recovery-design.md`); no
+- **Architecture impact:** Low — **read over existing schema** (`H-1-nexus-recovery-design.md`); no
   migration; mirrors the existing resume idiom (Rule 7). Auto-trigger is **P2** (orphan monitor).
 - **Risk:** Low–Medium — idempotency/cursor correctness is the main hazard; bounded by fail-closed.
 
 ### P1-4 — Fail-fast initialization
-- **Root cause:** `initialize()` checks for a key then `pass` if absent (`hermes.py:48-56`).
-- **Implementation files:** `hermes.py` (`initialize` raises on missing usable key — `ConfigurationError`
+- **Root cause:** `initialize()` checks for a key then `pass` if absent (`nexus.py:48-56`).
+- **Implementation files:** `nexus.py` (`initialize` raises on missing usable key — `ConfigurationError`
   or `ExecutionEngineError`).
 - **Test requirements:** missing key → raises (run does not proceed); present key → proceeds.
 - **Architecture impact:** Low — adapter-internal; aligns with the A-001 fail-fast discipline.
@@ -64,8 +64,8 @@ budget · timeout lifecycle · one audited real governed run. R-05 file-confinem
   methods (use injected client/provider, as H-2 tests already do).
 
 ### P1-5 — Configurable execution budget
-- **Root cause:** `max_steps = 5` hardcoded (`hermes.py:205`).
-- **Implementation files:** `hermes.py` (read budget from settings); `nexus/config.py` (**additive**
+- **Root cause:** `max_steps = 5` hardcoded (`nexus.py:205`).
+- **Implementation files:** `nexus.py` (read budget from settings); `nexus/config.py` (**additive**
   field, e.g. `execution.agent_max_steps`).
 - **Test requirements:** configured value honored; default preserved when unset.
 - **Architecture impact:** Low — additive config; no schema/migration.
@@ -74,7 +74,7 @@ budget · timeout lifecycle · one audited real governed run. R-05 file-confinem
 ### P1-6 — Timeout lifecycle handling (`TIMED_OUT`)
 - **Root cause:** budget/wall-clock exhaustion currently yields `exit_code 1/failed` (H-2 honest binary)
   but not a distinct `TIMED_OUT` terminal; no wall-clock timeout enforcement in the loop.
-- **Implementation files:** `hermes.py` (enforce the ADR-010 wall-clock timeout via
+- **Implementation files:** `nexus.py` (enforce the ADR-010 wall-clock timeout via
   `resolve_execution_timeout`, already imported; budget/time exhaustion → `TIMED_OUT` distinct from
   COMPLETED/FAILED); possibly `core/types.py` (**additive** `TIMED_OUT` already exists in
   `ExecutionStatus`; an `ExitStatus.TIMED_OUT` may be additive); `orchestrator.py` only if a distinct
@@ -129,7 +129,7 @@ then the audited run.
 
 ## 6. Pilot readiness verdict
 
-Hermes is **Experimental-complete** and **Pilot-incomplete**. The six P1 items + one audited run are
+Nexus is **Experimental-complete** and **Pilot-incomplete**. The six P1 items + one audited run are
 well-scoped, low-to-medium risk, and require **no schema changes or migrations** — the heaviest item is
 the orchestrator cancellation wiring. Detailed scope/boundaries in `H-4-scope-definition.md`.
 

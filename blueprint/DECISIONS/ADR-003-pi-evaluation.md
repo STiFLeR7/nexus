@@ -107,5 +107,5 @@ We will proceed by implementing the Event Gateway, Task Engine, and Workflow Orc
 - [docs/03_AGENT_DESIGN.md](../../docs/03_AGENT_DESIGN.md) — Pi Integration Evaluation
 - [docs/05_CRITICAL_CONSTRAINTS.md](../../docs/05_CRITICAL_CONSTRAINTS.md) — Constraint 25
 - [docs/06_DEVELOPMENT_PHASES.md](../../docs/06_DEVELOPMENT_PHASES.md) — Phase 8
-- [docs/07_HERMES_AGENT.md](../../docs/07_HERMES_AGENT.md) — Reference 1
+- [docs/07_NEXUS_AGENT.md](../../docs/07_NEXUS_AGENT.md) — Reference 1
 - [docs/RULES.md](../../docs/RULES.md) — Pi Integration Consideration

@@ -1,4 +1,4 @@
-# H-4 — Hermes Pilot Upgrade: Implementation Summary & Required Output
+# H-4 — Nexus Pilot Upgrade: Implementation Summary & Required Output
 
 > **Release line:** v1.1.0 "Containment" · **AP:** H-4 · **Track:** H · **Status:** ✅ Complete (all 7
 > P1 steps) · **Method:** strict TDD (RED→GREEN→regression per step) + systematic-debugging discipline.
@@ -11,11 +11,11 @@
 
 | File | Type | Change |
 |---|---|---|
-| `nexus/execution/runners/hermes.py` | modify (+213/-…) | fail-fast `initialize()`; `_max_steps()`; cooperative `terminate()` + `_is_cancelled()` (in-process + DB-observable) + `_record_terminal_marker()`; `_active_process` tracking in `execute_command`; `_run_loop()` extraction; cancellation + wall-clock/budget `TIMED_OUT` terminals; honest cancelled/timed_out/failed/completed status; `resume_goal()` |
+| `nexus/execution/runners/nexus.py` | modify (+213/-…) | fail-fast `initialize()`; `_max_steps()`; cooperative `terminate()` + `_is_cancelled()` (in-process + DB-observable) + `_record_terminal_marker()`; `_active_process` tracking in `execute_command`; `_run_loop()` extraction; cancellation + wall-clock/budget `TIMED_OUT` terminals; honest cancelled/timed_out/failed/completed status; `resume_goal()` |
 | `nexus/scheduling/orchestrator.py` | modify (+25) | `resolve_exit_status(result)` (status→ExitStatus, exit_code fallback); finalize uses it (the **single** orchestrator touch) |
 | `nexus/config.py` | modify (+2) | additive `ExecutionConfig.agent_max_steps: int = 5` |
-| `tests/unit/execution/test_hermes.py` | modify (+8/-…) | migrated `test_hermes_initialize` to injected client (fail-fast) |
-| `tests/unit/execution/test_hermes_lifecycle.py` | **new** | 19 H-4 lifecycle tests + injected fakes |
+| `tests/unit/execution/test_nexus.py` | modify (+8/-…) | migrated `test_nexus_initialize` to injected client (fail-fast) |
+| `tests/unit/execution/test_nexus_lifecycle.py` | **new** | 19 H-4 lifecycle tests + injected fakes |
 
 **No schema changes, no migrations.** `ExecutionStatus.TIMED_OUT`/`CANCELLED` and `ExitStatus.TIMEOUT`/
 `CANCELLED` already existed; the cancel signal reuses the existing nullable `ExecutionRecord.exit_status`.
@@ -30,7 +30,7 @@
 Per-step progression: 194 → **197** (H-4.1) → **199** (H-4.2) → **203** (H-4.3) → **206** (H-4.4) →
 **209** (H-4.5) → **212** (H-4.6) → **213** (H-4.7). **Zero regressions at every step.**
 
-## 3. New tests added (+19, all in `test_hermes_lifecycle.py`)
+## 3. New tests added (+19, all in `test_nexus_lifecycle.py`)
 
 | Step | Tests |
 |---|---|
@@ -46,7 +46,7 @@ Final gates: **213 passed · ruff clean · mypy clean (60 files)**.
 
 ## 4. Architecture impact summary
 
-- **RuntimeRegistry:** unchanged (`@runtime_registry.register("hermes")`; routing intact).
+- **RuntimeRegistry:** unchanged (`@runtime_registry.register("nexus")`; routing intact).
 - **`AgentRuntimeAdapter` contract:** unchanged — `resume_goal` is adapter-local (not added to the ABC),
   so CLI adapters (Gemini/Claude) are untouched.
 - **Orchestrator:** one minimal change — finalize via `resolve_exit_status(result)`; CLI exit_code
@@ -79,11 +79,11 @@ Success criteria (all demonstrated): fail-fast init ✅ · configurable budgets 
 cancellation ✅ · `TIMED_OUT` lifecycle ✅ · `resume_goal()` ✅ · audited real run ✅ · all tests
 passing (213) ✅ · ruff clean ✅ · mypy clean ✅ · zero regressions ✅.
 
-> **Recommendation: APPROVE reclassification Hermes Experimental → Pilot.**
+> **Recommendation: APPROVE reclassification Nexus Experimental → Pilot.**
 
 Conditioned: **Pilot, not Production Ready** (§5 gaps); effective on commit (H-4 currently uncommitted);
 production search requires a real injected `SearchProvider` bound to the sandbox network policy; the
-`architecture-status-summary.md` Hermes-row upgrade (Experimental → Pilot) is a **separately authorized**
+`architecture-status-summary.md` Nexus-row upgrade (Experimental → Pilot) is a **separately authorized**
 documentation step (not performed here).
 
 **Stopped after implementation + validation evidence. No commit, no tag, no maturity-doc changes —

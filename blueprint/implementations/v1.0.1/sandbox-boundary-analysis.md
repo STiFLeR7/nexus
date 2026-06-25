@@ -38,19 +38,19 @@ command to `LocalSandboxProvider`, which runs it in the host shell with full hos
 
 - **Inside the boundary (Docker only):** CPU/mem caps, no network, workspace-scoped FS.
 - **On the host (default + fallbacks):** full network, full FS, host privileges, no caps.
-- **Always on host (no boundary regardless of provider):** Hermes `read_file`/`write_file`
-  (`hermes.py:88-105`).
+- **Always on host (no boundary regardless of provider):** Nexus `read_file`/`write_file`
+  (`nexus.py:88-105`).
 
 ## 3. Where the boundary is crossed / missing
 
 | Crossing point | Boundary present? | Evidence |
 |---|---|---|
-| Gemini/Claude/Hermes command → `SandboxManager` | Conditional (Docker only) | `gemini.py:107`, `claude.py:102`, `hermes.py:117` |
+| Gemini/Claude/Nexus command → `SandboxManager` | Conditional (Docker only) | `gemini.py:107`, `claude.py:102`, `nexus.py:117` |
 | Manager → Local provider | **None** (host) | `manager.py:44-53`, `provider.py:96` |
 | Manager → Docker provider | Real container boundary | `provider.py:133-175` |
 | Unknown provider name | **None** (fails open to host) | `manager.py:52-53` |
 | Docker spawn failure | Fail-closed (no host fallback) ✅ | `manager.py:172-179` |
-| Hermes file tools | **None** (direct host FS) | `hermes.py:88-105` |
+| Nexus file tools | **None** (direct host FS) | `nexus.py:88-105` |
 | Workspace volume (Docker) | Semi-permeable (rw unless `:ro`) | `provider.py:154-159`, `config.py:140` |
 
 ## 4. Defense-in-depth layers actually present (host case)
@@ -76,6 +76,6 @@ honoring policy under a restricted-local mode, fail-closed unknown-provider hand
 
 ## 6. Dependency note
 
-This boundary interacts with **AP-105 (Hermes)**: Hermes Gap 7 (unconfined file tools, no path
-confinement) is the same `hermes.py:88-105` finding surfaced here as R-05 — a shared item across the two
+This boundary interacts with **AP-105 (Nexus)**: Nexus Gap 7 (unconfined file tools, no path
+confinement) is the same `nexus.py:88-105` finding surfaced here as R-05 — a shared item across the two
 audits, owned by neither alone.

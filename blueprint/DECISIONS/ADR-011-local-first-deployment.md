@@ -17,7 +17,7 @@ Nexus MVP targets **local machine** as the primary deployment environment.
 Nexus requires:
 - Gemini CLI (local binary)
 - Claude Code (local binary)
-- Hermes Agent (local binary, already installed)
+- Nexus Agent (local binary, already installed)
 - Local Git repositories
 - Local execution environments
 
@@ -35,7 +35,7 @@ Hill's Machine
     ├── D:/projects/fosterx
     ├── Gemini CLI (installed)
     ├── Claude Code (installed)
-    └── Hermes Agent (installed)
+    └── Nexus Agent (installed)
 ```
 
 ---

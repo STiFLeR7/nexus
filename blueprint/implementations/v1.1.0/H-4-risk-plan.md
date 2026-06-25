@@ -1,4 +1,4 @@
-# H-4 — Pilot Risk Plan (Hermes Experimental → Pilot)
+# H-4 — Pilot Risk Plan (Nexus Experimental → Pilot)
 
 > **Planning only — no implementation.** Consolidated risk register, mitigations, rollback triggers, and
 > sequencing guards for the H-4 Pilot work. Companion to `H-4-execution-roadmap.md`. Built on H-2 freeze

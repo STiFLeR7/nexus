@@ -34,7 +34,7 @@ as residual debt (see `documentation-drift-analysis.md` §Residual).
 | `database.py` | ✅ | async engine, `get_session`, SQLite/WAL |
 | `approvals/` | ✅ | approval engine — **fail-closed** owner auth (`service.py:96-102`) |
 | `execution/` | ✅ | service (approval gate), `governance.py` (11-gate), `runners/` |
-| `execution/runners/` | ✅ | `base.py`, `claude.py`, `gemini.py`, `hermes.py` + `resolve_execution_timeout` |
+| `execution/runners/` | ✅ | `base.py`, `claude.py`, `gemini.py`, `nexus.py` + `resolve_execution_timeout` |
 | `gateway/` | ✅ | EventGateway, transactional outbox, communication outbox, **`outbox_health.py`** |
 | `intelligence/` | ✅ | OpenRouter client / model routing |
 | `memory/` | ✅ | event-sourced manager, models, services, **`checkpoint_health.py`** |
@@ -53,7 +53,7 @@ The blueprint state docs describe a system that stops at "Phase 1 — Core Infra
 | Runtime Registry + adapter split | ✅ | `runners/__init__.py`, `runners/base.py` (CLI/Agent adapters) |
 | Gemini Runtime | ✅ (shell) | `runners/gemini.py` |
 | Claude Runtime | ✅ (shell) | `runners/claude.py` |
-| Hermes Runtime | ✅ (simulated branches) | `runners/hermes.py` (AsyncMock branch) — full audit deferred to AP-105 |
+| Nexus Runtime | ✅ (simulated branches) | `runners/nexus.py` (AsyncMock branch) — full audit deferred to AP-105 |
 | Governance Layer (11-gate) | ✅ | `execution/governance.py` |
 | Approval Workflows | ✅ | `approvals/service.py`, `execution/service.py:43-45` |
 | Memory System (event-sourced) | ✅ | `memory/manager.py`, `memory/models.py` |
@@ -69,10 +69,10 @@ The blueprint state docs describe a system that stops at "Phase 1 — Core Infra
 | Finding | Change | Evidence |
 |---|---|---|
 | A-001 fail-open owner auth | Fail-closed at startup **and** in approval engine | `api.py:67-82`, `approvals/service.py:96-102` |
-| A-002 timeout field bug | `resolve_execution_timeout(...)` clamped to `hard_limit` | `runners/base.py:9-27`, `claude.py:81`, `gemini.py:86`, `hermes.py:15` |
+| A-002 timeout field bug | `resolve_execution_timeout(...)` clamped to `hard_limit` | `runners/base.py:9-27`, `claude.py:81`, `gemini.py:86`, `nexus.py:15` |
 | A-003 missing scheduler | APScheduler foundation, 6 jobs, audited | `scheduling/` (AP-103B reports) |
 
-A-004 (this doc pass), A-005 (Hermes audit, AP-105), A-006 (sandbox review) remain.
+A-004 (this doc pass), A-005 (Nexus audit, AP-105), A-006 (sandbox review) remain.
 
 ## 5. Documentation surface (what exists to align)
 
@@ -90,7 +90,7 @@ A-004 (this doc pass), A-005 (Hermes audit, AP-105), A-006 (sandbox review) rema
 `ADR-001-tech-stack` · `002-database-choice` · `003-pi-evaluation` · `004-memory-architecture` ·
 `005-agent-routing` · `006-approved-tech-stack` · `007-email-provider` · `008-discord-authorization` ·
 `009-approval-expiration` · `010-execution-timeouts` · `011-local-first-deployment` ·
-`command-bus-evaluation` · `final-preimplementation-review` · `hermes-runtime-evaluation` ·
+`command-bus-evaluation` · `final-preimplementation-review` · `nexus-runtime-evaluation` ·
 `phase1-foundation` · `phase1-retrospective` · `pi-core-patterns` · `runtime-abstraction-validation` ·
 `runtime-foundations` · `runtime-selection` · `runtime-v2` · `scheduler-foundation`.
 

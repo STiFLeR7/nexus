@@ -24,7 +24,7 @@ working tree (HEAD `2fd3ffc`, Track S changes staged but uncommitted).
 |---|---|---|---|
 | **S-2** | Default-Secure Sandbox Resolution | R-01, R-02 | `manager.py:34-64`, `exceptions.py:86-91` |
 | **S-3** | Sandbox Enforcement & Startup Validation | R-03, R-06, R-07 | `provider.py:62-73,146,151-170,296-300`, `manager.py:121,196-256`, `api.py:106-113`, `exceptions.py:94-99` |
-| **S-4** | Workspace Confinement & R-05 Closure | R-05 | `confinement.py`, `hermes.py:16,75-117`, `exceptions.py:102-107` |
+| **S-4** | Workspace Confinement & R-05 Closure | R-05 | `confinement.py`, `nexus.py:16,75-117`, `exceptions.py:102-107` |
 
 > **Note on the risk-set framing.** The closure request referenced "R-01 through R-07". The
 > authoritative A-006 register actually spans **R-01 through R-09**. This review covers the full set
@@ -73,19 +73,19 @@ Suite progression across the track: 143 (v1.0.1 baseline) → 152 (S-2, +9) → 
 - **Proof:** `test_execute_audit_declares_policy_enforcement`, `test_*_enforce_policy_flag`.
 
 ### R-05 — Agent file tools bypass the sandbox → **CLOSED at floor (S-4)**
-- **Before:** `hermes.py` `read_file`/`write_file` used raw `open()` on any host path, no confinement.
-- **After (verified `hermes.py:96-117`, `confinement.py`):** both tools resolve through
+- **Before:** `nexus.py` `read_file`/`write_file` used raw `open()` on any host path, no confinement.
+- **After (verified `nexus.py:96-117`, `confinement.py`):** both tools resolve through
   `resolve_in_workspace(await self._workspace_cwd(), path)` before any FS access. `resolve()` collapses
   `..`, follows symlinks; `is_relative_to(workspace)` rejects escape → `WorkspaceConfinementError`
   (fail-closed, no `open`/`makedirs`). The workspace is `ExecutionRecord.repository` — the same cwd
   used for command execution, giving one boundary for all execution paths.
-- **Proof:** `test_hermes_read_escape_denied`, `test_hermes_write_escape_denied`,
+- **Proof:** `test_nexus_read_escape_denied`, `test_nexus_write_escape_denied`,
   `test_parent_traversal_denied`, `test_deep_traversal_denied`,
   `test_confinement_independent_of_provider`.
 - **Closed "at floor":** the host-side path-confinement floor eliminates the escape; the in-container
   file-I/O ceiling is deferred defense-in-depth (§6).
 - **Residual nuance:** when `ExecutionRecord.repository` is empty, `_workspace_cwd()` falls back to
-  `"."` (`hermes.py:80`) — the process cwd, identical to the command-execution cwd default. The
+  `"."` (`nexus.py:80`) — the process cwd, identical to the command-execution cwd default. The
   confinement guarantee still holds *relative to that workspace*; bounding the workspace itself is an
   operator responsibility (workspace = approved repository by design).
 
@@ -137,7 +137,7 @@ construction path; R-05 empty-repository `"."` workspace fallback.
 | R-04 command-policy hardening | Governance AP | Separate subsystem; not containment. |
 | R-09 default `filesystem_policy=readonly` | Track S enhancement | Tightening a default; not required to reach Pilot Safe. |
 | R-08 argv/exec-vector hardening | Design-level future work | Trade-off vs. the "run approved commands" product requirement. |
-| All Track-H Hermes work (real search/planning, honest exit/terminate, resume) | Track H (A-005/AP-105) | Out of Track S scope; tracked separately. |
+| All Track-H Nexus work (real search/planning, honest exit/terminate, resume) | Track H (A-005/AP-105) | Out of Track S scope; tracked separately. |
 
 ## 7. Security posture — before vs after (summary; detail in `track-s-before-after.md`)
 
@@ -180,7 +180,7 @@ closed with passing tests; the open items are explicitly scoped out and tracked.
 evidence currently present in the repository?
 
 **Evidence basis (all present in-repo, re-verified live):**
-- Source: `manager.py`, `provider.py`, `confinement.py`, `exceptions.py`, `hermes.py`, `api.py`.
+- Source: `manager.py`, `provider.py`, `confinement.py`, `exceptions.py`, `nexus.py`, `api.py`.
 - Tests: `test_sandbox_resolution.py` (9), `test_sandbox_enforcement.py` (14),
   `test_workspace_confinement.py` (12) — all green within **178 passed**; ruff + mypy clean.
 - Provenance: S-2/S-3/S-4 implementation + validation deliverables; A-006 register/ADR as baseline.

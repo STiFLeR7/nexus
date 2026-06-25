@@ -1,16 +1,16 @@
 # S-4 — Workspace Confinement & R-05 Closure: Implementation Report
 
-> **Release line:** v1.1.0 "Containment" · **AP:** S-4 · **Track:** S (Sandbox) ∩ H (Hermes file tools)
-> **Status:** ✅ Complete · **Closes:** A-006 **R-05** / AP-105 **Gap 7** (Hermes file-tool host bypass).
+> **Release line:** v1.1.0 "Containment" · **AP:** S-4 · **Track:** S (Sandbox) ∩ H (Nexus file tools)
+> **Status:** ✅ Complete · **Closes:** A-006 **R-05** / AP-105 **Gap 7** (Nexus file-tool host bypass).
 > **Method:** strict TDD (red → green → regression). Branch `v1.1.0-planning`.
-> **Authorization:** AP Authorization: S-4. Stops after S-4 (no Hermes Track-H work).
+> **Authorization:** AP Authorization: S-4. Stops after S-4 (no Nexus Track-H work).
 
 ---
 
 ## 1. Objective delivered
 
 A **single containment boundary** for all runtime execution paths: command execution remains
-cwd-scoped via `SandboxManager`, and Hermes file operations are now confined to the same approved
+cwd-scoped via `SandboxManager`, and Nexus file operations are now confined to the same approved
 **workspace** via a shared path-confinement seam. Agent file tools can no longer read or write host
 paths outside the workspace.
 
@@ -18,19 +18,19 @@ paths outside the workspace.
 
 | Scope item | Delivered |
 |---|---|
-| 1. Eliminate Hermes file-tool bypass | `read_file`/`write_file` route through `resolve_in_workspace` before any host FS access |
+| 1. Eliminate Nexus file-tool bypass | `read_file`/`write_file` route through `resolve_in_workspace` before any host FS access |
 | 2. Implement workspace confinement | `nexus/execution/sandbox/confinement.py::resolve_in_workspace` — fail-closed on traversal/escape |
 | 3. File ops obey the same containment model as commands | Both scoped to the execution's workspace (`ExecutionRecord.repository`); commands via `SandboxManager(cwd)`, files via `resolve_in_workspace(workspace)` |
-| 4. Preserve runtime abstraction | Hermes stays an `AgentRuntimeAdapter`; only file-tool internals changed; no new tools |
+| 4. Preserve runtime abstraction | Nexus stays an `AgentRuntimeAdapter`; only file-tool internals changed; no new tools |
 | 5. Preserve governance boundaries | Governance/approval gate untouched; confinement is downstream of `validate_goal` |
 | 6. Preserve scheduler architecture | No scheduler changes |
 | 7. Preserve event architecture | No new/changed events; file-tool outcomes recorded via existing `agent_steps` |
 
 ## 3. Required validation questions — answers
 
-1. **Can Hermes access files outside the workspace?** **No.** `resolve_in_workspace` raises
+1. **Can Nexus access files outside the workspace?** **No.** `resolve_in_workspace` raises
    `WorkspaceConfinementError` (caught → error result, no FS access). Proof:
-   `test_hermes_read_escape_denied`, `test_hermes_write_escape_denied`.
+   `test_nexus_read_escape_denied`, `test_nexus_write_escape_denied`.
 2. **Can path traversal escape confinement?** **No.** Paths are resolved (`..` collapsed, symlinks
    followed) and must be `is_relative_to` the workspace. Proof: `test_parent_traversal_denied`,
    `test_deep_traversal_denied`.
@@ -48,7 +48,7 @@ paths outside the workspace.
    was added (minimal diff).
 6. **What remains deferred?** In-container file I/O (running file ops *inside* the Docker container
    rather than host-side-within-workspace) as a defense-in-depth ceiling — not required to close R-05's
-   escape risk. Also deferred (out of scope): all Track-H Hermes work (search, planning, cancellation,
+   escape risk. Also deferred (out of scope): all Track-H Nexus work (search, planning, cancellation,
    resume) and R-04 command-policy hardening (governance-owned).
 
 ## 4. Changes (minimal diff)
@@ -58,16 +58,16 @@ paths outside the workspace.
 | `nexus/core/exceptions.py` | **+** `WorkspaceConfinementError(ExecutionEngineError)` |
 | `nexus/execution/sandbox/confinement.py` | **NEW** — `resolve_in_workspace(workspace, requested_path)` (the Track-S-owned seam) |
 | `nexus/execution/sandbox/__init__.py` | export `resolve_in_workspace` |
-| `nexus/execution/runners/hermes.py` | **+** `_workspace_cwd()` helper; `read_file`/`write_file` resolve via `resolve_in_workspace` before FS access |
-| `tests/unit/execution/test_workspace_confinement.py` | **NEW** — 12 tests (seam + Hermes integration) |
+| `nexus/execution/runners/nexus.py` | **+** `_workspace_cwd()` helper; `read_file`/`write_file` resolve via `resolve_in_workspace` before FS access |
+| `tests/unit/execution/test_workspace_confinement.py` | **NEW** — 12 tests (seam + Nexus integration) |
 
-**No** schema changes, migrations, governance/scheduler/event changes, new Hermes tools, or
+**No** schema changes, migrations, governance/scheduler/event changes, new Nexus tools, or
 search/planning/cancellation/resume.
 
 ## 5. Design rationale
 
 - **Single mechanism, single owner (R-05 resolved once).** The confinement seam lives in the sandbox
-  package (Track S owns it); Hermes consumes it (Track H). No duplicate solution
+  package (Track S owns it); Nexus consumes it (Track H). No duplicate solution
   (`R-05-shared-resolution.md`).
 - **Path-confinement floor.** `resolve()` + `is_relative_to(workspace)` collapses `..`, follows
   symlinks (so a symlink escaping the workspace is also refused), and rejects absolute paths outside
@@ -79,7 +79,7 @@ search/planning/cancellation/resume.
 
 ## 6. Constraint compliance
 
-TDD-first ✅ · minimal diff ✅ · **no Hermes feature expansion** (confinement of existing tools, no new
+TDD-first ✅ · minimal diff ✅ · **no Nexus feature expansion** (confinement of existing tools, no new
 tools) ✅ · no search/planning/cancellation/resume ✅ · no schema/migrations ✅ · no doc rewrites ✅ ·
 no opportunistic refactoring ✅ · runtime abstraction / governance / scheduler / event architecture
 preserved ✅.
@@ -96,16 +96,16 @@ preserved ✅.
 ## 8. Explicit proofs (required)
 
 - **Path traversal fails:** `test_parent_traversal_denied`, `test_deep_traversal_denied`.
-- **Workspace escape fails:** `test_absolute_escape_denied`, `test_hermes_read_escape_denied`,
-  `test_hermes_write_escape_denied`.
+- **Workspace escape fails:** `test_absolute_escape_denied`, `test_nexus_read_escape_denied`,
+  `test_nexus_write_escape_denied`.
 - **Approved workspace access succeeds:** `test_valid_relative_path_allowed`,
-  `test_hermes_read_within_workspace_succeeds`, `test_hermes_write_within_workspace_succeeds`.
+  `test_nexus_read_within_workspace_succeeds`, `test_nexus_write_within_workspace_succeeds`.
 - **Existing CLI runtimes unaffected:** `test_gemini.py` + `test_claude.py` (12) green; CLI runtimes
   have no file-tool path, so confinement does not apply to or alter them.
 
 ## 9. Boundary / stop
 
-Stopped after S-4. **Not started:** any Hermes Track-H implementation (H-2…H-5). **No commit made.**
+Stopped after S-4. **Not started:** any Nexus Track-H implementation (H-2…H-5). **No commit made.**
 
 ## 10. Status toward classification
 

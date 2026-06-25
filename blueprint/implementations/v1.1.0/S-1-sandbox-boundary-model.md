@@ -24,7 +24,7 @@ operator explicitly and audibly chooses it.**
 | Unknown provider | Local/host (fail-open, `manager.py:52-53`) | **Raise** (fail closed) |
 | Policy under Local | decorative (ignored) | Local = explicit-unsafe-opt-in only; otherwise policy **enforced or refused** |
 | Host execution | silent default | deliberate, audited, opt-in (`provider=host-unsafe` or equiv.) |
-| Agent file tools | host FS bypass (`hermes.py:88-105`) | confined to workspace (R-05) |
+| Agent file tools | host FS bypass (`nexus.py:88-105`) | confined to workspace (R-05) |
 | Startup posture | no validation | fail-fast on unsafe/incoherent config |
 | Audit | complete ✅ | complete (unchanged) |
 
@@ -53,8 +53,8 @@ operator explicitly and audibly chooses it.**
 | Crossing | Boundary owner | Enforcement point |
 |---|---|---|
 | `execute_command` (all runtimes) | SandboxManager → Docker provider | `provider.py` (kept) |
-| Hermes `read_file`/`write_file` | SandboxManager containment (R-05) | new confinement seam (Track S), consumed by Track H |
-| Search egress (Hermes, real) | network policy of active provider | container `--network` / control-plane governed (R-05 §network) |
+| Nexus `read_file`/`write_file` | SandboxManager containment (R-05) | new confinement seam (Track S), consumed by Track H |
+| Search egress (Nexus, real) | network policy of active provider | container `--network` / control-plane governed (R-05 §network) |
 | Workspace FS | filesystem policy | volume mount, default toward `readonly` where feasible |
 
 ## 5. Default-path decision (Q1) and the ADR-011 tension

@@ -27,10 +27,10 @@ blueprint/
 ├── onboarding/                # Accepted v1.0.0 onboarding audit (01…15) — reality source
 ├── implementations/           # Per-release implementation reports (incl. v1.0.1/)
 ├── architecture/              # Architecture & design records
-├── reports/                   # Reviews, gap analyses, runtime/Hermes classifications
+├── reports/                   # Reviews, gap analyses, runtime/Nexus classifications
 ├── action-points/             # Phase action-point breakdowns
 ├── phases/                    # Phase-by-phase implementation memory
-└── references/                # Evaluated external references (Pi, Hermes, CLIs)
+└── references/                # Evaluated external references (Pi, Nexus, CLIs)
 ```
 
 > The `DECISIONS/` directory currently holds **21 ADRs** (the original landing page listed only three).

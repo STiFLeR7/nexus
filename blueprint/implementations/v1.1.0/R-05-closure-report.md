@@ -1,6 +1,6 @@
 # R-05 Closure Report (S-4)
 
-> Confirms closure of the cross-track shared risk **R-05 / AP-105 Gap 7** — Hermes file-tool host
+> Confirms closure of the cross-track shared risk **R-05 / AP-105 Gap 7** — Nexus file-tool host
 > bypass — per the single resolution agreed in `R-05-shared-resolution.md`.
 
 ---
@@ -9,8 +9,8 @@
 
 | | |
 |---|---|
-| **R-05 (A-006)** / **Gap 7 (AP-105)** | Hermes `read_file`/`write_file` touched the **host filesystem directly** (`hermes.py:88-105`), bypassing the sandbox — arbitrary host file read/write regardless of provider. |
-| Severity | High (shared between the Sandbox and Hermes audits). |
+| **R-05 (A-006)** / **Gap 7 (AP-105)** | Nexus `read_file`/`write_file` touched the **host filesystem directly** (`nexus.py:88-105`), bypassing the sandbox — arbitrary host file read/write regardless of provider. |
+| Severity | High (shared between the Sandbox and Nexus audits). |
 
 ## 2. Ownership honored (no duplicate solution)
 
@@ -19,9 +19,9 @@ Per `R-05-shared-resolution.md`:
 | Concern | Owner | Realized in S-4 |
 |---|---|---|
 | Containment/path-confinement **mechanism** | **Track S** | `nexus/execution/sandbox/confinement.py::resolve_in_workspace` |
-| File tools **adopt** the mechanism | **Track H** (file tools only) | `hermes.py` `read_file`/`write_file` call the seam |
+| File tools **adopt** the mechanism | **Track H** (file tools only) | `nexus.py` `read_file`/`write_file` call the seam |
 
-The mechanism is implemented **once** in the sandbox package and consumed by Hermes — no Hermes-local
+The mechanism is implemented **once** in the sandbox package and consumed by Nexus — no Nexus-local
 confinement, no duplication (Architecture Rule 9).
 
 ## 3. Resolution strategy delivered
@@ -40,19 +40,19 @@ defense-in-depth (see §6) — it is not required to eliminate the escape risk, 
 
 ## 4. Implementation order honored
 
-`R-05-shared-resolution.md` §5 required the Track-S seam to precede Hermes adoption. In S-4 both land
+`R-05-shared-resolution.md` §5 required the Track-S seam to precede Nexus adoption. In S-4 both land
 together in the correct dependency order within one AP: the seam (`confinement.py`) is defined, then
-the Hermes file tools consume it. No Track-H Hermes work (search/planning/cancellation/resume) was
+the Nexus file tools consume it. No Track-H Nexus work (search/planning/cancellation/resume) was
 started.
 
 ## 5. Proof of closure
 
 | Claim | Proof |
 |---|---|
-| Hermes cannot read outside the workspace | `test_hermes_read_escape_denied` (secret content not returned) |
-| Hermes cannot write outside the workspace | `test_hermes_write_escape_denied` (external file not created) |
+| Nexus cannot read outside the workspace | `test_nexus_read_escape_denied` (secret content not returned) |
+| Nexus cannot write outside the workspace | `test_nexus_write_escape_denied` (external file not created) |
 | Traversal cannot escape | `test_parent_traversal_denied`, `test_deep_traversal_denied` |
-| Approved access still works | `test_hermes_read_within_workspace_succeeds`, `test_hermes_write_within_workspace_succeeds` |
+| Approved access still works | `test_nexus_read_within_workspace_succeeds`, `test_nexus_write_within_workspace_succeeds` |
 | Provider-independent | `test_confinement_independent_of_provider` |
 
 All green within the full suite (**178 passed**, ruff + mypy clean).
@@ -62,7 +62,7 @@ All green within the full suite (**178 passed**, ruff + mypy clean).
 - **In-container file I/O** under Docker (running file ops inside the container) — defense-in-depth
   ceiling; the host-side workspace-confined floor already prevents escape, and under Docker the
   workspace is the mounted volume.
-- **Track-H Hermes work** (real search, planning, cancellation, resume) — out of S-4 scope.
+- **Track-H Nexus work** (real search, planning, cancellation, resume) — out of S-4 scope.
 - **R-04** command-blacklist hardening — governance-owned, separate.
 
 ## 7. Status

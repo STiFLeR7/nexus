@@ -3,7 +3,8 @@
 from __future__ import annotations
 
 # Platform Allowed Runtimes
-ALLOWED_RUNTIMES = ["gemini", "claude", "hermes"]
+# "hermes" retained as the deprecated codename alias for "nexus" (back-compat).
+ALLOWED_RUNTIMES = ["gemini", "claude", "nexus", "hermes"]
 
 # Global Command Blacklist Patterns
 GLOBAL_COMMAND_BLACKLIST = ["rm -rf /", "sudo ", "mv /etc", ":(){ :|:& };:"]

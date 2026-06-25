@@ -1,12 +1,12 @@
 # Runtime Capability Matrix
 
-This document provides a feature-by-feature capability matrix comparing the three target operational runtimes: Gemini CLI, Claude Code, and Hermes Agent.
+This document provides a feature-by-feature capability matrix comparing the three target operational runtimes: Gemini CLI, Claude Code, and Nexus Agent.
 
 ---
 
 ## 1. Capability Matrix Table
 
-| Operational Dimension | Gemini CLI | Claude Code | Hermes Agent |
+| Operational Dimension | Gemini CLI | Claude Code | Nexus Agent |
 | :--- | :--- | :--- | :--- |
 | **Execution Model** | Batch CLI Command Run | Interactive CLI Tool (NPM) | Autonomous Multi-step API Loop |
 | **Subprocess Spawning** | Yes (OS Shell wrap) | Yes (NPM / Node execution) | No (API network execution) |
@@ -26,11 +26,11 @@ This document provides a feature-by-feature capability matrix comparing the thre
 
 1. **Subprocess vs. API Boundary**:
    * Gemini CLI and Claude Code are **Subprocess CLI runtimes**. They execute as local OS shell commands, outputting raw `stdout` and `stderr` streams, and interact with the filesystem directly.
-   * Hermes is an **API-Based Agent runtime**. It runs as an autonomous agent reasoning loop. It calls remote models to select tools, outputs JSON response payloads, and manages memory state. It does not output standard OS streams.
+   * Nexus is an **API-Based Agent runtime**. It runs as an autonomous agent reasoning loop. It calls remote models to select tools, outputs JSON response payloads, and manages memory state. It does not output standard OS streams.
 
 2. **Interactivity Challenge**:
    * Claude Code frequently asks for user confirmation (e.g. "Do you want to run this command?"). Validating it requires a pseudo-terminal (PTY) emulation layer to inspect stream indicators.
-   * Gemini CLI and Hermes run fully unattended.
+   * Gemini CLI and Nexus run fully unattended.
 
 3. **Governance Discrepancy**:
    * CLI runtimes are validated *pre-run* by checking the command string.

@@ -34,7 +34,7 @@ The database schema `TaskRecord` inside [models.py](file:///D:/nexus/nexus/memor
 | Column | Type | Description | Default |
 | --- | --- | --- | --- |
 | `runtime_type` | `String(50)` | The runtime classification: `cli`, `agent`, `research` | `"cli"` |
-| `runtime_id` | `String(50)` | The specific runner instance: `gemini`, `hermes`, `claude` | `"gemini"` |
+| `runtime_id` | `String(50)` | The specific runner instance: `gemini`, `nexus`, `claude` | `"gemini"` |
 | `execution_profile` | `String(50)` | Context configurations: `research`, `coding`, `analysis` | `"default"` |
 | `runtime_policy` | `String(100)`| Policy status: `approved`, `monitored`, `blocked` | `"approved"` |
 

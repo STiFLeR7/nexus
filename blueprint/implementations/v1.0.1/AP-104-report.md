@@ -48,7 +48,7 @@ make Nexus documentation **truthful, current, and internally consistent** — do
   Deferred): ✅ in ROADMAP + full detail in `release-history-reconstruction.md`.
 - **Special-attention scan** (pre-alpha/prototype/planned-scheduler/planned-research/etc.): ✅ all
   located and reclassified — `documentation-drift-analysis.md` §7.
-- **Architecture status summary** (single source of truth; Hermes/Research/Scheduler/Sandbox/Metrics/
+- **Architecture status summary** (single source of truth; Nexus/Research/Scheduler/Sandbox/Metrics/
   Outbox/Governance/Approval/Memory classified with evidence): ✅ `architecture-status-summary.md`.
 
 ## 6. Success criteria
@@ -57,7 +57,7 @@ make Nexus documentation **truthful, current, and internally consistent** — do
 |---|---|
 | Documentation matches reality | ✅ via authoritative status table + per-doc corrections |
 | Internally consistent | ✅ README/STATUS/ROADMAP all derive from `architecture-status-summary.md` |
-| No over-claiming (Hermes/runtimes/sandbox) | ✅ Mocked/Stubbed/Experimental stated everywhere |
+| No over-claiming (Nexus/runtimes/sandbox) | ✅ Mocked/Stubbed/Experimental stated everywhere |
 | Blueprint authoritative | ✅ STATUS + architecture-status-summary designated canonical |
 | No code/feature changes | ✅ documentation only; residual code-debt logged |
 
@@ -65,7 +65,7 @@ make Nexus documentation **truthful, current, and internally consistent** — do
 
 - In-code version `0.1.0` → `1.0.x` (source/config; future code AP).
 - `/api/v1/status` `"stub"` output + boot-time health boolean (code).
-- Hermes capability ledger → **AP-105**.
+- Nexus capability ledger → **AP-105**.
 - Sandbox safety configuration audit → **A-006**.
 - Alembic completion / PostgreSQL path (code; future).
 
@@ -73,5 +73,5 @@ make Nexus documentation **truthful, current, and internally consistent** — do
 
 **Complete.** Nexus documentation is now honest, current, and internally consistent. Remaining
 inaccuracies are exclusively code-scoped items explicitly out of this documentation-only AP, each
-recorded with an owner. Next in sequence: **AP-105 (Hermes Reality Audit)** and **A-006 (Sandbox
+recorded with an owner. Next in sequence: **AP-105 (Nexus Reality Audit)** and **A-006 (Sandbox
 Safety Review)**.

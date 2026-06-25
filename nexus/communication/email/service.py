@@ -60,7 +60,10 @@ class EmailService:
             if use_tls and email_cfg.smtp_port == 465:
                 smtp_client = aiosmtplib.SMTP(use_tls=True, **connect_kwargs)
             else:
-                smtp_client = aiosmtplib.SMTP(use_tls=False, **connect_kwargs)
+                # start_tls=False prevents aiosmtplib from auto-negotiating STARTTLS during
+                # connect(); the explicit starttls() below then performs the single upgrade
+                # (fixes "Connection already using TLS" double-STARTTLS on :587).
+                smtp_client = aiosmtplib.SMTP(use_tls=False, start_tls=False, **connect_kwargs)
 
             await smtp_client.connect()
 

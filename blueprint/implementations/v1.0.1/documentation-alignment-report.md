@@ -40,8 +40,8 @@
   them, the README "Documentation" table now flags them as design-intent and points readers to
   `architecture-status-summary.md` for current status. (Prevents creating *new* drift by editing
   forward-looking specs.)
-- **No subsystem over-claiming.** Hermes is documented as **Mocked (partial)** and Gemini/Claude as
-  **Stubbed** everywhere — never as functional integrations. The full Hermes ledger remains AP-105.
+- **No subsystem over-claiming.** Nexus is documented as **Mocked (partial)** and Gemini/Claude as
+  **Stubbed** everywhere — never as functional integrations. The full Nexus ledger remains AP-105.
 - **Sandbox** described honestly as default-no-isolation; the configuration audit remains A-006.
 
 ## 4. Consistency guarantee

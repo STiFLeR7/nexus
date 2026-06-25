@@ -33,7 +33,7 @@
 | Docker availability | Discovered at first command spawn | **Probed at startup** (`ensure_available` → `docker version`); unavailable ⇒ **boot aborts** (R-06) |
 | Failure discipline | Delayed runtime discovery | Fail-fast at boot (mirrors A-001); spawn fail-closed remains as defense-in-depth |
 
-## 4. Agent file tools (Hermes)
+## 4. Agent file tools (Nexus)
 
 | Aspect | Before | After |
 |---|---|---|

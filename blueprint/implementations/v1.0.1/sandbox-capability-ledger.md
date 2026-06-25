@@ -31,7 +31,7 @@
 | 15 | Container lifecycle (spawn/wait/terminate) | **Implemented** | `provider.py` (docker `kill`, `:187-207`); `lifecycle.py:cleanup_orphaned_sandboxes` | Real for Docker |
 | 16 | Orphaned-sandbox cleanup | **Implemented** | `lifecycle.py:16 cleanup_orphaned_sandboxes` | Present (invocation/schedule not in A-006 scope) |
 | 17 | Command safety guard (blacklist) | **Partially Implemented / Experimental** | `governance.py:616-641` substring `if pattern in command`; `policy_defaults.py:9` = 4 patterns | Bypassable substring match |
-| 18 | Path confinement for agent file tools | **Not Present** | `hermes.py:88-105` raw host FS read/write (bypasses sandbox entirely) | Agent file I/O is uncontained |
+| 18 | Path confinement for agent file tools | **Not Present** | `nexus.py:88-105` raw host FS read/write (bypasses sandbox entirely) | Agent file I/O is uncontained |
 | 19 | Resource collector / metrics | **Implemented** | `collector.py` present | Telemetry (not a containment control) |
 
 ---

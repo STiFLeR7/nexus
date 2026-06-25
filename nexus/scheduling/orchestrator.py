@@ -29,7 +29,7 @@ logger = structlog.get_logger("nexus.scheduling.orchestrator")
 def resolve_exit_status(result: dict[str, Any]) -> ExitStatus:
     """Map a runtime result to a final ExitStatus, honoring agent terminal status (H-4).
 
-    Agent runtimes (Hermes) report a truthful terminal ``status`` (completed/failed/timed_out/
+    Agent runtimes (the Nexus agent) report a truthful terminal ``status`` (completed/failed/timed_out/
     cancelled) which maps to the corresponding ``ExitStatus`` so timeouts and cancellations are
     finalized distinctly from generic failures. CLI runtimes report only ``exit_code`` and fall back
     to the success/failure mapping — preserving prior behavior.

@@ -2,7 +2,7 @@
 
 > Final closure-and-freeze record for Track S (S-2/S-3/S-4). Authorized after acceptance of the Track S
 > closure review and the **Experimental → Pilot Safe** verdict. Documentation-only activity: no
-> implementation, no runtime/behavior change, no test change, no Hermes work. Branch `v1.1.0-planning`.
+> implementation, no runtime/behavior change, no test change, no Nexus work. Branch `v1.1.0-planning`.
 
 ---
 
@@ -15,7 +15,7 @@ strict TDD and minimal diff:
 |---|---|---|---|
 | **S-2** | Default-Secure Sandbox Resolution | R-01, R-02 | Fail-closed provider resolution (`SandboxResolutionError`); no host fail-open |
 | **S-3** | Sandbox Enforcement & Startup Validation | R-03, R-06, R-07 | `validate_sandbox_startup()` boot gate; `ensure_available()` Docker probe; `policy_enforced` honesty |
-| **S-4** | Workspace Confinement & R-05 Closure | R-05 | `resolve_in_workspace()` seam; Hermes file tools confined to the approved workspace |
+| **S-4** | Workspace Confinement & R-05 Closure | R-05 | `resolve_in_workspace()` seam; Nexus file tools confined to the approved workspace |
 
 ## 2. Accepted authoritative evidence (frozen)
 
@@ -71,7 +71,7 @@ None block the Pilot Safe classification; all are out of the Track S charter and
   `architecture-status-update.md`, `track-s-release-notes.md`.
 
 **Source/tests:** unchanged by this closure. The S-2/S-3/S-4 source + test diff is the pre-existing,
-already-accepted set (`nexus/api.py`, `nexus/core/exceptions.py`, `nexus/execution/runners/hermes.py`,
+already-accepted set (`nexus/api.py`, `nexus/core/exceptions.py`, `nexus/execution/runners/nexus.py`,
 `nexus/execution/sandbox/{__init__,manager,provider,confinement}.py`,
 `tests/unit/execution/test_{sandbox_resolution,sandbox_enforcement,workspace_confinement,timeout_resolution}.py`).
 
@@ -84,5 +84,5 @@ explicit instruction). HEAD remains `2fd3ffc`.
 ## 8. Scope honored
 
 No new implementation ✅ · no runtime/behavior change ✅ · no test change ✅ · no new features ✅ ·
-**no Hermes work / H-2 not started** ✅ · no commit ✅ · documentation changes limited to Sandbox
+**no Nexus work / H-2 not started** ✅ · no commit ✅ · documentation changes limited to Sandbox
 maturity references + the four requested deliverables ✅.

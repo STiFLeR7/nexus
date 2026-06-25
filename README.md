@@ -26,7 +26,7 @@ Nexus is a deterministic, auditable, and recoverable orchestration system that c
 
 - **Tasks** — creation, lifecycle, prioritization (✅ production-ready)
 - **Approvals** — un-bypassable, DB-backed governance workflows with audit trails (✅ production-ready)
-- **Agent Execution** — runtime registry over Gemini / Claude / Hermes adapters (🟡 governed core ready; Gemini/Claude stubbed, Hermes Experimental)
+- **Agent Execution** — runtime registry over Gemini / Claude / Nexus adapters (🟡 governed core ready; Gemini/Claude stubbed, Nexus Experimental)
 - **Research** — autonomous monitoring (✅ engine built, now scheduled; activates when feeds are configured)
 - **Communication** — Discord, Email (future: WhatsApp, Slack)
 - **Scheduling** — APScheduler-driven jobs for research, briefings, expiry sweeps, metrics, health (✅ single-node, new in v1.0.1)
@@ -99,7 +99,7 @@ All execution paths must remain observable, auditable, and interruptible.
         │    EXECUTION LAYER      │
         │  Runtime Registry +     │
         │  Adapters: Gemini /     │
-        │  Claude / Hermes        │
+        │  Claude / Nexus        │
         │  (11-gate governance)   │
         └─────────────────────────┘
 ```
@@ -124,7 +124,7 @@ the **current built status** of every subsystem.
 | Research engine | 🟡 Operational (latent) | Built + scheduled; activates once `research_feeds` configured |
 | Daily briefing engine | 🟡 Operational | Built + scheduled 08:00 (Asia/Kolkata) |
 | Gemini / Claude runtimes | 🟠 Stubbed | Generic shell runners; real CLI binary integration pending |
-| Hermes runtime | 🟠 Experimental | Honest: no prod mock, provider-backed search (`SearchProvider` DI), goal-derived planning, structured tool-calls, truthful outcomes (v1.1.0 H-2). Lifecycle safety (terminate/resume) = Pilot/H-4 |
+| Nexus runtime | 🟠 Experimental | Honest: no prod mock, provider-backed search (`SearchProvider` DI), goal-derived planning, structured tool-calls, truthful outcomes (v1.1.0 H-2). Lifecycle safety (terminate/resume) = Pilot/H-4 |
 | Sandbox isolation | 🟢 Pilot Safe | **Default-secure fail-closed** + boot-validated + workspace-confined (v1.1.0 Track S). Isolation opt-in (`provider=docker`); residual R-04/R-08/R-09 |
 
 ---
@@ -136,7 +136,7 @@ governance layer that authorizes every run:
 
 - **Gemini** (`gemini`) — CLI adapter (currently a governed generic shell runner).
 - **Claude** (`claude`) — CLI adapter (currently a governed generic shell runner).
-- **Hermes** — Agent adapter (autonomous loop). **Experimental** (v1.1.0 H-2): real model decisions via
+- **Nexus** — Agent adapter (autonomous loop). **Experimental** (v1.1.0 H-2): real model decisions via
   structured tool-calls, provider-backed search, goal-derived planning, truthful exit status. Not yet
   lifecycle-safe (no terminate/resume) — that is the Pilot bar (H-4).
 
