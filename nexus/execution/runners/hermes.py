@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import contextlib
 import json
 import os
 import time
@@ -8,8 +9,8 @@ from typing import Any
 
 from sqlalchemy import select
 
-from nexus.core.exceptions import ExecutionEngineError
-from nexus.core.types import ExecutionStatus
+from nexus.core.exceptions import ConfigurationError, ExecutionEngineError
+from nexus.core.types import ExecutionStatus, ExitStatus
 from nexus.execution.governance import GovernanceManager
 from nexus.execution.runners import runtime_registry
 from nexus.execution.runners.base import AgentRuntimeAdapter, resolve_execution_timeout
@@ -53,16 +54,30 @@ class HermesRuntimeAdapter(AgentRuntimeAdapter):
         self.end_time: float = 0.0
         self.exit_code: int = 0
         self.status: str = ""
+        # Cooperative cancellation (H-4): set by terminate(), observed at loop boundaries.
+        self._cancel_requested: bool = False
+        self._active_process: Any = None
 
     async def initialize(self) -> None:
-        """Verify LLM API key availability and gateway environment readiness."""
+        """Verify the runtime can run before execution — fail-fast on an unusable configuration.
+
+        Hermes requires an LLM capability: either an injected client or a usable API key (env or
+        settings). If neither is present the run cannot make real decisions, so initialization
+        **fails closed** rather than proceeding into a guaranteed failure (H-4 / Cap 17).
+        """
+        if self.openrouter_client is not None:
+            return
+
         api_key = os.getenv("GEMINI_API_KEY")
         if not api_key and self.settings and self.settings.openrouter:
             api_key = self.settings.openrouter.api_key
 
         if not api_key:
-            # Warning block for testing execution limits
-            pass
+            raise ConfigurationError(
+                "Hermes initialization failed: no LLM client and no usable API key "
+                "(GEMINI_API_KEY or settings.openrouter.api_key). Refusing to start "
+                "(fail-closed)."
+            )
 
     async def validate_goal(self, goal: str) -> None:
         """Run repository safety and task approval checks using GovernanceManager."""
@@ -144,7 +159,12 @@ class HermesRuntimeAdapter(AgentRuntimeAdapter):
                     timeout=timeout,
                     correlation_id=self.execution_id,
                 )
-                stdout, stderr = await proc.communicate()
+                # Track the in-flight process so terminate() can kill it (H-4).
+                self._active_process = proc
+                try:
+                    stdout, stderr = await proc.communicate()
+                finally:
+                    self._active_process = None
                 out = stdout.decode("utf-8", errors="replace")
                 err = stderr.decode("utf-8", errors="replace")
                 return f"Exit Code: {proc.returncode}\nSTDOUT:\n{out}\nSTDERR:\n{err}"
@@ -188,6 +208,13 @@ class HermesRuntimeAdapter(AgentRuntimeAdapter):
         except Exception:
             return fallback
 
+    def _max_steps(self) -> int:
+        """Resolve the operator-configurable step budget, defaulting to 5 (H-4 / Cap 19)."""
+        raw = getattr(getattr(self.settings, "execution", None), "agent_max_steps", None)
+        if isinstance(raw, int) and raw > 0:
+            return raw
+        return 5
+
     async def execute_goal(self, goal: str) -> dict[str, Any]:
         """Run the autonomous tool loop to achieve the specified goal.
 
@@ -201,12 +228,49 @@ class HermesRuntimeAdapter(AgentRuntimeAdapter):
         # Goal-derived advisory plan (replaces the decorative literal).
         self.plan = await self._generate_plan(goal)
 
-        max_steps = 5
-        step_index = 0
+        return await self._run_loop(goal, 0)
+
+    async def _run_loop(self, goal: str, step_index: int) -> dict[str, Any]:
+        """Drive the decision/tool loop from ``step_index`` to a terminal state.
+
+        Shared by ``execute_goal`` (fresh) and ``resume_goal`` (reconstructed). ``self.trajectory``
+        and ``self.plan`` must already be set; ``self.start_time`` bounds the wall-clock budget.
+        """
+        max_steps = self._max_steps()
+        # ADR-010 wall-clock budget (clamped by hard_limit via A-002) — a real ceiling.
+        timeout_seconds = resolve_execution_timeout(self.settings, "research_timeout")
         finished = False
         failed = False
+        cancelled = False
+        timed_out = False
 
         while step_index < max_steps and not finished:
+            # Cooperative cancellation observed at the loop boundary (H-4 / Cap 14).
+            if await self._is_cancelled():
+                await self._record_terminal_marker(
+                    step_index,
+                    tool_name="cancelled",
+                    thought="Cancellation requested.",
+                    result="Run cancelled cooperatively (terminate()).",
+                    status=ExecutionStatus.CANCELLED.value,
+                )
+                cancelled = True
+                finished = True
+                break
+
+            # Wall-clock timeout → distinct TIMED_OUT terminal (H-4 / Cap 18 lifecycle).
+            if time.time() - self.start_time > timeout_seconds:
+                await self._record_terminal_marker(
+                    step_index,
+                    tool_name="timed_out",
+                    thought="Execution timed out.",
+                    result=f"Run exceeded the {timeout_seconds}s execution budget.",
+                    status=ExecutionStatus.TIMED_OUT.value,
+                )
+                timed_out = True
+                finished = True
+                break
+
             await self.heartbeat()
 
             trajectory_str = "\n".join(
@@ -296,12 +360,26 @@ class HermesRuntimeAdapter(AgentRuntimeAdapter):
 
             step_index += 1
 
-        # A run that exhausts its step budget without a genuine finish did not complete.
+        # A run that exhausts its step budget without a genuine finish is a TIMED_OUT, not a failure.
         if not finished:
-            failed = True
+            await self._record_terminal_marker(
+                step_index,
+                tool_name="timed_out",
+                thought="Step budget exhausted.",
+                result=f"Run exhausted its step budget ({max_steps} steps) without finishing.",
+                status=ExecutionStatus.TIMED_OUT.value,
+            )
+            timed_out = True
 
-        self.exit_code = 0 if (finished and not failed) else 1
-        self.status = "completed" if self.exit_code == 0 else "failed"
+        if cancelled:
+            self.status = "cancelled"
+        elif timed_out:
+            self.status = "timed_out"
+        elif failed:
+            self.status = "failed"
+        else:
+            self.status = "completed"
+        self.exit_code = 0 if self.status == "completed" else 1
 
         self.end_time = time.time()
         duration = self.end_time - self.start_time
@@ -313,6 +391,58 @@ class HermesRuntimeAdapter(AgentRuntimeAdapter):
             "steps_executed": step_index,
             "trajectory_len": len(self.trajectory),
         }
+
+    async def resume_goal(self, goal: str) -> dict[str, Any]:
+        """Resume an interrupted run from its persisted state (H-4 / Cap 12).
+
+        Reconstructs the trajectory from ``agent_steps`` and the plan/cursor from the latest
+        checkpoint, re-validates the goal through governance (no bypass), then continues the loop.
+        Fails closed if there is no prior step state or no usable checkpoint — never silently
+        restarts from zero, which would mask data loss.
+        """
+        steps_stmt = (
+            select(AgentStepRecord)
+            .where(AgentStepRecord.execution_id == self.execution_id)
+            .order_by(AgentStepRecord.step_index)
+        )
+        steps = (await self.session.execute(steps_stmt)).scalars().all()
+        if not steps:
+            raise ExecutionEngineError(
+                f"Cannot resume execution {self.execution_id}: no prior agent steps "
+                "(fail-closed)."
+            )
+
+        cp_stmt = (
+            select(WorkflowCheckpointRecord)
+            .where(WorkflowCheckpointRecord.workflow_id == self.execution_id)
+            .order_by(WorkflowCheckpointRecord.completed_at.desc())
+        )
+        checkpoint = (await self.session.execute(cp_stmt)).scalars().first()
+        if checkpoint is None or not isinstance(checkpoint.state, dict):
+            raise ExecutionEngineError(
+                f"Cannot resume execution {self.execution_id}: no usable checkpoint state "
+                "(fail-closed)."
+            )
+
+        # Re-validate the goal through governance before continuing (no bypass of Rule 5).
+        await self.validate_goal(goal)
+
+        # Reconstruct in-memory state from the persisted record (read-only over existing schema).
+        self.plan = checkpoint.state.get("plan") or []
+        self.trajectory = [
+            {
+                "step_index": s.step_index,
+                "thought": s.thought,
+                "tool_name": s.tool_name,
+                "tool_arguments": s.tool_arguments,
+                "tool_result": s.tool_result,
+            }
+            for s in steps
+        ]
+        cursor = max(s.step_index for s in steps) + 1
+
+        self.start_time = time.time()
+        return await self._run_loop(goal, cursor)
 
     async def heartbeat(self) -> None:
         """Update last_heartbeat timestamps in active database records."""
@@ -336,8 +466,61 @@ class HermesRuntimeAdapter(AgentRuntimeAdapter):
         await self.session.flush()
 
     async def terminate(self) -> None:
-        """Immediately abort running processes/loops (not applicable for basic API run)."""
-        pass
+        """Request cooperative cancellation of the run (H-4 / Cap 14).
+
+        Sets the cancel signal observed at loop boundaries and kills any in-flight sandbox process.
+        Cancellation is cooperative — the loop transitions to CANCELLED at its next boundary; the
+        async task itself is never force-killed.
+        """
+        self._cancel_requested = True
+        proc = self._active_process
+        if proc is not None:
+            with contextlib.suppress(Exception):
+                proc.terminate()
+
+    async def _is_cancelled(self) -> bool:
+        """Whether cancellation was requested — in-process (terminate()) or DB-observable (H-4).
+
+        The DB signal (``ExecutionRecord.exit_status == cancelled``) lets an operator or the
+        orchestration path request cancellation without holding the adapter instance, consistent
+        with the DB-backed approval model.
+        """
+        if self._cancel_requested:
+            return True
+        stmt = select(ExecutionRecord).where(ExecutionRecord.id == self.execution_id)
+        res = await self.session.execute(stmt)
+        rec = res.scalar_one_or_none()
+        return bool(rec is not None and rec.exit_status == ExitStatus.CANCELLED.value)
+
+    async def _record_terminal_marker(
+        self, step_index: int, *, tool_name: str, thought: str, result: str, status: str
+    ) -> None:
+        """Persist a terminal lifecycle marker step (cancelled/timed_out) — audit-observable."""
+        step_record = AgentStepRecord(
+            execution_id=self.execution_id,
+            step_index=step_index,
+            thought=thought,
+            tool_name=tool_name,
+            tool_arguments={},
+            tool_result=result,
+            status=status,
+            last_heartbeat=datetime.now(UTC),
+        )
+        self.session.add(step_record)
+        await self.session.flush()
+        self.trajectory.append(
+            {
+                "step_index": step_index,
+                "thought": thought,
+                "tool_name": tool_name,
+                "tool_arguments": {},
+                "tool_result": result,
+            }
+        )
+        await self.checkpoint(
+            step_name=f"agent_step_{step_index}_{tool_name}",
+            state={"terminal": tool_name, "plan": self.plan},
+        )
 
     async def summarize(self) -> str:
         """Request OpenRouter to summarize reasoning steps trajectory."""

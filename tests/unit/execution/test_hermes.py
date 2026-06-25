@@ -27,10 +27,12 @@ _SEARCH = '{"thought": "search", "tool_name": "web_search", "tool_arguments": {"
 
 @pytest.mark.asyncio
 async def test_hermes_initialize(db_session: AsyncSession) -> None:
-    """Verify initialization checks for Hermes settings."""
-    adapter = HermesRuntimeAdapter(db_session, uuid.uuid4())
+    """Initialization proceeds when an LLM client is injected (fail-fast otherwise — see lifecycle tests)."""
+    adapter = HermesRuntimeAdapter(
+        db_session, uuid.uuid4(), openrouter_client=FakeLLMClient([_FINISH])
+    )
     await adapter.initialize()
-    # Should not crash
+    # Should not crash with a usable LLM capability present.
 
 
 @pytest.mark.asyncio

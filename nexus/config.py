@@ -86,6 +86,8 @@ class ExecutionConfig(BaseModel):
     hard_limit: int = 3600
     concurrency_retry_count: int = 5
     concurrency_retry_timeout: float = 5.0
+    # Agent (Hermes) step budget — operator-tunable; default preserves prior hardcoded value (H-4).
+    agent_max_steps: int = 5
 
 
 class LoggingConfig(BaseModel):
