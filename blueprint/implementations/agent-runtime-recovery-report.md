@@ -6,7 +6,7 @@ This report outlines the checkpointing, recovery logic, and state consistency ve
 
 ## 1. Heartbeats and Checkpointing
 
-During the tool-calling loop, [HermesRuntimeAdapter](file:///D:/nexus/nexus/execution/runners/hermes.py) writes regular indicator status updates to the database:
+During the tool-calling loop, [NexusRuntimeAdapter](file:///D:/nexus/nexus/execution/runners/nexus.py) writes regular indicator status updates to the database:
 
 * **Liveness Heartbeats**: Before executing any tool, the adapter updates the parent `ExecutionRecord.last_heartbeat` timestamp via the `heartbeat()` method. This prevents the orchestrator thread scheduler from flagging the active runner as timed out.
 * **State Checkpoints**: After every reasoning iteration, the adapter calls `checkpoint()`, serializing the active planning steps and trajectory index into the `workflow_checkpoints` SQLite table.

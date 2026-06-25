@@ -61,8 +61,8 @@ The current adapters are registered into the framework as follows:
 class GeminiRuntimeAdapter(CLIRuntimeAdapter):
     pass
 
-@runtime_registry.register(runtime_type="agent", runtime_id="hermes")
-class HermesRuntimeAdapter(AgentRuntimeAdapter):
+@runtime_registry.register(runtime_type="agent", runtime_id="nexus")
+class NexusRuntimeAdapter(AgentRuntimeAdapter):
     pass
 ```
 

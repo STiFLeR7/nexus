@@ -48,7 +48,7 @@ Gemini
 
 Claude
 
-Hermes Agent
+Nexus Agent
 
 Logs
 
@@ -319,7 +319,7 @@ Gemini CLI
 
 Claude Code
 
-Hermes Agent
+Nexus Agent
 
 External systems may read.
 

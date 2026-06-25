@@ -3,7 +3,7 @@
 Date: 2026-06-24
 Status: Accepted
 Release: v1.0.1 "Alignment" · A-006 · Finding A-006 (Sandbox Safety Review)
-Related: ADR-011-local-first-deployment, ADR-010-execution-timeouts, ADR-hermes-reality-audit,
+Related: ADR-011-local-first-deployment, ADR-010-execution-timeouts, ADR-nexus-reality-audit,
 `blueprint/implementations/v1.0.1/sandbox-safety-review.md`
 
 ---
@@ -19,9 +19,9 @@ First-hand findings (full evidence in the A-006 deliverables):
 
 - **Default is host execution.** `SandboxConfig.enabled = False` (`config.py:135`) routes all commands
   to `LocalSandboxProvider`, which runs them in the host shell (`manager.py:44-45`, `provider.py:96`).
-- **All runtimes share the chokepoint.** Gemini (`gemini.py:107`), Claude (`claude.py:102`), and Hermes
-  `execute_command` (`hermes.py:117`) all call `SandboxManager`; under default all run on host. Hermes
-  `read_file`/`write_file` bypass the manager entirely (`hermes.py:88-105`).
+- **All runtimes share the chokepoint.** Gemini (`gemini.py:107`), Claude (`claude.py:102`), and Nexus
+  `execute_command` (`nexus.py:117`) all call `SandboxManager`; under default all run on host. Nexus
+  `read_file`/`write_file` bypass the manager entirely (`nexus.py:88-105`).
 - **Containment is opt-in and real only in Docker.** The Docker provider correctly enforces CPU,
   memory, network, and filesystem policy (`provider.py:133-175`); the Local provider **ignores** the
   policy (decorative).
@@ -63,6 +63,6 @@ First-hand findings (full evidence in the A-006 deliverables):
 - Treat default deployments as host-executing; restrict to fully-trusted commands/repositories; rely on
   the approval gate and audit log as the primary controls.
 - Enable Docker isolation for any untrusted workload; verify via the `sandbox.created` audit policy.
-- Cross-reference ADR-hermes-reality-audit: Hermes file-tool bypass (R-05) is shared between A-005/A-006.
+- Cross-reference ADR-nexus-reality-audit: Nexus file-tool bypass (R-05) is shared between A-005/A-006.
 - Note ADR-011 tension: the Docker image reportedly lacks runtime CLIs — isolation + runtime
   availability are not yet jointly validated.

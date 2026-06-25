@@ -3,7 +3,7 @@
 Date: 2026-06-24
 Status: Accepted
 Release: v1.0.1 · Codename: Alignment
-Related: NEXUS_FIRST_IMPRESSION.md (v1.0.0 audit), ADR-scheduler-foundation, ADR-hermes-reality-audit,
+Related: NEXUS_FIRST_IMPRESSION.md (v1.0.0 audit), ADR-scheduler-foundation, ADR-nexus-reality-audit,
 ADR-sandbox-safety-review, `blueprint/implementations/v1.0.1/v1.0.1-alignment-summary.md`
 Supersedes: none (closes the v1.0.1 finding set A-001…A-006)
 
@@ -12,12 +12,12 @@ Supersedes: none (closes the v1.0.1 finding set A-001…A-006)
 ## Context
 
 The accepted v1.0.0 onboarding audit (maturity 6.0/10) produced six findings: A-001 fail-open owner
-auth, A-002 execution-timeout mismatch, A-003 missing scheduler, A-004 documentation drift, A-005 Hermes
+auth, A-002 execution-timeout mismatch, A-003 missing scheduler, A-004 documentation drift, A-005 Nexus
 simulated behavior, A-006 default-host sandbox. v1.0.1 "Alignment" was chartered as a correctness,
 safety, and operational-completeness release — explicitly **not** a feature release — with the rule that
 every change trace to an accepted finding, carry validation + an ADR/report, and keep the blueprint
 synchronized. Work proceeded as gated Action Points AP-101 (validation) → AP-102 (A-001/A-002 fixes) →
-AP-103 (scheduler design + impl) → AP-104 (documentation alignment) → AP-105 (Hermes audit) → A-006
+AP-103 (scheduler design + impl) → AP-104 (documentation alignment) → AP-105 (Nexus audit) → A-006
 (sandbox audit), each accepted before the next.
 
 ## Decision
@@ -32,7 +32,7 @@ Specifically:
 2. **A-004 is resolved by documentation alignment** with a single authoritative status source
    (`architecture-status-summary.md`); doc accuracy ~3.0→9.0/10.
 3. **A-005 and A-006 are resolved as findings** by evidence-based audits that established reality —
-   Hermes = **Prototype**, sandbox = **Unsafe By Default** — **without** code change, per their
+   Nexus = **Prototype**, sandbox = **Unsafe By Default** — **without** code change, per their
    audit-only mandate. Their remediation is explicitly **future-AP** work.
 4. The **STABLE** designation applies to the governed core + single-node autonomy layer. It is **not** a
    claim of default-secure sandboxing, full autonomous multi-runtime operation, or multi-node operation.
@@ -51,7 +51,7 @@ Specifically:
 - Two **Critical** residual risks remain by design — sandbox host execution by default and fail-open
   provider resolution — mitigated by deliberate Docker configuration + the approval gate + audit, and
   documented as the operator's responsibility until a future hardening AP.
-- Hermes remains a Prototype and Gemini/Claude remain Stubbed; "multi-runtime execution" is
+- Nexus remains a Prototype and Gemini/Claude remain Stubbed; "multi-runtime execution" is
   architecturally real but functionally shallow.
 - Code-scoped residual debt persists unfixed (in-code version string, `/api/v1/status`/health, Alembic),
   logged in the risk register as Deferred.
@@ -60,7 +60,7 @@ Specifically:
 - Configure `discord.owner_ids` (mandatory), run exactly one instance, and enable Docker sandboxing for
   any untrusted workload; otherwise treat deployments as host-executing and attended.
 - The authoritative subsystem status is `architecture-status-summary.md`; future status claims must agree
-  with it. Any upgrade to Hermes/sandbox classification requires new code + new evidence, not intent.
+  with it. Any upgrade to Nexus/sandbox classification requires new code + new evidence, not intent.
 
 ## Closure
 

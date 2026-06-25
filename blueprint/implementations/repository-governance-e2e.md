@@ -18,12 +18,12 @@ Running the acceptance script [verify_repository_governance.py](file:///D:/nexus
   ```
 
 ### Scenario 2: Blocked Runtime
-* **Action**: Request `hermes` on a repo whitelisting only `["gemini", "claude"]`.
+* **Action**: Request `nexus` on a repo whitelisting only `["gemini", "claude"]`.
 * **Outcome**: Rejected.
 * **Audit Entry**:
   ```
   [DB AuditLogRecord] FOUND 'RuntimeRejected' for task e992785f-63ab-4cb5-a567-f516c3adde1e
-    Data: {'runtime': 'hermes', 'allowed_runtimes': ['gemini', 'claude'], 'reason': 'Runtime not allowed for repo'}
+    Data: {'runtime': 'nexus', 'allowed_runtimes': ['gemini', 'claude'], 'reason': 'Runtime not allowed for repo'}
   ```
 
 ### Scenario 3: Blocked Branch

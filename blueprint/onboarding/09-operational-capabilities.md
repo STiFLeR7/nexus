@@ -76,8 +76,8 @@ concurrency-safe, fully audited (`execution/service.py:43-45`, `approvals/servic
 
 The registry + adapter-split + governance abstraction is excellent and extensible
 (`runners/__init__.py`, `runners/base.py`). But the concrete runtimes are: Claude/Gemini = identical
-generic shell runners (no binary invoked); Hermes = real loop scaffold with hardcoded plan, canned
-search, and an `AsyncMock` simulation branch in production (`hermes.py:7,145-209`). "Multi-runtime"
+generic shell runners (no binary invoked); Nexus = real loop scaffold with hardcoded plan, canned
+search, and an `AsyncMock` simulation branch in production (`nexus.py:7,145-209`). "Multi-runtime"
 is architecturally real but functionally shallow today.
 
 ---

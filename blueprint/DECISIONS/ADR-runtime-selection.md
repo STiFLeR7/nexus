@@ -4,7 +4,7 @@
 Approved
 
 ## Context
-In previous implementations, routing tasks to runtimes (e.g., Gemini CLI vs. Hermes Agent) relied on brittle string-matching heuristics inside the description field (e.g., `description.startswith("goal:")` or `contains("hermes")`). This heuristic-based routing prevents enterprise readiness because:
+In previous implementations, routing tasks to runtimes (e.g., Gemini CLI vs. Nexus Agent) relied on brittle string-matching heuristics inside the description field (e.g., `description.startswith("goal:")` or `contains("nexus")`). This heuristic-based routing prevents enterprise readiness because:
 1. It is non-governed and cannot enforce execution policies.
 2. It is non-auditable, as the database does not explicitly track which runtime or profile was requested or active.
 3. It lacks flexibility, requiring orchestrator code modifications to support new runtimes (like Claude Code) or custom workloads.
@@ -20,7 +20,7 @@ We approve the design and implementation of the Runtime Selection Framework with
 1. **Explicit Task Metadata Columns**:
    * Add four explicit columns to `TaskRecord` (and corresponding schemas/services):
      * `runtime_type` (e.g., `"cli"`, `"agent"`, `"research"`)
-     * `runtime_id` (e.g., `"gemini"`, `"hermes"`, `"claude"`)
+     * `runtime_id` (e.g., `"gemini"`, `"nexus"`, `"claude"`)
      * `execution_profile` (e.g., `"research"`, `"planning"`, `"coding"`, `"refactoring"`, `"analysis"`, `"reporting"`, `"custom"`, `"default"`)
      * `runtime_policy` (e.g., `"approved"`, `"monitored"`, `"blocked"`)
 

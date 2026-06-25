@@ -6,7 +6,7 @@ Proposed
 ## Context
 The Gemini CLI Runtime Adapter (AP-301) established our first production adapter. However, this implementation revealed that `BaseRuntimeAdapter` holds strong assumptions about shell command execution and POSIX stream captures (`stdout`/`stderr`).
 
-To prevent architectural leakage when introducing Claude Code (which is interactive) and Hermes Agent (which runs as an API loop), we require a decoupled interface structure: **Runtime V2**.
+To prevent architectural leakage when introducing Claude Code (which is interactive) and Nexus Agent (which runs as an API loop), we require a decoupled interface structure: **Runtime V2**.
 
 ---
 
@@ -40,7 +40,7 @@ We divide the next milestones into three isolated implementation blocks:
        +-----------------------+-----------------------+
        |                                               |
        v                                               v
-[ AP-302B: Claude Runtime ]                     [ AP-303A: Hermes Runtime ]
+[ AP-302B: Claude Runtime ]                     [ AP-303A: Nexus Runtime ]
   - Subprocess PTY integration                    - API reasoning tool loop
   - Extends CLIRuntimeAdapter                     - Extends AgentRuntimeAdapter
 ```
@@ -51,6 +51,6 @@ We divide the next milestones into three isolated implementation blocks:
 2. **AP-302B: Claude Runtime (Claude CLI)**:
    * **Scope**: Claude adapter implementation, PTY streaming, patch captures, and E2E validation.
    * **Dependency**: Depends on AP-302A.
-3. **AP-303A: Hermes Runtime (Hermes API)**:
-   * **Scope**: Hermes agent loop, planning steps, OpenRouter integration, trajectory logging, and E2E validation.
+3. **AP-303A: Nexus Runtime (Nexus API)**:
+   * **Scope**: Nexus agent loop, planning steps, OpenRouter integration, trajectory logging, and E2E validation.
    * **Dependency**: Depends on AP-302A.

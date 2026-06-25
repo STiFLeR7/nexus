@@ -17,7 +17,7 @@ Milestone 3.4: Autonomous Background Runtimes (AP-306, AP-307)
 ```
 
 ### Milestone 3.1: Common Runtime Execution Interface
-Establish a standard runtime contract and implement execution adapters for Gemini CLI and Claude Code. Evaluate and integrate the Hermes agent framework as a first-class planning and research worker runtime.
+Establish a standard runtime contract and implement execution adapters for Gemini CLI and Claude Code. Evaluate and integrate the Nexus agent framework as a first-class planning and research worker runtime.
 
 ### Milestone 3.2: Repository Governance
 Implement strict guardrails to prevent AI runtimes from performing unsafe shell commands, accessing directories outside allowed repository paths, or writing directly to restricted branches.
@@ -49,7 +49,7 @@ Phase 3 introduces the runtime manager subsystem within the `execution/` boundar
             |                     |                     |
             v                     v                     v
 +-----------+-----------+ +-------+-------+ +-----------+-----------+
-|   Gemini CLI Adapter  | |  Claude Code  | |   Hermes Agent Adapter|
+|   Gemini CLI Adapter  | |  Claude Code  | |   Nexus Agent Adapter|
 |  (Gemini Run Subproc) | | (Node Subproc)| | (Custom API loop) |
 +-----------------------+ +---------------+ +-----------------------+
 ```

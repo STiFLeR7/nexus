@@ -1,6 +1,6 @@
 # Agent Artifact Persistence Report
 
-This report verifies that Hermes first-class agent artifacts and reasoning steps coexist successfully with standard CLI subprocess artifacts in the Nexus database schema.
+This report verifies that Nexus first-class agent artifacts and reasoning steps coexist successfully with standard CLI subprocess artifacts in the Nexus database schema.
 
 ---
 
@@ -13,7 +13,7 @@ Under Runtime V2, `ExecutionArtifactRecord` holds artifacts for both paradigms u
   * `stderr.log` (type: `stderr`): Standard error traces.
   * `summary.md` (type: `summary`): Markdown brief.
   * `changes.diff` (type: `diff`): Code modification patches.
-* **Autonomous Agent Runner (Hermes)**:
+* **Autonomous Agent Runner (Nexus)**:
   * `plan.json` (type: `agent_plan`): Sequential plan deconstruction.
   * `trajectory.json` (type: `agent_trajectory`): Serialized JSON array of thoughts, tool calls, and observations.
   * `summary.md` (type: `summary`): Synthesis brief of findings.

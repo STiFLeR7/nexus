@@ -12,9 +12,9 @@ The table below outlines common permission matrices:
 
 | Repository Name | Target Directory | Allowed Runtimes | Allowed Profiles | Enforcement Action |
 | --- | --- | --- | --- | --- |
-| **`nexus`** | `D:/projects/nexus` | `["gemini", "claude"]` | `["coding", "analysis"]` | Gemini CLI and Claude CLI are allowed to write code. Hermes Agent is blocked. |
+| **`nexus`** | `D:/projects/nexus` | `["gemini", "claude"]` | `["coding", "analysis"]` | Gemini CLI and Claude CLI are allowed to write code. Nexus Agent is blocked. |
 | **`memex`** | `D:/projects/memex` | `["claude"]` | `["refactoring"]` | Only Claude is allowed to run refactoring profiles. |
-| **`research`** | `D:/projects/research` | `["hermes"]` | `["research", "reporting"]` | Hermes Agent is authorized to run research goals. Subprocess commands are blocked. |
+| **`research`** | `D:/projects/research` | `["nexus"]` | `["research", "reporting"]` | Nexus Agent is authorized to run research goals. Subprocess commands are blocked. |
 
 ---
 

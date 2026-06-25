@@ -14,7 +14,7 @@
 ## 1. The exact containment reality (one paragraph)
 
 Nexus ships with sandboxing **disabled by default** (`SandboxConfig.enabled = False`, `config.py:135`).
-Under that default, every governed command — for **all** runtimes (Gemini, Claude, Hermes
+Under that default, every governed command — for **all** runtimes (Gemini, Claude, Nexus
 `execute_command`) — is routed by `SandboxManager` to the `LocalSandboxProvider`, which runs the full
 command string in the **host shell** with full host privileges, no resource caps, full network, and full
 filesystem access (`manager.py:44-45`, `provider.py:96`). The resource/network/filesystem policy is
@@ -43,8 +43,8 @@ approval gate, a repository allow-list, a bypassable 4-pattern substring command
    `manager.py:172-179`); but no Docker-availability precheck. The fail-**open** is in resolution/default.
 5. **Sandboxing enabled by default?** **No.**
 6. **Which runtimes pass through the sandbox?** All three command paths call `SandboxManager`; under
-   default all land on host. Hermes file tools bypass the manager.
-7. **Can any runtime bypass containment?** **Yes** — default Local path for all; Hermes `read/write_file`
+   default all land on host. Nexus file tools bypass the manager.
+7. **Can any runtime bypass containment?** **Yes** — default Local path for all; Nexus `read/write_file`
    bypass outright.
 8. **Protections against arbitrary host execution:** approval gate, allow-list + branch policy,
    substring blacklist, health gate, audit log (detection).
@@ -96,6 +96,6 @@ Default**.
 ## 8. Boundary note
 
 A-006 proposes **no fixes** and **no redesign**. "Missing protections" are stated descriptively;
-remediation is future-Action-Point territory. The shared item with AP-105 (Hermes file-tool bypass /
+remediation is future-Action-Point territory. The shared item with AP-105 (Nexus file-tool bypass /
 R-05) is recorded in both audits. Authoritative status: `architecture-status-summary.md` already
 classifies Sandbox Isolation **Experimental (default-off)** — this audit confirms and pins it.

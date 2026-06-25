@@ -26,13 +26,13 @@ Every action point (AP) in Nexus must answer: *"What visible user value does thi
 
 ---
 
-## AP-303: Hermes Agent Runtime Evaluation & Adapter
-* **Goal**: Investigate and implement Hermes as an execution, planning, and research worker runtime.
+## AP-303: Nexus Agent Runtime Evaluation & Adapter
+* **Goal**: Investigate and implement Nexus as an execution, planning, and research worker runtime.
 * **Visible User Value**: Enables autonomous multi-step planning and file research without operator intervention, reducing manual task detailing.
 * **Responsibilities**:
   - Conduct runtime, tool-usage, and planning evaluation.
-  - Create [ADR-hermes-runtime-evaluation.md](file:///D:/nexus/blueprint/DECISIONS/ADR-hermes-runtime-evaluation.md).
-  - Implement [HermesRuntimeAdapter](file:///D:/nexus/nexus/execution/runners/hermes.py).
+  - Create [ADR-nexus-runtime-evaluation.md](file:///D:/nexus/blueprint/DECISIONS/ADR-nexus-runtime-evaluation.md).
+  - Implement [NexusRuntimeAdapter](file:///D:/nexus/nexus/execution/runners/nexus.py).
 
 ---
 

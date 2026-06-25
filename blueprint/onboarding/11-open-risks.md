@@ -24,7 +24,7 @@
 | R-13 | **Content injection** — malicious RSS content rendered unescaped into briefing email/Discord | Low | Med | 🟡 P2 | `briefing.py:509-554` |
 | R-14 | **Double-delivery / clogged sweep** on `system_events` outbox (no leasing/dead-letter) | Low | Med | 🟡 P2 | `outbox.py:184,161-168` |
 | R-15 | **Discord rate-limit failures** under burst of approvals/notifications | Med | Low | 🟡 P2 | `GAPS_AND_RISKS.md:289-293` |
-| R-16 | **Runaway agent cannot be stopped** — Hermes `terminate()` is a no-op; sandbox `terminate()` not awaited | Low | Med | 🟡 P2 | `hermes.py:310-312`, `provider.py:45-48` |
+| R-16 | **Runaway agent cannot be stopped** — Nexus `terminate()` is a no-op; sandbox `terminate()` not awaited | Low | Med | 🟡 P2 | `nexus.py:310-312`, `provider.py:45-48` |
 | R-17 | **Operator trusts stale blueprint** — STATUS/ROADMAP/README describe a different system state | High | Low | 🟡 P2 | `STATUS.md:58-68`, `README.md:5-6` |
 
 ---

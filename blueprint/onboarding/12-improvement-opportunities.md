@@ -31,10 +31,10 @@
 | # | Opportunity | Why (evidence) | Touch points |
 |---|---|---|---|
 | I-10 | **Implement real Claude/Gemini CLI invocation, or rename them** to reflect generic-shell behavior | TD-04; `runtime-adapter-design.md:67-73` | `runners/claude.py:107`, `gemini.py:112` |
-| I-11 | **Remove `AsyncMock` from production Hermes**; inject a test double; implement real `web_search` + `terminate()` | TD-04/R-16 | `hermes.py:7,76-86,183-209,310-312` |
+| I-11 | **Remove `AsyncMock` from production Nexus**; inject a test double; implement real `web_search` + `terminate()` | TD-04/R-16 | `nexus.py:7,76-86,183-209,310-312` |
 | I-12 | **Default to an isolating sandbox** (or refuse host execution without explicit opt-in) | R-02/TD-03 | `config.py:101`, `manager.py:34-53` |
 | I-13 | **Tokenize the command blacklist** (shlex/argv) instead of substring matching | TD-10 | `governance.py:620-621` |
-| I-14 | **Subject Hermes `write_file`/`execute_command` to governance path containment** | TD (runtime) | `hermes.py:96-105,121` |
+| I-14 | **Subject Nexus `write_file`/`execute_command` to governance path containment** | TD (runtime) | `nexus.py:96-105,121` |
 | I-15 | **Mark failed steps `FAILED`** instead of always `COMPLETED` | TD-21 | `runners/claude.py:142` |
 
 ## Tier 4 — Reliability of external I/O

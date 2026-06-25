@@ -9,6 +9,8 @@ from typing import Any
 
 from pydantic import BaseModel
 
+from nexus.core.exceptions import SandboxUnavailableError
+
 
 class SandboxPolicy(BaseModel):
     """Execution containment policy rules."""
@@ -56,6 +58,19 @@ class SandboxProcess:
 
 class SandboxProvider(abc.ABC):
     """Abstract base class for all sandbox containers."""
+
+    #: Whether this provider actually enforces the SandboxPolicy (cpu/memory/network/filesystem).
+    #: Used to audit honestly and to drive startup validation (S-3 / A-006 R-03). Defaults to
+    #: False so a provider must opt in to claiming enforcement.
+    enforces_policy: bool = False
+
+    async def ensure_available(self) -> None:
+        """Verify the provider can run before any execution (S-3 / A-006 R-06).
+
+        Default: available (no external dependency). Providers with external runtimes override this
+        to fail closed when their runtime is unreachable.
+        """
+        return None
 
     @abc.abstractmethod
     async def spawn(
@@ -127,8 +142,32 @@ class LocalSandboxProvider(SandboxProvider):
 class DockerSandboxProvider(SandboxProvider):
     """Production provider encapsulating runs inside Docker containers."""
 
+    #: Docker enforces the SandboxPolicy via --cpus/--memory/--network/-v (see ``spawn``).
+    enforces_policy: bool = True
+
     def __init__(self) -> None:
         self._processes: dict[str, asyncio.subprocess.Process] = {}
+
+    async def ensure_available(self) -> None:
+        """Fail closed unless the Docker runtime is reachable (``docker version`` exits 0)."""
+        try:
+            proc = await asyncio.create_subprocess_exec(
+                "docker",
+                "version",
+                stdout=asyncio.subprocess.DEVNULL,
+                stderr=asyncio.subprocess.DEVNULL,
+            )
+            returncode = await proc.wait()
+        except FileNotFoundError as exc:
+            raise SandboxUnavailableError(
+                "Docker CLI not found on PATH. Refusing to start with provider='docker' "
+                "(fail-closed). Install Docker or choose another sandbox provider."
+            ) from exc
+        if returncode != 0:
+            raise SandboxUnavailableError(
+                f"Docker runtime is not reachable ('docker version' exited {returncode}). "
+                "Refusing to start with provider='docker' (fail-closed)."
+            )
 
     async def spawn(
         self,
@@ -249,3 +288,13 @@ class MockSandboxProvider(SandboxProvider):
         run = self._runs.get(process_id)
         if run:
             run["terminated"] = True
+
+
+#: The recognized sandbox providers. The single source of truth for both resolution
+#: (SandboxManager._resolve_provider) and startup validation (validate_sandbox_startup). Any
+#: provider name not in this mapping is rejected fail-closed (S-2/S-3).
+RECOGNIZED_PROVIDERS: dict[str, type[SandboxProvider]] = {
+    "docker": DockerSandboxProvider,
+    "mock": MockSandboxProvider,
+    "local": LocalSandboxProvider,
+}

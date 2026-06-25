@@ -60,11 +60,13 @@ class OpenRouterConfig(BaseModel):
     """OpenRouter LLM gateway configuration."""
 
     api_key: str = ""
-    primary_model: str = "google/gemini-2.5-pro"
+    # Free OpenRouter models (no credit cost) — operational default for unattended bring-up.
+    # Primary chosen for reliable JSON tool-call adherence; fallbacks per operator guidance.
+    primary_model: str = "nvidia/nemotron-3-super-120b-a12b:free"
     fallback_models: list[str] = Field(
         default_factory=lambda: [
-            "anthropic/claude-sonnet-4",
-            "google/gemini-2.5-flash",
+            "qwen/qwen3-next-80b-a3b-instruct:free",
+            "meta-llama/llama-3.3-70b-instruct:free",
         ]
     )
     base_url: str = "https://openrouter.ai/api/v1"
@@ -86,6 +88,8 @@ class ExecutionConfig(BaseModel):
     hard_limit: int = 3600
     concurrency_retry_count: int = 5
     concurrency_retry_timeout: float = 5.0
+    # Nexus agent step budget — operator-tunable; default preserves prior hardcoded value (H-4).
+    agent_max_steps: int = 5
 
 
 class LoggingConfig(BaseModel):
@@ -213,8 +217,14 @@ class NexusSettings(BaseSettings):
             with contextlib.suppress(ValueError):
                 yaml_data["discord"]["guild_id"] = int(os.getenv("DISCORD_GUILD_ID", "0"))
 
-        # Load owner IDs if specified as comma-separated or JSON list
-        owners_env = os.getenv("DISCORD_OWNERS") or os.getenv("NEXUS_DISCORD__OWNER_IDS")
+        # Load owner IDs if specified as comma-separated or JSON list.
+        # ``DISCORD_OWNER_ID`` (singular) is accepted as an operator-friendly alias (config
+        # alignment — the deployed .env uses this name).
+        owners_env = (
+            os.getenv("DISCORD_OWNERS")
+            or os.getenv("NEXUS_DISCORD__OWNER_IDS")
+            or os.getenv("DISCORD_OWNER_ID")
+        )
         if owners_env:
             with contextlib.suppress(ValueError):
                 yaml_data["discord"]["owner_ids"] = [int(x.strip()) for x in owners_env.split(",")]
@@ -224,6 +234,24 @@ class NexusSettings(BaseSettings):
 
         if os.getenv("OPENROUTER_API_KEY"):
             yaml_data["openrouter"]["api_key"] = os.getenv("OPENROUTER_API_KEY")
+
+        # Email (SMTP) alignment: read the deployed NOTIFY_* keys into the email config so the
+        # existing SMTP EmailService delivers without a parallel credential store. Additive — env
+        # values win only when present; .env remains the single source of truth.
+        if "email" not in yaml_data:
+            yaml_data["email"] = {}
+        if os.getenv("NOTIFY_SMTP_SERVER"):
+            yaml_data["email"]["smtp_host"] = os.getenv("NOTIFY_SMTP_SERVER")
+        if os.getenv("NOTIFY_SMTP_PORT"):
+            with contextlib.suppress(ValueError):
+                yaml_data["email"]["smtp_port"] = int(os.getenv("NOTIFY_SMTP_PORT", "587"))
+        if os.getenv("NOTIFY_SMTP_PASSWORD"):
+            yaml_data["email"]["password"] = os.getenv("NOTIFY_SMTP_PASSWORD")
+        if os.getenv("NOTIFY_EMAIL_FROM"):
+            _from = os.getenv("NOTIFY_EMAIL_FROM")
+            yaml_data["email"]["from_address"] = _from
+            # Most SMTP providers (e.g. Gmail) authenticate with the sender address as username.
+            yaml_data["email"].setdefault("username", _from)
 
         return cls(**yaml_data)
 

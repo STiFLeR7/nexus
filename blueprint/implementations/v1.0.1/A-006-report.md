@@ -22,8 +22,8 @@ security classification. Not to fix or redesign containment.
 | Default provider | ✅ | `config.py:133-141` (`enabled=False`, `provider="local"`) |
 | Docker provider | ✅ | `provider.py:127-207` |
 | Fallback paths | ✅ | `manager.py:37-53` (fail-open to Local) |
-| Runtime integrations | ✅ | Gemini `gemini.py:107`, Claude `claude.py:102`, Hermes `hermes.py:117` |
-| Gemini/Claude/Hermes execution paths | ✅ | all route through `SandboxManager.execute` |
+| Runtime integrations | ✅ | Gemini `gemini.py:107`, Claude `claude.py:102`, Nexus `nexus.py:117` |
+| Gemini/Claude/Nexus execution paths | ✅ | all route through `SandboxManager.execute` |
 | Startup / configuration validation | ✅ | none found in `api.py` / `config.py` |
 | Error handling / provider failures | ✅ | `manager.py:119-179` (fail-closed on spawn error) |
 | Container lifecycle | ✅ | `provider.py:177-207`, `lifecycle.py:cleanup_orphaned_sandboxes` |
@@ -78,7 +78,7 @@ only changes are new `.md` deliverables.
 
 - Status truth (A-004): `architecture-status-summary.md` classifies Sandbox Isolation **Experimental
   (default-off)** — this audit confirms and pins it; no doc rewrite needed.
-- Hermes (A-005): R-05 (agent file-tool bypass, `hermes.py:88-105`) is the shared item with AP-105 Gap 7.
+- Nexus (A-005): R-05 (agent file-tool bypass, `nexus.py:88-105`) is the shared item with AP-105 Gap 7.
 - ADR-011 (local-first): tension noted — Docker image reportedly lacks runtime CLIs, so isolation and
   runtime availability are not yet jointly validated.
 

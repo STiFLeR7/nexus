@@ -103,6 +103,15 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
         logger.critical("startup_validation_failed", error=str(exc))
         raise
 
+    # S-3: sandbox startup gate — fail fast on incoherent config or an unavailable policy-enforcing
+    # provider, so unsafe sandbox states are caught at boot, not at first command execution.
+    from nexus.execution.sandbox import validate_sandbox_startup
+    try:
+        await validate_sandbox_startup(settings)
+    except ConfigurationError as exc:
+        logger.critical("sandbox_startup_validation_failed", error=str(exc))
+        raise
+
     _state.engine = create_engine(
         database_url=settings.database.url,
         echo=settings.database.echo,

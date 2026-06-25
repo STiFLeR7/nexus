@@ -23,7 +23,7 @@
 | `2f0263d`,`53eb8aa` | **Phase 3** plans: runtime, repo governance, research, briefings, command bus |
 | `23c5a02` | AP-301 Gemini CLI runtime adapter + governance |
 | `e4f70d9` | AP-302A Runtime V2 refactor + `agent_steps` |
-| `1652661` | AP-303A Hermes runtime adapter |
+| `1652661` | AP-303A Nexus runtime adapter |
 | `e3e7a5d` | AP-302B Claude adapter + registry validation |
 | `bad6f72` | AP-303B runtime selection framework |
 | `7e2bf7a` | AP-304 repository governance hardening |
@@ -62,12 +62,12 @@
 
 ## Phase 3 — Execution Runtime, Runtime Registry & Governance
 - **Goals:** controlled, auditable multi-runtime execution; repository governance; research/briefing designs.
-- **Achievements:** Gemini (AP-301), Runtime V2 refactor + `agent_steps` (AP-302A), Hermes adapter
+- **Achievements:** Gemini (AP-301), Runtime V2 refactor + `agent_steps` (AP-302A), Nexus adapter
   (AP-303A), Claude adapter + registry validation (AP-302B), runtime selection framework (AP-303B),
   repository governance hardening (AP-304); 11-gate governance; research + daily-briefing designs.
 - **Lessons:** the registry/adapter split is strong, but **concrete runtimes shipped as shell
-  stubs/mocks** (Gemini/Claude generic shell; Hermes simulated) — the gap A-005/AP-105 now audits.
-- **Deferred:** real CLI binary integration; Hermes de-mocking; command bus (evaluated, `ADR-command-bus-evaluation`).
+  stubs/mocks** (Gemini/Claude generic shell; Nexus simulated) — the gap A-005/AP-105 now audits.
+- **Deferred:** real CLI binary integration; Nexus de-mocking; command bus (evaluated, `ADR-command-bus-evaluation`).
 
 ## v1.0.0 — "Operational Intelligence"
 - **Goals:** release the governed-execution platform with intelligence/reporting.
@@ -91,7 +91,7 @@
   - **AP-104** (this) documentation alignment.
 - **Lessons:** the blueprint-as-authority rule only holds if the blueprint is maintained — drift itself
   became a Priority-2 finding.
-- **Deferred / remaining:** **AP-105** Hermes reality audit (A-005); **A-006** sandbox safety review;
+- **Deferred / remaining:** **AP-105** Nexus reality audit (A-005); **A-006** sandbox safety review;
   in-code version-string sync (0.1.0→1.0.x); live health probing; Alembic completion; distributed
   scheduling + PostgreSQL (genuinely future).
 

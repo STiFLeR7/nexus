@@ -41,11 +41,11 @@
   evade it)
 
 ## R-05 — Agent file tools bypass the sandbox entirely
-- **Likelihood:** High (whenever Hermes runs)
+- **Likelihood:** High (whenever Nexus runs)
 - **Impact:** High (arbitrary host file read/write regardless of provider)
 - **Severity:** 🔴 High
 - **Mitigation Status:** None
-- **Evidence:** `hermes.py:88-105` raw `open()/read()/write()` with no manager, no path confinement
+- **Evidence:** `nexus.py:88-105` raw `open()/read()/write()` with no manager, no path confinement
 
 ## R-06 — No Docker availability validation
 - **Likelihood:** Medium (Docker absent/daemon down on target host — note ADR-011 local-first)

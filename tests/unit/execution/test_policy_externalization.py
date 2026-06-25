@@ -100,7 +100,8 @@ async def test_policy_fallback_log_warning(db_session: AsyncSession) -> None:
 
     # allowed_runtimes is not in DB, should query policy_defaults ALLOWED_RUNTIMES
     val = await policy_service.get_policy("allowed_runtimes")
-    assert val == ["gemini", "claude", "hermes"]
+    # "nexus" is the renamed agent runtime; "hermes" retained as the deprecated codename alias.
+    assert val == ["gemini", "claude", "nexus", "hermes"]
 
     # Verify PolicyFallbackUsed audit is generated
     stmt = select(AuditLogRecord).where(AuditLogRecord.event_type == "PolicyFallbackUsed")

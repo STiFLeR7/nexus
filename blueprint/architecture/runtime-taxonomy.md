@@ -17,7 +17,7 @@ graph TD
     SubprocessCLI --> Gemini[Gemini CLI Adapter]
     SubprocessCLI --> Claude[Claude Code Adapter]
     
-    AgentLoop --> Hermes[Hermes Agent Adapter]
+    AgentLoop --> Nexus[Nexus Agent Adapter]
     
     ResearchWorker --> NewsSweep[Scheduled Research Job]
 ```
@@ -35,7 +35,7 @@ graph TD
 
 ### B. Agent Runtime (API-Driven Agent)
 * **Definition**: A runtime that maintains an autonomous reasoning loop, calling LLMs and executing tool integrations over APIs.
-* **Examples**: Hermes Agent.
+* **Examples**: Nexus Agent.
 * **Execution Parameters**: Takes a high-level system goal or user prompt. Operates in an iterative loop (Thought -> Action -> Observation).
 * **Output Capture**: Captures tool call payloads, model completion logs, planning states, and filesystem modifications.
 * **Governance Model**: Inline runtime guardrails checking tool arguments *during* the execution loop.

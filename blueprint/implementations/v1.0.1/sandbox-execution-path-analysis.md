@@ -11,11 +11,11 @@ All three runtimes execute external commands through one method — `SandboxMana
 
 - **Gemini:** `gemini.py:105-108` → `SandboxManager(self.session, self.settings).execute(...)`
 - **Claude:** `claude.py:100-103` → same
-- **Hermes** (`execute_command` tool): `hermes.py:116-125` → same
+- **Nexus** (`execute_command` tool): `nexus.py:116-125` → same
 
 So provider resolution in `SandboxManager` governs containment for **all** command execution. (Caveat:
-Hermes `read_file`/`write_file` do **not** go through the manager — they touch the host FS directly,
-`hermes.py:88-105`.)
+Nexus `read_file`/`write_file` do **not** go through the manager — they touch the host FS directly,
+`nexus.py:88-105`.)
 
 ## 2. Provider resolution — the decision table
 
@@ -66,11 +66,11 @@ CPU, memory, network, and filesystem policy. Containment here is genuine — **b
    host. *However* there is **no Docker availability precheck** (`#13`), so failures surface only at
    spawn time. (The fail-**open** is in resolution/default, not in Docker error handling.)
 5. **Is sandboxing enabled by default?** **No.** `SandboxConfig.enabled = False` (`config.py:135`).
-6. **Which runtimes pass through the sandbox?** All three command paths (Gemini/Claude/Hermes
-   `execute_command`) call `SandboxManager` — but under default they all land on Local/host. Hermes
+6. **Which runtimes pass through the sandbox?** All three command paths (Gemini/Claude/Nexus
+   `execute_command`) call `SandboxManager` — but under default they all land on Local/host. Nexus
    `read_file`/`write_file` bypass the manager entirely.
 7. **Can any runtime bypass containment?** **Yes** — (a) all runtimes "bypass" via the default Local
-   path; (b) Hermes file tools bypass the manager outright (`hermes.py:88-105`).
+   path; (b) Nexus file tools bypass the manager outright (`nexus.py:88-105`).
 8. **Protections against arbitrary host execution?** Approval gate (human), repository allow-list +
    branch checks (`governance.py:495-548`), a 4-pattern substring command blacklist
    (`governance.py:616-641`, `policy_defaults.py:9`), and the control-plane health gate. Audit logging

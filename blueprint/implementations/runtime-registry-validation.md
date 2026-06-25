@@ -22,7 +22,7 @@ The registry maps keys to implementations:
 | --- | --- | --- |
 | `"gemini"` | `GeminiRuntimeAdapter` | `CLIRuntimeAdapter` |
 | `"claude"` | `ClaudeRuntimeAdapter` | `CLIRuntimeAdapter` |
-| `"hermes"` | `HermesRuntimeAdapter` | `AgentRuntimeAdapter` |
+| `"nexus"` | `NexusRuntimeAdapter` | `AgentRuntimeAdapter` |
 
 ### Adding a Runtime (Zero Orchestrator Churn)
 

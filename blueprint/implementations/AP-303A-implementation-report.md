@@ -1,15 +1,15 @@
-# AP-303A Hermes Runtime Adapter Implementation Report
+# AP-303A Nexus Runtime Adapter Implementation Report
 
-This report documents the architectural design, component integrations, and implementation findings for the **Hermes Runtime Adapter** (AP-303A).
+This report documents the architectural design, component integrations, and implementation findings for the **Nexus Runtime Adapter** (AP-303A).
 
 ---
 
 ## 1. Class Architecture
 
-To validate Runtime V2, we implemented the [HermesRuntimeAdapter](file:///D:/nexus/nexus/execution/runners/hermes.py) extending the abstract [AgentRuntimeAdapter](file:///D:/nexus/nexus/execution/runners/base.py#L48-L58):
+To validate Runtime V2, we implemented the [NexusRuntimeAdapter](file:///D:/nexus/nexus/execution/runners/nexus.py) extending the abstract [AgentRuntimeAdapter](file:///D:/nexus/nexus/execution/runners/base.py#L48-L58):
 
 ```python
-class HermesRuntimeAdapter(AgentRuntimeAdapter):
+class NexusRuntimeAdapter(AgentRuntimeAdapter):
     def __init__(self, db_session, execution_id, event_gateway, openrouter_client, settings) -> None: ...
 ```
 

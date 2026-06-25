@@ -11,7 +11,7 @@ Nexus supports two distinct classes of AI execution runtimes:
 | Runtime Type | Examples | Strengths | Weaknesses |
 | :--- | :--- | :--- | :--- |
 | **CLI Runtimes** | `claude-code`, `gemini-cli` | Mature codebase search capabilities, built-in git operations, and quick file refactoring out-of-the-box. | Complex to sandbox, hard to parse raw ANSI output streams, and difficult to manage interactive CLI prompts. |
-| **API Agents** | Hermes Agent (Custom API loop) | Structured tool calling, safe sandboxed shell executions, and clean JSON execution logs. | Requires building and maintaining custom planning and RAG search loops from scratch. |
+| **API Agents** | Nexus Agent (Custom API loop) | Structured tool calling, safe sandboxed shell executions, and clean JSON execution logs. | Requires building and maintaining custom planning and RAG search loops from scratch. |
 
 ### Subprocess Wrapper Integration Strategy
 To support both types, Nexus wraps all execution runtimes in a subprocess interface. This wrapper manages execution limits, handles standard input/output streams, and enforces path restrictions via pseudo-terminal interfaces.

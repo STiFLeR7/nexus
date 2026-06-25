@@ -25,7 +25,7 @@ clarification the fix must account for.
 | A-002 Execution timeout mismatch | P0 | **CONFIRMED (runtime-proven)** |
 | A-003 Missing scheduler layer | P1 | **CONFIRMED + NUANCE** |
 | A-004 Documentation drift | P2 | **CONFIRMED** |
-| A-005 Hermes simulated behaviors | P3 | **CONFIRMED** |
+| A-005 Nexus simulated behaviors | P3 | **CONFIRMED** |
 | A-006 Sandbox default host execution | P4 | **CONFIRMED + NUANCE** |
 
 ---
@@ -116,8 +116,8 @@ must fail").
   getattr(e,'research_timeout_seconds',300) => 300
   actual claude_timeout => 2700 | gemini_timeout => 1800 | hard_limit => 3600
   ```
-- **Hermes path also wrong:** the Hermes `execute_command` tool hardcodes `timeout=300`
-  (`nexus/execution/runners/hermes.py:118-123`), ignoring config entirely.
+- **Nexus path also wrong:** the Nexus `execute_command` tool hardcodes `timeout=300`
+  (`nexus/execution/runners/nexus.py:118-123`), ignoring config entirely.
 - **`hard_limit` is never enforced anywhere** — no runner reads `hard_limit`; the ADR-010 ceiling
   (3600s) is not applied as a cap.
 
@@ -142,11 +142,11 @@ configuration or ADR-010, and there is no hard-limit safety ceiling.
 Trace: implements A-002 target ("ADR-approved timeout values must be honored; validate all runtime
 execution paths").
 1. Map each runtime to its ADR-010 field: Gemini → `gemini_timeout`; Claude → `claude_timeout`;
-   research path → `research_timeout`; Hermes per-command → an appropriate config field (not a
+   research path → `research_timeout`; Nexus per-command → an appropriate config field (not a
    literal 300).
 2. Apply `hard_limit` as an absolute ceiling: `effective = min(per_runtime_timeout, hard_limit)`.
 3. Remove the broken `research_timeout_seconds` lookups in `claude.py`/`gemini.py` and the hardcoded
-   `300` in `hermes.py:121`.
+   `300` in `nexus.py:121`.
 4. No change to the timeout *mechanism* (`asyncio.wait_for`) — constraint-compliant.
 
 ### Validation Strategy
@@ -154,7 +154,7 @@ execution paths").
   and the `asyncio.wait_for` timeout equal the expected ADR-010 value (e.g. Claude → 2700, Gemini →
   1800), and that a configured value above `hard_limit` is clamped to 3600.
 - **Path coverage:** explicit assertions for all three runtime execution paths (Claude.execute,
-  Gemini.execute, Hermes.execute_command) — satisfies "validate all runtime execution paths."
+  Gemini.execute, Nexus.execute_command) — satisfies "validate all runtime execution paths."
 - **Runtime regression:** re-run the read-only `getattr` proof inverted — the new code must read an
   existing field (no `hasattr == False`).
 
@@ -282,51 +282,51 @@ beyond what the accepted audit and code substantiate.
 
 ---
 
-## A-005 — Hermes simulated behaviors  (Priority 3) — CONFIRMED
+## A-005 — Nexus simulated behaviors  (Priority 3) — CONFIRMED
 
-### Source Evidence (first-hand, `nexus/execution/runners/hermes.py`)
-- **Production import of a test double:** `from unittest.mock import AsyncMock` (`hermes.py:7`).
-- **Simulation branch in the live loop:** `hermes.py:184-209` — `is_mocked` is true when there is
+### Source Evidence (first-hand, `nexus/execution/runners/nexus.py`)
+- **Production import of a test double:** `from unittest.mock import AsyncMock` (`nexus.py:7`).
+- **Simulation branch in the live loop:** `nexus.py:184-209` — `is_mocked` is true when there is
   no OpenRouter client, when `self.openrouter_client.complete` is an `AsyncMock`, or when the
   api_key contains `"test-key"`; in that branch the action sequence is hardcoded
   (search → write `mcp_report.md` → finish).
-- **Hardcoded plan:** `hermes.py:145-149`.
+- **Hardcoded plan:** `nexus.py:145-149`.
 - **Canned `web_search`:** returns fixed MCP text for any query containing "mcp", else "No results"
-  (`hermes.py:76-86`) — no real search backend.
-- **Hardcoded tool timeout:** `execute_command` uses `timeout=300` literal (`hermes.py:118-123`)
+  (`nexus.py:76-86`) — no real search backend.
+- **Hardcoded tool timeout:** `execute_command` uses `timeout=300` literal (`nexus.py:118-123`)
   (also an A-002 path).
-- **No-op terminate:** `async def terminate(self): pass` (`hermes.py:310-312`) — a runaway loop
+- **No-op terminate:** `async def terminate(self): pass` (`nexus.py:310-312`) — a runaway loop
   cannot be force-stopped.
 - **Path-containment bypass:** `write_file` writes to arbitrary `os.path.abspath(path)`
-  (`hermes.py:96-105`), outside the governance repo allowlist.
-- **A real LLM path does exist** (`hermes.py:210-232`), so Hermes is *partly* real.
+  (`nexus.py:96-105`), outside the governance repo allowlist.
+- **A real LLM path does exist** (`nexus.py:210-232`), so Nexus is *partly* real.
 
 ### Root Cause
-Hermes was delivered as a scaffold with embedded test simulation so it could pass E2E/unit flows
+Nexus was delivered as a scaffold with embedded test simulation so it could pass E2E/unit flows
 without a live model or search backend; the simulation shims (`AsyncMock`, canned search, hardcoded
 plan) were left in the production module rather than isolated to tests.
 
 ### Risk
-**Med (honesty/operational).** Hermes appears to be a working autonomous agent but, under common
+**Med (honesty/operational).** Nexus appears to be a working autonomous agent but, under common
 configurations, executes a scripted simulation. Behavior is non-obvious and not production-faithful.
 
 ### Impact
-Any reliance on Hermes for real autonomous work is unsafe today; its true capability boundary is
+Any reliance on Nexus for real autonomous work is unsafe today; its true capability boundary is
 undocumented.
 
 ### Fix Strategy (AP-105 — AUDIT ONLY; do not replace anything)
 Trace: implements A-005 target ("produce a complete reality audit; separate Implemented / Partially
 Implemented / Stubbed / Mocked / Future; do not replace anything yet"). AP-105 deliverable is
-`hermes-reality-audit.md` — an evidence-classified inventory of every Hermes capability. **No code
-changes** in v1.0.1 for Hermes beyond the A-002 timeout correction (which is a shared runtime path,
-already traced to A-002, not a Hermes redesign).
+`nexus-reality-audit.md` — an evidence-classified inventory of every Nexus capability. **No code
+changes** in v1.0.1 for Nexus beyond the A-002 timeout correction (which is a shared runtime path,
+already traced to A-002, not a Nexus redesign).
 
 ### Validation Strategy
-- The audit is validated by completeness + evidence: every method/tool/branch in `hermes.py` is
+- The audit is validated by completeness + evidence: every method/tool/branch in `nexus.py` is
   classified with a `file:line` citation and a category. No assumptions; quotes required.
 
 ### Constraint Trace
-✅ Traces to A-005. ✅ Evidence-only (no replacement). ✅ The only Hermes code touched in v1.0.1 is
+✅ Traces to A-005. ✅ Evidence-only (no replacement). ✅ The only Nexus code touched in v1.0.1 is
 the A-002 timeout path.
 
 ---
@@ -396,7 +396,7 @@ required sequence, so A-006 currently terminates at "audited and understood" unl
 
 ## Cross-finding observations (for sequencing)
 
-1. **A-002 spans Hermes (A-005).** The Hermes `execute_command` hardcoded `300` is both an A-002
+1. **A-002 spans Nexus (A-005).** The Nexus `execute_command` hardcoded `300` is both an A-002
    path and an A-005 datum. v1.0.1 will correct it under A-002 (shared runtime path), while A-005
    only *documents* it — no conflict, but the AP-102 and AP-105 reports must cross-reference.
 2. **A-001 and A-003 interact.** Fixing expiration scheduling (A-003) reduces the blast radius of

@@ -58,7 +58,7 @@ The clearest, evidence-backed examples:
 | Research + Briefing engines run autonomously | Both engines are fully built but **have no production trigger** — only tests and resume call them | `nexus/intelligence/research.py:218`, `briefing.py:74` (no scheduler/listener invokes them) |
 | Approval expiration runs hourly | `sweep_expired_approvals` is **never called in production** | `nexus/approvals/service.py:184` (callers only in `scripts/`, `tests/`) |
 | Claude Code / Gemini CLI adapters invoke their binaries | Both are **generic shell runners**; no `claude-code`/`gemini` binary is invoked | `nexus/execution/runners/claude.py:107`, `gemini.py:112` |
-| Hermes is a real agent runtime | Hermes has a real loop scaffold but a **hardcoded plan, canned search, and an `AsyncMock` simulation branch in production code** | `nexus/execution/runners/hermes.py:7,145-149,183-209` |
+| Nexus is a real agent runtime | Nexus has a real loop scaffold but a **hardcoded plan, canned search, and an `AsyncMock` simulation branch in production code** | `nexus/execution/runners/nexus.py:7,145-149,183-209` |
 | Subsystems operational | `/api/v1/status` reports gateway/communication/intelligence/execution/agents/scheduling as literal `"stub"` | `nexus/api.py:223-228` |
 
 None of this makes Nexus a prototype — the **core orchestration spine (task → approval gate →

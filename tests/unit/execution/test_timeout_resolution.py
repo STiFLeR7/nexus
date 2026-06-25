@@ -1,6 +1,6 @@
 """A-002 tests: runtime execution timeouts honor configuration and the hard limit (v1.0.1).
 
-Validates the shared timeout resolver and that each runtime adapter (Claude, Gemini, Hermes) uses
+Validates the shared timeout resolver and that each runtime adapter (Claude, Gemini, Nexus) uses
 its ADR-010 configured timeout, clamped by ``hard_limit``. Replaces the v1.0.0 defect where every
 runner silently read a non-existent ``research_timeout_seconds`` field and fell back to 300s.
 """
@@ -13,11 +13,11 @@ from typing import TYPE_CHECKING
 import pytest
 from sqlalchemy import select
 
-from nexus.config import ExecutionConfig, NexusSettings
+from nexus.config import ExecutionConfig, NexusSettings, SandboxConfig
 from nexus.execution.runners.base import resolve_execution_timeout
 from nexus.execution.runners.claude import ClaudeRuntimeAdapter
 from nexus.execution.runners.gemini import GeminiRuntimeAdapter
-from nexus.execution.runners.hermes import HermesRuntimeAdapter
+from nexus.execution.runners.nexus_agent import NexusRuntimeAdapter
 from nexus.memory.models import ExecutionRecord, ExecutionStepRecord, TaskRecord
 
 if TYPE_CHECKING:
@@ -39,7 +39,7 @@ def test_resolve_gemini_timeout() -> None:
     assert resolve_execution_timeout(settings, "gemini_timeout") == 1800
 
 
-def test_resolve_research_timeout_for_hermes() -> None:
+def test_resolve_research_timeout_for_nexus() -> None:
     settings = NexusSettings(execution=ExecutionConfig())
     assert resolve_execution_timeout(settings, "research_timeout") == 900
 
@@ -123,12 +123,15 @@ async def test_claude_execute_clamps_to_hard_limit(db_session: AsyncSession) -> 
 
 
 @pytest.mark.asyncio
-async def test_hermes_execute_command_uses_research_timeout(
+async def test_nexus_execute_command_uses_research_timeout(
     db_session: AsyncSession, test_settings: NexusSettings, monkeypatch: pytest.MonkeyPatch
 ) -> None:
-    """Hermes' execute_command tool must use the configured research_timeout, not a hardcoded 300."""
-    exec_record = await _make_exec(db_session, "hermes")
-    adapter = HermesRuntimeAdapter(db_session, exec_record.id, settings=test_settings)
+    """Nexus' execute_command tool must use the configured research_timeout, not a hardcoded 300."""
+    exec_record = await _make_exec(db_session, "nexus")
+    # S-2: sandbox must be explicitly enabled for execution to resolve a provider (fail-closed
+    # default). Provider is irrelevant here since SandboxManager.execute is monkeypatched below.
+    test_settings.sandbox = SandboxConfig(enabled=True, provider="mock")
+    adapter = NexusRuntimeAdapter(db_session, exec_record.id, settings=test_settings)
 
     captured: dict[str, int] = {}
 

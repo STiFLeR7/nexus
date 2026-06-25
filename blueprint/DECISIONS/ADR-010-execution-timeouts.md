@@ -36,7 +36,7 @@ Every execution record must contain:
 class ExecutionRecord(BaseModel):
     id: UUID
     task_id: UUID
-    runner: RunnerType          # GEMINI, CLAUDE, HERMES, RESEARCH
+    runner: RunnerType          # GEMINI, CLAUDE, NEXUS, RESEARCH
     started_at: datetime        # When execution began
     last_heartbeat: datetime    # Updated periodically during execution
     timeout_threshold: int      # Seconds until timeout
@@ -113,7 +113,7 @@ The runner is responsible for:
 This constraint is **mandatory** for:
 - Gemini CLI Runner
 - Claude Code Runner
-- Hermes Agent Runner (if adopted)
+- Nexus Agent Runner (if adopted)
 - Research Agent Jobs
 
 ---

@@ -46,18 +46,18 @@ The tech stack document should specify:
 
 ---
 
-### GAP-002: docs/07_HERMES_AGENT.md Has Wrong File Header
+### GAP-002: docs/07_NEXUS_AGENT.md Has Wrong File Header
 
 - **Severity:** Low
 - **Status:** Open
 - **Category:** Documentation Defect
 
 **Description:**
-The file `docs/07_HERMES_AGENT.md` has its internal heading as `# 07_REFERENCES.md`, not `# 07_HERMES_AGENT.md`. The filename and the content header are inconsistent.
+The file `docs/07_NEXUS_AGENT.md` has its internal heading as `# 07_REFERENCES.md`, not `# 07_NEXUS_AGENT.md`. The filename and the content header are inconsistent.
 
-**Impact:** Cosmetic — content appears to be the References document, not a Hermes-specific document.
+**Impact:** Cosmetic — content appears to be the References document, not a Nexus-specific document.
 
-**Resolution Needed:** Clarify whether the file should be named `07_REFERENCES.md` or if a separate `07_HERMES_AGENT.md` is needed.
+**Resolution Needed:** Clarify whether the file should be named `07_REFERENCES.md` or if a separate `07_NEXUS_AGENT.md` is needed.
 
 ---
 
@@ -200,21 +200,21 @@ Multiple documents mandate evaluating Pi (https://github.com/earendil-works/pi) 
 
 ---
 
-### GAP-010: Hermes Agent Investigation Not Completed
+### GAP-010: Nexus Agent Investigation Not Completed
 
 - **Severity:** Medium
 - **Status:** Open
 - **Category:** Missing Evaluation
 
 **Description:**
-The docs indicate Hermes Agent is installed locally and should be evaluated as an execution runtime before Phase 4. However:
-- No Hermes evaluation has been completed
+The docs indicate Nexus Agent is installed locally and should be evaluated as an execution runtime before Phase 4. However:
+- No Nexus evaluation has been completed
 - Its CLI interface, execution model, configuration, and tool-calling capabilities are unknown
 - The decision to use it as Primary Runtime, Secondary Runtime, Specialized Runtime, or Reject has not been made
 
 **Impact:** Phase 4 (Execution Runtime) design depends on this decision.
 
-**Resolution Needed:** Investigate Hermes Agent CLI and capabilities. Document findings in `blueprint/references/hermes-evaluation.md`.
+**Resolution Needed:** Investigate Nexus Agent CLI and capabilities. Document findings in `blueprint/references/nexus-evaluation.md`.
 
 ---
 

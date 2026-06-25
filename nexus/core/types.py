@@ -123,6 +123,8 @@ class RunnerType(enum.StrEnum):
 
     GEMINI_CLI = "gemini_cli"
     CLAUDE_CODE = "claude_code"
+    NEXUS_AGENT = "nexus_agent"
+    # Deprecated codename alias for NEXUS_AGENT — retained for back-compat with persisted records.
     HERMES_AGENT = "hermes_agent"
     RESEARCH = "research"
 

@@ -26,6 +26,27 @@ if TYPE_CHECKING:
 logger = structlog.get_logger("nexus.scheduling.orchestrator")
 
 
+def resolve_exit_status(result: dict[str, Any]) -> ExitStatus:
+    """Map a runtime result to a final ExitStatus, honoring agent terminal status (H-4).
+
+    Agent runtimes (the Nexus agent) report a truthful terminal ``status`` (completed/failed/timed_out/
+    cancelled) which maps to the corresponding ``ExitStatus`` so timeouts and cancellations are
+    finalized distinctly from generic failures. CLI runtimes report only ``exit_code`` and fall back
+    to the success/failure mapping — preserving prior behavior.
+    """
+    data = result or {}
+    status = data.get("status")
+    mapping = {
+        "completed": ExitStatus.SUCCESS,
+        "failed": ExitStatus.FAILURE,
+        "timed_out": ExitStatus.TIMEOUT,
+        "cancelled": ExitStatus.CANCELLED,
+    }
+    if status in mapping:
+        return mapping[status]
+    return ExitStatus.SUCCESS if data.get("exit_code", 0) == 0 else ExitStatus.FAILURE
+
+
 class WorkflowOrchestrator:
     """Subscribes to system events and drives the E2E lifecycle workflows."""
 
@@ -223,8 +244,8 @@ class WorkflowOrchestrator:
                 # Persist artifacts (stdout, stderr, summary, diff)
                 await adapter.persist()
 
-                # Finalize parent execution
-                exit_status = ExitStatus.SUCCESS if exit_code == 0 else ExitStatus.FAILURE
+                # Finalize parent execution (H-4: honor agent terminal status — timeout/cancel).
+                exit_status = resolve_exit_status(result)
                 from nexus.approvals.service import ApprovalService
                 from nexus.execution.service import ExecutionService
                 from nexus.memory.service import MemoryService
