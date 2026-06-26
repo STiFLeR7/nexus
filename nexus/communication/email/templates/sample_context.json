@@ -30,6 +30,29 @@
     "recommendations": ["Investigate gemini latency before the 10:00 batch."],
     "actions": [{"label": "Open dashboard", "href": "#", "variant": "primary"}]
   },
+  "operational_intelligence": {
+    "eyebrow": "Operational Intelligence",
+    "subject": "Operational Intelligence Report",
+    "subtitle": "Throughput steady; one subsystem to watch.",
+    "summary_line": "Core subsystems are operating within nominal bounds over the past 24 hours. Throughput is steady; gemini latency warrants a look before the next batch.",
+    "metrics": [
+      {"label": "Requests", "value": "1,284", "delta": "+9%", "trend": "up"},
+      {"label": "p95 latency", "value": "212ms", "delta": "+12%", "trend": "up-bad", "accent": "#DC2626"},
+      {"label": "Error rate", "value": "0.4%", "delta": "-0.2", "trend": "down-good"}
+    ],
+    "performance": [
+      {"label": "DB write throughput", "pct": 82, "tone": "success"},
+      {"label": "Event flush capacity", "pct": 64, "tone": "ink"},
+      {"label": "OpenRouter budget used", "pct": 38, "tone": "info"}
+    ],
+    "reliability": [["Uptime (24h)", "99.98%"], ["Mean recovery", "1.2s"], ["Lock contention", "Low"]],
+    "failures": [
+      {"time": "02:14", "title": "gemini timeout", "tone": "warning", "body": "Retried; succeeded on attempt 2."},
+      {"time": "02:14", "title": "Auto-recovery completed", "tone": "success", "body": "No operator action required."}
+    ],
+    "recommendations": ["Investigate gemini latency before the 10:00 batch.", "Hold provider mix; no change warranted."],
+    "actions": [{"label": "Open dashboard", "href": "#", "variant": "primary"}]
+  },
   "approval_required": {
     "eyebrow": "Approval Required",
     "subject": "Approval Required — Deploy v1.2.0",

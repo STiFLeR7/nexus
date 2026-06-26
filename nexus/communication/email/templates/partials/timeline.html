@@ -1,42 +1,29 @@
-{#-
-  Timeline — vertical sequence of events (scheduler runs, execution stages,
-  audit trail, conversation turns). Each node has a coloured dot, a time, a
-  title, and optional body.
-  Import:  {% import "partials/timeline.html" as tl %}
-  Use:
-    {{ tl.timeline([
-        {"time":"08:00","title":"Briefing dispatched","tone":"success","body":"3 channels"},
-        {"time":"10:00","title":"Research run","tone":"info","body":"20 findings"},
-        {"time":"10:02","title":"Priority feed pushed","tone":"pending"}
-    ]) }}
+{#- =====================================================================
+    Timeline — vertical event sequence (scheduler runs, failure stages,
+    audit trail, conversation flow).
+      timeline(events)   events=[{time, title, body?, tone?}]
 
-  tone: success · warning · danger · info · pending · neutral
--#}
-{% set _DOT = {
-  'success':'#16A34A', 'warning':'#D97706', 'danger':'#DC2626',
-  'info':'#2563EB', 'pending':'#7C3AED', 'neutral':'#94A3B8'
-} %}
+    Aligned dots + generous spacing carry the sequence — no heavy
+    connector rail (spacing before borders). The dot is the only colour.
+   ===================================================================== -#}
+{%- set _TLDOT = {
+  'success': '#2F9E68', 'warning': '#E0920A', 'danger': '#DA4A41',
+  'info': '#3D78D6', 'pending': '#C6C9CF', 'neutral': '#AEB2BA'
+} -%}
 {% macro timeline(events) -%}
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
-  {% for e in events %}
-  {%- set dot = _DOT.get(e.get('tone','neutral'), _DOT['neutral']) -%}
+  {%- for e in events -%}
+  {%- set d = _TLDOT.get(e.get('tone', 'neutral'), _TLDOT['neutral']) -%}
   <tr>
-    {# rail #}
-    <td valign="top" width="22" style="vertical-align:top; width:22px; padding-top:3px;">
-      <table role="presentation" width="10" height="10" cellpadding="0" cellspacing="0" border="0" style="width:10px;height:10px;"><tr>
-        <td style="width:10px;height:10px;background:{{ dot }};border:2px solid #FFFFFF;border-radius:999px;box-shadow:0 0 0 1px {{ dot }}44;font-size:1px;line-height:1px;">&nbsp;</td>
-      </tr></table>
-      {% if not loop.last %}
-      <table role="presentation" width="2" cellpadding="0" cellspacing="0" border="0" style="width:2px;"><tr><td style="width:2px;height:100%;background:#E2E8F0;font-size:1px;line-height:1px;">&nbsp;</td></tr></table>
-      {% endif %}
+    {% if e.get('time') %}<td valign="top" align="right" width="52" class="nx-muted nx-mono" style="width:52px; color:#8A8F98; font-size:11px; line-height:20px; padding:0 0 {% if not loop.last %}18px{% else %}0{% endif %} 0;">{{ e.time }}</td>{% endif %}
+    <td valign="top" width="24" style="width:24px; padding:0 0 {% if not loop.last %}18px{% else %}0{% endif %} 0;">
+      <div style="padding-top:6px; padding-left:8px;"><span style="display:inline-block; width:9px; height:9px; border-radius:50%; background:{{ d }};">&nbsp;</span></div>
     </td>
-    {# content #}
-    <td valign="top" style="vertical-align:top; padding:0 0 {% if not loop.last %}18px{% else %}0{% endif %} 4px;">
-      {% if e.time %}<div class="nx-faint" style="font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; font-size:11px; line-height:16px; font-weight:500; color:#94A3B8;">{{ e.time }}</div>{% endif %}
-      <div class="nx-ink" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; font-size:14px; line-height:20px; font-weight:600; color:#0F172A; padding-top:1px;">{{ e.title }}</div>
-      {% if e.body %}<div class="nx-muted" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; font-size:13px; line-height:20px; color:#64748B; padding-top:2px;">{{ e.body }}</div>{% endif %}
+    <td valign="top" style="padding:0 0 {% if not loop.last %}18px{% else %}0{% endif %} 4px;">
+      <div class="nx-ink" style="color:#16181D; font-size:13px; font-weight:600; line-height:20px;">{{ e.title }}</div>
+      {% if e.get('body') %}<div class="nx-muted" style="color:#8A8F98; font-size:12px; line-height:19px; padding-top:2px;">{{ e.body }}</div>{% endif %}
     </td>
   </tr>
-  {% endfor %}
+  {%- endfor -%}
 </table>
 {%- endmacro %}

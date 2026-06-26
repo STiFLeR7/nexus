@@ -1,39 +1,28 @@
-{#-
-  EMAIL TYPE 5 · Reminder  (simple, beautiful, minimal)
-  Personality: pending purple. Calm and singular — one thing to remember.
-
-  Context:
-    eyebrow="Reminder", subject, subtitle, timestamp, version
-    reminder = {time, reason, context, suggested_action, cta_label, cta_url}
--#}
 {% extends "base.html" %}
-{% block accent %}#7C3AED{% endblock %}
+{# Reminder — warm, brief, singular. One thing, one action. #}
 {% block content %}
 {% import "partials/section.html" as sec %}
-{% import "partials/divider.html" as rule %}
-{% import "partials/button.html" as btn %}
 {% import "partials/status_chip.html" as chip %}
+{% import "partials/button.html" as btn %}
+{% import "partials/divider.html" as rule %}
 
-{% if reminder.time %}
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td>
-  {{ chip.status_chip("⏰ " ~ reminder.time, "pending") }}
-</td></tr></table>
-{{ rule.spacer(16) }}
+{% if reminder %}
+<tr><td style="padding-top:24px;">
+  {% if reminder.get('time') %}<div style="padding-bottom:14px;">{{ chip.status_chip('⏰ ' ~ reminder.time, 'info') }}</div>{% endif %}
+  {% if reminder.get('reason') %}<div class="nx-ink" style="color:#16181D; font-size:18px; line-height:26px; font-weight:600; letter-spacing:-0.2px;">{{ reminder.reason }}</div>{% endif %}
+  {% if reminder.get('context') %}<p class="nx-body" style="margin:10px 0 0 0; color:#3F434B; font-size:14px; line-height:23px;">{{ reminder.context }}</p>{% endif %}
+</td></tr>
+
+{% if reminder.get('suggested_action') %}
+<tr><td style="padding-top:24px;">
+  {% call sec.panel('neutral', title="Suggested next step") %}{{ reminder.suggested_action }}{% endcall %}
+</td></tr>
 {% endif %}
 
-{% call sec.section(reminder.reason | default("You asked to be reminded."), eyebrow="Reminder", accent="#7C3AED") %}
-  {% if reminder.context %}{{ reminder.context }}{% endif %}
-{% endcall %}
-
-{% if reminder.suggested_action %}
-{{ rule.spacer(16) }}
-{% call sec.panel("info", title="Suggested action") %}{{ reminder.suggested_action }}{% endcall %}
+{% if reminder.get('cta_url') %}
+<tr><td>{{ rule.divider(28) }}</td></tr>
+<tr><td>{{ btn.button(reminder.get('cta_label','Mark as done'), reminder.cta_url, 'primary') }}</td></tr>
+<tr><td style="height:8px; line-height:8px; font-size:0;">&nbsp;</td></tr>
 {% endif %}
-
-{% if reminder.cta_url %}
-{{ rule.spacer(20) }}
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td align="center">
-  {{ btn.button(reminder.cta_label | default("Mark as done"), reminder.cta_url, "primary") }}
-</td></tr></table>
 {% endif %}
 {% endblock %}

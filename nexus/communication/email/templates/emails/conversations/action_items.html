@@ -1,38 +1,33 @@
-{#-
-  Q&A FAMILY · Action Items  (also the base for: Follow-ups)
-  Personality: warning amber — these are things that need doing.
-
-  Context:
-    eyebrow="Action Items", subject, subtitle, timestamp, version
-    items = [{text, owner, due, priority, priority_tone, done, href}]
-    summary_line (optional)
--#}
 {% extends "base.html" %}
-{% block accent %}#D97706{% endblock %}
+{# Action Items — a checklist with owner, due, priority. #}
 {% block content %}
-{% import "partials/section.html" as sec %}
+{% import "partials/list_row.html" as lst %}
 {% import "partials/badge.html" as bdg %}
-{% import "partials/divider.html" as rule %}
-{% import "partials/button.html" as btn %}
 
-{% if summary_line %}{% call sec.panel("warning") %}{{ summary_line }}{% endcall %}{{ rule.spacer(16) }}{% endif %}
+{% if summary_line %}
+<tr><td style="padding-top:24px;">
+  <p class="nx-body" style="margin:0; color:#3F434B; font-size:15px; line-height:24px;">{{ summary_line }}</p>
+</td></tr>
+{% endif %}
 
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
-{% for a in items %}
-  <tr><td style="padding-bottom:10px;">
-    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" class="nx-card" style="background:#FFFFFF;border:1px solid #E2E8F0;border-radius:10px;"><tr>
-      <td valign="top" width="34" style="vertical-align:top;width:34px;padding:14px 0 14px 14px;color:{% if a.done %}#16A34A{% else %}#CBD5E1{% endif %};font-weight:700;font-size:16px;">{% if a.done %}☑{% else %}☐{% endif %}</td>
-      <td valign="top" style="vertical-align:top;padding:14px 14px 14px 8px;">
-        <span class="nx-ink" style="font-family:-apple-system,sans-serif;font-size:14px;line-height:21px;font-weight:600;color:#0F172A;{% if a.done %}text-decoration:line-through;color:#94A3B8;{% endif %}">{{ a.text }}</span>
-        <div style="padding-top:6px;">
-          {% if a.priority %}{{ bdg.badge(a.priority, a.priority_tone | default("danger")) }} {% endif %}
-          {% if a.owner %}{{ bdg.badge("@" ~ a.owner, "neutral") }} {% endif %}
-          {% if a.due %}{{ bdg.badge("due " ~ a.due, "warning") }}{% endif %}
-        </div>
-      </td>
-      {% if a.href %}<td valign="middle" align="right" style="vertical-align:middle;padding:14px;"><a class="nx-link" href="{{ a.href }}" style="font-family:-apple-system,sans-serif;font-size:12px;font-weight:600;color:#4F46E5;white-space:nowrap;">Open →</a></td>{% endif %}
-    </tr></table>
-  </td></tr>
-{% endfor %}
-</table>
+{% if items %}
+<tr><td style="padding-top:22px;">
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+    {% for it in items %}
+    <tr><td style="padding:{% if loop.first %}0{% else %}9px{% endif %} 0 9px 0;">
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr>
+        <td valign="top" width="28" style="width:28px; padding-top:1px;">{{ lst.mark('done' if it.get('done') else 'pending') }}</td>
+        <td valign="top">
+          <div class="nx-ink" style="color:#16181D; font-size:14px; font-weight:600; line-height:21px;{% if it.get('done') %} color:#8A8F98; text-decoration:line-through;{% endif %}">{{ it.text }}</div>
+          {% if it.get('owner') or it.get('due') %}<div class="nx-muted" style="color:#8A8F98; font-size:12px; line-height:18px; padding-top:2px;">{{ it.get('owner','') }}{% if it.get('owner') and it.get('due') %} · {% endif %}{{ it.get('due','') }}</div>{% endif %}
+        </td>
+        {% if it.get('priority') %}<td valign="top" align="right" width="44" style="width:44px;">{{ bdg.badge(it.priority, it.get('priority_tone','neutral')) }}</td>{% endif %}
+      </tr></table>
+    </td></tr>
+    {% endfor %}
+  </table>
+</td></tr>
+{% endif %}
+
+<tr><td style="height:8px; line-height:8px; font-size:0;">&nbsp;</td></tr>
 {% endblock %}

@@ -1,43 +1,41 @@
-{#-
-  EMAIL TYPE 10 · Scheduler Report  (daily job execution summary)
-  Personality: scheduler teal.
-
-  Context:
-    eyebrow="Scheduler Report", subject, subtitle, timestamp, version
-    scheduler = {health_label, health_status,
-                 metrics:[{label,value,delta,trend}],
-                 jobs:[[name, status, duration]], events:[{time,title,tone,body}]}
--#}
 {% extends "base.html" %}
-{% block accent %}#0891B2{% endblock %}
+{# Scheduler Report — automation health at a glance. #}
 {% block content %}
 {% import "partials/section.html" as sec %}
-{% import "partials/status_chip.html" as chip %}
-{% import "partials/divider.html" as rule %}
 {% import "partials/metric_card.html" as mc %}
-{% import "partials/timeline.html" as tl %}
 {% import "partials/table.html" as tbl %}
+{% import "partials/timeline.html" as tl %}
+{% import "partials/status_chip.html" as chip %}
 
-{% call sec.section("Scheduler health", eyebrow="Automation", accent="#0891B2") %}
-  {{ chip.status_chip(scheduler.health_label | default("All jobs nominal"), scheduler.health_status | default("success")) }}
-{% endcall %}
+{% if scheduler %}
+<tr><td style="padding-top:24px;">
+  {% if scheduler.get('health_label') %}{{ chip.status_chip(scheduler.health_label, scheduler.get('health_status','success')) }}{% endif %}
+</td></tr>
 
-{% if scheduler.metrics %}
-{{ rule.spacer(18) }}
-{{ mc.metric_row(scheduler.metrics) }}
+{% if scheduler.get('metrics') %}
+<tr><td>
+  {% call sec.section("Run metrics", eyebrow="Past 24 hours") %}
+    {{ mc.metric_row(scheduler.metrics) }}
+  {% endcall %}
+</td></tr>
 {% endif %}
 
-{% if scheduler.jobs %}
-{{ rule.divider() }}
-{% call sec.section("Job runs", eyebrow="Last 24 hours") %}{% endcall %}
-{{ rule.spacer(12) }}
-{{ tbl.data_table(columns=["Job","Status","Duration"], rows=scheduler.jobs, aligns=["left","left","right"]) }}
+{% if scheduler.get('jobs') %}
+<tr><td>
+  {% call sec.section("Jobs", eyebrow="Outcomes") %}
+    {{ tbl.data_table(["Job", "Status", "Duration"], scheduler.jobs, ["left","left","right"]) }}
+  {% endcall %}
+</td></tr>
 {% endif %}
 
-{% if scheduler.events %}
-{{ rule.divider() }}
-{% call sec.section("Execution timeline", eyebrow="Sequence", accent="#0891B2") %}{% endcall %}
-{{ rule.spacer(12) }}
-{{ tl.timeline(scheduler.events) }}
+{% if scheduler.get('events') %}
+<tr><td>
+  {% call sec.section("Activity", eyebrow="Timeline") %}
+    {{ tl.timeline(scheduler.events) }}
+  {% endcall %}
+</td></tr>
+{% endif %}
+
+<tr><td style="height:8px; line-height:8px; font-size:0;">&nbsp;</td></tr>
 {% endif %}
 {% endblock %}

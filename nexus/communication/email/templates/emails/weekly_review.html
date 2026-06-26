@@ -1,62 +1,59 @@
-{#-
-  EMAIL TYPE 11 · Weekly Operational Review  (executive dashboard)
-  Personality: deep navy.
-
-  Context:
-    eyebrow="Weekly Operations", subject, subtitle, timestamp, version
-    review = {kpis:[{label,value,delta,trend}], trends:[{label,pct,tone}],
-              research_count, tasks:[[k,v]], reliability:[[k,v]],
-              llm_usage:[[k,v]], cost:[[k,v]], recommendations:[str]}
--#}
 {% extends "base.html" %}
-{% block accent %}#0F172A{% endblock %}
+{# Weekly Operational Review — executive, scannable, composed. #}
 {% block content %}
 {% import "partials/section.html" as sec %}
-{% import "partials/divider.html" as rule %}
 {% import "partials/metric_card.html" as mc %}
 {% import "partials/table.html" as tbl %}
 
-{% call sec.section("This week at a glance", eyebrow="KPIs") %}{% endcall %}
-{% if review.kpis %}{{ rule.spacer(16) }}{{ mc.metric_row(review.kpis) }}{% endif %}
-
-{% if review.trends %}
-{{ rule.divider() }}
-{% call sec.section("Trends", eyebrow="Week over week") %}{% endcall %}
-{{ rule.spacer(14) }}
-{% for t in review.trends %}{{ tbl.progress(t.pct, t.tone | default("brand"), t.label) }}{% if not loop.last %}{{ rule.spacer(14) }}{% endif %}{% endfor %}
-<div class="nx-faint" style="font-family:-apple-system,sans-serif;font-size:11px;color:#94A3B8;padding-top:10px;">Sparkline view · full trend charts in the attached dashboard export.</div>
+{% if review %}
+{% if review.get('kpis') %}
+<tr><td style="padding-top:24px;">
+  {% call sec.section("This week", eyebrow="Headline KPIs", top=0) %}
+    {{ mc.metric_row(review.kpis) }}
+  {% endcall %}
+</td></tr>
 {% endif %}
 
-{% if review.reliability %}
-{{ rule.divider() }}
-{% call sec.section("Reliability", eyebrow="Uptime & recovery", accent="#16A34A") %}{% endcall %}
-{{ rule.spacer(12) }}{{ tbl.kv_grid(review.reliability) }}
+{% if review.get('trends') %}
+<tr><td>
+  {% call sec.section("Trends", eyebrow="Week over week") %}
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+      {% for t in review.trends %}
+      <tr><td style="padding-bottom:{% if not loop.last %}16px{% else %}0{% endif %};">{{ tbl.progress(t.pct, t.get('tone','ink'), t.label) }}</td></tr>
+      {% endfor %}
+    </table>
+  {% endcall %}
+</td></tr>
 {% endif %}
 
-{% if review.tasks %}
-{{ rule.divider() }}
-{% call sec.section("Execution", eyebrow="Tasks", accent="#6366F1") %}{% endcall %}
-{{ rule.spacer(12) }}{{ tbl.kv_grid(review.tasks) }}
+{% if review.get('reliability') %}
+<tr><td>{% call sec.section("Reliability", eyebrow="Uptime & recovery") %}{{ tbl.kv_grid(review.reliability) }}{% endcall %}</td></tr>
+{% endif %}
+{% if review.get('tasks') %}
+<tr><td>{% call sec.section("Execution", eyebrow="Task throughput") %}{{ tbl.kv_grid(review.tasks) }}{% endcall %}</td></tr>
+{% endif %}
+{% if review.get('llm_usage') %}
+<tr><td>{% call sec.section("LLM usage", eyebrow="Models & tokens") %}{{ tbl.kv_grid(review.llm_usage) }}{% endcall %}</td></tr>
+{% endif %}
+{% if review.get('cost') %}
+<tr><td>{% call sec.section("Cost", eyebrow="Spend") %}{{ tbl.kv_grid(review.cost) }}{% endcall %}</td></tr>
 {% endif %}
 
-{% if review.llm_usage %}
-{{ rule.divider() }}
-{% call sec.section("LLM usage", eyebrow="Intelligence", accent="#0EA5E9") %}{% endcall %}
-{{ rule.spacer(12) }}{{ tbl.kv_grid(review.llm_usage) }}
+{% if review.get('recommendations') %}
+<tr><td>
+  {% call sec.section("Recommendations", eyebrow="Next week") %}
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+      {% for rec in review.recommendations %}
+      <tr>
+        <td valign="top" width="18" class="nx-faint" style="width:18px; color:#AEB2BA; font-size:13px; line-height:21px;">→</td>
+        <td valign="top" class="nx-body" style="color:#3F434B; font-size:14px; line-height:21px; padding-bottom:{% if not loop.last %}8px{% else %}0{% endif %};">{{ rec }}</td>
+      </tr>
+      {% endfor %}
+    </table>
+  {% endcall %}
+</td></tr>
 {% endif %}
 
-{% if review.cost %}
-{{ rule.divider() }}
-{% call sec.section("Cost", eyebrow="Spend", accent="#D97706") %}{% endcall %}
-{{ rule.spacer(12) }}{{ tbl.kv_grid(review.cost) }}
-{% endif %}
-
-{% if review.recommendations %}
-{{ rule.divider() }}
-{% call sec.section("Recommendations", eyebrow="Next week") %}
-  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
-  {% for rec in review.recommendations %}<tr><td valign="top" width="20" style="vertical-align:top;width:20px;color:#4F46E5;font-weight:700;">→</td><td valign="top" style="vertical-align:top;padding-bottom:8px;">{{ rec }}</td></tr>{% endfor %}
-  </table>
-{% endcall %}
+<tr><td style="height:8px; line-height:8px; font-size:0;">&nbsp;</td></tr>
 {% endif %}
 {% endblock %}

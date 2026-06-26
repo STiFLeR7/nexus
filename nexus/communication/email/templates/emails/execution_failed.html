@@ -1,75 +1,83 @@
-{#-
-  EMAIL TYPE 8 · Execution Failed  (premium incident report)
-  Personality: danger red, calm and forensic — not panicky.
-
-  Context:
-    eyebrow="Execution Failed", subject, subtitle, timestamp, version
-    incident = {task_title, task_id, runtime, stage, duration, exit_status,
-                stages:[{time,title,tone,body}], stderr, stack, root_cause,
-                recovery:[str], retry_url, logs_url, audit_id}
--#}
 {% extends "base.html" %}
-{% block accent %}#DC2626{% endblock %}
+{# Runtime Failed — forensic and constructive: cause then recovery.
+   Never apologetic theatre. #}
 {% block content %}
 {% import "partials/section.html" as sec %}
-{% import "partials/badge.html" as bdg %}
-{% import "partials/status_chip.html" as chip %}
-{% import "partials/divider.html" as rule %}
-{% import "partials/button.html" as btn %}
-{% import "partials/timeline.html" as tl %}
 {% import "partials/table.html" as tbl %}
+{% import "partials/timeline.html" as tl %}
+{% import "partials/status_chip.html" as chip %}
+{% import "partials/button.html" as btn %}
+{% import "partials/divider.html" as rule %}
 
-{% call sec.panel("error", title="Execution failed at " ~ (incident.stage | default("an unknown stage"))) %}
-  {{ incident.task_title | default("A task terminated abnormally.") }}
-{% endcall %}
+{% if incident %}
+<tr><td style="padding-top:24px;">
+  <div style="padding-bottom:14px;">{{ chip.status_chip('Failed' ~ (' · ' ~ incident.stage if incident.get('stage') else ''), 'danger') }}</div>
+  <span class="nx-body" style="color:#3F434B; font-size:18px; line-height:26px;"><span class="nx-ink" style="color:#16181D; font-weight:600;">{{ incident.task_title }}</span></span>
+</td></tr>
 
-{{ rule.spacer(16) }}
-{{ tbl.kv_grid([
-  ["Task ID", incident.task_id | default("—")],
-  ["Runtime", incident.runtime | default("nexus")],
-  ["Exit status", incident.exit_status | default("failure")],
-  ["Duration", incident.duration | default("—")],
-  ["Audit ID", incident.audit_id | default("—")]
-]) }}
+<tr><td>
+  {% call sec.section("Incident detail", eyebrow="Metadata") %}
+    {{ tbl.kv_grid([
+      ["Task ID", incident.get('task_id','—')],
+      ["Runtime", incident.get('runtime','—')],
+      ["Failed stage", incident.get('stage','—')],
+      ["Duration", incident.get('duration','—')],
+      ["Exit status", incident.get('exit_status','—')],
+      ["Audit ID", incident.get('audit_id','—')]
+    ]) }}
+  {% endcall %}
+</td></tr>
 
-{% if incident.stages %}
-{{ rule.divider() }}
-{% call sec.section("Failure timeline", eyebrow="Sequence", accent="#DC2626") %}{% endcall %}
-{{ rule.spacer(12) }}
-{{ tl.timeline(incident.stages) }}
+{% if incident.get('root_cause') %}
+<tr><td style="padding-top:24px;">
+  {% call sec.panel('error', title="Root cause") %}{{ incident.root_cause }}{% endcall %}
+</td></tr>
 {% endif %}
 
-{% if incident.root_cause %}
-{{ rule.divider() }}
-{% call sec.section("Root cause", eyebrow="Analysis", accent="#DC2626") %}
-  {% call sec.panel("error") %}{{ incident.root_cause }}{% endcall %}
-{% endcall %}
+{% if incident.get('stages') %}
+<tr><td>
+  {% call sec.section("Execution trace", eyebrow="Timeline") %}
+    {{ tl.timeline(incident.stages) }}
+  {% endcall %}
+</td></tr>
 {% endif %}
 
-{% if incident.stderr or incident.stack %}
-{{ rule.divider() }}
-{% call sec.section("Logs & stack trace", eyebrow="Evidence") %}{% endcall %}
-{{ rule.spacer(10) }}
-{% if incident.stderr %}{{ sec.code_block(incident.stderr, label="stderr") }}{{ rule.spacer(10) }}{% endif %}
-{% if incident.stack %}{{ sec.code_block(incident.stack, label="stack trace") }}{% endif %}
+{% if incident.get('stderr') %}
+<tr><td>
+  {% call sec.section("Diagnostics", eyebrow="stderr") %}
+    {{ sec.code_block(incident.stderr, label="stderr") }}
+  {% endcall %}
+</td></tr>
 {% endif %}
 
-{% if incident.recovery %}
-{{ rule.divider() }}
-{% call sec.section("Suggested recovery", eyebrow="Remediation", accent="#16A34A") %}
-  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
-  {% for step in incident.recovery %}
-    <tr><td valign="top" width="22" style="vertical-align:top;width:22px;color:#16A34A;font-weight:700;">{{ loop.index }}.</td><td valign="top" style="vertical-align:top;padding-bottom:8px;">{{ step }}</td></tr>
-  {% endfor %}
-  </table>
-{% endcall %}
+{% if incident.get('stack') %}
+<tr><td style="padding-top:16px;">{{ sec.code_block(incident.stack, label="stack trace") }}</td></tr>
 {% endif %}
 
-{{ rule.divider() }}
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td align="center">
-  {{ btn.button_row([
-    {"label":"↻ Retry execution","href": incident.retry_url | default("#"), "variant":"danger"},
-    {"label":"View full logs","href": incident.logs_url | default("#"), "variant":"ghost"}
-  ]) }}
-</td></tr></table>
+{% if incident.get('recovery') %}
+<tr><td>
+  {% call sec.section("Suggested recovery", eyebrow="Next") %}
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+      {% for step in incident.recovery %}
+      <tr>
+        <td valign="top" width="24" class="nx-muted" style="width:24px; color:#8A8F98; font-size:13px; font-weight:600; line-height:21px;">{{ loop.index }}.</td>
+        <td valign="top" class="nx-body" style="color:#3F434B; font-size:14px; line-height:21px; padding-bottom:{% if not loop.last %}8px{% else %}0{% endif %};">{{ step }}</td>
+      </tr>
+      {% endfor %}
+    </table>
+  {% endcall %}
+</td></tr>
+{% endif %}
+
+{% if incident.get('retry_url') or incident.get('logs_url') %}
+<tr><td>{{ rule.divider(28) }}</td></tr>
+<tr><td>
+  {%- set acts = [] -%}
+  {%- if incident.get('retry_url') %}{% set _ = acts.append({"label": "↻ Retry task", "href": incident.retry_url, "variant": "primary"}) %}{% endif -%}
+  {%- if incident.get('logs_url') %}{% set _ = acts.append({"label": "View logs", "href": incident.logs_url, "variant": "outline"}) %}{% endif -%}
+  {{ btn.button_row(acts) }}
+</td></tr>
+<tr><td style="height:8px; line-height:8px; font-size:0;">&nbsp;</td></tr>
+{% endif %}
+{% endif %}
 {% endblock %}

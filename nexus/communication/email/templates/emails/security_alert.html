@@ -1,62 +1,58 @@
-{#-
-  EMAIL TYPE 9 · Security Alert  (governance / sandbox / policy violation)
-  Personality: danger red. Authoritative, precise, action-first.
-
-  Context:
-    eyebrow="Security Alert", subject, subtitle, timestamp, version
-    alert = {severity, severity_tone, category, summary,
-             details:[[key,value]], evidence, operator_actions:[str],
-             ack_url, audit_id}
--#}
 {% extends "base.html" %}
-{% block accent %}#DC2626{% endblock %}
+{# Security Alert — serious, unambiguous, calm. Clarity reduces panic. #}
 {% block content %}
 {% import "partials/section.html" as sec %}
-{% import "partials/badge.html" as bdg %}
-{% import "partials/status_chip.html" as chip %}
-{% import "partials/divider.html" as rule %}
-{% import "partials/button.html" as btn %}
 {% import "partials/table.html" as tbl %}
+{% import "partials/status_chip.html" as chip %}
+{% import "partials/badge.html" as bdg %}
+{% import "partials/button.html" as btn %}
+{% import "partials/divider.html" as rule %}
 
-{% call sec.panel("error", title=(alert.category | default("Policy violation")) ~ " detected") %}
-  {{ alert.summary | default("A governance control was triggered. Review the detail below.") }}
-{% endcall %}
+{% if alert %}
+<tr><td style="padding-top:24px;">
+  <div style="padding-bottom:14px;">
+    {{ chip.status_chip(alert.get('severity','—') ~ ' severity', alert.get('severity_tone','danger')) }}
+    {% if alert.get('category') %}<span style="display:inline-block; margin-left:6px;">{{ bdg.badge(alert.category, 'neutral') }}</span>{% endif %}
+  </div>
+  {% if alert.get('summary') %}<p class="nx-body" style="margin:0; color:#3F434B; font-size:15px; line-height:24px;">{{ alert.summary }}</p>{% endif %}
+</td></tr>
 
-{{ rule.spacer(16) }}
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td>
-  {{ chip.status_chip((alert.severity | default("HIGH")) ~ " SEVERITY", alert.severity_tone | default("danger")) }}
-  &nbsp;{{ bdg.badge(alert.category | default("governance"), "danger") }}
-</td></tr></table>
-
-{% if alert.details %}
-{{ rule.spacer(16) }}
-{{ tbl.kv_grid(alert.details) }}
+{% if alert.get('details') %}
+<tr><td>
+  {% call sec.section("Detail", eyebrow="What triggered") %}
+    {{ tbl.kv_grid(alert.details) }}
+  {% endcall %}
+</td></tr>
 {% endif %}
 
-{% if alert.evidence %}
-{{ rule.divider() }}
-{% call sec.section("Evidence", eyebrow="Audit") %}{% endcall %}
-{{ rule.spacer(10) }}
-{{ sec.code_block(alert.evidence, label="event") }}
+{% if alert.get('evidence') %}
+<tr><td>
+  {% call sec.section("Evidence", eyebrow="Captured") %}
+    {{ sec.code_block(alert.evidence, label="event") }}
+  {% endcall %}
+</td></tr>
 {% endif %}
 
-{% if alert.operator_actions %}
-{{ rule.divider() }}
-{% call sec.section("Required operator action", eyebrow="Respond", accent="#DC2626") %}
-  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
-  {% for act in alert.operator_actions %}
-    <tr><td valign="top" width="22" style="vertical-align:top;width:22px;color:#DC2626;font-weight:700;">{{ loop.index }}.</td><td valign="top" style="vertical-align:top;padding-bottom:8px;">{{ act }}</td></tr>
-  {% endfor %}
-  </table>
-{% endcall %}
+{% if alert.get('operator_actions') %}
+<tr><td>
+  {% call sec.section("Operator actions", eyebrow="Respond") %}
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+      {% for step in alert.operator_actions %}
+      <tr>
+        <td valign="top" width="24" class="nx-muted" style="width:24px; color:#8A8F98; font-size:13px; font-weight:600; line-height:21px;">{{ loop.index }}.</td>
+        <td valign="top" class="nx-body" style="color:#3F434B; font-size:14px; line-height:21px; padding-bottom:{% if not loop.last %}8px{% else %}0{% endif %};">{{ step }}</td>
+      </tr>
+      {% endfor %}
+    </table>
+  {% endcall %}
+</td></tr>
 {% endif %}
 
-{{ rule.divider() }}
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td align="center">
-  {{ btn.button("Acknowledge & review", alert.ack_url | default("#"), "danger") }}
-</td></tr></table>
-{% if alert.audit_id %}
-{{ rule.spacer(12) }}
-<p class="nx-faint" style="margin:0;text-align:center;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:11px;color:#94A3B8;">Audit ID · {{ alert.audit_id }}</p>
+{% if alert.get('ack_url') %}
+<tr><td>{{ rule.divider(28) }}</td></tr>
+<tr><td>{{ btn.button('Acknowledge alert', alert.ack_url, 'primary') }}</td></tr>
+{% if alert.get('audit_id') %}<tr><td align="center" class="nx-muted nx-mono" style="color:#8A8F98; font-size:12px; padding-top:14px;">Audit {{ alert.audit_id }}</td></tr>{% endif %}
+<tr><td style="height:8px; line-height:8px; font-size:0;">&nbsp;</td></tr>
+{% endif %}
 {% endif %}
 {% endblock %}
