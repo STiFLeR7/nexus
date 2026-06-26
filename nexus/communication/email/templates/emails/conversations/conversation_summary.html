@@ -1,0 +1,84 @@
+{#-
+  Q&A FAMILY · Conversation Summary  (also the base for: Meeting Notes,
+  AI Session Recap, Knowledge Capture, Daily Conversation Digest, Research
+  Discussion, Operator Notes — see EMAIL_COMPONENT_LIBRARY.md for the mapping).
+  Personality: communication indigo.
+
+  Context:
+    eyebrow="Conversation Summary", subject, subtitle, timestamp, version
+    convo = {tldr, topics:[str], key_points:[str], decisions:[str],
+             action_items:[{text, owner, due, done}], follow_ups:[str],
+             references:[{label,href}]}
+-#}
+{% extends "base.html" %}
+{% block accent %}#4F46E5{% endblock %}
+{% block content %}
+{% import "partials/section.html" as sec %}
+{% import "partials/badge.html" as bdg %}
+{% import "partials/divider.html" as rule %}
+
+{% if convo.tldr %}
+{% call sec.panel("info", title="TL;DR") %}{{ convo.tldr }}{% endcall %}
+{{ rule.spacer(16) }}
+{% endif %}
+
+{% if convo.topics %}
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td>
+  {% for t in convo.topics %}{{ bdg.badge(t, "brand") }} {% endfor %}
+</td></tr></table>
+{{ rule.spacer(16) }}
+{% endif %}
+
+{% if convo.key_points %}
+{% call sec.section("Key points", eyebrow="Discussion") %}
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+  {% for k in convo.key_points %}<tr><td valign="top" width="20" style="vertical-align:top;width:20px;color:#4F46E5;font-weight:700;">•</td><td valign="top" style="vertical-align:top;padding-bottom:8px;">{{ k }}</td></tr>{% endfor %}
+  </table>
+{% endcall %}
+{% endif %}
+
+{% if convo.decisions %}
+{{ rule.divider() }}
+{% call sec.section("Decisions", eyebrow="Agreed", accent="#16A34A") %}
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+  {% for d in convo.decisions %}<tr><td valign="top" width="22" style="vertical-align:top;width:22px;color:#16A34A;font-weight:700;">✓</td><td valign="top" style="vertical-align:top;padding-bottom:8px;">{{ d }}</td></tr>{% endfor %}
+  </table>
+{% endcall %}
+{% endif %}
+
+{% if convo.action_items %}
+{{ rule.divider() }}
+{% call sec.section("Action items", eyebrow="Owned", accent="#D97706") %}{% endcall %}
+{{ rule.spacer(10) }}
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+{% for a in convo.action_items %}
+  <tr>
+    <td valign="top" width="22" style="vertical-align:top;width:22px;color:{% if a.done %}#16A34A{% else %}#CBD5E1{% endif %};font-weight:700;font-size:15px;">{% if a.done %}☑{% else %}☐{% endif %}</td>
+    <td valign="top" style="vertical-align:top;padding-bottom:10px;">
+      <span class="nx-ink" style="font-family:-apple-system,sans-serif;font-size:14px;line-height:20px;color:#0F172A;">{{ a.text }}</span>
+      <div style="padding-top:3px;">
+        {% if a.owner %}{{ bdg.badge("@" ~ a.owner, "neutral") }}{% endif %}
+        {% if a.due %} {{ bdg.badge("due " ~ a.due, "warning") }}{% endif %}
+      </div>
+    </td>
+  </tr>
+{% endfor %}
+</table>
+{% endif %}
+
+{% if convo.follow_ups %}
+{{ rule.divider() }}
+{% call sec.section("Follow-ups", eyebrow="Later") %}
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+  {% for f in convo.follow_ups %}<tr><td valign="top" width="20" style="vertical-align:top;width:20px;color:#7C3AED;font-weight:700;">→</td><td valign="top" style="vertical-align:top;padding-bottom:8px;">{{ f }}</td></tr>{% endfor %}
+  </table>
+{% endcall %}
+{% endif %}
+
+{% if convo.references %}
+{{ rule.divider() }}
+{% call sec.section("References", eyebrow="Linked") %}
+  {% for r in convo.references %}<a class="nx-link" href="{{ r.href }}" style="font-family:-apple-system,sans-serif;font-size:13px;font-weight:600;color:#4F46E5;display:inline-block;padding:2px 0;">↗ {{ r.label }}</a><br>{% endfor %}
+{% endcall %}
+{% endif %}
+{% endblock %}

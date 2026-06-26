@@ -1,0 +1,68 @@
+{#-
+  EMAIL TYPE 3 · Research Intelligence Report
+  Personality: research sky-blue. Reads like a sharp analyst briefing.
+
+  Context:
+    eyebrow="Research Intelligence", subject, subtitle, timestamp, version
+    brief = {headline, importance, importance_tone, summary,
+             insights:[str], sources:[{title,source,url,score}],
+             recommendations:[str], actions:[{label,href,variant}], tags:[str]}
+-#}
+{% extends "base.html" %}
+{% block accent %}#0EA5E9{% endblock %}
+{% block content %}
+{% import "partials/section.html" as sec %}
+{% import "partials/badge.html" as bdg %}
+{% import "partials/status_chip.html" as chip %}
+{% import "partials/divider.html" as rule %}
+{% import "partials/button.html" as btn %}
+{% import "partials/table.html" as tbl %}
+
+{% if brief.headline %}
+{% call sec.section(brief.headline, eyebrow="Headline", accent="#0EA5E9") %}
+  {{ chip.status_chip((brief.importance | default("NOTABLE")), brief.importance_tone | default("info")) }}
+  {% if brief.tags %}&nbsp;{% for t in brief.tags %}{{ bdg.badge(t, "neutral") }} {% endfor %}{% endif %}
+{% endcall %}
+{% endif %}
+
+{% if brief.summary %}
+{{ rule.spacer(16) }}
+{% call sec.section("Summary", eyebrow="TL;DR") %}{{ brief.summary }}{% endcall %}
+{% endif %}
+
+{% if brief.insights %}
+{{ rule.divider() }}
+{% call sec.section("Key insights", eyebrow="Analysis", accent="#0EA5E9") %}
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+  {% for ins in brief.insights %}
+    <tr><td valign="top" width="20" style="vertical-align:top;width:20px;color:#0EA5E9;font-weight:700;">●</td><td valign="top" style="vertical-align:top;padding-bottom:8px;">{{ ins }}</td></tr>
+  {% endfor %}
+  </table>
+{% endcall %}
+{% endif %}
+
+{% if brief.sources %}
+{{ rule.divider() }}
+{% call sec.section("Sources", eyebrow="Provenance") %}{% endcall %}
+{{ rule.spacer(12) }}
+{% set ns = namespace(rows=[]) %}
+{% for s in brief.sources %}{% set ns.rows = ns.rows + [[s.title, s.source | default('—'), '★ ' ~ (s.score | default('—')) ~ '/5']] %}{% endfor %}
+{{ tbl.data_table(columns=["Title","Source","Score"], rows=ns.rows, aligns=["left","left","right"]) }}
+{% endif %}
+
+{% if brief.recommendations %}
+{{ rule.divider() }}
+{% call sec.section("Recommendations", eyebrow="So what") %}
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+  {% for rec in brief.recommendations %}
+    <tr><td valign="top" width="20" style="vertical-align:top;width:20px;color:#4F46E5;font-weight:700;">→</td><td valign="top" style="vertical-align:top;padding-bottom:8px;">{{ rec }}</td></tr>
+  {% endfor %}
+  </table>
+{% endcall %}
+{% endif %}
+
+{% if brief.actions %}
+{{ rule.divider() }}
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td align="center">{{ btn.button_row(brief.actions) }}</td></tr></table>
+{% endif %}
+{% endblock %}

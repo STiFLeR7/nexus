@@ -1,0 +1,81 @@
+{#-
+  EMAIL TYPE 2 · Operational Intelligence Report  (executive report)
+  Personality: deep navy — authoritative, dense but calm.
+
+  Charts: email clients can't run JS/canvas. We render bullet/bar "charts" from
+  the progress() macro (bulletproof) and reserve a labelled slot where a
+  pre-rendered PNG would be dropped in (see EMAIL_TEMPLATE_GUIDELINES.md).
+
+  Context:
+    eyebrow="Operational Intelligence", subject, subtitle, timestamp, version
+    report = {summary, metrics:[{label,value,delta,trend}],
+              architecture:[[key,value]], performance:[{label,pct,tone}],
+              failures:[[task,runtime,status]], recovery:[{time,title,tone,body}],
+              recommendations:[str], appendix:[[key,value]]}
+-#}
+{% extends "base.html" %}
+{% block accent %}#0F172A{% endblock %}
+{% block content %}
+{% import "partials/section.html" as sec %}
+{% import "partials/divider.html" as rule %}
+{% import "partials/metric_card.html" as mc %}
+{% import "partials/timeline.html" as tl %}
+{% import "partials/table.html" as tbl %}
+
+{% call sec.section("Executive summary", eyebrow="Overview") %}{{ report.summary | default("Operational posture is stable across the reporting window.") }}{% endcall %}
+
+{% if report.metrics %}
+{{ rule.spacer(18) }}
+{{ mc.metric_row(report.metrics) }}
+{% endif %}
+
+{% if report.performance %}
+{{ rule.divider() }}
+{% call sec.section("Performance", eyebrow="Throughput & latency") %}{% endcall %}
+{{ rule.spacer(14) }}
+{% for p in report.performance %}
+{{ tbl.progress(p.pct, p.tone | default("brand"), p.label) }}
+{% if not loop.last %}{{ rule.spacer(14) }}{% endif %}
+{% endfor %}
+<div class="nx-faint" style="font-family:-apple-system,sans-serif;font-size:11px;color:#94A3B8;padding-top:10px;">Bar view · a full time-series chart is attached as a rendered image in the executive PDF.</div>
+{% endif %}
+
+{% if report.architecture %}
+{{ rule.divider() }}
+{% call sec.section("Architecture", eyebrow="Topology") %}{% endcall %}
+{{ rule.spacer(12) }}
+{{ tbl.kv_grid(report.architecture) }}
+{% endif %}
+
+{% if report.failures %}
+{{ rule.divider() }}
+{% call sec.section("Failures", eyebrow="Reliability", accent="#DC2626") %}{% endcall %}
+{{ rule.spacer(12) }}
+{{ tbl.data_table(columns=["Task","Runtime","Status"], rows=report.failures, aligns=["left","left","right"]) }}
+{% endif %}
+
+{% if report.recovery %}
+{{ rule.divider() }}
+{% call sec.section("Recovery", eyebrow="Self-healing", accent="#16A34A") %}{% endcall %}
+{{ rule.spacer(12) }}
+{{ tl.timeline(report.recovery) }}
+{% endif %}
+
+{% if report.recommendations %}
+{{ rule.divider() }}
+{% call sec.section("Recommendations", eyebrow="Action") %}
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+  {% for rec in report.recommendations %}
+    <tr><td valign="top" width="20" style="vertical-align:top;width:20px;color:#4F46E5;font-weight:700;">→</td><td valign="top" style="vertical-align:top;padding-bottom:8px;">{{ rec }}</td></tr>
+  {% endfor %}
+  </table>
+{% endcall %}
+{% endif %}
+
+{% if report.appendix %}
+{{ rule.divider() }}
+{% call sec.section("Appendix", eyebrow="Reference") %}{% endcall %}
+{{ rule.spacer(12) }}
+{{ tbl.kv_grid(report.appendix) }}
+{% endif %}
+{% endblock %}

@@ -1,0 +1,64 @@
+{#-
+  Table + key/value grid — structured data that stays readable on mobile.
+  Import:  {% import "partials/table.html" as tbl %}
+
+  Data table:
+    {{ tbl.data_table(
+        columns=["Job", "Status", "Duration"],
+        rows=[
+          ["research_collection", "Succeeded", "12.4s"],
+          ["daily_briefing", "Succeeded", "3.1s"],
+          ["approval_sweep", "Skipped", "—"]
+        ],
+        aligns=["left","left","right"]
+    ) }}
+
+  Key/value grid (definition list style for metadata blocks):
+    {{ tbl.kv_grid([
+        ["Requester", "scheduler"],
+        ["Runtime", "nexus"],
+        ["Repository", "workspace_root"]
+    ]) }}
+-#}
+{% macro data_table(columns, rows, aligns=None) -%}
+{%- set al = aligns or [] -%}
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" class="nx-card" style="background:#FFFFFF; border:1px solid #E2E8F0; border-radius:10px; overflow:hidden;">
+  <tr>
+    {% for col in columns %}
+    <td class="nx-muted-surface" style="background:#F8FAFC; padding:10px 14px; border-bottom:1px solid #E2E8F0; text-align:{{ al[loop.index0] if al and al|length > loop.index0 else 'left' }}; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; font-size:11px; font-weight:700; letter-spacing:0.5px; text-transform:uppercase; color:#64748B;">{{ col }}</td>
+    {% endfor %}
+  </tr>
+  {% for row in rows %}
+  {%- set rowloop = loop -%}
+  <tr>
+    {% for cell in row %}
+    <td class="nx-body" style="padding:11px 14px; border-bottom:{% if not rowloop.last %}1px solid #EEF2F6{% else %}0{% endif %}; text-align:{{ al[loop.index0] if al and al|length > loop.index0 else 'left' }}; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; font-size:14px; line-height:20px; color:#334155; vertical-align:top;">{{ cell }}</td>
+    {% endfor %}
+  </tr>
+  {% endfor %}
+</table>
+{%- endmacro %}
+
+{% macro kv_grid(pairs) -%}
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" class="nx-muted-surface" style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:10px;">
+  {% for p in pairs %}
+  <tr>
+    <td width="38%" class="nx-muted" style="width:38%; padding:10px 16px; border-bottom:{% if not loop.last %}1px solid #EEF2F6{% else %}0{% endif %}; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; font-size:13px; line-height:18px; font-weight:500; color:#64748B; vertical-align:top;">{{ p[0] }}</td>
+    <td class="nx-ink" style="padding:10px 16px; border-bottom:{% if not loop.last %}1px solid #EEF2F6{% else %}0{% endif %}; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; font-size:13px; line-height:18px; font-weight:600; color:#0F172A; vertical-align:top; text-align:right;">{{ p[1] }}</td>
+  </tr>
+  {% endfor %}
+</table>
+{%- endmacro %}
+
+{#- Progress bar — completion / budget consumption -#}
+{% macro progress(pct, tone='brand', label=None) -%}
+{%- set _P = {'brand':'#4F46E5','success':'#16A34A','warning':'#D97706','danger':'#DC2626','info':'#2563EB'} -%}
+{%- set fill = _P.get(tone, _P['brand']) -%}
+{%- set w = [[pct, 0]|max, 100]|min -%}
+{% if label %}<div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; font-size:12px; line-height:16px; font-weight:600; color:#64748B; padding-bottom:6px;">{{ label }} <span style="color:#0F172A;">{{ w }}%</span></div>{% endif %}
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#E2E8F0; border-radius:999px;">
+  <tr><td style="padding:0; font-size:1px; line-height:1px;">
+    <table role="presentation" width="{{ w }}%" cellpadding="0" cellspacing="0" border="0" style="width:{{ w }}%; min-width:8px;"><tr><td style="height:8px; line-height:8px; font-size:8px; background:{{ fill }}; border-radius:999px;">&nbsp;</td></tr></table>
+  </td></tr>
+</table>
+{%- endmacro %}

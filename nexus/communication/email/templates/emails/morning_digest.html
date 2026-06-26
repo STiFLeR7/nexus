@@ -1,0 +1,139 @@
+{#-
+  EMAIL TYPE 1 · Nexus Morning Operational Digest
+  Personality: brand indigo. The operator's first read of the day — scannable,
+  confident, action-oriented.
+
+  Context schema (see PLACEHOLDER DATA SCHEMA in EMAIL_DESIGN_SYSTEM.md):
+    eyebrow="Morning Digest", subject, subtitle, timestamp, version, brand_links
+    greeting, owner_name, summary_line
+    health        = {label, status, metrics:[{label,value,delta,trend}]}
+    research      = [{title, score, source, url, summary}]
+    tasks         = [[title, status, priority]]
+    approvals     = [{title, requester, href}]
+    scheduler     = [{time,title,tone,body}]
+    runtime       = [{name, status}]            status: success|warning|danger|pending|neutral
+    alerts        = [{tone,title,body}]
+    recommendations = [str]
+    actions       = [{label, href, variant}]
+-#}
+{% extends "base.html" %}
+{% block accent %}#4F46E5{% endblock %}
+{% block content %}
+{% import "partials/section.html" as sec %}
+{% import "partials/badge.html" as bdg %}
+{% import "partials/status_chip.html" as chip %}
+{% import "partials/divider.html" as rule %}
+{% import "partials/button.html" as btn %}
+{% import "partials/metric_card.html" as mc %}
+{% import "partials/timeline.html" as tl %}
+{% import "partials/table.html" as tbl %}
+
+{# greeting + executive summary #}
+{% call sec.section("Executive summary", eyebrow=(greeting | default("Good morning")) ~ ((", " ~ owner_name) if owner_name else "")) %}
+  {{ summary_line | default("All core subsystems are nominal. Here is your operational picture for the day.") }}
+{% endcall %}
+
+{% if health and health.metrics %}
+{{ rule.spacer(18) }}
+{{ mc.metric_row(health.metrics) }}
+{% endif %}
+
+{{ rule.divider() }}
+
+{# today's health #}
+{% call sec.section("Today's health", eyebrow="System", accent="#16A34A") %}
+  {{ chip.status_chip(health.label | default("Healthy"), health.status | default("success")) }}
+{% endcall %}
+
+{# research highlights #}
+{% if research %}
+{{ rule.divider() }}
+{% call sec.section("Research highlights", eyebrow="Intelligence", accent="#0EA5E9") %}{% endcall %}
+{{ rule.spacer(12) }}
+{% for r in research %}
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" class="nx-muted-surface" style="background:#F8FAFC;border:1px solid #E2E8F0;border-radius:10px;{% if not loop.last %}margin-bottom:10px;{% endif %}">
+  <tr><td style="padding:14px 16px;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr>
+      <td valign="top" style="vertical-align:top;"><span class="nx-ink" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;font-size:15px;line-height:21px;font-weight:600;color:#0F172A;">{{ r.title }}</span></td>
+      <td valign="top" align="right" style="vertical-align:top;white-space:nowrap;padding-left:10px;">{{ bdg.badge("★ " ~ (r.score | default("—")) ~ "/5", "info") }}</td>
+    </tr></table>
+    {% if r.summary %}<div class="nx-muted" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;font-size:13px;line-height:20px;color:#64748B;padding-top:6px;">{{ r.summary }}</div>{% endif %}
+    <div style="padding-top:8px;">
+      <span class="nx-faint" style="font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:11px;color:#94A3B8;">{{ r.source | default("source") }}</span>
+      {% if r.url %}<span style="color:#CBD5E1;"> · </span><a class="nx-link" href="{{ r.url }}" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;font-size:12px;font-weight:600;color:#4F46E5;">Read →</a>{% endif %}
+    </div>
+  </td></tr>
+</table>
+{% if not loop.last %}{{ rule.spacer(10) }}{% endif %}
+{% endfor %}
+{% endif %}
+
+{# tasks #}
+{% if tasks %}
+{{ rule.divider() }}
+{% call sec.section("Active tasks", eyebrow="Execution", accent="#6366F1") %}{% endcall %}
+{{ rule.spacer(12) }}
+{{ tbl.data_table(columns=["Task","Status","Priority"], rows=tasks, aligns=["left","left","right"]) }}
+{% endif %}
+
+{# pending approvals #}
+{% if approvals %}
+{{ rule.divider() }}
+{% call sec.section("Pending approvals", eyebrow="Governance", accent="#D97706") %}{% endcall %}
+{{ rule.spacer(10) }}
+{% for a in approvals %}
+{% call sec.panel("warning", title=a.title) %}Requested by {{ a.requester | default("system") }}.{% if a.href %} <a class="nx-link" href="{{ a.href }}" style="color:#B45309;font-weight:600;">Review →</a>{% endif %}{% endcall %}
+{% if not loop.last %}{{ rule.spacer(8) }}{% endif %}
+{% endfor %}
+{% endif %}
+
+{# scheduler #}
+{% if scheduler %}
+{{ rule.divider() }}
+{% call sec.section("Scheduler", eyebrow="Automation", accent="#0891B2") %}{% endcall %}
+{{ rule.spacer(12) }}
+{{ tl.timeline(scheduler) }}
+{% endif %}
+
+{# runtime status #}
+{% if runtime %}
+{{ rule.divider() }}
+{% call sec.section("Runtime status", eyebrow="Fleet", accent="#D97706") %}
+  {% for rt in runtime %}{{ chip.status_chip(rt.name, rt.status | default("neutral")) }}&nbsp;{% endfor %}
+{% endcall %}
+{% endif %}
+
+{# alerts #}
+{% if alerts %}
+{{ rule.divider() }}
+{% call sec.section("Important alerts", eyebrow="Attention", accent="#DC2626") %}{% endcall %}
+{{ rule.spacer(10) }}
+{% for al in alerts %}
+{% call sec.panel(al.tone | default("warning"), title=al.title) %}{{ al.body }}{% endcall %}
+{% if not loop.last %}{{ rule.spacer(8) }}{% endif %}
+{% endfor %}
+{% endif %}
+
+{# recommendations #}
+{% if recommendations %}
+{{ rule.divider() }}
+{% call sec.section("Recommendations", eyebrow="Next") %}
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+  {% for rec in recommendations %}
+    <tr>
+      <td valign="top" width="20" style="vertical-align:top;width:20px;color:#4F46E5;font-weight:700;">→</td>
+      <td valign="top" style="vertical-align:top;padding-bottom:8px;">{{ rec }}</td>
+    </tr>
+  {% endfor %}
+  </table>
+{% endcall %}
+{% endif %}
+
+{# quick actions #}
+{% if actions %}
+{{ rule.divider() }}
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td align="center">
+  {{ btn.button_row(actions) }}
+</td></tr></table>
+{% endif %}
+{% endblock %}

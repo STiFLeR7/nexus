@@ -1,0 +1,43 @@
+{#-
+  EMAIL TYPE 10 · Scheduler Report  (daily job execution summary)
+  Personality: scheduler teal.
+
+  Context:
+    eyebrow="Scheduler Report", subject, subtitle, timestamp, version
+    scheduler = {health_label, health_status,
+                 metrics:[{label,value,delta,trend}],
+                 jobs:[[name, status, duration]], events:[{time,title,tone,body}]}
+-#}
+{% extends "base.html" %}
+{% block accent %}#0891B2{% endblock %}
+{% block content %}
+{% import "partials/section.html" as sec %}
+{% import "partials/status_chip.html" as chip %}
+{% import "partials/divider.html" as rule %}
+{% import "partials/metric_card.html" as mc %}
+{% import "partials/timeline.html" as tl %}
+{% import "partials/table.html" as tbl %}
+
+{% call sec.section("Scheduler health", eyebrow="Automation", accent="#0891B2") %}
+  {{ chip.status_chip(scheduler.health_label | default("All jobs nominal"), scheduler.health_status | default("success")) }}
+{% endcall %}
+
+{% if scheduler.metrics %}
+{{ rule.spacer(18) }}
+{{ mc.metric_row(scheduler.metrics) }}
+{% endif %}
+
+{% if scheduler.jobs %}
+{{ rule.divider() }}
+{% call sec.section("Job runs", eyebrow="Last 24 hours") %}{% endcall %}
+{{ rule.spacer(12) }}
+{{ tbl.data_table(columns=["Job","Status","Duration"], rows=scheduler.jobs, aligns=["left","left","right"]) }}
+{% endif %}
+
+{% if scheduler.events %}
+{{ rule.divider() }}
+{% call sec.section("Execution timeline", eyebrow="Sequence", accent="#0891B2") %}{% endcall %}
+{{ rule.spacer(12) }}
+{{ tl.timeline(scheduler.events) }}
+{% endif %}
+{% endblock %}

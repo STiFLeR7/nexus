@@ -1,0 +1,35 @@
+{#-
+  Status chip — a state with a leading status dot. Use for liveness / task / job state.
+  Import:  {% import "partials/status_chip.html" as chip %}
+  Use:     {{ chip.status_chip("Healthy", "success") }}
+           {{ chip.status_chip("Awaiting approval", "pending") }}
+
+  status: success · warning · danger · info · pending · neutral
+-#}
+{% set _CHIP = {
+  'success':  ('#ECFDF5', '#15803D', '#16A34A'),
+  'warning':  ('#FFFBEB', '#B45309', '#D97706'),
+  'danger':   ('#FEF2F2', '#B91C1C', '#DC2626'),
+  'info':     ('#EFF6FF', '#1D4ED8', '#2563EB'),
+  'pending':  ('#F5F3FF', '#6D28D9', '#7C3AED'),
+  'neutral':  ('#F1F5F9', '#475569', '#94A3B8')
+} %}
+{% macro status_chip(text, status='info') -%}
+{%- set c = _CHIP.get(status, _CHIP['info']) -%}
+<table role="presentation" cellpadding="0" cellspacing="0" border="0" style="display:inline-block;">
+  <tr>
+    <td style="background:{{ c[0] }}; border:1px solid {{ c[1] }}22; border-radius:999px; padding:4px 11px 4px 9px;">
+      <table role="presentation" cellpadding="0" cellspacing="0" border="0"><tr>
+        <td valign="middle" style="vertical-align:middle; padding-right:6px;">
+          <table role="presentation" width="7" height="7" cellpadding="0" cellspacing="0" border="0" style="width:7px;height:7px;"><tr>
+            <td style="width:7px; height:7px; background:{{ c[2] }}; border-radius:999px; font-size:1px; line-height:1px;">&nbsp;</td>
+          </tr></table>
+        </td>
+        <td valign="middle" style="vertical-align:middle;">
+          <span style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; font-size:12px; line-height:16px; font-weight:600; color:{{ c[1] }}; letter-spacing:0.2px;">{{ text }}</span>
+        </td>
+      </tr></table>
+    </td>
+  </tr>
+</table>
+{%- endmacro %}

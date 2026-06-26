@@ -1,0 +1,66 @@
+{#-
+  EMAIL TYPE 12 · Monthly Executive Report  (CEO style)
+  Personality: deep navy — the most composed, narrative-led layout.
+
+  Context:
+    eyebrow="Monthly Executive Report", subject, subtitle, timestamp, version
+    exec = {highlights:[str], kpis:[{label,value,delta,trend}],
+            growth:[{label,pct,tone}], reliability:[[k,v]], execution:[[k,v]],
+            research:[[k,v]], architecture:[str], recommendations:[str],
+            roadmap:[{time,title,tone,body}]}
+-#}
+{% extends "base.html" %}
+{% block accent %}#0F172A{% endblock %}
+{% block content %}
+{% import "partials/section.html" as sec %}
+{% import "partials/divider.html" as rule %}
+{% import "partials/metric_card.html" as mc %}
+{% import "partials/timeline.html" as tl %}
+{% import "partials/table.html" as tbl %}
+
+{% if exec.highlights %}
+{% call sec.section("Highlights", eyebrow="The month in brief") %}
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+  {% for h in exec.highlights %}<tr><td valign="top" width="20" style="vertical-align:top;width:20px;color:#4F46E5;font-weight:700;">★</td><td valign="top" style="vertical-align:top;padding-bottom:8px;">{{ h }}</td></tr>{% endfor %}
+  </table>
+{% endcall %}
+{% endif %}
+
+{% if exec.kpis %}{{ rule.spacer(18) }}{{ mc.metric_row(exec.kpis) }}{% endif %}
+
+{% if exec.growth %}
+{{ rule.divider() }}
+{% call sec.section("Growth", eyebrow="Trajectory", accent="#16A34A") %}{% endcall %}
+{{ rule.spacer(14) }}
+{% for g in exec.growth %}{{ tbl.progress(g.pct, g.tone | default("success"), g.label) }}{% if not loop.last %}{{ rule.spacer(14) }}{% endif %}{% endfor %}
+{% endif %}
+
+{% if exec.reliability %}{{ rule.divider() }}{% call sec.section("Reliability", eyebrow="Operations", accent="#16A34A") %}{% endcall %}{{ rule.spacer(12) }}{{ tbl.kv_grid(exec.reliability) }}{% endif %}
+{% if exec.execution %}{{ rule.divider() }}{% call sec.section("Execution", eyebrow="Delivery", accent="#6366F1") %}{% endcall %}{{ rule.spacer(12) }}{{ tbl.kv_grid(exec.execution) }}{% endif %}
+{% if exec.research %}{{ rule.divider() }}{% call sec.section("Research", eyebrow="Intelligence", accent="#0EA5E9") %}{% endcall %}{{ rule.spacer(12) }}{{ tbl.kv_grid(exec.research) }}{% endif %}
+
+{% if exec.architecture %}
+{{ rule.divider() }}
+{% call sec.section("Architecture", eyebrow="Platform") %}
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+  {% for a in exec.architecture %}<tr><td valign="top" width="20" style="vertical-align:top;width:20px;color:#64748B;font-weight:700;">▪</td><td valign="top" style="vertical-align:top;padding-bottom:8px;">{{ a }}</td></tr>{% endfor %}
+  </table>
+{% endcall %}
+{% endif %}
+
+{% if exec.recommendations %}
+{{ rule.divider() }}
+{% call sec.section("Recommendations", eyebrow="Strategy") %}
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+  {% for rec in exec.recommendations %}<tr><td valign="top" width="20" style="vertical-align:top;width:20px;color:#4F46E5;font-weight:700;">→</td><td valign="top" style="vertical-align:top;padding-bottom:8px;">{{ rec }}</td></tr>{% endfor %}
+  </table>
+{% endcall %}
+{% endif %}
+
+{% if exec.roadmap %}
+{{ rule.divider() }}
+{% call sec.section("Roadmap", eyebrow="What's next", accent="#7C3AED") %}{% endcall %}
+{{ rule.spacer(12) }}
+{{ tl.timeline(exec.roadmap) }}
+{% endif %}
+{% endblock %}

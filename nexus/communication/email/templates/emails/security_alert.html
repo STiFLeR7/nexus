@@ -1,0 +1,62 @@
+{#-
+  EMAIL TYPE 9 · Security Alert  (governance / sandbox / policy violation)
+  Personality: danger red. Authoritative, precise, action-first.
+
+  Context:
+    eyebrow="Security Alert", subject, subtitle, timestamp, version
+    alert = {severity, severity_tone, category, summary,
+             details:[[key,value]], evidence, operator_actions:[str],
+             ack_url, audit_id}
+-#}
+{% extends "base.html" %}
+{% block accent %}#DC2626{% endblock %}
+{% block content %}
+{% import "partials/section.html" as sec %}
+{% import "partials/badge.html" as bdg %}
+{% import "partials/status_chip.html" as chip %}
+{% import "partials/divider.html" as rule %}
+{% import "partials/button.html" as btn %}
+{% import "partials/table.html" as tbl %}
+
+{% call sec.panel("error", title=(alert.category | default("Policy violation")) ~ " detected") %}
+  {{ alert.summary | default("A governance control was triggered. Review the detail below.") }}
+{% endcall %}
+
+{{ rule.spacer(16) }}
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td>
+  {{ chip.status_chip((alert.severity | default("HIGH")) ~ " SEVERITY", alert.severity_tone | default("danger")) }}
+  &nbsp;{{ bdg.badge(alert.category | default("governance"), "danger") }}
+</td></tr></table>
+
+{% if alert.details %}
+{{ rule.spacer(16) }}
+{{ tbl.kv_grid(alert.details) }}
+{% endif %}
+
+{% if alert.evidence %}
+{{ rule.divider() }}
+{% call sec.section("Evidence", eyebrow="Audit") %}{% endcall %}
+{{ rule.spacer(10) }}
+{{ sec.code_block(alert.evidence, label="event") }}
+{% endif %}
+
+{% if alert.operator_actions %}
+{{ rule.divider() }}
+{% call sec.section("Required operator action", eyebrow="Respond", accent="#DC2626") %}
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+  {% for act in alert.operator_actions %}
+    <tr><td valign="top" width="22" style="vertical-align:top;width:22px;color:#DC2626;font-weight:700;">{{ loop.index }}.</td><td valign="top" style="vertical-align:top;padding-bottom:8px;">{{ act }}</td></tr>
+  {% endfor %}
+  </table>
+{% endcall %}
+{% endif %}
+
+{{ rule.divider() }}
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td align="center">
+  {{ btn.button("Acknowledge & review", alert.ack_url | default("#"), "danger") }}
+</td></tr></table>
+{% if alert.audit_id %}
+{{ rule.spacer(12) }}
+<p class="nx-faint" style="margin:0;text-align:center;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:11px;color:#94A3B8;">Audit ID · {{ alert.audit_id }}</p>
+{% endif %}
+{% endblock %}
