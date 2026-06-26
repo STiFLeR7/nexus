@@ -96,16 +96,26 @@ async def run_scheduled_job(
 
 
 async def run_research_job(session_factory: Any, openrouter_client: Any, settings: Any) -> None:
-    """J1 — crawl configured research feeds via ResearchService. Skips if no feeds configured."""
+    """J1 — crawl configured research feeds via ResearchService, then push the high-importance
+    new findings to the proactive Priority Feed. Skips if no feeds configured.
+
+    Composition only: ResearchService persists findings (Discord-agnostic), then
+    PriorityFeedService routes the high-signal subset via the channel harness onto the outbox.
+    """
     feeds = dict(settings.scheduling.research_feeds or {})
     if not feeds:
         raise JobSkippedError("no research feeds configured")
+    from nexus.intelligence.feed import PriorityFeedService
     from nexus.intelligence.research import ResearchService
 
     async with get_session(session_factory) as session:
         memory_service = MemoryService(session)
         service = ResearchService(session, openrouter_client, memory_service)
-        await service.execute_research_run(feeds)
+        persisted_ids = await service.execute_research_run(feeds)
+
+        if settings.scheduling.priority_feed_enabled and persisted_ids:
+            feed = PriorityFeedService(session, settings)
+            await feed.dispatch_new_findings(persisted_ids)
 
 
 async def run_briefing_job(

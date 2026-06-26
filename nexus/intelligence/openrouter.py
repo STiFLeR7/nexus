@@ -53,8 +53,18 @@ class OpenRouterClient:
             ))
         return providers
 
-    async def complete(self, prompt: str, system_prompt: str | None = None) -> str:
-        """Post a completion across the multi-provider fallback chain (first success wins)."""
+    async def complete(
+        self,
+        prompt: str,
+        system_prompt: str | None = None,
+        history: list[dict[str, str]] | None = None,
+    ) -> str:
+        """Post a completion across the multi-provider fallback chain (first success wins).
+
+        ``history`` is an optional ordered list of prior ``{"role": "user"|"assistant",
+        "content": ...}`` turns inserted between the system prompt and the current ``prompt`` so
+        multi-turn chat keeps context.
+        """
         import time
 
         providers = self._build_providers()
@@ -66,6 +76,8 @@ class OpenRouterClient:
         messages: list[dict[str, str]] = []
         if system_prompt:
             messages.append({"role": "system", "content": system_prompt})
+        if history:
+            messages.extend(history)
         messages.append({"role": "user", "content": prompt})
 
         last_error: Exception | None = None

@@ -6,6 +6,7 @@ interactive message views for approvals.
 
 from __future__ import annotations
 
+import contextlib
 import uuid
 from typing import Any
 
@@ -16,6 +17,8 @@ from discord.ext import commands
 from sqlalchemy.ext.asyncio import async_sessionmaker
 
 from nexus.approvals.service import ApprovalService
+from nexus.communication.channels import ChannelMessage, ChannelRole, ChannelRouter
+from nexus.communication.chat import ChatResponse, OutboundPost
 from nexus.config import get_settings
 from nexus.core.types import ApprovalStatus, TaskStatus
 from nexus.database import get_session
@@ -24,6 +27,25 @@ from nexus.memory.service import MemoryService
 from nexus.memory.task_service import TaskService
 
 logger = structlog.get_logger("nexus.communication.discord.bot")
+
+
+def _build_card_embed(card: dict[str, Any]) -> discord.Embed:
+    """Render a transport-neutral status-card payload into a Discord embed."""
+    verification = str(card.get("verification", ""))
+    color = (
+        discord.Color.green()
+        if verification == "sent"
+        else discord.Color.red()
+        if verification == "failed"
+        else discord.Color.blurple()
+    )
+    embed = discord.Embed(title=str(card.get("title", "Dex • Action")), color=color)
+    embed.add_field(name="Risk Level", value=str(card.get("risk", "LOW")), inline=True)
+    if verification:
+        embed.add_field(name="Verification", value=verification, inline=True)
+    embed.add_field(name="Execution Plan", value=str(card.get("plan", "None"))[:1000], inline=False)
+    embed.add_field(name="Tools Used", value=str(card.get("tools", "None")), inline=True)
+    return embed
 
 
 class ApprovalView(discord.ui.View):
@@ -136,6 +158,8 @@ class NexusBot(commands.Bot):
         settings: Any = None,
         session_factory: async_sessionmaker[Any] | None = None,
         event_gateway: Any = None,
+        llm_client: Any = None,
+        chat_service: Any = None,
     ) -> None:
         """Set intents and command configurations."""
         intents = discord.Intents.default()
@@ -146,6 +170,10 @@ class NexusBot(commands.Bot):
         self.settings = settings or get_settings()
         self.session_factory = session_factory
         self.event_gateway = event_gateway
+        self.llm_client = llm_client
+        # Chat orchestration (core logic) + channel harness (routing). The adapter stays thin.
+        self.chat_service = chat_service
+        self.router = ChannelRouter(self.settings.discord.channels)
         self.guild_obj: discord.Guild | None = None
 
     async def setup_hook(self) -> None:
@@ -182,6 +210,76 @@ class NexusBot(commands.Bot):
                 logger.warning("discord_bot_guild_not_found", guild_id=guild_id)
         else:
             logger.warning("discord_bot_no_guild_id_configured")
+
+    async def on_message(self, message: discord.Message) -> None:
+        """Thin adapter: normalize → ChatService.handle() → render. No business logic here.
+
+        Responds to a DM, an explicit @mention, or any message in a channel whose role allows
+        replies without a mention (the CHAT role). Slash commands are handled by the application
+        command tree, so we never call ``process_commands``.
+        """
+        if message.author.bot or (self.user is not None and message.author.id == self.user.id):
+            return
+
+        is_dm = message.guild is None
+        is_mention = self.user is not None and self.user in message.mentions
+        channel_name = getattr(message.channel, "name", None)
+        in_chat_channel = self.router.respond_without_mention(channel_name)
+        if not (is_dm or is_mention or in_chat_channel):
+            return
+        if self.chat_service is None:
+            return
+
+        text = self._normalize_text(message)
+        if not text:
+            await message.channel.send(
+                "Hi — I'm **Nexus** (Dex). Chat with me in the chat channel (no @ needed), ask me "
+                "to `mail me ...`, or use `/task_create`, `/task_list`, `/task_status`."
+            )
+            return
+
+        channel_msg = ChannelMessage(
+            role=ChannelRole.CHAT,
+            author=str(message.author.id),
+            channel_id=str(message.channel.id),
+            conversation_id=str(message.channel.id),
+            message=text,
+            metadata={"is_owner": self._is_owner(message.author.id), "is_dm": is_dm},
+        )
+        async with message.channel.typing():
+            response = await self.chat_service.handle(channel_msg)
+        await self._render(message, response)
+
+    def _normalize_text(self, message: discord.Message) -> str:
+        """Strip the bot's mention tokens so only the operator's text remains."""
+        content = message.content or ""
+        if self.user is not None:
+            for token in (f"<@{self.user.id}>", f"<@!{self.user.id}>"):
+                content = content.replace(token, "")
+        return content.strip()
+
+    def _is_owner(self, user_id: int) -> bool:
+        return user_id in (self.settings.discord.owner_ids or [])
+
+    async def _render(self, message: discord.Message, response: ChatResponse) -> None:
+        """Render a transport-neutral ChatResponse onto Discord (the only place with Discord I/O)."""
+        if response.reply:
+            for start in range(0, len(response.reply), 1900):
+                await message.channel.send(response.reply[start : start + 1900])
+        for post in response.posts:
+            await self._render_post(post)
+
+    async def _render_post(self, post: OutboundPost) -> None:
+        """Route an outbound post to the channel bound to its semantic role (best-effort)."""
+        key = self.router.channel_key(post.role)
+        channel = self.get_channel_by_config(key) if key else None
+        if channel is None:
+            return
+        with contextlib.suppress(Exception):
+            if post.card is not None:
+                await channel.send(embed=_build_card_embed(post.card))
+            elif post.content:
+                await channel.send(post.content)
 
     def get_channel_by_config(self, channel_key: str) -> discord.TextChannel | None:
         """Resolve a text channel by configured channel ID or name."""

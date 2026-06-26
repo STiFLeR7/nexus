@@ -17,6 +17,7 @@ import structlog
 from fastapi import APIRouter, FastAPI, Request, Response, status
 
 from nexus import __version__
+from nexus.communication.chat import ChatService
 from nexus.communication.discord import DiscordService, NexusBot, set_bot
 from nexus.config import NexusSettings, get_settings
 from nexus.core.exceptions import ConfigurationError
@@ -138,13 +139,26 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
     event_gateway = EventGateway()
     openrouter_client = OpenRouterClient(settings)
 
-    # Boot Discord bot adapter
-    discord_bot = NexusBot(settings, _state.session_factory, event_gateway)
+    # Boot Discord bot adapter. The adapter is thin: it delegates conversation to ChatService
+    # (Planner → Validator → Executor) and routes via the channel harness.
+    from nexus.communication.email.service import EmailService
+
+    email_service = EmailService(settings)
+    chat_service = ChatService.build(
+        llm_client=openrouter_client,
+        email_service=email_service,
+        owner_email=settings.email.to_address,
+    )
+    discord_bot = NexusBot(
+        settings,
+        _state.session_factory,
+        event_gateway,
+        llm_client=openrouter_client,
+        chat_service=chat_service,
+    )
     _state.discord_bot = discord_bot
     set_bot(discord_bot)
     discord_service = DiscordService(discord_bot)
-    from nexus.communication.email.service import EmailService
-    email_service = EmailService(settings)
 
     # Boot workflow orchestrator
     orchestrator = WorkflowOrchestrator(

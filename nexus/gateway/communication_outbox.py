@@ -23,8 +23,14 @@ from nexus.memory.models import AuditLogRecord, BriefingRecord, SystemOutboxReco
 logger = structlog.get_logger("nexus.gateway.communication_outbox")
 
 
-async def _deliver_discord_chunks(discord_service: Any, content: str) -> None:
-    """Deliver content to Discord summaries channel with chunking controls."""
+async def _deliver_discord_chunks(
+    discord_service: Any, content: str, channel_key: str = "summaries"
+) -> None:
+    """Deliver content to a mapped Discord channel with chunking controls.
+
+    ``channel_key`` defaults to ``"summaries"`` for backward compatibility; the priority feed and
+    other roles pass their own key so the same transactional outbox serves every channel.
+    """
     max_chunk = 1900
     text = content
     chunks = []
@@ -42,7 +48,7 @@ async def _deliver_discord_chunks(discord_service: Any, content: str) -> None:
         chunks.append(text)
 
     for chunk in chunks:
-        await discord_service.post_message("summaries", content=chunk)
+        await discord_service.post_message(channel_key, content=chunk)
 
 
 async def _update_source_briefing_status(
@@ -146,7 +152,8 @@ async def process_outbox_item(
                 if not discord_service:
                     raise RuntimeError("Discord service not configured")
                 content = record.payload.get("content", "")
-                await _deliver_discord_chunks(discord_service, content)
+                channel_key = record.payload.get("channel_key", "summaries")
+                await _deliver_discord_chunks(discord_service, content, channel_key)
             elif record.channel == "email":
                 if not email_service:
                     raise RuntimeError("Email service not configured")
@@ -261,7 +268,11 @@ async def flush_outbox_synchronously(
         try:
             if record.channel == "discord":
                 if discord_service:
-                    await _deliver_discord_chunks(discord_service, record.payload.get("content", ""))
+                    await _deliver_discord_chunks(
+                        discord_service,
+                        record.payload.get("content", ""),
+                        record.payload.get("channel_key", "summaries"),
+                    )
                 record.status = "sent"
             elif record.channel == "email":
                 if email_service:
