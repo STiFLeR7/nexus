@@ -1,0 +1,104 @@
+{
+  "_comment": "Concrete placeholder payloads per template. Design-first reference for the data each email expects. Mirrors the PLACEHOLDER DATA SCHEMA in EMAIL_DESIGN_SYSTEM.md. Not loaded by any service.",
+  "_shared": {
+    "version": "v1.2.0",
+    "timestamp": "Jun 26, 2026 · 08:00 IST",
+    "brand_links": [
+      {"label": "Dashboard", "href": "https://nexus.local/dashboard"},
+      {"label": "Docs", "href": "https://nexus.local/docs"},
+      {"label": "Settings", "href": "https://nexus.local/settings"}
+    ]
+  },
+  "morning_digest": {
+    "eyebrow": "Morning Digest",
+    "subject": "Morning Operational Digest",
+    "subtitle": "Your control plane is nominal.",
+    "greeting": "Good morning",
+    "owner_name": "STiFLeR",
+    "summary_line": "All core subsystems nominal. Here is your operational picture for the day.",
+    "health": {"label": "Healthy", "status": "success", "metrics": [
+      {"label": "Uptime", "value": "99.98%", "delta": "+0.04", "trend": "up"},
+      {"label": "Tasks", "value": "24", "delta": "+6", "trend": "up"},
+      {"label": "Failures", "value": "1", "delta": "-2", "trend": "down-good", "accent": "#DC2626"}
+    ]},
+    "research": [{"title": "OpenAI unveils custom inference chip", "score": 5, "source": "hackernews", "url": "#", "summary": "First bespoke AI inference silicon, built with Broadcom."}],
+    "tasks": [["Ship priority feed", "queued", "P1"], ["Recovery check", "active", "P2"]],
+    "approvals": [{"title": "Deploy v1.2.0 to prod", "requester": "scheduler", "href": "#"}],
+    "scheduler": [{"time": "08:00", "title": "Briefing dispatched", "tone": "success", "body": "3 channels"}],
+    "runtime": [{"name": "nexus", "status": "success"}, {"name": "gemini", "status": "warning"}],
+    "alerts": [{"tone": "warning", "title": "Throughput dip", "body": "-8% vs the 7-day average."}],
+    "recommendations": ["Investigate gemini latency before the 10:00 batch."],
+    "actions": [{"label": "Open dashboard", "href": "#", "variant": "primary"}]
+  },
+  "approval_required": {
+    "eyebrow": "Approval Required",
+    "subject": "Approval Required — Deploy v1.2.0",
+    "request": {"requester": "scheduler", "task_title": "Deploy v1.2.0 to production", "task_description": "Roll out the priority-feed release.", "runtime": "nexus", "repository": "workspace_root", "reason": "Scheduled release window opened.", "risk": "MEDIUM", "risk_tone": "warning", "files": ["nexus/api.py", "nexus/config.py"], "approve_url": "#", "reject_url": "#", "audit_id": "a1b2c3d4", "expires": "in 4 hours"}
+  },
+  "execution_failed": {
+    "eyebrow": "Execution Failed",
+    "subject": "Execution Failed — compile stage",
+    "incident": {"task_title": "Build research bundle", "task_id": "t-8842", "runtime": "gemini", "stage": "compile", "duration": "3.1s", "exit_status": "failure", "stages": [{"time": "10:00:05", "title": "Compile failed", "tone": "danger", "body": "Missing dependency"}], "stderr": "error: module not found", "stack": "Traceback...\n  RuntimeError", "root_cause": "Tool not registered in the runtime adapter.", "recovery": ["Register the tool.", "Re-queue the task."], "retry_url": "#", "logs_url": "#", "audit_id": "f7e6d5c4"}
+  },
+  "execution_completed": {
+    "eyebrow": "Execution Completed",
+    "subject": "Execution Completed — Build research bundle",
+    "run": {"task_title": "Build research bundle", "task_id": "t-8843", "runtime": "nexus", "duration": "12.4s", "summary": "Completed successfully with 2 artifacts.", "metrics": [{"label": "Duration", "value": "12.4s", "trend": "flat"}], "artifacts": [{"name": "bundle.json", "size": "18KB", "href": "#"}], "outputs": ["bundle written to ./out"], "logs_url": "#", "audit_id": "c4d5"}
+  },
+  "research_report": {
+    "eyebrow": "Research Intelligence",
+    "subject": "Research Intelligence — Custom silicon",
+    "brief": {"headline": "Custom silicon reshapes inference economics", "importance": "HIGH SIGNAL", "importance_tone": "info", "summary": "Vendors are moving to bespoke inference chips.", "insights": ["Cost per token is falling fast."], "sources": [{"title": "OpenAI chip", "source": "hn", "url": "#", "score": 5}], "recommendations": ["Re-evaluate the provider mix."], "tags": ["ai", "hardware"], "actions": [{"label": "Read more", "href": "#"}]}
+  },
+  "todo_digest": {
+    "eyebrow": "TODO Digest",
+    "subject": "Your TODO Digest",
+    "todo": {"today": [["Ship feed", "P1", "2h"]], "upcoming": [["Docs", "Fri"]], "blocked": [{"title": "Migration", "reason": "awaiting approval"}], "completed": ["Wrote tests"], "quick_links": [{"label": "Open board", "href": "#"}]}
+  },
+  "reminder": {
+    "eyebrow": "Reminder",
+    "subject": "Reminder — Standup at 10:00",
+    "reminder": {"time": "in 30 min", "reason": "Standup at 10:00", "context": "Daily sync with the team.", "suggested_action": "Prep your update.", "cta_label": "Mark as done", "cta_url": "#"}
+  },
+  "security_alert": {
+    "eyebrow": "Security Alert",
+    "subject": "Security Alert — Sandbox egress blocked",
+    "alert": {"severity": "HIGH", "severity_tone": "danger", "category": "sandbox", "summary": "An outbound connection was blocked by policy.", "details": [["Policy", "network=none"], ["Runtime", "nexus"]], "evidence": "blocked connect 1.2.3.4:443", "operator_actions": ["Review the policy.", "Acknowledge the alert."], "ack_url": "#", "audit_id": "s3a4"}
+  },
+  "scheduler_report": {
+    "eyebrow": "Scheduler Report",
+    "subject": "Scheduler Report — 24h",
+    "scheduler": {"health_label": "All jobs nominal", "health_status": "success", "metrics": [{"label": "Jobs", "value": "18", "trend": "flat"}], "jobs": [["research_collection", "Succeeded", "12s"], ["approval_sweep", "Skipped", "—"]], "events": [{"time": "08:00", "title": "Briefing", "tone": "success"}]}
+  },
+  "weekly_review": {
+    "eyebrow": "Weekly Operations",
+    "subject": "Weekly Operational Review",
+    "review": {"kpis": [{"label": "Tasks", "value": "180", "delta": "+12%", "trend": "up"}], "trends": [{"label": "Throughput", "pct": 80, "tone": "success"}], "reliability": [["Uptime", "99.98%"]], "tasks": [["Completed", "168"]], "llm_usage": [["Tokens", "1.2M"]], "cost": [["Spend", "$0.00"]], "recommendations": ["Maintain provider mix."]}
+  },
+  "monthly_executive": {
+    "eyebrow": "Monthly Executive Report",
+    "subject": "Monthly Executive Report — June 2026",
+    "exec": {"highlights": ["Shipped v1.2.0 with the proactive priority feed."], "kpis": [{"label": "Uptime", "value": "99.95%", "trend": "up"}], "growth": [{"label": "Throughput", "pct": 65, "tone": "success"}], "reliability": [["Recoveries", "7"]], "execution": [["Tasks", "720"]], "research": [["Findings", "1,680"]], "architecture": ["Added the transport-independent channel harness."], "recommendations": ["Invest in evaluation harnesses."], "roadmap": [{"time": "Jul", "title": "Slack adapter", "tone": "info"}]}
+  },
+  "qa_transcript": {
+    "eyebrow": "Q&A Transcript",
+    "subject": "Session transcript",
+    "transcript": {"participants": ["STiFLeR", "Dex"], "turns": [{"role": "operator", "name": "You", "time": "12:00", "text": "Mail me the Claude login URL."}, {"role": "dex", "name": "Dex", "time": "12:00", "text": "Sent it to your inbox."}, {"role": "system", "text": "email_sent_successfully"}]}
+  },
+  "conversation_summary": {
+    "eyebrow": "Conversation Summary",
+    "subject": "Conversation Summary",
+    "convo": {"tldr": "Discussed the priority feed and email wiring.", "topics": ["feed", "email"], "key_points": ["The priority feed is live."], "decisions": ["Ship to v1.2."], "action_items": [{"text": "Push the branch", "owner": "stifler", "due": "today", "done": false}], "follow_ups": ["Wire reminders next."], "references": [{"label": "PR #42", "href": "#"}]}
+  },
+  "action_items": {
+    "eyebrow": "Action Items",
+    "subject": "Action Items — 3 open",
+    "summary_line": "You have 3 open action items.",
+    "items": [{"text": "Push the v1.2 branch", "owner": "stifler", "due": "today", "priority": "P1", "priority_tone": "danger", "done": false, "href": "#"}, {"text": "Wrote E2E tests", "done": true}]
+  },
+  "decision_summary": {
+    "eyebrow": "Decision Summary",
+    "subject": "Decision Summary",
+    "decisions": [{"title": "Adopt Jinja2 for the email system", "decision": "Use Jinja2 templates with component macros.", "rationale": "Native to the Python stack; no new toolchain.", "alternatives": ["MJML", "Hand-rolled string templates"], "owner": "stifler", "date": "Jun 26", "status": "Decided", "status_tone": "success"}]
+  }
+}

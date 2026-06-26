@@ -1,0 +1,75 @@
+{#-
+  EMAIL TYPE 8 · Execution Failed  (premium incident report)
+  Personality: danger red, calm and forensic — not panicky.
+
+  Context:
+    eyebrow="Execution Failed", subject, subtitle, timestamp, version
+    incident = {task_title, task_id, runtime, stage, duration, exit_status,
+                stages:[{time,title,tone,body}], stderr, stack, root_cause,
+                recovery:[str], retry_url, logs_url, audit_id}
+-#}
+{% extends "base.html" %}
+{% block accent %}#DC2626{% endblock %}
+{% block content %}
+{% import "partials/section.html" as sec %}
+{% import "partials/badge.html" as bdg %}
+{% import "partials/status_chip.html" as chip %}
+{% import "partials/divider.html" as rule %}
+{% import "partials/button.html" as btn %}
+{% import "partials/timeline.html" as tl %}
+{% import "partials/table.html" as tbl %}
+
+{% call sec.panel("error", title="Execution failed at " ~ (incident.stage | default("an unknown stage"))) %}
+  {{ incident.task_title | default("A task terminated abnormally.") }}
+{% endcall %}
+
+{{ rule.spacer(16) }}
+{{ tbl.kv_grid([
+  ["Task ID", incident.task_id | default("—")],
+  ["Runtime", incident.runtime | default("nexus")],
+  ["Exit status", incident.exit_status | default("failure")],
+  ["Duration", incident.duration | default("—")],
+  ["Audit ID", incident.audit_id | default("—")]
+]) }}
+
+{% if incident.stages %}
+{{ rule.divider() }}
+{% call sec.section("Failure timeline", eyebrow="Sequence", accent="#DC2626") %}{% endcall %}
+{{ rule.spacer(12) }}
+{{ tl.timeline(incident.stages) }}
+{% endif %}
+
+{% if incident.root_cause %}
+{{ rule.divider() }}
+{% call sec.section("Root cause", eyebrow="Analysis", accent="#DC2626") %}
+  {% call sec.panel("error") %}{{ incident.root_cause }}{% endcall %}
+{% endcall %}
+{% endif %}
+
+{% if incident.stderr or incident.stack %}
+{{ rule.divider() }}
+{% call sec.section("Logs & stack trace", eyebrow="Evidence") %}{% endcall %}
+{{ rule.spacer(10) }}
+{% if incident.stderr %}{{ sec.code_block(incident.stderr, label="stderr") }}{{ rule.spacer(10) }}{% endif %}
+{% if incident.stack %}{{ sec.code_block(incident.stack, label="stack trace") }}{% endif %}
+{% endif %}
+
+{% if incident.recovery %}
+{{ rule.divider() }}
+{% call sec.section("Suggested recovery", eyebrow="Remediation", accent="#16A34A") %}
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+  {% for step in incident.recovery %}
+    <tr><td valign="top" width="22" style="vertical-align:top;width:22px;color:#16A34A;font-weight:700;">{{ loop.index }}.</td><td valign="top" style="vertical-align:top;padding-bottom:8px;">{{ step }}</td></tr>
+  {% endfor %}
+  </table>
+{% endcall %}
+{% endif %}
+
+{{ rule.divider() }}
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td align="center">
+  {{ btn.button_row([
+    {"label":"↻ Retry execution","href": incident.retry_url | default("#"), "variant":"danger"},
+    {"label":"View full logs","href": incident.logs_url | default("#"), "variant":"ghost"}
+  ]) }}
+</td></tr></table>
+{% endblock %}

@@ -1,0 +1,39 @@
+{#-
+  EMAIL TYPE 5 · Reminder  (simple, beautiful, minimal)
+  Personality: pending purple. Calm and singular — one thing to remember.
+
+  Context:
+    eyebrow="Reminder", subject, subtitle, timestamp, version
+    reminder = {time, reason, context, suggested_action, cta_label, cta_url}
+-#}
+{% extends "base.html" %}
+{% block accent %}#7C3AED{% endblock %}
+{% block content %}
+{% import "partials/section.html" as sec %}
+{% import "partials/divider.html" as rule %}
+{% import "partials/button.html" as btn %}
+{% import "partials/status_chip.html" as chip %}
+
+{% if reminder.time %}
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td>
+  {{ chip.status_chip("⏰ " ~ reminder.time, "pending") }}
+</td></tr></table>
+{{ rule.spacer(16) }}
+{% endif %}
+
+{% call sec.section(reminder.reason | default("You asked to be reminded."), eyebrow="Reminder", accent="#7C3AED") %}
+  {% if reminder.context %}{{ reminder.context }}{% endif %}
+{% endcall %}
+
+{% if reminder.suggested_action %}
+{{ rule.spacer(16) }}
+{% call sec.panel("info", title="Suggested action") %}{{ reminder.suggested_action }}{% endcall %}
+{% endif %}
+
+{% if reminder.cta_url %}
+{{ rule.spacer(20) }}
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td align="center">
+  {{ btn.button(reminder.cta_label | default("Mark as done"), reminder.cta_url, "primary") }}
+</td></tr></table>
+{% endif %}
+{% endblock %}

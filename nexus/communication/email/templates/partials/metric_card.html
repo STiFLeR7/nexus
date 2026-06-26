@@ -1,0 +1,50 @@
+{#-
+  Metric card — a single KPI (label, value, optional delta + trend), and a
+  responsive row of up to three that stacks vertically on mobile.
+  Import:  {% import "partials/metric_card.html" as mc %}
+
+  Single:
+    {{ mc.metric_card("Uptime", "99.98%", delta="+0.04", trend="up") }}
+  Row (preferred — handles layout + stacking):
+    {{ mc.metric_row([
+        {"label":"Tasks","value":"24","delta":"+6","trend":"up"},
+        {"label":"Approvals","value":"3","trend":"flat"},
+        {"label":"Failures","value":"1","delta":"-2","trend":"down","accent":"#DC2626"}
+    ]) }}
+
+  trend: up (green) · down (red) · flat (muted) · up-bad / down-good to invert semantics
+-#}
+{% set _TREND = {
+  'up':       ('#15803D', '▲'),
+  'down':     ('#B91C1C', '▼'),
+  'flat':     ('#64748B', '→'),
+  'up-bad':   ('#B91C1C', '▲'),
+  'down-good':('#15803D', '▼')
+} %}
+{% macro metric_card(label, value, delta=None, trend='flat', accent='#0F172A') -%}
+{%- set t = _TREND.get(trend, _TREND['flat']) -%}
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" class="nx-muted-surface" style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:10px;">
+  <tr>
+    <td style="padding:14px 16px;">
+      <div class="nx-muted" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; font-size:12px; line-height:16px; font-weight:600; letter-spacing:0.3px; text-transform:uppercase; color:#64748B;">{{ label }}</div>
+      <div style="padding-top:6px;">
+        <span class="nx-metric-value nx-ink" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; font-size:28px; line-height:34px; font-weight:600; letter-spacing:-0.6px; color:{{ accent }};">{{ value }}</span>
+        {% if delta %}<span style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; font-size:12px; font-weight:600; color:{{ t[0] }}; padding-left:8px; white-space:nowrap;">{{ t[1] }} {{ delta }}</span>{% endif %}
+      </div>
+    </td>
+  </tr>
+</table>
+{%- endmacro %}
+
+{% macro metric_row(items) -%}
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr>
+    {% for it in items %}
+    <td class="nx-stack" valign="top" width="{{ (100 / (items|length)) | round(0, 'floor') }}%" style="vertical-align:top; padding-right:{% if not loop.last %}12px{% else %}0{% endif %};">
+      {{ metric_card(it.label, it.value, it.get('delta'), it.get('trend','flat'), it.get('accent','#0F172A')) }}
+    </td>
+    {% if not loop.last %}<td class="nx-stack-gap nx-hide-sm" width="0" style="font-size:0; line-height:0;">&nbsp;</td>{% endif %}
+    {% endfor %}
+  </tr>
+</table>
+{%- endmacro %}

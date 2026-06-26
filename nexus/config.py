@@ -30,6 +30,13 @@ class DiscordChannels(BaseModel):
     research: str = "nexus-research"
     summaries: str = "nexus-reports"
     alerts: str = "nexus-alerts"
+    # Dex v2 operator-facing channel taxonomy.
+    general: str = "general"  # free-form chat — Dex replies without an @mention here
+    console: str = "console"  # Dex status/action cards (Status / Task Initialized / Complete)
+    system_logs: str = Field("system-logs", alias="system-logs")  # whole-repo system logs
+    timeline: str = "timeline"  # time management (IST)
+    priority_feed: str = Field("priority-feed", alias="priority-feed")  # @owner priority briefs
+    reminders: str = "reminders"  # reminders & TODOs
 
     model_config = ConfigDict(populate_by_name=True)
 
@@ -109,6 +116,13 @@ class SchedulingConfig(BaseModel):
     research_enabled: bool = True
     research_interval_hours: int = 2
     research_feeds: dict[str, str] = Field(default_factory=dict)
+
+    # Proactive Priority Feed — after each research run, push newly-discovered high-importance
+    # findings to the PRIORITY_FEED channel (mentions the owner). Discord-agnostic; routes via
+    # the channel harness. No effect unless findings clear ``priority_feed_min_score``.
+    priority_feed_enabled: bool = True
+    priority_feed_min_score: int = 4  # importance_score >= this is "priority" (1-5 scale)
+    priority_feed_max_items: int = 5  # cap items per digest; remainder summarized as "+N more"
 
     # J2 — Daily Briefing (cron, 08:00 in `timezone`)
     briefing_enabled: bool = True
@@ -252,6 +266,12 @@ class NexusSettings(BaseSettings):
             yaml_data["email"]["from_address"] = _from
             # Most SMTP providers (e.g. Gmail) authenticate with the sender address as username.
             yaml_data["email"].setdefault("username", _from)
+        # Recipient for operational digests/notifications: an explicit NOTIFY_EMAIL_TO wins;
+        # otherwise default to the sender address (operator self-delivery) so emails always have a
+        # valid RCPT TO. Without this, briefing email fails with SMTP 555 (empty recipient).
+        _to = os.getenv("NOTIFY_EMAIL_TO") or os.getenv("NOTIFY_EMAIL_FROM")
+        if _to and not yaml_data["email"].get("to_address"):
+            yaml_data["email"]["to_address"] = _to
 
         return cls(**yaml_data)
 

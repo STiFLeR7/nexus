@@ -1,0 +1,126 @@
+{#-
+  Nexus Email Design System — Master Layout (base.html)
+  ----------------------------------------------------------------------------
+  Design-first artifact. NOT wired into EmailService. Renders with Jinja2.
+
+  Architecture
+    • Table-based, 600px centered container, mobile-first.
+    • Inline styles on every visual element (Gmail strips <style> selectors it
+      doesn't support). The <style> block carries ONLY what cannot be inlined:
+      dark-mode + responsive media queries and a few client resets.
+    • Outlook (mso) ghost tables + VML handled in partials/button.html.
+    • Dark mode via prefers-color-scheme; light is the source of truth.
+
+  Design tokens (single source of truth — mirrored in EMAIL_DESIGN_SYSTEM.md)
+    Surface        #FFFFFF   page bg #F1F5F9   muted surface #F8FAFC
+    Border         #E2E8F0   border-strong #CBD5E1
+    Ink (heading)  #0F172A   body #334155   muted #64748B   faint #94A3B8
+    Brand (navy)   #0F172A   accent (indigo) #4F46E5   accent-soft #EEF2FF
+    Success #16A34A  Warning #D97706  Danger #DC2626  Info #2563EB  Pending #7C3AED
+    Radius  sm 6 · md 8 · lg 12 · pill 999
+    Shadow  card: 0 1px 2px rgba(16,24,40,.06), 0 1px 3px rgba(16,24,40,.10)
+
+  Blocks a child template overrides
+    title · preheader · accent (top bar hex) · content
+  Context variables consumed
+    eyebrow · subject · subtitle · timestamp · version · brand_links · footer_note
+-#}
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="x-apple-disable-message-reformatting">
+  <meta name="color-scheme" content="light dark">
+  <meta name="supported-color-schemes" content="light dark">
+  <title>{% block title %}{{ subject | default('Nexus') }}{% endblock %}</title>
+  <!--[if mso]>
+  <noscript><xml><o:OfficeDocumentSettings><o:PixelsPerInch>96</o:PixelsPerInch></o:OfficeDocumentSettings></xml></noscript>
+  <![endif]-->
+  <style>
+    /* ---- resets ---- */
+    html, body { margin: 0 !important; padding: 0 !important; height: 100% !important; width: 100% !important; }
+    * { -ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%; }
+    table, td { mso-table-lspace: 0pt !important; mso-table-rspace: 0pt !important; border-collapse: collapse !important; }
+    img { -ms-interpolation-mode: bicubic; border: 0; height: auto; line-height: 100%; outline: none; text-decoration: none; }
+    a { text-decoration: none; }
+    a[x-apple-data-detectors] { color: inherit !important; text-decoration: none !important; }
+    .nx-link:hover { text-decoration: underline !important; }
+
+    /* ---- responsive (mobile-first overrides at <=600px) ---- */
+    @media screen and (max-width: 600px) {
+      .nx-container { width: 100% !important; }
+      .nx-px { padding-left: 20px !important; padding-right: 20px !important; }
+      .nx-stack { display: block !important; width: 100% !important; box-sizing: border-box; }
+      .nx-stack-gap { height: 12px !important; line-height: 12px !important; }
+      .nx-hero { font-size: 26px !important; line-height: 34px !important; }
+      .nx-title { font-size: 21px !important; line-height: 28px !important; }
+      .nx-metric-value { font-size: 24px !important; }
+      .nx-btn a { display: block !important; width: 100% !important; box-sizing: border-box; }
+      .nx-hide-sm { display: none !important; }
+    }
+
+    /* ---- dark mode ---- */
+    @media (prefers-color-scheme: dark) {
+      body, .nx-page { background: #0B0F19 !important; }
+      .nx-card, .nx-surface { background: #111827 !important; border-color: #1F2937 !important; }
+      .nx-muted-surface { background: #0F1623 !important; border-color: #1F2937 !important; }
+      .nx-ink { color: #F9FAFB !important; }
+      .nx-body { color: #CBD5E1 !important; }
+      .nx-muted { color: #9CA3AF !important; }
+      .nx-faint { color: #6B7280 !important; }
+      .nx-border, .nx-divider td { border-color: #1F2937 !important; }
+      .nx-footer { background: #0B0F19 !important; }
+      .nx-wordmark { color: #F9FAFB !important; }
+      .nx-invert-soft { background: #0F1623 !important; }
+    }
+    [data-ogsc] .nx-ink { color: #F9FAFB !important; }
+    [data-ogsc] .nx-body { color: #CBD5E1 !important; }
+    [data-ogsc] .nx-card { background: #111827 !important; border-color: #1F2937 !important; }
+  </style>
+</head>
+<body class="nx-page" style="margin:0; padding:0; width:100%; background:#F1F5F9;">
+  {# ---- preheader: inbox preview text, visually hidden ---- #}
+  <div style="display:none; max-height:0; overflow:hidden; mso-hide:all; font-size:1px; line-height:1px; color:#F1F5F9; opacity:0;">
+    {% block preheader %}{{ subtitle | default('Operational intelligence from your Nexus control plane.') }}{% endblock %}
+    &#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;
+  </div>
+
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" class="nx-page" style="background:#F1F5F9;">
+    <tr>
+      <td align="center" style="padding:32px 16px;">
+        <!--[if mso]><table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0"><tr><td><![endif]-->
+        <table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0" class="nx-container" style="width:600px; max-width:600px; margin:0 auto;">
+
+          {# ---- accent bar: each email type sets its personality colour ---- #}
+          <tr>
+            <td style="height:4px; line-height:4px; font-size:4px; background:{% block accent %}#4F46E5{% endblock %}; border-radius:14px 14px 0 0;">&nbsp;</td>
+          </tr>
+
+          {# ---- card shell: inner table holds header + content rows ---- #}
+          <tr>
+            <td class="nx-card nx-surface" style="background:#FFFFFF; border:1px solid #E2E8F0; border-top:0; border-radius:0 0 14px 14px; box-shadow:0 1px 2px rgba(16,24,40,.06), 0 1px 3px rgba(16,24,40,.10);">
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+
+                {% include "partials/header.html" %}
+
+                <tr>
+                  <td class="nx-px" style="padding:8px 32px 32px 32px;">
+                    {% block content %}{% endblock %}
+                  </td>
+                </tr>
+
+              </table>
+            </td>
+          </tr>
+
+          {% include "partials/footer.html" %}
+
+        </table>
+        <!--[if mso]></td></tr></table><![endif]-->
+      </td>
+    </tr>
+  </table>
+</body>
+</html>

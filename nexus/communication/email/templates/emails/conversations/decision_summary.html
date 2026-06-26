@@ -1,0 +1,34 @@
+{#-
+  Q&A FAMILY · Decision Summary
+  Personality: success green — decisions are settled outcomes.
+
+  Context:
+    eyebrow="Decision Summary", subject, subtitle, timestamp, version
+    decisions = [{title, decision, rationale, alternatives:[str], owner, date, status, status_tone}]
+-#}
+{% extends "base.html" %}
+{% block accent %}#16A34A{% endblock %}
+{% block content %}
+{% import "partials/section.html" as sec %}
+{% import "partials/badge.html" as bdg %}
+{% import "partials/status_chip.html" as chip %}
+{% import "partials/divider.html" as rule %}
+{% import "partials/table.html" as tbl %}
+
+{% for d in decisions %}
+{% call sec.section(d.title, eyebrow="Decision " ~ loop.index|string, accent="#16A34A") %}
+  {{ chip.status_chip(d.status | default("Decided"), d.status_tone | default("success")) }}
+  {% if d.owner %}&nbsp;{{ bdg.badge("@" ~ d.owner, "neutral") }}{% endif %}
+  {% if d.date %}&nbsp;{{ bdg.badge(d.date, "neutral") }}{% endif %}
+  <div style="padding-top:12px;"><span class="nx-ink" style="font-weight:600;color:#0F172A;">Decision:</span> {{ d.decision }}</div>
+  {% if d.rationale %}<div style="padding-top:8px;"><span class="nx-muted" style="color:#64748B;font-weight:600;">Rationale:</span> {{ d.rationale }}</div>{% endif %}
+{% endcall %}
+{% if d.alternatives %}
+{{ rule.spacer(10) }}
+{% call sec.panel("neutral", title="Alternatives considered") %}
+  {% for alt in d.alternatives %}• {{ alt }}<br>{% endfor %}
+{% endcall %}
+{% endif %}
+{% if not loop.last %}{{ rule.divider() }}{% endif %}
+{% endfor %}
+{% endblock %}

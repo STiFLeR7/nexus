@@ -1,0 +1,71 @@
+{#-
+  EMAIL TYPE 7 · Execution Completed
+  Personality: success green. Reassuring, evidence-backed.
+
+  Context:
+    eyebrow="Execution Completed", subject, subtitle, timestamp, version
+    run = {task_title, task_id, runtime, duration, summary,
+           metrics:[{label,value,delta,trend}], artifacts:[{name,size,href}],
+           outputs:[str], logs_url, audit_id}
+-#}
+{% extends "base.html" %}
+{% block accent %}#16A34A{% endblock %}
+{% block content %}
+{% import "partials/section.html" as sec %}
+{% import "partials/badge.html" as bdg %}
+{% import "partials/status_chip.html" as chip %}
+{% import "partials/divider.html" as rule %}
+{% import "partials/button.html" as btn %}
+{% import "partials/metric_card.html" as mc %}
+{% import "partials/table.html" as tbl %}
+
+{% call sec.section("Result", eyebrow="Execution") %}
+  {{ chip.status_chip("Completed", "success") }}
+  <div style="padding-top:12px;">{{ run.summary | default("The task completed successfully.") }}</div>
+{% endcall %}
+
+{{ rule.spacer(16) }}
+{{ tbl.kv_grid([
+  ["Task ID", run.task_id | default("—")],
+  ["Runtime", run.runtime | default("nexus")],
+  ["Duration", run.duration | default("—")],
+  ["Audit ID", run.audit_id | default("—")]
+]) }}
+
+{% if run.metrics %}
+{{ rule.divider() }}
+{% call sec.section("Metrics", eyebrow="Performance") %}{% endcall %}
+{{ rule.spacer(12) }}
+{{ mc.metric_row(run.metrics) }}
+{% endif %}
+
+{% if run.artifacts %}
+{{ rule.divider() }}
+{% call sec.section("Artifacts", eyebrow="Outputs", accent="#6366F1") %}{% endcall %}
+{{ rule.spacer(10) }}
+{% for a in run.artifacts %}
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" class="nx-card" style="background:#FFFFFF;border:1px solid #E2E8F0;border-radius:10px;{% if not loop.last %}margin-bottom:8px;{% endif %}"><tr>
+  <td style="padding:12px 14px;"><table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr>
+    <td valign="middle" style="vertical-align:middle;">
+      <span style="font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:13px;font-weight:600;color:#0F172A;">{{ a.name }}</span>
+      {% if a.size %}<span class="nx-faint" style="font-family:-apple-system,sans-serif;font-size:12px;color:#94A3B8;"> · {{ a.size }}</span>{% endif %}
+    </td>
+    <td valign="middle" align="right" style="vertical-align:middle;">{% if a.href %}<a class="nx-link" href="{{ a.href }}" style="font-family:-apple-system,sans-serif;font-size:12px;font-weight:600;color:#4F46E5;">Download →</a>{% endif %}</td>
+  </tr></table></td>
+</tr></table>
+{% if not loop.last %}{{ rule.spacer(8) }}{% endif %}
+{% endfor %}
+{% endif %}
+
+{% if run.outputs %}
+{{ rule.divider() }}
+{% call sec.section("Output", eyebrow="Result") %}{% endcall %}
+{{ rule.spacer(10) }}
+{{ sec.code_block(run.outputs | join("\n"), label="stdout") }}
+{% endif %}
+
+{{ rule.divider() }}
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td align="center">
+  {{ btn.button("View full logs", run.logs_url | default("#"), "ghost") }}
+</td></tr></table>
+{% endblock %}

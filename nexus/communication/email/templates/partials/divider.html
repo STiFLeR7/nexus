@@ -1,0 +1,19 @@
+{#-
+  Divider — a hairline rule with configurable vertical breathing room, plus a
+  pure-space spacer. Keep section rhythm consistent (use the spacing scale).
+  Import:  {% import "partials/divider.html" as rule %}
+  Use:     {{ rule.divider() }}            full hairline, 20px above/below
+           {{ rule.divider(space=12) }}
+           {{ rule.spacer(24) }}           invisible vertical gap only
+-#}
+{% macro divider(space=20) -%}
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" class="nx-divider">
+  <tr><td style="padding:{{ space }}px 0 0 0;"></td></tr>
+  <tr><td style="height:1px; line-height:1px; font-size:1px; background:#E2E8F0; border-bottom:1px solid #E2E8F0;">&nbsp;</td></tr>
+  <tr><td style="padding:{{ space }}px 0 0 0;"></td></tr>
+</table>
+{%- endmacro %}
+
+{% macro spacer(space=16) -%}
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="height:{{ space }}px; line-height:{{ space }}px; font-size:{{ space }}px;">&nbsp;</td></tr></table>
+{%- endmacro %}

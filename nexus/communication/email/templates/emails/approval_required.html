@@ -1,0 +1,67 @@
+{#-
+  EMAIL TYPE 6 · Approval Required  (one of the most important emails)
+  Personality: amber attention. Must convey risk clearly and make Approve/Reject
+  unmistakable. Governance flags come from the trusted server-side table.
+
+  Context:
+    eyebrow="Approval Required", subject, subtitle, timestamp, version
+    request = {requester, task_title, task_description, runtime, repository,
+               reason, risk, risk_tone, files:[str], approve_url, reject_url, audit_id, expires}
+-#}
+{% extends "base.html" %}
+{% block accent %}#D97706{% endblock %}
+{% block content %}
+{% import "partials/section.html" as sec %}
+{% import "partials/badge.html" as bdg %}
+{% import "partials/status_chip.html" as chip %}
+{% import "partials/divider.html" as rule %}
+{% import "partials/button.html" as btn %}
+{% import "partials/table.html" as tbl %}
+
+{% call sec.panel("warning", title="Authorization needed before execution") %}
+  {{ request.task_title | default("A governed task is blocked awaiting your decision.") }}
+{% endcall %}
+
+{{ rule.spacer(18) }}
+{% call sec.section("Risk assessment", eyebrow="Governance") %}
+  {{ chip.status_chip((request.risk | default("MEDIUM")) ~ " RISK", request.risk_tone | default("warning")) }}
+{% endcall %}
+
+{{ rule.spacer(16) }}
+{{ tbl.kv_grid([
+  ["Requester", request.requester | default("system")],
+  ["Runtime", request.runtime | default("nexus")],
+  ["Repository", request.repository | default("workspace_root")],
+  ["Audit ID", request.audit_id | default("—")]
+]) }}
+
+{% if request.reason %}
+{{ rule.spacer(16) }}
+{% call sec.section("Reason", eyebrow="Why") %}{{ request.reason }}{% endcall %}
+{% endif %}
+
+{% if request.task_description %}
+{{ rule.spacer(16) }}
+{% call sec.section("Task detail", eyebrow="Scope") %}{{ request.task_description }}{% endcall %}
+{% endif %}
+
+{% if request.files %}
+{{ rule.spacer(16) }}
+{% call sec.section("Files in scope", eyebrow="Impact") %}{% endcall %}
+{{ rule.spacer(10) }}
+{{ sec.code_block(request.files | join("\n"), label=(request.files | length | string) ~ " path(s)") }}
+{% endif %}
+
+{{ rule.divider() }}
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td align="center">
+  {{ btn.button_row([
+    {"label":"✓ Approve","href": request.approve_url | default("#"), "variant":"success"},
+    {"label":"✕ Reject","href": request.reject_url | default("#"), "variant":"danger-outline"}
+  ]) }}
+</td></tr></table>
+
+{% if request.expires %}
+{{ rule.spacer(14) }}
+<p class="nx-faint" style="margin:0;text-align:center;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;font-size:12px;color:#94A3B8;">This request expires {{ request.expires }}. No action means it is denied (fail-closed).</p>
+{% endif %}
+{% endblock %}

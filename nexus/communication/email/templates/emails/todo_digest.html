@@ -1,0 +1,57 @@
+{#-
+  EMAIL TYPE 4 · TODO Digest  (daily productivity email)
+  Personality: brand indigo.
+
+  Context:
+    eyebrow="TODO Digest", subject, subtitle, timestamp, version
+    todo = {today:[[task,priority,est]], upcoming:[[task,due]], blocked:[{title,reason}],
+            completed:[str], quick_links:[{label,href,variant}]}
+-#}
+{% extends "base.html" %}
+{% block accent %}#4F46E5{% endblock %}
+{% block content %}
+{% import "partials/section.html" as sec %}
+{% import "partials/badge.html" as bdg %}
+{% import "partials/divider.html" as rule %}
+{% import "partials/button.html" as btn %}
+{% import "partials/table.html" as tbl %}
+
+{% if todo.today %}
+{% call sec.section("Today", eyebrow="Focus", accent="#4F46E5") %}{% endcall %}
+{{ rule.spacer(12) }}
+{{ tbl.data_table(columns=["Task","Priority","Est."], rows=todo.today, aligns=["left","left","right"]) }}
+{% endif %}
+
+{% if todo.upcoming %}
+{{ rule.divider() }}
+{% call sec.section("Upcoming", eyebrow="Soon") %}{% endcall %}
+{{ rule.spacer(12) }}
+{{ tbl.data_table(columns=["Task","Due"], rows=todo.upcoming, aligns=["left","right"]) }}
+{% endif %}
+
+{% if todo.blocked %}
+{{ rule.divider() }}
+{% call sec.section("Blocked", eyebrow="Attention", accent="#D97706") %}{% endcall %}
+{{ rule.spacer(10) }}
+{% for b in todo.blocked %}
+{% call sec.panel("warning", title=b.title) %}{{ b.reason }}{% endcall %}
+{% if not loop.last %}{{ rule.spacer(8) }}{% endif %}
+{% endfor %}
+{% endif %}
+
+{% if todo.completed %}
+{{ rule.divider() }}
+{% call sec.section("Completed", eyebrow="Done", accent="#16A34A") %}
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+  {% for c in todo.completed %}
+    <tr><td valign="top" width="22" style="vertical-align:top;width:22px;color:#16A34A;font-weight:700;">✓</td><td valign="top" class="nx-muted" style="vertical-align:top;padding-bottom:6px;color:#64748B;text-decoration:line-through;">{{ c }}</td></tr>
+  {% endfor %}
+  </table>
+{% endcall %}
+{% endif %}
+
+{% if todo.quick_links %}
+{{ rule.divider() }}
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td align="center">{{ btn.button_row(todo.quick_links) }}</td></tr></table>
+{% endif %}
+{% endblock %}

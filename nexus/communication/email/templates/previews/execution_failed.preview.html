@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="x-apple-disable-message-reformatting">
+  <meta name="color-scheme" content="light dark">
+  <meta name="supported-color-schemes" content="light dark">
+  <title>Execution Failed — compile stage</title>
+  <!--[if mso]>
+  <noscript><xml><o:OfficeDocumentSettings><o:PixelsPerInch>96</o:PixelsPerInch></o:OfficeDocumentSettings></xml></noscript>
+  <![endif]-->
+  <style>
+    /* ---- resets ---- */
+    html, body { margin: 0 !important; padding: 0 !important; height: 100% !important; width: 100% !important; }
+    * { -ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%; }
+    table, td { mso-table-lspace: 0pt !important; mso-table-rspace: 0pt !important; border-collapse: collapse !important; }
+    img { -ms-interpolation-mode: bicubic; border: 0; height: auto; line-height: 100%; outline: none; text-decoration: none; }
+    a { text-decoration: none; }
+    a[x-apple-data-detectors] { color: inherit !important; text-decoration: none !important; }
+    .nx-link:hover { text-decoration: underline !important; }
+
+    /* ---- responsive (mobile-first overrides at <=600px) ---- */
+    @media screen and (max-width: 600px) {
+      .nx-container { width: 100% !important; }
+      .nx-px { padding-left: 20px !important; padding-right: 20px !important; }
+      .nx-stack { display: block !important; width: 100% !important; box-sizing: border-box; }
+      .nx-stack-gap { height: 12px !important; line-height: 12px !important; }
+      .nx-hero { font-size: 26px !important; line-height: 34px !important; }
+      .nx-title { font-size: 21px !important; line-height: 28px !important; }
+      .nx-metric-value { font-size: 24px !important; }
+      .nx-btn a { display: block !important; width: 100% !important; box-sizing: border-box; }
+      .nx-hide-sm { display: none !important; }
+    }
+
+    /* ---- dark mode ---- */
+    @media (prefers-color-scheme: dark) {
+      body, .nx-page { background: #0B0F19 !important; }
+      .nx-card, .nx-surface { background: #111827 !important; border-color: #1F2937 !important; }
+      .nx-muted-surface { background: #0F1623 !important; border-color: #1F2937 !important; }
+      .nx-ink { color: #F9FAFB !important; }
+      .nx-body { color: #CBD5E1 !important; }
+      .nx-muted { color: #9CA3AF !important; }
+      .nx-faint { color: #6B7280 !important; }
+      .nx-border, .nx-divider td { border-color: #1F2937 !important; }
+      .nx-footer { background: #0B0F19 !important; }
+      .nx-wordmark { color: #F9FAFB !important; }
+      .nx-invert-soft { background: #0F1623 !important; }
+    }
+    [data-ogsc] .nx-ink { color: #F9FAFB !important; }
+    [data-ogsc] .nx-body { color: #CBD5E1 !important; }
+    [data-ogsc] .nx-card { background: #111827 !important; border-color: #1F2937 !important; }
+  </style>
+</head>
+<body class="nx-page" style="margin:0; padding:0; width:100%; background:#F1F5F9;">
+  
+  <div style="display:none; max-height:0; overflow:hidden; mso-hide:all; font-size:1px; line-height:1px; color:#F1F5F9; opacity:0;">
+    A task terminated abnormally.
+    &#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;
+  </div>
+
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" class="nx-page" style="background:#F1F5F9;">
+    <tr>
+      <td align="center" style="padding:32px 16px;">
+        <!--[if mso]><table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0"><tr><td><![endif]-->
+        <table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0" class="nx-container" style="width:600px; max-width:600px; margin:0 auto;">
+
+          
+          <tr>
+            <td style="height:4px; line-height:4px; font-size:4px; background:#DC2626; border-radius:14px 14px 0 0;">&nbsp;</td>
+          </tr>
+
+          
+          <tr>
+            <td class="nx-card nx-surface" style="background:#FFFFFF; border:1px solid #E2E8F0; border-top:0; border-radius:0 0 14px 14px; box-shadow:0 1px 2px rgba(16,24,40,.06), 0 1px 3px rgba(16,24,40,.10);">
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+
+                <tr>
+  <td class="nx-px" style="padding:28px 32px 0 32px;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+      <tr>
+        
+        <td align="left" valign="middle" style="vertical-align:middle;">
+          <table role="presentation" cellpadding="0" cellspacing="0" border="0">
+            <tr>
+              <td valign="middle" style="vertical-align:middle;">
+                <table role="presentation" width="32" height="32" cellpadding="0" cellspacing="0" border="0" style="width:32px; height:32px;">
+                  <tr>
+                    <td align="center" valign="middle" style="width:32px; height:32px; background:#0F172A; border-radius:8px; color:#FFFFFF; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; font-size:18px; font-weight:700; line-height:32px; text-align:center;">N</td>
+                  </tr>
+                </table>
+              </td>
+              <td valign="middle" style="vertical-align:middle; padding-left:10px;">
+                <span class="nx-wordmark nx-ink" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; font-size:16px; font-weight:600; letter-spacing:0.2px; color:#0F172A;">Nexus</span>
+              </td>
+            </tr>
+          </table>
+        </td>
+        
+        <td align="right" valign="middle" style="vertical-align:middle;">
+          <span class="nx-faint" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; font-size:12px; font-weight:500; color:#94A3B8; letter-spacing:0.2px;">Jun 26, 2026 · 08:00 IST</span>
+        </td>
+      </tr>
+    </table>
+  </td>
+</tr>
+
+
+<tr>
+  <td class="nx-px" style="padding:24px 32px 0 32px;">
+    <span style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; font-size:12px; font-weight:700; letter-spacing:1.2px; text-transform:uppercase; color:#4F46E5;">Execution Failed</span>
+  </td>
+</tr>
+
+
+
+<tr>
+  <td class="nx-px" style="padding:8px 32px 0 32px;">
+    <h1 class="nx-title nx-ink" style="margin:0; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; font-size:24px; line-height:32px; font-weight:600; letter-spacing:-0.4px; color:#0F172A;">Execution Failed — compile stage</h1>
+  </td>
+</tr>
+
+
+
+<tr>
+  <td class="nx-px" style="padding:8px 32px 0 32px;">
+    <p class="nx-muted" style="margin:0; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; font-size:15px; line-height:24px; font-weight:400; color:#64748B;">A task terminated abnormally.</p>
+  </td>
+</tr>
+
+
+<tr>
+  <td class="nx-px" style="padding:20px 32px 0 32px;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" class="nx-divider">
+      <tr><td style="height:1px; line-height:1px; font-size:1px; background:#E2E8F0; border-bottom:1px solid #E2E8F0;">&nbsp;</td></tr>
+    </table>
+  </td>
+</tr>
+
+                <tr>
+                  <td class="nx-px" style="padding:8px 32px 32px 32px;">
+                    
+
+
+
+
+
+
+
+
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#FEF2F2; border:1px solid #FECACA; border-left:3px solid #B91C1C; border-radius:10px;">
+  <tr>
+    <td style="padding:14px 16px;">
+      
+      <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="padding-bottom:4px;"><tr>
+        <td valign="middle" style="vertical-align:middle; padding-right:8px; color:#B91C1C; font-size:13px; line-height:18px; font-weight:700;">✕</td>
+        <td valign="middle" style="vertical-align:middle;"><span style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; font-size:14px; line-height:20px; font-weight:600; color:#B91C1C;">Execution failed at compile</span></td>
+      </tr></table>
+      
+      <div class="nx-body" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; font-size:14px; line-height:21px; color:#334155;">
+  Build research bundle
+</div>
+    </td>
+  </tr>
+</table>
+
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="height:16px; line-height:16px; font-size:16px;">&nbsp;</td></tr></table>
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" class="nx-muted-surface" style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:10px;">
+  
+  <tr>
+    <td width="38%" class="nx-muted" style="width:38%; padding:10px 16px; border-bottom:1px solid #EEF2F6; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; font-size:13px; line-height:18px; font-weight:500; color:#64748B; vertical-align:top;">Task ID</td>
+    <td class="nx-ink" style="padding:10px 16px; border-bottom:1px solid #EEF2F6; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; font-size:13px; line-height:18px; font-weight:600; color:#0F172A; vertical-align:top; text-align:right;">t-8842</td>
+  </tr>
+  
+  <tr>
+    <td width="38%" class="nx-muted" style="width:38%; padding:10px 16px; border-bottom:1px solid #EEF2F6; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; font-size:13px; line-height:18px; font-weight:500; color:#64748B; vertical-align:top;">Runtime</td>
+    <td class="nx-ink" style="padding:10px 16px; border-bottom:1px solid #EEF2F6; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; font-size:13px; line-height:18px; font-weight:600; color:#0F172A; vertical-align:top; text-align:right;">gemini</td>
+  </tr>
+  
+  <tr>
+    <td width="38%" class="nx-muted" style="width:38%; padding:10px 16px; border-bottom:1px solid #EEF2F6; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; font-size:13px; line-height:18px; font-weight:500; color:#64748B; vertical-align:top;">Exit status</td>
+    <td class="nx-ink" style="padding:10px 16px; border-bottom:1px solid #EEF2F6; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; font-size:13px; line-height:18px; font-weight:600; color:#0F172A; vertical-align:top; text-align:right;">failure</td>
+  </tr>
+  
+  <tr>
+    <td width="38%" class="nx-muted" style="width:38%; padding:10px 16px; border-bottom:1px solid #EEF2F6; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; font-size:13px; line-height:18px; font-weight:500; color:#64748B; vertical-align:top;">Duration</td>
+    <td class="nx-ink" style="padding:10px 16px; border-bottom:1px solid #EEF2F6; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; font-size:13px; line-height:18px; font-weight:600; color:#0F172A; vertical-align:top; text-align:right;">3.1s</td>
+  </tr>
+  
+  <tr>
+    <td width="38%" class="nx-muted" style="width:38%; padding:10px 16px; border-bottom:0; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; font-size:13px; line-height:18px; font-weight:500; color:#64748B; vertical-align:top;">Audit ID</td>
+    <td class="nx-ink" style="padding:10px 16px; border-bottom:0; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; font-size:13px; line-height:18px; font-weight:600; color:#0F172A; vertical-align:top; text-align:right;">f7e6d5c4</td>
+  </tr>
+  
+</table>
+
+
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" class="nx-divider">
+  <tr><td style="padding:20px 0 0 0;"></td></tr>
+  <tr><td style="height:1px; line-height:1px; font-size:1px; background:#E2E8F0; border-bottom:1px solid #E2E8F0;">&nbsp;</td></tr>
+  <tr><td style="padding:20px 0 0 0;"></td></tr>
+</table>
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr>
+    <td style="padding-top:8px;">
+      <div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; font-size:11px; font-weight:700; letter-spacing:1.1px; text-transform:uppercase; color:#94A3B8; padding-bottom:6px;">Sequence</div>
+      <table role="presentation" cellpadding="0" cellspacing="0" border="0"><tr>
+        <td valign="middle" style="vertical-align:middle; padding-right:10px;">
+          <table role="presentation" width="3" height="16" cellpadding="0" cellspacing="0" border="0" style="width:3px;height:16px;"><tr><td style="width:3px;height:16px;background:#DC2626;border-radius:999px;font-size:1px;line-height:1px;">&nbsp;</td></tr></table>
+        </td>
+        <td valign="middle" style="vertical-align:middle;">
+          <h2 class="nx-ink" style="margin:0; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; font-size:16px; line-height:22px; font-weight:600; letter-spacing:-0.2px; color:#0F172A;">Failure timeline</h2>
+        </td>
+      </tr></table>
+    </td>
+  </tr>
+  <tr>
+    <td class="nx-body" style="padding-top:12px; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; font-size:15px; line-height:24px; color:#334155;">
+      
+    </td>
+  </tr>
+</table>
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="height:12px; line-height:12px; font-size:12px;">&nbsp;</td></tr></table>
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr>
+    
+    <td valign="top" width="22" style="vertical-align:top; width:22px; padding-top:3px;">
+      <table role="presentation" width="10" height="10" cellpadding="0" cellspacing="0" border="0" style="width:10px;height:10px;"><tr>
+        <td style="width:10px;height:10px;background:#94A3B8;border:2px solid #FFFFFF;border-radius:999px;box-shadow:0 0 0 1px #94A3B844;font-size:1px;line-height:1px;">&nbsp;</td>
+      </tr></table>
+      
+      <table role="presentation" width="2" cellpadding="0" cellspacing="0" border="0" style="width:2px;"><tr><td style="width:2px;height:100%;background:#E2E8F0;font-size:1px;line-height:1px;">&nbsp;</td></tr></table>
+      
+    </td>
+    
+    <td valign="top" style="vertical-align:top; padding:0 0 18px 4px;">
+      <div class="nx-faint" style="font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; font-size:11px; line-height:16px; font-weight:500; color:#94A3B8;">10:00:01</div>
+      <div class="nx-ink" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; font-size:14px; line-height:20px; font-weight:600; color:#0F172A; padding-top:1px;">Queued</div>
+      
+    </td>
+  </tr>
+  <tr>
+    
+    <td valign="top" width="22" style="vertical-align:top; width:22px; padding-top:3px;">
+      <table role="presentation" width="10" height="10" cellpadding="0" cellspacing="0" border="0" style="width:10px;height:10px;"><tr>
+        <td style="width:10px;height:10px;background:#2563EB;border:2px solid #FFFFFF;border-radius:999px;box-shadow:0 0 0 1px #2563EB44;font-size:1px;line-height:1px;">&nbsp;</td>
+      </tr></table>
+      
+      <table role="presentation" width="2" cellpadding="0" cellspacing="0" border="0" style="width:2px;"><tr><td style="width:2px;height:100%;background:#E2E8F0;font-size:1px;line-height:1px;">&nbsp;</td></tr></table>
+      
+    </td>
+    
+    <td valign="top" style="vertical-align:top; padding:0 0 18px 4px;">
+      <div class="nx-faint" style="font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; font-size:11px; line-height:16px; font-weight:500; color:#94A3B8;">10:00:02</div>
+      <div class="nx-ink" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; font-size:14px; line-height:20px; font-weight:600; color:#0F172A; padding-top:1px;">Started</div>
+      
+    </td>
+  </tr>
+  <tr>
+    
+    <td valign="top" width="22" style="vertical-align:top; width:22px; padding-top:3px;">
+      <table role="presentation" width="10" height="10" cellpadding="0" cellspacing="0" border="0" style="width:10px;height:10px;"><tr>
+        <td style="width:10px;height:10px;background:#DC2626;border:2px solid #FFFFFF;border-radius:999px;box-shadow:0 0 0 1px #DC262644;font-size:1px;line-height:1px;">&nbsp;</td>
+      </tr></table>
+      
+    </td>
+    
+    <td valign="top" style="vertical-align:top; padding:0 0 0 4px;">
+      <div class="nx-faint" style="font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; font-size:11px; line-height:16px; font-weight:500; color:#94A3B8;">10:00:05</div>
+      <div class="nx-ink" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; font-size:14px; line-height:20px; font-weight:600; color:#0F172A; padding-top:1px;">Compile failed</div>
+      <div class="nx-muted" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; font-size:13px; line-height:20px; color:#64748B; padding-top:2px;">Missing dependency</div>
+    </td>
+  </tr>
+  
+</table>
+
+
+
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" class="nx-divider">
+  <tr><td style="padding:20px 0 0 0;"></td></tr>
+  <tr><td style="height:1px; line-height:1px; font-size:1px; background:#E2E8F0; border-bottom:1px solid #E2E8F0;">&nbsp;</td></tr>
+  <tr><td style="padding:20px 0 0 0;"></td></tr>
+</table>
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr>
+    <td style="padding-top:8px;">
+      <div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; font-size:11px; font-weight:700; letter-spacing:1.1px; text-transform:uppercase; color:#94A3B8; padding-bottom:6px;">Analysis</div>
+      <table role="presentation" cellpadding="0" cellspacing="0" border="0"><tr>
+        <td valign="middle" style="vertical-align:middle; padding-right:10px;">
+          <table role="presentation" width="3" height="16" cellpadding="0" cellspacing="0" border="0" style="width:3px;height:16px;"><tr><td style="width:3px;height:16px;background:#DC2626;border-radius:999px;font-size:1px;line-height:1px;">&nbsp;</td></tr></table>
+        </td>
+        <td valign="middle" style="vertical-align:middle;">
+          <h2 class="nx-ink" style="margin:0; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; font-size:16px; line-height:22px; font-weight:600; letter-spacing:-0.2px; color:#0F172A;">Root cause</h2>
+        </td>
+      </tr></table>
+    </td>
+  </tr>
+  <tr>
+    <td class="nx-body" style="padding-top:12px; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; font-size:15px; line-height:24px; color:#334155;">
+      
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#FEF2F2; border:1px solid #FECACA; border-left:3px solid #B91C1C; border-radius:10px;">
+  <tr>
+    <td style="padding:14px 16px;">
+      
+      <div class="nx-body" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; font-size:14px; line-height:21px; color:#334155;">The requested tool was not registered in the runtime adapter.</div>
+    </td>
+  </tr>
+</table>
+
+    </td>
+  </tr>
+</table>
+
+
+
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" class="nx-divider">
+  <tr><td style="padding:20px 0 0 0;"></td></tr>
+  <tr><td style="height:1px; line-height:1px; font-size:1px; background:#E2E8F0; border-bottom:1px solid #E2E8F0;">&nbsp;</td></tr>
+  <tr><td style="padding:20px 0 0 0;"></td></tr>
+</table>
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr>
+    <td style="padding-top:8px;">
+      <div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; font-size:11px; font-weight:700; letter-spacing:1.1px; text-transform:uppercase; color:#94A3B8; padding-bottom:6px;">Evidence</div>
+      <table role="presentation" cellpadding="0" cellspacing="0" border="0"><tr>
+        <td valign="middle" style="vertical-align:middle; padding-right:10px;">
+          <table role="presentation" width="3" height="16" cellpadding="0" cellspacing="0" border="0" style="width:3px;height:16px;"><tr><td style="width:3px;height:16px;background:#4F46E5;border-radius:999px;font-size:1px;line-height:1px;">&nbsp;</td></tr></table>
+        </td>
+        <td valign="middle" style="vertical-align:middle;">
+          <h2 class="nx-ink" style="margin:0; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; font-size:16px; line-height:22px; font-weight:600; letter-spacing:-0.2px; color:#0F172A;">Logs &amp; stack trace</h2>
+        </td>
+      </tr></table>
+    </td>
+  </tr>
+  <tr>
+    <td class="nx-body" style="padding-top:12px; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; font-size:15px; line-height:24px; color:#334155;">
+      
+    </td>
+  </tr>
+</table>
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="height:10px; line-height:10px; font-size:10px;">&nbsp;</td></tr></table>
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#0F172A; border:1px solid #1E293B; border-radius:10px;">
+  <tr><td style="padding:10px 14px 0 14px;"><span style="font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; font-size:11px; font-weight:600; letter-spacing:0.4px; text-transform:uppercase; color:#64748B;">stderr</span></td></tr>
+  <tr><td style="padding:12px 14px;"><pre style="margin:0; font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,'Liberation Mono',monospace; font-size:12.5px; line-height:19px; color:#E2E8F0; white-space:pre-wrap; word-break:break-word;">error: module &#39;xyz&#39; not found
+  at build step 3</pre></td></tr>
+</table><table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="height:10px; line-height:10px; font-size:10px;">&nbsp;</td></tr></table>
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#0F172A; border:1px solid #1E293B; border-radius:10px;">
+  <tr><td style="padding:10px 14px 0 14px;"><span style="font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; font-size:11px; font-weight:600; letter-spacing:0.4px; text-transform:uppercase; color:#64748B;">stack trace</span></td></tr>
+  <tr><td style="padding:12px 14px;"><pre style="margin:0; font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,'Liberation Mono',monospace; font-size:12.5px; line-height:19px; color:#E2E8F0; white-space:pre-wrap; word-break:break-word;">Traceback (most recent call last):
+  File &#34;runner.py&#34;, line 88
+  RuntimeError: tool &#39;generic_command&#39; not found</pre></td></tr>
+</table>
+
+
+
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" class="nx-divider">
+  <tr><td style="padding:20px 0 0 0;"></td></tr>
+  <tr><td style="height:1px; line-height:1px; font-size:1px; background:#E2E8F0; border-bottom:1px solid #E2E8F0;">&nbsp;</td></tr>
+  <tr><td style="padding:20px 0 0 0;"></td></tr>
+</table>
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr>
+    <td style="padding-top:8px;">
+      <div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; font-size:11px; font-weight:700; letter-spacing:1.1px; text-transform:uppercase; color:#94A3B8; padding-bottom:6px;">Remediation</div>
+      <table role="presentation" cellpadding="0" cellspacing="0" border="0"><tr>
+        <td valign="middle" style="vertical-align:middle; padding-right:10px;">
+          <table role="presentation" width="3" height="16" cellpadding="0" cellspacing="0" border="0" style="width:3px;height:16px;"><tr><td style="width:3px;height:16px;background:#16A34A;border-radius:999px;font-size:1px;line-height:1px;">&nbsp;</td></tr></table>
+        </td>
+        <td valign="middle" style="vertical-align:middle;">
+          <h2 class="nx-ink" style="margin:0; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; font-size:16px; line-height:22px; font-weight:600; letter-spacing:-0.2px; color:#0F172A;">Suggested recovery</h2>
+        </td>
+      </tr></table>
+    </td>
+  </tr>
+  <tr>
+    <td class="nx-body" style="padding-top:12px; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; font-size:15px; line-height:24px; color:#334155;">
+      
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+  
+    <tr><td valign="top" width="22" style="vertical-align:top;width:22px;color:#16A34A;font-weight:700;">1.</td><td valign="top" style="vertical-align:top;padding-bottom:8px;">Register the tool in the runtime adapter.</td></tr>
+  
+    <tr><td valign="top" width="22" style="vertical-align:top;width:22px;color:#16A34A;font-weight:700;">2.</td><td valign="top" style="vertical-align:top;padding-bottom:8px;">Re-queue the task.</td></tr>
+  
+    <tr><td valign="top" width="22" style="vertical-align:top;width:22px;color:#16A34A;font-weight:700;">3.</td><td valign="top" style="vertical-align:top;padding-bottom:8px;">Confirm via the execution log.</td></tr>
+  
+  </table>
+
+    </td>
+  </tr>
+</table>
+
+
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" class="nx-divider">
+  <tr><td style="padding:20px 0 0 0;"></td></tr>
+  <tr><td style="height:1px; line-height:1px; font-size:1px; background:#E2E8F0; border-bottom:1px solid #E2E8F0;">&nbsp;</td></tr>
+  <tr><td style="padding:20px 0 0 0;"></td></tr>
+</table>
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td align="center">
+  <table role="presentation" cellpadding="0" cellspacing="0" border="0">
+  <tr>
+    
+    <td class="nx-stack" valign="top" style="padding-right:10px;">
+      <table role="presentation" cellpadding="0" cellspacing="0" border="0" class="nx-btn" style="">
+  <tr>
+    <td align="center" bgcolor="#DC2626" style="border-radius:8px; border:1px solid #DC2626;">
+      <!--[if mso]>
+      <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="#" style="height:42px;v-text-anchor:middle;width:240px;" arcsize="19%" strokecolor="#DC2626" fillcolor="#DC2626">
+        <w:anchorlock/>
+        <center style="color:#FFFFFF;font-family:sans-serif;font-size:14px;font-weight:600;">↻ Retry execution</center>
+      </v:roundrect>
+      <![endif]-->
+      <!--[if !mso]><!-- -->
+      <a href="#" style="display:inline-block; padding:11px 22px; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; font-size:14px; line-height:20px; font-weight:600; color:#FFFFFF; text-decoration:none; border-radius:8px; letter-spacing:0.1px;">↻ Retry execution</a>
+      <!--<![endif]-->
+    </td>
+  </tr>
+</table>
+    </td>
+    
+    <td class="nx-stack" valign="top" style="padding-right:0;">
+      <table role="presentation" cellpadding="0" cellspacing="0" border="0" class="nx-btn" style="">
+  <tr>
+    <td align="center" bgcolor="#FFFFFF" style="border-radius:8px; border:1px solid #CBD5E1;">
+      <!--[if mso]>
+      <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="#" style="height:42px;v-text-anchor:middle;width:240px;" arcsize="19%" strokecolor="#CBD5E1" fillcolor="#FFFFFF">
+        <w:anchorlock/>
+        <center style="color:#334155;font-family:sans-serif;font-size:14px;font-weight:600;">View full logs</center>
+      </v:roundrect>
+      <![endif]-->
+      <!--[if !mso]><!-- -->
+      <a href="#" style="display:inline-block; padding:11px 22px; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; font-size:14px; line-height:20px; font-weight:600; color:#334155; text-decoration:none; border-radius:8px; letter-spacing:0.1px;">View full logs</a>
+      <!--<![endif]-->
+    </td>
+  </tr>
+</table>
+    </td>
+    
+  </tr>
+</table>
+</td></tr></table>
+
+                  </td>
+                </tr>
+
+              </table>
+            </td>
+          </tr>
+
+          <tr>
+  <td style="height:16px; line-height:16px; font-size:16px;">&nbsp;</td>
+</tr>
+<tr>
+  <td class="nx-footer nx-px" style="padding:0 32px;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+      
+      
+      <tr>
+        <td align="center" style="padding-bottom:14px;">
+          <a class="nx-link nx-muted" href="#" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; font-size:13px; font-weight:500; color:#64748B; padding:0 10px;">Dashboard</a><span style="color:#CBD5E1;">·</span><a class="nx-link nx-muted" href="#" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; font-size:13px; font-weight:500; color:#64748B; padding:0 10px;">Docs</a><span style="color:#CBD5E1;">·</span><a class="nx-link nx-muted" href="#" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; font-size:13px; font-weight:500; color:#64748B; padding:0 10px;">Settings</a>
+        </td>
+      </tr>
+      
+
+      
+      <tr>
+        <td align="center" style="padding-bottom:6px;">
+          <table role="presentation" cellpadding="0" cellspacing="0" border="0">
+            <tr>
+              <td valign="middle" style="vertical-align:middle;">
+                <span class="nx-ink" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; font-size:13px; font-weight:600; color:#0F172A;">Nexus</span>
+              </td>
+              <td valign="middle" style="vertical-align:middle; padding:0 8px; color:#CBD5E1;">·</td>
+              <td valign="middle" style="vertical-align:middle;">
+                <span class="nx-faint" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; font-size:13px; font-weight:500; color:#94A3B8;">AI Orchestration Control Plane</span>
+              </td>
+              
+              <td valign="middle" style="vertical-align:middle; padding:0 8px; color:#CBD5E1;">·</td>
+              <td valign="middle" style="vertical-align:middle;">
+                <span class="nx-faint" style="font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,'Liberation Mono',monospace; font-size:12px; font-weight:500; color:#94A3B8;">v1.2.0</span>
+              </td>
+              
+            </tr>
+          </table>
+        </td>
+      </tr>
+
+      
+      <tr>
+        <td align="center" style="padding-bottom:4px;">
+          <span class="nx-faint" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; font-size:12px; line-height:18px; font-weight:400; color:#94A3B8;">Automated message generated by your Nexus control plane. Replies are not monitored.</span>
+        </td>
+      </tr>
+
+      
+      <tr>
+        <td align="center" style="padding-bottom:8px;">
+          <span class="nx-faint" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; font-size:11px; font-weight:400; color:#CBD5E1;">Generated Jun 26, 2026 · 08:00 IST</span>
+        </td>
+      </tr>
+      
+    </table>
+  </td>
+</tr>
+<tr>
+  <td style="height:24px; line-height:24px; font-size:24px;">&nbsp;</td>
+</tr>
+
+        </table>
+        <!--[if mso]></td></tr></table><![endif]-->
+      </td>
+    </tr>
+  </table>
+</body>
+</html>
