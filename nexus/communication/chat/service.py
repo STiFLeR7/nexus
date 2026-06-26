@@ -44,12 +44,19 @@ class ChatService:
         llm_client: Any,
         email_service: Any = None,
         owner_email: str = "",
+        session_factory: Any = None,
+        event_gateway: Any = None,
     ) -> ChatService:
         """Convenience constructor wiring the default pipeline from services."""
         return cls(
             planner=Planner(llm_client),
             validator=Validator(),
-            executor=Executor(email_service=email_service, owner_email=owner_email),
+            executor=Executor(
+                email_service=email_service,
+                owner_email=owner_email,
+                session_factory=session_factory,
+                event_gateway=event_gateway,
+            ),
         )
 
     def history_for(self, conversation_id: str) -> list[dict[str, str]]:

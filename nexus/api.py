@@ -148,6 +148,8 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
         llm_client=openrouter_client,
         email_service=email_service,
         owner_email=settings.email.to_address,
+        session_factory=_state.session_factory,
+        event_gateway=event_gateway,
     )
     discord_bot = NexusBot(
         settings,
