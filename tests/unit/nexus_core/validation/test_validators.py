@@ -137,9 +137,7 @@ def test_invariant_validator_passes_valid_object() -> None:
 
 
 def test_invariant_validator_flags_malformed_reference() -> None:
-    malformed = _build_work_package(
-        parent_goal=Reference(target_type="", identifier="")
-    )
+    malformed = _build_work_package(parent_goal=Reference(target_type="", identifier=""))
     validator = InvariantValidator()
     assert validator.check(malformed).ok is False
     with pytest.raises(InvariantViolation) as exc_info:
@@ -158,9 +156,7 @@ def test_lifecycle_validator_passes_valid_status() -> None:
 
 def test_lifecycle_validator_transition_illegal_raises() -> None:
     with pytest.raises(LifecycleViolation):
-        LifecycleValidator().validate_transition(
-            "goal", GoalStatus.NORMALIZED, GoalStatus.ACHIEVED
-        )
+        LifecycleValidator().validate_transition("goal", GoalStatus.NORMALIZED, GoalStatus.ACHIEVED)
 
 
 def test_lifecycle_validator_transition_legal_is_silent() -> None:
@@ -181,9 +177,7 @@ def test_relationship_validator_passes_correctly_typed_references() -> None:
 
 
 def test_relationship_validator_wrong_target_type_raises() -> None:
-    wrong = _build_work_package(
-        parent_goal=Reference(target_type="plan", identifier="goal-1")
-    )
+    wrong = _build_work_package(parent_goal=Reference(target_type="plan", identifier="goal-1"))
     validator = RelationshipValidator()
     assert validator.check(wrong).ok is False
     with pytest.raises(RelationshipViolation) as exc_info:
@@ -199,9 +193,7 @@ def test_find_dangling_reports_unknown_identifiers() -> None:
 
 def test_find_dangling_ok_when_all_ids_known() -> None:
     wp = _build_work_package()
-    known = frozenset(
-        {"goal-1", "plan-1", "ctx-1", "res-1", "skill-1", "draft-1"}
-    )
+    known = frozenset({"goal-1", "plan-1", "ctx-1", "res-1", "skill-1", "draft-1"})
     report = RelationshipValidator().find_dangling(wp, known)
     assert report.ok is True
 

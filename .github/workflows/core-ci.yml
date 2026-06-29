@@ -1,0 +1,99 @@
+# =============================================================================
+# Nexus Core CI — engineering quality gate for the `nexus_core` foundation
+# =============================================================================
+# Enforces lint, format, strict typing, tests + coverage, and build integrity
+# for the Phase 1 platform foundation. The legacy v1 `nexus/` package is covered
+# separately by `ci.yml`. No deployment steps live here by design.
+# =============================================================================
+
+name: Core CI
+
+on:
+  push:
+    branches: [master, "v*-planning"]
+  pull_request:
+    branches: [master]
+
+# Cancel superseded runs on the same ref to save CI minutes.
+concurrency:
+  group: core-ci-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  PYTHON_VERSION: "3.12"
+
+jobs:
+  lint:
+    name: Ruff (lint + format)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v4
+        with:
+          enable-cache: true
+      - name: Install dependencies
+        run: uv sync --frozen
+      - name: Ruff lint
+        run: uv run ruff check nexus_core tests/unit/nexus_core
+      - name: Ruff format check
+        run: uv run ruff format --check nexus_core tests/unit/nexus_core
+
+  typecheck:
+    name: MyPy (strict)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v4
+        with:
+          enable-cache: true
+      - name: Install dependencies
+        run: uv sync --frozen
+      - name: MyPy strict
+        run: uv run mypy nexus_core
+
+  test:
+    name: PyTest + coverage
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v4
+        with:
+          enable-cache: true
+      - name: Set up Python ${{ env.PYTHON_VERSION }}
+        run: uv python install ${{ env.PYTHON_VERSION }}
+      - name: Install dependencies
+        run: uv sync --frozen
+      - name: Run tests with coverage gate
+        run: >
+          uv run pytest tests/unit/nexus_core
+          --cov=nexus_core
+          --cov-report=term-missing
+          --cov-report=xml
+          --cov-report=html
+          --cov-fail-under=95
+      - name: Upload coverage reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: |
+            coverage.xml
+            htmlcov/
+          retention-days: 14
+
+  build:
+    name: Build verification
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v4
+        with:
+          enable-cache: true
+      - name: Build sdist + wheel
+        run: uv build
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist/
+          retention-days: 14

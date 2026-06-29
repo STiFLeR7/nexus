@@ -95,7 +95,9 @@ PLAN_MACHINE: StateMachine[PlanStatus] = StateMachine(
     name="Plan",
     transitions={
         PlanStatus.DRAFT: frozenset({PlanStatus.READY, PlanStatus.CANCELLED}),
-        PlanStatus.READY: frozenset({PlanStatus.ACTIVE, PlanStatus.SUPERSEDED, PlanStatus.CANCELLED}),
+        PlanStatus.READY: frozenset(
+            {PlanStatus.ACTIVE, PlanStatus.SUPERSEDED, PlanStatus.CANCELLED}
+        ),
         PlanStatus.ACTIVE: frozenset(
             {PlanStatus.COMPLETED, PlanStatus.FAILED, PlanStatus.SUPERSEDED, PlanStatus.CANCELLED}
         ),
@@ -112,7 +114,9 @@ PLAN_MACHINE: StateMachine[PlanStatus] = StateMachine(
 WORK_PACKAGE_MACHINE: StateMachine[WorkPackageStatus] = StateMachine(
     name="WorkPackage",
     transitions={
-        WorkPackageStatus.CREATED: frozenset({WorkPackageStatus.READY, WorkPackageStatus.CANCELLED}),
+        WorkPackageStatus.CREATED: frozenset(
+            {WorkPackageStatus.READY, WorkPackageStatus.CANCELLED}
+        ),
         WorkPackageStatus.READY: frozenset(
             {
                 WorkPackageStatus.EXECUTING,

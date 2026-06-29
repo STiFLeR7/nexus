@@ -118,9 +118,7 @@ class RelationshipValidator(Validator):
                 yield ValidationIssue(
                     category=self.category,
                     object_name=name,
-                    message=(
-                        f"{path} references {ref.target_type!r} but must reference {want!r}"
-                    ),
+                    message=(f"{path} references {ref.target_type!r} but must reference {want!r}"),
                     location=path,
                 )
 

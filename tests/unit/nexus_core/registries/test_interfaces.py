@@ -112,9 +112,7 @@ class FakeHarnessRegistry:
     def get(self, identity: str) -> HarnessDescriptor | None:
         return self._items.get(identity)
 
-    def discover_by_capability(
-        self, capability_identifier: str
-    ) -> tuple[HarnessDescriptor, ...]:
+    def discover_by_capability(self, capability_identifier: str) -> tuple[HarnessDescriptor, ...]:
         return tuple(
             d
             for d in self._items.values()

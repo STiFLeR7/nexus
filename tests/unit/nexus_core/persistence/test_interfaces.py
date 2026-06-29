@@ -69,9 +69,7 @@ class DictSerializer:
     def serialize(self, obj: BaseModel) -> Mapping[str, Any]:
         return obj.model_dump()
 
-    def deserialize[M: BaseModel](
-        self, model_type: type[M], data: Mapping[str, Any]
-    ) -> M:
+    def deserialize[M: BaseModel](self, model_type: type[M], data: Mapping[str, Any]) -> M:
         return model_type.model_validate(dict(data))
 
 
@@ -97,9 +95,7 @@ class InMemoryEventStore:
         self._events.append(event)
 
     def read_stream(self, correlation_identifier: str) -> Iterable[Event]:
-        return tuple(
-            e for e in self._events if e.correlation_identifier == correlation_identifier
-        )
+        return tuple(e for e in self._events if e.correlation_identifier == correlation_identifier)
 
     def read_all(self) -> Iterable[Event]:
         return tuple(self._events)

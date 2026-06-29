@@ -111,6 +111,4 @@ def test_validate_transition_helper_legal() -> None:
 
 def test_validate_transition_helper_illegal() -> None:
     with pytest.raises(IllegalTransitionError):
-        validate_transition(
-            "work_package", WorkPackageStatus.COMPLETED, WorkPackageStatus.READY
-        )
+        validate_transition("work_package", WorkPackageStatus.COMPLETED, WorkPackageStatus.READY)

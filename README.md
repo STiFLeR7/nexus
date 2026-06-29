@@ -6,6 +6,9 @@
 [![Version](https://img.shields.io/badge/release-v1.0.0%20%2B%20v1.0.1%20alignment-blue)](CHANGELOG.md)
 [![Python](https://img.shields.io/badge/python-3.12%2B-blue)](https://python.org)
 [![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
+[![Core CI](https://img.shields.io/github/actions/workflow/status/STiFLeR7/nexus/core-ci.yml?branch=master&label=core%20CI)](https://github.com/STiFLeR7/nexus/actions/workflows/core-ci.yml)
+[![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
+[![Checked with mypy](https://img.shields.io/badge/mypy-strict-blue)](https://mypy-lang.org/)
 
 > **Release status:** Nexus is **released as v1.0.0** ("Operational Intelligence", git tag `v1.0.0`)
 > and is currently in the **v1.0.1 "Alignment"** line — a correctness/safety/operational-completeness

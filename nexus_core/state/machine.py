@@ -21,7 +21,9 @@ class IllegalTransitionError(Exception):
     (no silent correction).
     """
 
-    def __init__(self, machine_name: str, source: Enum, target: Enum, allowed: frozenset[Enum]) -> None:
+    def __init__(
+        self, machine_name: str, source: Enum, target: Enum, allowed: frozenset[Enum]
+    ) -> None:
         self.machine_name = machine_name
         self.source = source
         self.target = target
