@@ -47,8 +47,9 @@ build-backend = "hatchling.build"
 [tool.hatch.build.targets.wheel]
 # Explicit package list: hatchling otherwise discovers only `nexus` (the project
 # name) and would silently omit the `nexus_core` foundation, `nexus_infra`
-# infrastructure layer, and `nexus_planning` planning layer from the wheel.
-packages = ["nexus", "nexus_core", "nexus_infra", "nexus_planning"]
+# infrastructure layer, `nexus_planning` planning layer, and `nexus_context`
+# context-engineering layer from the wheel.
+packages = ["nexus", "nexus_core", "nexus_infra", "nexus_planning", "nexus_context"]
 
 [tool.pytest.ini_options]
 asyncio_mode = "auto"

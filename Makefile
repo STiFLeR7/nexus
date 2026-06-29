@@ -7,9 +7,10 @@
 # docs/development/DEVELOPMENT.md.
 # =============================================================================
 
-# Packages and their tests (Phase 1 foundation + Phase 2 infra + Phase 3 planning).
-PACKAGES := nexus_core nexus_infra nexus_planning
-TESTS := tests/unit/nexus_core tests/unit/nexus_infra tests/unit/nexus_planning
+# Packages and their tests (Phase 1 foundation + Phase 2 infra + Phase 3 planning
+# + Phase 4 context engineering).
+PACKAGES := nexus_core nexus_infra nexus_planning nexus_context
+TESTS := tests/unit/nexus_core tests/unit/nexus_infra tests/unit/nexus_planning tests/unit/nexus_context
 COV_MIN := 95
 
 .DEFAULT_GOAL := help
@@ -44,6 +45,7 @@ test-cov: ## Run tests with coverage gate (term + xml + html)
 		--cov=nexus_core \
 		--cov=nexus_infra \
 		--cov=nexus_planning \
+		--cov=nexus_context \
 		--cov-report=term-missing \
 		--cov-report=xml \
 		--cov-report=html \

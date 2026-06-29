@@ -56,6 +56,15 @@ deterministic, `test_determinism.py` asserts that identical Goals and inputs yie
 byte-identical Plans, Work Packages, Execution Graphs, and event streams — the
 headline Phase 3 guarantee.
 
+The **context-engineering layer** (Phase 4) has its own suite under
+`tests/unit/nexus_context/` with a shared `helpers.py` (`make_goal`, `fragment`,
+`request`, `context_env`). It mirrors the same discipline: `test_determinism.py`
+asserts identical Goals and inputs yield byte-identical Context Packages, items,
+conflicts, and event streams, and `test_integration.py` proves the
+`Goal → Context → Context Package → Planning` pipeline composes end-to-end (the
+package is referenced by `PlanningRequest.context_ref`) with no coupling between
+the two layers.
+
 ## 3. Running tests
 
 ```bash
