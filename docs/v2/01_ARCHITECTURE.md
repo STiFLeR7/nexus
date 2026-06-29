@@ -1,6 +1,11 @@
 # Nexus Architecture
 
-Status: Target Architecture
+Status: Target Architecture (Phase 0 reconciled)
+
+> **Phase 0 reconciliation note.** Per `adr/ADR-003`, the first capability layer
+> is canonically named **Intent Resolution** (formerly "Executive Intelligence,"
+> now a deprecated alias). The canonical object definitions are frozen in
+> `contracts/` and the permanent rules in `99_ARCHITECTURAL_INVARIANTS.md`.
 
 ---
 
@@ -58,7 +63,7 @@ Each layer produces outputs consumed by the next layer.
                     Operator
                         │
                         ▼
-              Executive Intelligence
+                Intent Resolution
                         │
                         ▼
                Context Engineering
@@ -98,7 +103,7 @@ Each layer produces outputs consumed by the next layer.
 
 # Layer Responsibilities
 
-## Executive Intelligence
+## Intent Resolution
 
 Responsible for understanding operator intent.
 
@@ -120,7 +125,7 @@ Responsibilities
 - identify objectives
 - identify operational scope
 
-Executive Intelligence never performs execution.
+Intent Resolution never performs execution.
 
 ---
 
@@ -342,7 +347,7 @@ The platform follows one-way dependency flow.
 ```
 
 ```
-Executive Intelligence
+Intent Resolution
 
 ↓
 
@@ -558,7 +563,7 @@ Every execution follows this lifecycle regardless of domain.
 
 | Capability | Responsible Layer |
 |------------|-------------------|
-| Understand Goals | Executive Intelligence |
+| Understand Goals | Intent Resolution |
 | Build Context | Context Engineering |
 | Create Plans | Planning |
 | Select Skills | Skill System |

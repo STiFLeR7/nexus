@@ -1,6 +1,18 @@
 # Nexus Object Model
 
-Status: Target Architecture
+Status: Target Architecture (Phase 0 reconciled — canonical)
+
+> **Phase 0 reconciliation note.** This Object Model is the canonical
+> architectural vocabulary. It is reconciled with the ratified decisions in
+> `adr/ADR-001..004`; the per-object structures are frozen in `contracts/`, and
+> the permanent rules in `99_ARCHITECTURAL_INVARIANTS.md`. Key reconciliations
+> applied: the layer formerly called "Executive Intelligence" is canonically
+> **Intent Resolution** (ADR-003); **Goal Metadata** lives inside the Goal;
+> **Observation** is owned by **Supervision** (Execution emits Execution Events;
+> Validation produces Evidence from Evidence Candidates); the **Execution Graph**
+> is a first-class artifact **referenced by** the Plan (not nested), and the
+> separate "Dependency Graph" is eliminated (dependencies are graph edges);
+> **Reflection** is its own layer producing Knowledge Candidates.
 
 ---
 
@@ -468,19 +480,29 @@ Knowledge
 
 # Object Ownership
 
-| Object | Responsible Layer |
-|---------|-------------------|
-| Goal | Executive Intelligence |
-| Context Package | Context Engineering |
-| Plan | Planning |
-| Work Package | Planning |
-| Skill | Skill System |
-| Execution Strategy | Planning |
-| Execution Session | Execution |
-| Observation | Supervision |
-| Evidence | Validation |
-| Reflection | Knowledge |
-| Knowledge | Knowledge System |
+| Object | Responsible Layer | Contract |
+|---------|-------------------|----------|
+| Goal | Intent Resolution | `contracts/goal.md` |
+| Context Package | Context Engineering | `contracts/context_package.md` |
+| Plan | Planning | `contracts/plan.md` |
+| Work Package | Planning | `contracts/work_package.md` |
+| Execution Strategy | Planning | `contracts/execution_strategy.md` |
+| Execution Graph | Planning | `contracts/execution_graph.md` |
+| Skill | Skill System | `contracts/skill.md` |
+| Capability | Capability Registry | `contracts/capability.md` |
+| Resource | Orchestration (allocation) | `contracts/resource.md` |
+| Execution Session | Execution | — |
+| Artifact | Execution (produced); Artifact Model (defined) | `contracts/artifact.md` |
+| Observation | Supervision | `contracts/observation.md` |
+| Evidence | Validation | (within `contracts/work_package.md`) |
+| Event | Event Model (authoritative log) | `contracts/event.md` |
+| Checkpoint | Checkpoint Model (derived) | `contracts/checkpoint.md` |
+| Policy | Policy Engine | `contracts/policy.md` |
+| Reflection | Reflection | `contracts/reflection.md` |
+| Knowledge | Knowledge System | `contracts/knowledge.md` |
+
+> The Operator request / resolved Intent that precedes a Goal is defined in
+> `contracts/intent.md` (owned by Intent Resolution).
 
 ---
 

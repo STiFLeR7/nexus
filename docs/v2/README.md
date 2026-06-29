@@ -82,7 +82,7 @@ Instead of only orchestrating execution, Nexus begins orchestrating operational 
 
 New capability areas include:
 
-- Executive Intelligence
+- Intent Resolution
 - Context Engineering
 - Planning
 - Operational Skills
@@ -164,7 +164,7 @@ The platform is organized into capability layers.
 Operator
     │
     ▼
-Executive Intelligence
+Intent Resolution
     │
     ▼
 Context Engineering
@@ -222,26 +222,52 @@ The next architecture is designed to be:
 
 # Document Structure
 
-This directory contains the target architecture for the next generation of Nexus.
+This directory contains the target architecture for the next generation of
+Nexus. The pipeline documents (00–26) describe the 13 capability layers and the
+cross-cutting substrate; the reconciliation documents (99, REVIEW, MIGRATION,
+CONSISTENCY) finalize the Phase 0 baseline.
 
 | Document | Purpose |
 |----------|---------|
 | `00_VISION.md` | Long-term vision and platform philosophy |
-| `01_ARCHITECTURE.md` | Overall platform architecture |
-| `02_OBJECT_MODEL.md` | Core operational objects |
+| `01_ARCHITECTURE.md` | Overall platform architecture and layer responsibilities |
+| `02_OBJECT_MODEL.md` | Canonical operational objects and ownership |
 | `03_CONTEXT_ENGINEERING.md` | Context Engineering subsystem |
 | `04_PLANNING.md` | Goal decomposition and planning |
-| `05_SKILLS.md` | Operational Skill architecture |
-| `06_HARNESS.md` | Platform harness architecture |
+| `05_WORK_PACKAGES.md` | Work Package specification |
+| `06_SKILLS.md` | Operational Skill architecture |
 | `07_ORCHESTRATION.md` | Coordination architecture |
 | `08_EXECUTION.md` | Execution architecture |
-| `09_SUPERVISION.md` | Observation, recovery, validation |
+| `09_SUPERVISION.md` | Observation and operational health |
 | `10_KNOWLEDGE.md` | Operational knowledge architecture |
-| `11_WORK_PACKAGES.md` | Work Package specification |
-| `12_RUNTIME_MODEL.md` | Runtime abstraction model |
-| `13_MEMORY_MODEL.md` | Memory architecture |
-| `14_OBSERVABILITY.md` | Telemetry and operational visibility |
-| `15_GOVERNANCE.md` | Governance model |
+| `11_HARNESS.md` | Integration boundary (Harness) architecture |
+| `12_GOVERNANCE.md` | Governance model |
+| `13_EXECUTION_STRATEGY.md` | Execution Strategy (coordination behavior) |
+| `14_VALIDATION.md` | Evidence-based validation |
+| `15_RUNTIME_MODEL.md` | Runtime abstraction (a Harness category) |
+| `16_INTENT_RESOLUTION.md` | Intent Resolution (the first capability layer) |
+| `17_ARTIFACT_MODEL.md` | Artifact model |
+| `18_EXECUTION_GRAPH.md` | Execution Graph (operational topology) |
+| `19_RECOVERY.md` | Recovery architecture |
+| `20_POLICY_ENGINE.md` | Policy evaluation engine |
+| `21_CAPABILITY_MODEL.md` | Capability model |
+| `22_RESOURCE_MODEL.md` | Resource model |
+| `23_EVENT_MODEL.md` | Event model (authoritative log) |
+| `24_STATE_MODEL.md` | State model (projection) |
+| `25_CHECKPOINT_MODEL.md` | Checkpoint model (derived snapshots) |
+| `26_REFLECTION.md` | Reflection architecture |
+| `99_ARCHITECTURAL_INVARIANTS.md` | Permanent architectural guardrails (INV-xx) |
+| `ARCHITECTURE_REVIEW.md` | Phase 0 ARB record and implementation-readiness verdict |
+| `MIGRATION_FROM_V1.md` | Conceptual migration from Nexus v1 to v2 |
+| `CONSISTENCY_REPORT.md` | Phase 0 consistency audit and corrections |
+
+## Related Phase 0 Artifacts
+
+| Location | Purpose |
+|----------|---------|
+| `adr/ADR-001..004` | Ratified foundational Architecture Decision Records |
+| `contracts/` | Frozen canonical logical contracts (one per object) |
+| `blueprint/v2/` | Implementation phases, Action Points, roadmap, risks, testing |
 
 ---
 
