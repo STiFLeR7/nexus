@@ -37,7 +37,7 @@ repos:
     hooks:
       - id: mypy
         name: mypy (strict)
-        entry: uv run mypy nexus_core
+        entry: uv run mypy nexus_core nexus_infra
         language: system
         types: [python]
         pass_filenames: false

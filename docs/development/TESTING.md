@@ -32,6 +32,23 @@ tests/unit/nexus_core/
 
 One test module per source unit; mirror the package structure when adding tests.
 
+The **infrastructure layer** (Phase 2) has its own suite:
+
+```
+tests/unit/nexus_infra/
+├── factories.py     shared builders for valid domain objects (one source of truth)
+├── test_event_store.py / test_event_bus.py / test_event_versioning…
+├── test_projections.py / test_snapshots.py
+├── test_repositories.py / test_unit_of_work.py
+├── test_serialization.py / test_identifiers.py / test_observability.py
+└── test_composition.py    end-to-end integration (emit → project → snapshot → replay)
+```
+
+`factories.py` builds fully-valid `Event`/`Goal`/`Plan`/`Artifact`/`Policy`/
+`Knowledge` objects with deterministic defaults, so infra tests read as intent
+rather than construction boilerplate. The integration test in `test_composition.py`
+exercises replay equivalence and snapshot-plus-tail-replay (ADR-001 / INV-14/18).
+
 ## 3. Running tests
 
 ```bash

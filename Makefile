@@ -7,8 +7,9 @@
 # docs/development/DEVELOPMENT.md.
 # =============================================================================
 
-CORE := nexus_core
-CORE_TESTS := tests/unit/nexus_core
+# Packages and their tests (Phase 1 foundation + Phase 2 infrastructure).
+PACKAGES := nexus_core nexus_infra
+TESTS := tests/unit/nexus_core tests/unit/nexus_infra
 COV_MIN := 95
 
 .DEFAULT_GOAL := help
@@ -24,23 +25,24 @@ install: ## Install all dependencies + register pre-commit hooks
 	uv run pre-commit install
 
 lint: ## Ruff lint (no autofix)
-	uv run ruff check $(CORE) $(CORE_TESTS)
+	uv run ruff check $(PACKAGES) $(TESTS)
 
 format: ## Ruff auto-format in place
-	uv run ruff format $(CORE) $(CORE_TESTS)
+	uv run ruff format $(PACKAGES) $(TESTS)
 
 format-check: ## Verify formatting without writing
-	uv run ruff format --check $(CORE) $(CORE_TESTS)
+	uv run ruff format --check $(PACKAGES) $(TESTS)
 
 typecheck: ## MyPy strict
-	uv run mypy $(CORE)
+	uv run mypy $(PACKAGES)
 
-test: ## Run the core test suite (fast)
-	uv run pytest $(CORE_TESTS) -q
+test: ## Run the test suite (fast)
+	uv run pytest $(TESTS) -q
 
 test-cov: ## Run tests with coverage gate (term + xml + html)
-	uv run pytest $(CORE_TESTS) \
-		--cov=$(CORE) \
+	uv run pytest $(TESTS) \
+		--cov=nexus_core \
+		--cov=nexus_infra \
 		--cov-report=term-missing \
 		--cov-report=xml \
 		--cov-report=html \
