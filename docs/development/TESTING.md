@@ -49,6 +49,13 @@ tests/unit/nexus_infra/
 rather than construction boilerplate. The integration test in `test_composition.py`
 exercises replay equivalence and snapshot-plus-tail-replay (ADR-001 / INV-14/18).
 
+The **planning layer** (Phase 3) has its own suite under
+`tests/unit/nexus_planning/` with a shared `helpers.py` (`make_goal`,
+`make_capability`, `item`, `planning_env`). Because Planning is required to be
+deterministic, `test_determinism.py` asserts that identical Goals and inputs yield
+byte-identical Plans, Work Packages, Execution Graphs, and event streams — the
+headline Phase 3 guarantee.
+
 ## 3. Running tests
 
 ```bash

@@ -40,9 +40,13 @@ nexus_core/        Phase 1 foundation — frozen contracts, immutable domain
 nexus_infra/       Phase 2 infrastructure — concrete event store, event bus,
                    projection engine, snapshot store, repositories, unit of work,
                    and composition. Implements the foundation interfaces.
+nexus_planning/    Phase 3 planning — deterministic Planning Service that turns a
+                   Goal into a Plan, Work Packages, Execution Graph, Strategy, and
+                   Capability requirements. Builds on the infrastructure.
 nexus/             Legacy v1 application package (separate CI in ci.yml).
-tests/unit/nexus_core/    Unit tests for the foundation.
-tests/unit/nexus_infra/   Unit + integration tests for the infrastructure layer.
+tests/unit/nexus_core/      Unit tests for the foundation.
+tests/unit/nexus_infra/     Unit + integration tests for the infrastructure layer.
+tests/unit/nexus_planning/  Unit + determinism tests for the planning layer.
 docs/v2/           Frozen architecture (specs).
 adr/               Ratified Architecture Decision Records (frozen).
 contracts/         Frozen logical contract specs.
@@ -93,7 +97,7 @@ The same four checks run locally (`make check`), in pre-commit, and in Core CI:
 |------|---------|------|
 | Lint | `ruff check` | Configured in `ruff.toml` (single source of truth). |
 | Format | `ruff format --check` | LF line endings, double quotes, 100 cols. |
-| Types | `mypy nexus_core nexus_infra` | `--strict` + `pydantic.mypy` plugin. No `Any` leaks. |
+| Types | `mypy nexus_core nexus_infra nexus_planning` | `--strict` + `pydantic.mypy` plugin. No `Any` leaks. |
 | Tests + coverage | `pytest --cov-fail-under=95` | Branch coverage, ≥95% floor. |
 
 These are **non-negotiable**: a future change cannot regress architectural
@@ -121,10 +125,11 @@ The development shell is bash-compatible (Git Bash / WSL). `make` is optional �
 if it is unavailable, run the underlying commands directly, e.g.:
 
 ```bash
-uv run ruff check nexus_core nexus_infra tests/unit/nexus_core tests/unit/nexus_infra
-uv run mypy nexus_core nexus_infra
-uv run pytest tests/unit/nexus_core tests/unit/nexus_infra \
-  --cov=nexus_core --cov=nexus_infra --cov-fail-under=95
+uv run ruff check nexus_core nexus_infra nexus_planning \
+  tests/unit/nexus_core tests/unit/nexus_infra tests/unit/nexus_planning
+uv run mypy nexus_core nexus_infra nexus_planning
+uv run pytest tests/unit/nexus_core tests/unit/nexus_infra tests/unit/nexus_planning \
+  --cov=nexus_core --cov=nexus_infra --cov=nexus_planning --cov-fail-under=95
 ```
 
 Line endings are LF-canonical; `.gitattributes` + the `mixed-line-ending` hook

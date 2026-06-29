@@ -34,9 +34,9 @@ jobs:
       - name: Install dependencies
         run: uv sync --frozen
       - name: Ruff lint
-        run: uv run ruff check nexus_core nexus_infra tests/unit/nexus_core tests/unit/nexus_infra
+        run: uv run ruff check nexus_core nexus_infra nexus_planning tests/unit/nexus_core tests/unit/nexus_infra tests/unit/nexus_planning
       - name: Ruff format check
-        run: uv run ruff format --check nexus_core nexus_infra tests/unit/nexus_core tests/unit/nexus_infra
+        run: uv run ruff format --check nexus_core nexus_infra nexus_planning tests/unit/nexus_core tests/unit/nexus_infra tests/unit/nexus_planning
 
   typecheck:
     name: MyPy (strict)
@@ -49,7 +49,7 @@ jobs:
       - name: Install dependencies
         run: uv sync --frozen
       - name: MyPy strict
-        run: uv run mypy nexus_core nexus_infra
+        run: uv run mypy nexus_core nexus_infra nexus_planning
 
   test:
     name: PyTest + coverage
@@ -65,9 +65,10 @@ jobs:
         run: uv sync --frozen
       - name: Run tests with coverage gate
         run: >
-          uv run pytest tests/unit/nexus_core tests/unit/nexus_infra
+          uv run pytest tests/unit/nexus_core tests/unit/nexus_infra tests/unit/nexus_planning
           --cov=nexus_core
           --cov=nexus_infra
+          --cov=nexus_planning
           --cov-report=term-missing
           --cov-report=xml
           --cov-report=html
