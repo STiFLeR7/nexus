@@ -65,6 +65,15 @@ conflicts, and event streams, and `test_integration.py` proves the
 package is referenced by `PlanningRequest.context_ref`) with no coupling between
 the two layers.
 
+The **orchestration layer** (Phase 5) has its own suite under
+`tests/unit/nexus_orchestration/` with a shared `helpers.py` (`gnode`, `gedge`,
+`make_graph`, `make_strategy`, `make_request`, `harness`, `orchestration_env`). It
+holds the same line: `test_determinism.py` asserts identical Goal / Context / Plan /
+Execution Graph / Strategy yield byte-identical Execution Sessions, dependency and
+queue state, approvals, Harness/Runtime requests, and event streams, and
+`test_integration.py` proves `Planning → Orchestration` composes end-to-end over one
+shared infrastructure with no coupling between the layers.
+
 ## 3. Running tests
 
 ```bash
