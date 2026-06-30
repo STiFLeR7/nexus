@@ -48,7 +48,8 @@ build-backend = "hatchling.build"
 # Explicit package list: hatchling otherwise discovers only `nexus` (the project
 # name) and would silently omit the `nexus_core` foundation, `nexus_infra`
 # infrastructure layer, `nexus_planning` planning layer, `nexus_context`
-# context-engineering layer, and `nexus_orchestration` orchestration layer.
+# context-engineering layer, `nexus_orchestration` orchestration layer, and
+# `nexus_harness` harness layer.
 packages = [
     "nexus",
     "nexus_core",
@@ -56,6 +57,7 @@ packages = [
     "nexus_planning",
     "nexus_context",
     "nexus_orchestration",
+    "nexus_harness",
 ]
 
 [tool.pytest.ini_options]

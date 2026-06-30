@@ -74,6 +74,16 @@ queue state, approvals, Harness/Runtime requests, and event streams, and
 `test_integration.py` proves `Planning → Orchestration` composes end-to-end over one
 shared infrastructure with no coupling between the layers.
 
+The **harness layer** (Phase 6) has its own suite under
+`tests/unit/nexus_harness/` with a shared `helpers.py` (`skill`, `capability`,
+`policy`, `context_package`, `work_package`, `strategy`, `artifact`, `hrequest`,
+`harness_env`, `standard_env`). It holds the same line: `test_determinism.py` asserts
+identical Harness Requests and resolution sources yield byte-identical Execution
+Packages, Execution Manifests, and event streams, and `test_integration.py` proves
+`Planning → Orchestration → Harness` composes end-to-end over one shared
+infrastructure — the Harness compiles Orchestration's output into runtime-ready
+packages with no coupling between the layers and no side effects.
+
 ## 3. Running tests
 
 ```bash

@@ -34,9 +34,9 @@ jobs:
       - name: Install dependencies
         run: uv sync --frozen
       - name: Ruff lint
-        run: uv run ruff check nexus_core nexus_infra nexus_planning nexus_context nexus_orchestration tests/unit/nexus_core tests/unit/nexus_infra tests/unit/nexus_planning tests/unit/nexus_context tests/unit/nexus_orchestration
+        run: uv run ruff check nexus_core nexus_infra nexus_planning nexus_context nexus_orchestration nexus_harness tests/unit/nexus_core tests/unit/nexus_infra tests/unit/nexus_planning tests/unit/nexus_context tests/unit/nexus_orchestration tests/unit/nexus_harness
       - name: Ruff format check
-        run: uv run ruff format --check nexus_core nexus_infra nexus_planning nexus_context nexus_orchestration tests/unit/nexus_core tests/unit/nexus_infra tests/unit/nexus_planning tests/unit/nexus_context tests/unit/nexus_orchestration
+        run: uv run ruff format --check nexus_core nexus_infra nexus_planning nexus_context nexus_orchestration nexus_harness tests/unit/nexus_core tests/unit/nexus_infra tests/unit/nexus_planning tests/unit/nexus_context tests/unit/nexus_orchestration tests/unit/nexus_harness
 
   typecheck:
     name: MyPy (strict)
@@ -49,7 +49,7 @@ jobs:
       - name: Install dependencies
         run: uv sync --frozen
       - name: MyPy strict
-        run: uv run mypy nexus_core nexus_infra nexus_planning nexus_context nexus_orchestration
+        run: uv run mypy nexus_core nexus_infra nexus_planning nexus_context nexus_orchestration nexus_harness
 
   test:
     name: PyTest + coverage
@@ -65,12 +65,13 @@ jobs:
         run: uv sync --frozen
       - name: Run tests with coverage gate
         run: >
-          uv run pytest tests/unit/nexus_core tests/unit/nexus_infra tests/unit/nexus_planning tests/unit/nexus_context tests/unit/nexus_orchestration
+          uv run pytest tests/unit/nexus_core tests/unit/nexus_infra tests/unit/nexus_planning tests/unit/nexus_context tests/unit/nexus_orchestration tests/unit/nexus_harness
           --cov=nexus_core
           --cov=nexus_infra
           --cov=nexus_planning
           --cov=nexus_context
           --cov=nexus_orchestration
+          --cov=nexus_harness
           --cov-report=term-missing
           --cov-report=xml
           --cov-report=html
