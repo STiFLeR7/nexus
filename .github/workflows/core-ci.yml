@@ -34,9 +34,9 @@ jobs:
       - name: Install dependencies
         run: uv sync --frozen
       - name: Ruff lint
-        run: uv run ruff check nexus_core nexus_infra nexus_planning nexus_context nexus_orchestration nexus_harness tests/unit/nexus_core tests/unit/nexus_infra tests/unit/nexus_planning tests/unit/nexus_context tests/unit/nexus_orchestration tests/unit/nexus_harness
+        run: uv run ruff check nexus_core nexus_infra nexus_planning nexus_context nexus_orchestration nexus_harness nexus_runtime nexus_execution nexus_runtime_claude nexus_validation nexus_recovery nexus_reflection tests/unit/nexus_core tests/unit/nexus_infra tests/unit/nexus_planning tests/unit/nexus_context tests/unit/nexus_orchestration tests/unit/nexus_harness tests/unit/nexus_runtime tests/unit/nexus_execution tests/unit/nexus_runtime_claude tests/unit/nexus_validation tests/unit/nexus_recovery tests/unit/nexus_reflection tests/integration
       - name: Ruff format check
-        run: uv run ruff format --check nexus_core nexus_infra nexus_planning nexus_context nexus_orchestration nexus_harness tests/unit/nexus_core tests/unit/nexus_infra tests/unit/nexus_planning tests/unit/nexus_context tests/unit/nexus_orchestration tests/unit/nexus_harness
+        run: uv run ruff format --check nexus_core nexus_infra nexus_planning nexus_context nexus_orchestration nexus_harness nexus_runtime nexus_execution nexus_runtime_claude nexus_validation nexus_recovery nexus_reflection tests/unit/nexus_core tests/unit/nexus_infra tests/unit/nexus_planning tests/unit/nexus_context tests/unit/nexus_orchestration tests/unit/nexus_harness tests/unit/nexus_runtime tests/unit/nexus_execution tests/unit/nexus_runtime_claude tests/unit/nexus_validation tests/unit/nexus_recovery tests/unit/nexus_reflection tests/integration
 
   typecheck:
     name: MyPy (strict)
@@ -49,7 +49,7 @@ jobs:
       - name: Install dependencies
         run: uv sync --frozen
       - name: MyPy strict
-        run: uv run mypy nexus_core nexus_infra nexus_planning nexus_context nexus_orchestration nexus_harness
+        run: uv run mypy nexus_core nexus_infra nexus_planning nexus_context nexus_orchestration nexus_harness nexus_runtime nexus_execution nexus_runtime_claude nexus_validation nexus_recovery nexus_reflection
 
   test:
     name: PyTest + coverage
@@ -65,13 +65,19 @@ jobs:
         run: uv sync --frozen
       - name: Run tests with coverage gate
         run: >
-          uv run pytest tests/unit/nexus_core tests/unit/nexus_infra tests/unit/nexus_planning tests/unit/nexus_context tests/unit/nexus_orchestration tests/unit/nexus_harness
+          uv run pytest tests/unit/nexus_core tests/unit/nexus_infra tests/unit/nexus_planning tests/unit/nexus_context tests/unit/nexus_orchestration tests/unit/nexus_harness tests/unit/nexus_runtime tests/unit/nexus_execution tests/unit/nexus_runtime_claude tests/unit/nexus_validation tests/unit/nexus_recovery tests/unit/nexus_reflection tests/integration
           --cov=nexus_core
           --cov=nexus_infra
           --cov=nexus_planning
           --cov=nexus_context
           --cov=nexus_orchestration
           --cov=nexus_harness
+          --cov=nexus_runtime
+          --cov=nexus_execution
+          --cov=nexus_runtime_claude
+          --cov=nexus_validation
+          --cov=nexus_recovery
+          --cov=nexus_reflection
           --cov-report=term-missing
           --cov-report=xml
           --cov-report=html
