@@ -10,8 +10,8 @@
 # Packages and their tests (Phase 1 foundation + Phase 2 infra + Phase 3 planning
 # + Phase 4 context engineering + Phase 5 orchestration + Phase 6 harness
 # + Phase 8A runtime core).
-PACKAGES := nexus_core nexus_infra nexus_planning nexus_context nexus_orchestration nexus_harness nexus_runtime nexus_execution nexus_runtime_claude nexus_validation nexus_recovery nexus_reflection
-TESTS := tests/unit/nexus_core tests/unit/nexus_infra tests/unit/nexus_planning tests/unit/nexus_context tests/unit/nexus_orchestration tests/unit/nexus_harness tests/unit/nexus_runtime tests/unit/nexus_execution tests/unit/nexus_runtime_claude tests/unit/nexus_validation tests/unit/nexus_recovery tests/unit/nexus_reflection tests/integration
+PACKAGES := nexus_core nexus_infra nexus_planning nexus_context nexus_orchestration nexus_harness nexus_runtime nexus_execution nexus_runtime_claude nexus_runtime_gemini nexus_runtime_shell nexus_runtime_adapters nexus_validation nexus_recovery nexus_reflection nexus_knowledge nexus_workflows nexus_research nexus_briefings nexus_operator
+TESTS := tests/unit/nexus_core tests/unit/nexus_infra tests/unit/nexus_planning tests/unit/nexus_context tests/unit/nexus_orchestration tests/unit/nexus_harness tests/unit/nexus_runtime tests/unit/nexus_execution tests/unit/nexus_runtime_claude tests/unit/nexus_runtime_gemini tests/unit/nexus_runtime_shell tests/unit/nexus_runtime_adapters tests/unit/nexus_validation tests/unit/nexus_recovery tests/unit/nexus_reflection tests/unit/nexus_knowledge tests/unit/nexus_workflows tests/unit/nexus_research tests/unit/nexus_briefings tests/unit/nexus_operator tests/integration
 COV_MIN := 95
 
 .DEFAULT_GOAL := help
@@ -52,9 +52,17 @@ test-cov: ## Run tests with coverage gate (term + xml + html)
 		--cov=nexus_runtime \
 		--cov=nexus_execution \
 		--cov=nexus_runtime_claude \
+		--cov=nexus_runtime_gemini \
+		--cov=nexus_runtime_shell \
+		--cov=nexus_runtime_adapters \
 		--cov=nexus_validation \
 		--cov=nexus_recovery \
 		--cov=nexus_reflection \
+		--cov=nexus_knowledge \
+		--cov=nexus_workflows \
+		--cov=nexus_research \
+		--cov=nexus_briefings \
+		--cov=nexus_operator \
 		--cov-report=term-missing \
 		--cov-report=xml \
 		--cov-report=html \

@@ -62,9 +62,17 @@ packages = [
     "nexus_runtime",
     "nexus_execution",
     "nexus_runtime_claude",
+    "nexus_runtime_gemini",
+    "nexus_runtime_shell",
+    "nexus_runtime_adapters",
     "nexus_validation",
     "nexus_recovery",
     "nexus_reflection",
+    "nexus_knowledge",
+    "nexus_workflows",
+    "nexus_research",
+    "nexus_briefings",
+    "nexus_operator",
 ]
 
 [tool.pytest.ini_options]

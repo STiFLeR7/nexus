@@ -37,7 +37,7 @@ repos:
     hooks:
       - id: mypy
         name: mypy (strict)
-        entry: uv run mypy nexus_core nexus_infra nexus_planning nexus_context nexus_orchestration nexus_harness nexus_runtime nexus_execution nexus_runtime_claude nexus_validation nexus_recovery nexus_reflection
+        entry: uv run mypy nexus_core nexus_infra nexus_planning nexus_context nexus_orchestration nexus_harness nexus_runtime nexus_execution nexus_runtime_claude nexus_runtime_gemini nexus_runtime_shell nexus_runtime_adapters nexus_validation nexus_recovery nexus_reflection nexus_knowledge nexus_workflows nexus_research nexus_briefings nexus_operator
         language: system
         types: [python]
         pass_filenames: false
