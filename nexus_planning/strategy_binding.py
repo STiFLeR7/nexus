@@ -41,7 +41,7 @@ _RETRY = {
 }
 
 
-def strategy_hints(strategy: EngineeringStrategy) -> dict:
+def strategy_hints(strategy: EngineeringStrategy) -> dict[str, object]:
     """Translate an EngineeringStrategy's facets into Planning's posture hints (pure)."""
     execution = strategy.execution_style.selection[0]
     autonomy = strategy.autonomy_level.selection[0]
