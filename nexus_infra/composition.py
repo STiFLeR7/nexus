@@ -19,7 +19,7 @@ from typing import Any
 
 from nexus_core.domain.event import Event
 from nexus_core.events.identifiers import IdentifierFactory
-from nexus_core.persistence.interfaces import Projection
+from nexus_core.persistence.interfaces import Projection, UnitOfWork
 from nexus_infra.clock import Clock, SystemClock
 from nexus_infra.event_bus import InProcessEventBus
 from nexus_infra.event_store import InMemoryEventStore
@@ -39,6 +39,11 @@ from nexus_infra.serialization import VersionedSerializer
 from nexus_infra.snapshots import InMemorySnapshotStore
 from nexus_infra.unit_of_work import InMemoryUnitOfWork
 
+# A factory that builds a UnitOfWork from (event_store, repositories, event_bus,
+# observability). Injected so the same context can be memory-backed or durable
+# (ADR-007) without any consumer knowing which — the default is in-memory.
+UnitOfWorkFactory = Callable[..., UnitOfWork]
+
 
 @dataclass(frozen=True, slots=True)
 class InfrastructureContext:
@@ -57,6 +62,7 @@ class InfrastructureContext:
     artifacts: ArtifactRepository
     policies: PolicyRepository
     knowledge: KnowledgeRepository
+    unit_of_work_factory: UnitOfWorkFactory = InMemoryUnitOfWork
 
     def repositories(self) -> tuple[InMemoryRepository[Any], ...]:
         """All registered repositories (for the unit of work)."""
@@ -67,9 +73,14 @@ class InfrastructureContext:
         self.event_store.append(event)
         self.event_bus.publish(event)
 
-    def unit_of_work(self) -> InMemoryUnitOfWork:
-        """A fresh unit of work bound to this context's store, repos, and bus."""
-        return InMemoryUnitOfWork(
+    def unit_of_work(self) -> UnitOfWork:
+        """A fresh unit of work bound to this context's store, repos, and bus.
+
+        Uses the injected :attr:`unit_of_work_factory` (default: in-memory), so a
+        durable context (ADR-007) returns a durable, transactional Unit of Work
+        without any consumer knowing the difference.
+        """
+        return self.unit_of_work_factory(
             self.event_store, self.repositories(), self.event_bus, self.observability
         )
 
