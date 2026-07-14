@@ -169,7 +169,9 @@ async def test_branch_governance_detached_head_allowed(db_session: AsyncSession)
     db_session.add(approval)
 
     # Configure whitelisted repository to allow detached HEAD state
-    repo_stmt = select(RepositoryRegistryRecord).where(RepositoryRegistryRecord.name == "workspace_root")
+    repo_stmt = select(RepositoryRegistryRecord).where(
+        RepositoryRegistryRecord.name == "workspace_root"
+    )
     res = await db_session.execute(repo_stmt)
     repo = res.scalar_one()
     repo.allowed_branches = ["HEAD"]
@@ -217,7 +219,9 @@ async def test_branch_governance_detached_head_blocked(db_session: AsyncSession)
     )
     db_session.add(approval)
 
-    repo_stmt = select(RepositoryRegistryRecord).where(RepositoryRegistryRecord.name == "workspace_root")
+    repo_stmt = select(RepositoryRegistryRecord).where(
+        RepositoryRegistryRecord.name == "workspace_root"
+    )
     res = await db_session.execute(repo_stmt)
     repo = res.scalar_one()
     repo.allowed_branches = ["main", "develop"]
@@ -232,7 +236,9 @@ async def test_branch_governance_detached_head_blocked(db_session: AsyncSession)
         return mock_hash
 
     with patch("subprocess.run", side_effect=side_effect):
-        with pytest.raises(RepositoryGovernanceError, match="Detached HEAD state is not whitelisted or is blocked"):
+        with pytest.raises(
+            RepositoryGovernanceError, match="Detached HEAD state is not whitelisted or is blocked"
+        ):
             await gov.validate_execution(
                 task_id=task_id,
                 working_dir=".",
@@ -336,30 +342,33 @@ async def test_concurrency_limits_under_parallel_requests(db_engine) -> None:
         async with session_factory() as session:
             gov = GovernanceManager(session)
             try:
-                # We need to simulate capacity reservation if it passes, so we add an ExecutionRecord
-                with patch("subprocess.run", return_value=mock_run):
-                    res_repo = await gov.validate_execution(
-                        task_id=tid,
-                        working_dir="./concurrency_test_dir",
-                        command="echo 'test'",
-                        runtime="gemini",
-                    )
-                    # If it passes, we add a mock running ExecutionRecord to count against limit
-                    exec_rec = ExecutionRecord(
-                        id=uuid.uuid4(),
-                        task_id=tid,
-                        runner="gemini",
-                        repository=res_repo.absolute_path,
-                        started_at=datetime.now(UTC),
-                        completed_at=None,
-                    )
-                    session.add(exec_rec)
-                    await session.commit()
-                    return "passed"
+                res_repo = await gov.validate_execution(
+                    task_id=tid,
+                    working_dir="./concurrency_test_dir",
+                    command="echo 'test'",
+                    runtime="gemini",
+                )
+                # If it passes, we add a mock running ExecutionRecord to count against limit
+                exec_rec = ExecutionRecord(
+                    id=uuid.uuid4(),
+                    task_id=tid,
+                    runner="gemini",
+                    repository=res_repo.absolute_path,
+                    started_at=datetime.now(UTC),
+                    completed_at=None,
+                )
+                session.add(exec_rec)
+                await session.commit()
+                return "passed"
             except RepositoryGovernanceError:
                 return "blocked"
 
-    results = await asyncio.gather(*(run_validation(tid) for tid in task_ids))
+    # Patch subprocess.run once around the whole gather. Entering/exiting mock.patch inside each
+    # concurrently-awaited coroutine is not isolation-safe: a coroutine can save the mock as the
+    # "original" and later restore it, leaking the mock to unrelated tests. One enclosing patch
+    # spans all concurrent validations and restores exactly once.
+    with patch("subprocess.run", return_value=mock_run):
+        results = await asyncio.gather(*(run_validation(tid) for tid in task_ids))
 
     # Assert that exactly 3 validations passed and 2 failed closed
     assert results.count("passed") == 3
