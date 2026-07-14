@@ -12,7 +12,7 @@ from __future__ import annotations
 from pydantic import Field
 
 from nexus_core.contracts.base import Constraint, Reference, Struct, ValueObject
-from nexus_core.contracts.enums import CoordinationModel, Priority
+from nexus_core.contracts.enums import ApprovalTaxonomy, CoordinationModel, Priority, RetryBehavior
 from nexus_core.domain.execution_graph import ExecutionGraph
 from nexus_core.domain.execution_strategy import ExecutionStrategy
 from nexus_core.domain.plan import Milestone, Plan
@@ -61,6 +61,23 @@ class PlanningRequest(ValueObject):
     plan_version: str = "1"
     assumptions: tuple[str, ...] = ()
     operational_risks: tuple[Struct, ...] = ()
+
+    # --- constitutional postures supplied by Engineering Intelligence (P6) --- #
+    # When present these are *consumed* (never derived): EI owns the engineering decision, Planning
+    # decomposes within it. Absent (operator-authored path), the existing derivation applies as a
+    # backward-compatible fallback. See ``nexus_planning.strategy_binding``.
+    approval_hint: ApprovalTaxonomy | None = None
+    """Approval posture from EI's autonomy level (else derived from the work items)."""
+    retry_hint: RetryBehavior | None = None
+    """Retry/recovery bias from EI's recovery posture (else NEVER_RETRY)."""
+    validation_policy: Struct | None = None
+    """Validation rigor + mandatory evidence classes from EI (else empty)."""
+    recovery_policy: Struct | None = None
+    """Recovery posture detail from EI (else empty)."""
+    runtime_policy: Struct | None = None
+    """Runtime capability preferences from EI (capabilities, not providers — INV-37; else empty)."""
+    engineering_strategy_ref: Reference | None = None
+    """Provenance: the EngineeringStrategy this request consumed (by id)."""
 
 
 class CapabilityRequirementSet(ValueObject):

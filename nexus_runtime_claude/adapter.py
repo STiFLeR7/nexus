@@ -62,11 +62,15 @@ class ClaudeRuntimeAdapter:
         invoker: ClaudeInvoker | None = None,
         identity: str = CLAUDE_RUNTIME_IDENTITY,
         version: str = "1",
+        working_dir: str = ".",
     ) -> None:
         self._invoker = invoker or StubClaudeInvoker()
         self._identity = identity
         self._version = version
-        self._working_dir = "."
+        # RM's ``configure`` may later override this by reference (doc 17 §3); construction-time
+        # ``working_dir`` lets a caller point the adapter at a real workspace when the Execution
+        # Engine drives the adapter directly (it performs; it does not re-configure).
+        self._working_dir = working_dir
         self._configured = False
 
     # -- A: Advertise -------------------------------------------------------- #

@@ -29,6 +29,19 @@ from __future__ import annotations
 
 from nexus_infra.clock import Clock, ManualClock, SystemClock
 from nexus_infra.composition import InfrastructureContext, build_infrastructure
+from nexus_infra.durable import (
+    DurableArtifactRepository,
+    DurableEventStore,
+    DurableGoalRepository,
+    DurableKnowledgeRepository,
+    DurablePlanRepository,
+    DurablePolicyRepository,
+    DurableRepository,
+    DurableSnapshotStore,
+    DurableUnitOfWork,
+    build_durable_infrastructure,
+    connect,
+)
 from nexus_infra.errors import (
     ConcurrencyConflictError,
     DeadLetterError,
@@ -74,6 +87,15 @@ __all__ = [
     "DeadLetterError",
     "DeterministicIdentifierFactory",
     "DuplicateEventError",
+    "DurableArtifactRepository",
+    "DurableEventStore",
+    "DurableGoalRepository",
+    "DurableKnowledgeRepository",
+    "DurablePlanRepository",
+    "DurablePolicyRepository",
+    "DurableRepository",
+    "DurableSnapshotStore",
+    "DurableUnitOfWork",
     "GoalRepository",
     "InMemoryEventStore",
     "InMemoryObservability",
@@ -104,9 +126,11 @@ __all__ = [
     "UuidIdentifierFactory",
     "VersionedSerializer",
     "accept_all",
+    "build_durable_infrastructure",
     "build_infrastructure",
     "by_correlation",
     "by_type",
     "canonical_json",
+    "connect",
     "content_hash",
 ]

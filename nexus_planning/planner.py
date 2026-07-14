@@ -23,6 +23,7 @@ from nexus_core.domain.plan import Plan
 from nexus_core.domain.work_package import WorkPackage
 from nexus_core.events.interfaces import EventEmitter
 from nexus_core.persistence.interfaces import Repository
+from nexus_engineering.model import EngineeringStrategy
 from nexus_planning import events, ids
 from nexus_planning.capability_resolver import CapabilityResolver
 from nexus_planning.decomposition import DecompositionStrategy, ExplicitDecompositionStrategy
@@ -31,6 +32,7 @@ from nexus_planning.execution_graph_builder import ExecutionGraphBuilder
 from nexus_planning.plan_builder import PlanBuilder
 from nexus_planning.requests import PlanningRequest, PlanningResult
 from nexus_planning.strategy_assigner import StrategyAssigner
+from nexus_planning.strategy_binding import bind_strategy
 from nexus_planning.validators import (
     PlanningError,
     validate_acyclic,
@@ -73,8 +75,22 @@ class PlanningService:
         self._graphs = ExecutionGraphBuilder()
         self._plans = PlanBuilder()
 
-    def plan(self, goal: Goal, request: PlanningRequest) -> PlanningResult:
-        """Produce, persist, and announce a complete execution plan for ``goal``."""
+    def plan(
+        self,
+        goal: Goal,
+        request: PlanningRequest,
+        *,
+        engineering_strategy: EngineeringStrategy | None = None,
+    ) -> PlanningResult:
+        """Produce, persist, and announce a complete execution plan for ``goal``.
+
+        When an :class:`EngineeringStrategy` is supplied (P6), Planning **consumes** its engineering
+        postures (execution style, approval, recovery, validation, runtime capabilities) via
+        :func:`bind_strategy` instead of deriving them — Planning decomposes within EI's decision.
+        Absent a Strategy, the existing operator-authored derivation applies unchanged.
+        """
+        if engineering_strategy is not None:
+            request = bind_strategy(request, engineering_strategy)
         correlation = self._correlation(goal, request)
         try:
             validate_goal(goal)
