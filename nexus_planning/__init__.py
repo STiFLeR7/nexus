@@ -45,6 +45,7 @@ from nexus_planning.requests import (
     WorkItemSpec,
 )
 from nexus_planning.strategy_assigner import StrategyAssigner
+from nexus_planning.strategy_binding import bind_strategy, strategy_hints
 from nexus_planning.validators import (
     CyclicGraphError,
     DanglingReferenceError,
@@ -84,7 +85,9 @@ __all__ = [
     "TimestampSource",
     "WorkItemSpec",
     "WorkPackageGenerator",
+    "bind_strategy",
     "build_planning",
+    "strategy_hints",
     "validate_acyclic",
     "validate_goal",
     "validate_outputs",

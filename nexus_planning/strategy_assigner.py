@@ -33,19 +33,25 @@ class StrategyAssigner:
         *,
         correlation_identifier: str,
     ) -> ExecutionStrategy:
-        """Build the Plan's Execution Strategy from the declared topology."""
+        """Build the Plan's Execution Strategy — consuming EI's postures when present (P6).
+
+        Each posture prefers an Engineering-Intelligence-supplied hint (EI owns the engineering
+        decision) and falls back to the existing topology-derived value for the operator-authored
+        path. This is additive: the fallback derivation is unchanged.
+        """
         coordination = request.coordination_hint or self._derive_coordination(request)
-        approval = self._derive_approval(request)
+        approval = request.approval_hint or self._derive_approval(request)
+        retry = request.retry_hint or RetryBehavior.NEVER_RETRY
         checkpoint_keys = tuple(item.key for item in request.work_items if item.is_checkpoint)
         return ExecutionStrategy(
             identity=ids.strategy_id(goal.identity, request.plan_version),
             coordination=coordination,
-            runtime_policy={},
+            runtime_policy=dict(request.runtime_policy or {}),
             approval_policy=approval,
-            retry_policy=RetryBehavior.NEVER_RETRY,
+            retry_policy=retry,
             timeout_policy={},
-            validation_policy={},
-            recovery_policy={},
+            validation_policy=dict(request.validation_policy or {}),
+            recovery_policy=dict(request.recovery_policy or {}),
             checkpoint_policy={"required_checkpoints": list(checkpoint_keys)},
             version=request.plan_version,
             correlation=Correlation(correlation_identifier=correlation_identifier),
