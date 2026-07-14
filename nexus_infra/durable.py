@@ -26,7 +26,7 @@ from __future__ import annotations
 import json
 import sqlite3
 from collections.abc import Callable, Iterable
-from typing import Any
+from typing import Any, Literal
 
 from pydantic import BaseModel
 
@@ -234,12 +234,14 @@ class DurableEventStore:
         )
 
     def stream_version(self, correlation_identifier: str) -> int:
-        return self._conn.execute(
-            "SELECT COUNT(*) FROM events WHERE stream=?", (correlation_identifier,)
-        ).fetchone()[0]
+        return int(
+            self._conn.execute(
+                "SELECT COUNT(*) FROM events WHERE stream=?", (correlation_identifier,)
+            ).fetchone()[0]
+        )
 
     def global_length(self) -> int:
-        return self._conn.execute("SELECT COUNT(*) FROM events").fetchone()[0]
+        return int(self._conn.execute("SELECT COUNT(*) FROM events").fetchone()[0])
 
     def contains(self, event_identifier: str) -> bool:
         row = self._conn.execute(
@@ -343,9 +345,11 @@ class DurableRepository[T: BaseModel]:
 
     @property
     def count(self) -> int:
-        return self._conn.execute(
-            "SELECT COUNT(*) FROM repository_objects WHERE name=?", (self._name,)
-        ).fetchone()[0]
+        return int(
+            self._conn.execute(
+                "SELECT COUNT(*) FROM repository_objects WHERE name=?", (self._name,)
+            ).fetchone()[0]
+        )
 
     # -- transactional hooks (used by the Unit of Work for parity) ----------- #
 
@@ -502,7 +506,7 @@ class DurableUnitOfWork:
         self.begin()
         return self
 
-    def __exit__(self, exc_type: object, exc: object, traceback: object) -> bool:
+    def __exit__(self, exc_type: object, exc: object, traceback: object) -> Literal[False]:
         if self._active:
             self.rollback()
         return False
