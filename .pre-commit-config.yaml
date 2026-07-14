@@ -1,0 +1,43 @@
+# =============================================================================
+# Pre-commit hooks — fast local quality gate (mirror of CI, runs on commit)
+# =============================================================================
+# Install once:   uv run pre-commit install
+# Run on demand:  uv run pre-commit run --all-files
+# =============================================================================
+
+minimum_pre_commit_version: "3.5.0"
+
+repos:
+  # --- Hygiene -------------------------------------------------------------
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: mixed-line-ending
+        args: [--fix=lf]
+      - id: check-yaml
+      - id: check-toml
+      - id: check-merge-conflict
+      - id: check-added-large-files
+
+  # --- Ruff: lint (autofix) + format --------------------------------------
+  # Configuration is read from ruff.toml (the single source of truth).
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.15.18
+    hooks:
+      - id: ruff
+        args: [--fix]
+      - id: ruff-format
+
+  # --- MyPy (strict) -------------------------------------------------------
+  # Runs through uv so it shares the project's strict config + pydantic plugin
+  # and resolved dependency set, rather than an isolated mirror environment.
+  - repo: local
+    hooks:
+      - id: mypy
+        name: mypy (strict)
+        entry: uv run mypy nexus_core nexus_infra nexus_planning nexus_context nexus_orchestration nexus_harness nexus_runtime nexus_execution nexus_runtime_claude nexus_runtime_gemini nexus_runtime_shell nexus_runtime_adapters nexus_validation nexus_recovery nexus_reflection nexus_knowledge nexus_workflows nexus_research nexus_briefings nexus_operator
+        language: system
+        types: [python]
+        pass_filenames: false

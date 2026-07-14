@@ -1,21 +1,20 @@
-{#-
-  Badge — small, static, rounded label for categorisation (subsystem, type, tag).
-  Import:  {% import "partials/badge.html" as bdg %}
-  Use:     {{ bdg.badge("Governance", "brand") }}
-           {{ bdg.badge("CVE-2026-1234", "danger", mono=True) }}
+{#- =====================================================================
+    Badge — small static label (tags, subsystem, IDs).
+      badge(text, tone='neutral', mono=False)
 
-  tones: neutral · brand · success · warning · danger · info · pending
--#}
-{% set _BADGE = {
-  'neutral':  ('#F1F5F9', '#475569', '#E2E8F0'),
-  'brand':    ('#EEF2FF', '#4338CA', '#E0E7FF'),
-  'success':  ('#ECFDF5', '#15803D', '#D1FAE5'),
-  'warning':  ('#FFFBEB', '#B45309', '#FDE68A'),
-  'danger':   ('#FEF2F2', '#B91C1C', '#FECACA'),
-  'info':     ('#EFF6FF', '#1D4ED8', '#DBEAFE'),
-  'pending':  ('#F5F3FF', '#6D28D9', '#EDE9FE')
-} %}
+    Quiet by default (neutral grey). Semantic tones are desaturated so a
+    badge never becomes a focal point — it categorises, it doesn't shout.
+   ===================================================================== -#}
+{%- set _BADGE = {
+  'neutral': ('#F2F3F5', '#5A5F68', '#E7E8EB'),
+  'brand':   ('#F2F3F5', '#16181D', '#E1E2E6'),
+  'success': ('#ECF6F0', '#1E7A4D', '#D6EBDF'),
+  'warning': ('#FBF3E6', '#9A6206', '#F1E2C6'),
+  'danger':  ('#FBEDEC', '#B23B33', '#F1D7D4'),
+  'info':    ('#EDF2FB', '#2C5FB8', '#D8E2F6'),
+  'pending': ('#F2F3F5', '#8A8F98', '#E7E8EB')
+} -%}
 {% macro badge(text, tone='neutral', mono=False) -%}
 {%- set c = _BADGE.get(tone, _BADGE['neutral']) -%}
-<span style="display:inline-block; padding:3px 9px; background:{{ c[0] }}; color:{{ c[1] }}; border:1px solid {{ c[2] }}; border-radius:999px; font-family:{% if mono %}ui-monospace,SFMono-Regular,Menlo,Consolas,'Liberation Mono',monospace{% else %}-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif{% endif %}; font-size:11px; line-height:16px; font-weight:600; letter-spacing:0.2px; white-space:nowrap;">{{ text }}</span>
+<span style="display:inline-block; background:{{ c[0] }}; color:{{ c[1] }}; border:1px solid {{ c[2] }}; border-radius:6px; font-size:11px; font-weight:600; line-height:14px; padding:3px 8px; letter-spacing:0.2px;{% if mono %} font-family:'SFMono-Regular',ui-monospace,Menlo,Consolas,monospace; letter-spacing:0;{% endif %}">{{ text }}</span>
 {%- endmacro %}

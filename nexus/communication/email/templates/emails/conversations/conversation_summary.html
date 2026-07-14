@@ -1,84 +1,86 @@
-{#-
-  Q&A FAMILY · Conversation Summary  (also the base for: Meeting Notes,
-  AI Session Recap, Knowledge Capture, Daily Conversation Digest, Research
-  Discussion, Operator Notes — see EMAIL_COMPONENT_LIBRARY.md for the mapping).
-  Personality: communication indigo.
-
-  Context:
-    eyebrow="Conversation Summary", subject, subtitle, timestamp, version
-    convo = {tldr, topics:[str], key_points:[str], decisions:[str],
-             action_items:[{text, owner, due, done}], follow_ups:[str],
-             references:[{label,href}]}
--#}
 {% extends "base.html" %}
-{% block accent %}#4F46E5{% endblock %}
+{# Conversation Summary — TL;DR first, then the substance. Preset of the
+   conversational family (meeting notes, recaps, digests reuse this). #}
 {% block content %}
 {% import "partials/section.html" as sec %}
+{% import "partials/list_row.html" as lst %}
 {% import "partials/badge.html" as bdg %}
-{% import "partials/divider.html" as rule %}
 
-{% if convo.tldr %}
-{% call sec.panel("info", title="TL;DR") %}{{ convo.tldr }}{% endcall %}
-{{ rule.spacer(16) }}
+{% if convo %}
+{% if convo.get('tldr') %}
+<tr><td style="padding-top:24px;">
+  {% call sec.panel('neutral', title="TL;DR") %}{{ convo.tldr }}{% endcall %}
+</td></tr>
 {% endif %}
 
-{% if convo.topics %}
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td>
-  {% for t in convo.topics %}{{ bdg.badge(t, "brand") }} {% endfor %}
-</td></tr></table>
-{{ rule.spacer(16) }}
+{% if convo.get('topics') %}
+<tr><td style="padding-top:22px;">
+  {% for t in convo.topics %}<span style="display:inline-block; margin:0 6px 6px 0;">{{ bdg.badge(t, 'neutral') }}</span>{% endfor %}
+</td></tr>
 {% endif %}
 
-{% if convo.key_points %}
-{% call sec.section("Key points", eyebrow="Discussion") %}
-  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
-  {% for k in convo.key_points %}<tr><td valign="top" width="20" style="vertical-align:top;width:20px;color:#4F46E5;font-weight:700;">•</td><td valign="top" style="vertical-align:top;padding-bottom:8px;">{{ k }}</td></tr>{% endfor %}
-  </table>
-{% endcall %}
+{% if convo.get('key_points') %}
+<tr><td>
+  {% call sec.section("Key points", eyebrow="Discussion") %}
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+      {% for k in convo.key_points %}
+      <tr>
+        <td valign="top" width="18" style="width:18px; color:#16181D; font-size:13px; line-height:21px;">●</td>
+        <td valign="top" class="nx-body" style="color:#3F434B; font-size:14px; line-height:21px; padding-bottom:{% if not loop.last %}9px{% else %}0{% endif %};">{{ k }}</td>
+      </tr>
+      {% endfor %}
+    </table>
+  {% endcall %}
+</td></tr>
 {% endif %}
 
-{% if convo.decisions %}
-{{ rule.divider() }}
-{% call sec.section("Decisions", eyebrow="Agreed", accent="#16A34A") %}
-  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
-  {% for d in convo.decisions %}<tr><td valign="top" width="22" style="vertical-align:top;width:22px;color:#16A34A;font-weight:700;">✓</td><td valign="top" style="vertical-align:top;padding-bottom:8px;">{{ d }}</td></tr>{% endfor %}
-  </table>
-{% endcall %}
+{% if convo.get('decisions') %}
+<tr><td>
+  {% call sec.section("Decisions", eyebrow="Agreed") %}
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+      {% for d in convo.decisions %}
+      <tr><td style="padding:{% if loop.first %}0{% else %}7px{% endif %} 0 7px 0;">{{ lst.list_row(d, lead=None, status='done') }}</td></tr>
+      {% endfor %}
+    </table>
+  {% endcall %}
+</td></tr>
 {% endif %}
 
-{% if convo.action_items %}
-{{ rule.divider() }}
-{% call sec.section("Action items", eyebrow="Owned", accent="#D97706") %}{% endcall %}
-{{ rule.spacer(10) }}
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
-{% for a in convo.action_items %}
-  <tr>
-    <td valign="top" width="22" style="vertical-align:top;width:22px;color:{% if a.done %}#16A34A{% else %}#CBD5E1{% endif %};font-weight:700;font-size:15px;">{% if a.done %}☑{% else %}☐{% endif %}</td>
-    <td valign="top" style="vertical-align:top;padding-bottom:10px;">
-      <span class="nx-ink" style="font-family:-apple-system,sans-serif;font-size:14px;line-height:20px;color:#0F172A;">{{ a.text }}</span>
-      <div style="padding-top:3px;">
-        {% if a.owner %}{{ bdg.badge("@" ~ a.owner, "neutral") }}{% endif %}
-        {% if a.due %} {{ bdg.badge("due " ~ a.due, "warning") }}{% endif %}
-      </div>
-    </td>
-  </tr>
-{% endfor %}
-</table>
+{% if convo.get('action_items') %}
+<tr><td>
+  {% call sec.section("Action items", eyebrow="To do") %}
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+      {% for a in convo.action_items %}
+      <tr><td style="padding:{% if loop.first %}0{% else %}7px{% endif %} 0 7px 0;">
+        {{ lst.list_row(a.text, lead=None, meta=((a.get('owner','') ~ (' · ' ~ a.due if a.get('due') else '')) | trim(' ·')), status=('done' if a.get('done') else 'pending')) }}
+      </td></tr>
+      {% endfor %}
+    </table>
+  {% endcall %}
+</td></tr>
 {% endif %}
 
-{% if convo.follow_ups %}
-{{ rule.divider() }}
-{% call sec.section("Follow-ups", eyebrow="Later") %}
-  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
-  {% for f in convo.follow_ups %}<tr><td valign="top" width="20" style="vertical-align:top;width:20px;color:#7C3AED;font-weight:700;">→</td><td valign="top" style="vertical-align:top;padding-bottom:8px;">{{ f }}</td></tr>{% endfor %}
-  </table>
-{% endcall %}
+{% if convo.get('follow_ups') %}
+<tr><td>
+  {% call sec.section("Follow-ups", eyebrow="Later") %}
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+      {% for f in convo.follow_ups %}
+      <tr>
+        <td valign="top" width="18" class="nx-faint" style="width:18px; color:#AEB2BA; font-size:13px; line-height:21px;">→</td>
+        <td valign="top" class="nx-body" style="color:#3F434B; font-size:14px; line-height:21px; padding-bottom:{% if not loop.last %}8px{% else %}0{% endif %};">{{ f }}</td>
+      </tr>
+      {% endfor %}
+    </table>
+  {% endcall %}
+</td></tr>
 {% endif %}
 
-{% if convo.references %}
-{{ rule.divider() }}
-{% call sec.section("References", eyebrow="Linked") %}
-  {% for r in convo.references %}<a class="nx-link" href="{{ r.href }}" style="font-family:-apple-system,sans-serif;font-size:13px;font-weight:600;color:#4F46E5;display:inline-block;padding:2px 0;">↗ {{ r.label }}</a><br>{% endfor %}
-{% endcall %}
+{% if convo.get('references') %}
+<tr><td style="padding-top:24px;">
+  <div class="nx-muted" style="color:#8A8F98; font-size:12px;">References: {% for r in convo.references %}<a href="{{ r.href }}" class="nx-body" style="color:#3F434B; font-weight:500;">{{ r.label }}</a>{% if not loop.last %} · {% endif %}{% endfor %}</div>
+</td></tr>
+{% endif %}
+
+<tr><td style="height:8px; line-height:8px; font-size:0;">&nbsp;</td></tr>
 {% endif %}
 {% endblock %}

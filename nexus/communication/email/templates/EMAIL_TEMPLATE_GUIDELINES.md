@@ -12,21 +12,28 @@ Every email type is a child of `base.html`:
 
 ```jinja
 {% extends "base.html" %}
-{% block accent %}#4F46E5{% endblock %}        {# personality colour #}
 {% block content %}
-  {% import "partials/section.html" as sec %}  {# import what you use #}
-  {% import "partials/divider.html" as rule %}
-  {% call sec.section("Summary", eyebrow="Overview") %}
-    {{ summary_line }}
+  {% import "partials/section.html" as sec %}   {# import what you use #}
+  {% import "partials/list_row.html" as lst %}
+  {% import "partials/button.html" as btn %}
+
+  {% call sec.section("System health", eyebrow="Past 24 hours") %}
+    {{ lst.list_rows(tasks) }}
   {% endcall %}
-  {{ rule.divider() }}
-  ...
+
+  {% if actions %}
+  <tr><td>{{ btn.button(actions[0].label, actions[0].href, "primary") }}</td></tr>
+  {% endif %}
 {% endblock %}
 ```
 
 Rules:
 
-- **Override only `accent` + `content`.** The shell owns everything else.
+- **Override only `content`.** There is **no `accent` block** — the chrome is
+  identical for every type; personality is the eyebrow + a state chip. The shell
+  owns header, footer, canvas, card, dark mode and responsiveness.
+- **The content block is a sequence of `<tr>` rows** (it sits inside the card's
+  content table). Wrap section macros in `<tr><td>…</td></tr>`.
 - **Import inside `content`.** Top-of-file imports in a child template are not
   reliably executed by Jinja's inheritance; importing inside the block is the
   safe, tested pattern.
@@ -34,6 +41,8 @@ Rules:
   `timestamp`, `version`, `brand_links`) — don't render them yourself.
 - **Guard every section** with `{% if data %}` so absent data produces no empty
   block. Never print "No data".
+- **One solid action.** At most one `btn.button(..., "primary")` per email;
+  secondaries are `outline`/`ghost`.
 - **Compose, don't hand-roll.** Use Component Library macros; only drop to raw
   table HTML for a genuinely new pattern (then consider promoting it to a macro).
 
@@ -70,14 +79,14 @@ Mobile-first content in a fixed 600px shell that adapts down:
 
 - The container is `width:600px; max-width:600px` and becomes `100%` at ≤ 600px
   (`.nx-container`).
-- Side gutters shrink `32 → 20px` via `.nx-px`.
+- Side gutters shrink `32 → 22px` via `.nx-px`.
 - **Multi-column rows stack**: any cell with `.nx-stack` becomes
   `display:block; width:100%` at ≤ 600px. This drives `metric_row` and
   `button_row` to vertical layout. Spacer cells (`.nx-stack-gap`, `.nx-hide-sm`)
   hide on mobile.
-- Type steps down: `.nx-hero 32→26`, `.nx-title 24→21`, `.nx-metric-value 28→24`.
+- Type steps down: `.nx-title 22→21`, `.nx-metric-value 26→24`.
 - Buttons go full-width (`.nx-btn a { width:100% }`).
-- Touch targets ≥ 42px tall.
+- Touch targets ≥ 44px tall.
 
 Breakpoint: a single `@media screen and (max-width:600px)` in `base.html`.
 (Outlook ignores media queries but already shows the fixed 600px desktop layout,
@@ -161,8 +170,17 @@ html = env.get_template("emails/morning_digest.html").render(
 open("preview.html", "w", encoding="utf-8").write(html)
 ```
 
-- Pre-rendered examples live in [`previews/`](./previews) — open them in a
-  browser (toggle OS dark mode to verify both schemes).
+Or render all 16 at once with the design-time harness (writes `previews/`):
+
+```bash
+python scripts/render_emails.py            # render every template + assert no unresolved tags
+python scripts/render_emails.py morning_digest   # one template
+```
+
+- Pre-rendered HTML examples live in [`previews/`](./previews) and PNG captures of
+  every template in [`previews/screenshots/`](./previews/screenshots) (plus
+  `*_light.png` variants showing light/dark parity) — open them in a browser
+  (toggle OS dark mode to verify both schemes).
 - For client testing, paste rendered HTML into Litmus / Email on Acid, or send
   to a Gmail + Outlook + Apple Mail test inbox.
 - Sanity assertion used in design QA: rendered output contains **no** `{{` or
@@ -205,8 +223,9 @@ asset, perfect dark-mode behaviour. To upgrade to a wordmark image later:
 
 Before a new/changed template ships:
 
-- [ ] Extends `base.html`; overrides only `accent` + `content`.
-- [ ] Exactly one accent, taken from Design System §3.4 / Style Guide §6.
+- [ ] Extends `base.html`; overrides only `content` (no `accent` block).
+- [ ] Identity is the eyebrow + opening state chip (Style Guide §6); no colour bar.
+- [ ] At most one solid (`primary`) button; secondaries are `outline`/`ghost`.
 - [ ] Reuses Component Library macros; no duplicated bespoke HTML.
 - [ ] Every section guarded by `{% if %}`; no empty blocks.
 - [ ] All visual styles inline; nothing new added to `<style>` except global needs.

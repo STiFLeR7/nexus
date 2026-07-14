@@ -50,16 +50,22 @@ present tense for state, past tense for events. Active voice always.
 
 ## 3. Colour usage rules
 
-- **Accent = identity, not emphasis.** Each email has exactly **one** accent
-  (its type's colour). Don't sprinkle multiple brand colours for decoration.
-- **Semantic colour only on state.** Green/amber/red/blue/purple appear on
-  chips, panels, dots, and deltas — never as background fills for plain text.
-- **Surfaces stay neutral.** Cards are white/`surface`; the muted surface is for
-  secondary grouping. Coloured backgrounds are reserved for `panel()` (soft tints).
-- **One coloured CTA per decision.** Primary action solid; secondary as `ghost`
-  or `*-outline`. Two solid competing buttons only for Approve/Reject.
+- **No decorative colour, anywhere.** There is no coloured masthead or per-type
+  accent bar. The chrome is identical across every template; personality comes
+  from the eyebrow and a single state chip (§6).
+- **Ink is the only weight.** Near-black (`#16181D`) is the heaviest element and is
+  spent once per email — on the primary button. Don't introduce a second heavy
+  block.
+- **Semantic colour only on state.** Green/amber/red/blue appear on chips, panels,
+  dots, and deltas — never as background fills for plain text. All tones are
+  desaturated so emphasis stays quiet.
+- **Surfaces stay neutral.** Cards are white; the inset surface is for code and
+  soft grouping. Coloured tints are reserved for `panel()`.
+- **One solid action.** Primary action solid ink; secondary as `outline`/`ghost`.
+  Two buttons only for a genuine pair (Approve/Reject) — and even then, only the
+  primary is solid.
 - **Never rely on colour alone.** Pair every state colour with a glyph or label
-  (✓/✕/▲, "HEALTHY", "MEDIUM RISK") for colour-blind and grayscale readers.
+  (✓, ▲, "Healthy", "Medium risk") for colour-blind and grayscale readers.
 
 ---
 
@@ -84,20 +90,30 @@ present tense for state, past tense for events. Active voice always.
 
 ---
 
-## 6. Accent-per-type (authoritative)
+## 6. Personality-per-type (authoritative)
 
-| Template | `{% block accent %}` |
-|---|---|
-| morning_digest, todo_digest, conversations/* | `#4F46E5` |
-| operational_intelligence, weekly_review, monthly_executive | `#0F172A` |
-| research_report | `#0EA5E9` |
-| reminder | `#7C3AED` |
-| approval_required | `#D97706` |
-| execution_completed | `#16A34A` |
-| execution_failed, security_alert | `#DC2626` |
-| scheduler_report | `#0891B2` |
-| action_items | `#D97706` |
-| decision_summary | `#16A34A` |
+Identity is carried by the **eyebrow** (always present) and the **opening state
+chip** (where a type has a natural status), not by any colour bar. The chrome is
+identical everywhere. Use these tones for the opening chip:
+
+| Template | Eyebrow | Opening chip tone |
+|---|---|---|
+| morning_digest | Morning Digest | health → `success`/`warning` |
+| operational_intelligence | Operational Intelligence | `info` (state in metrics) |
+| research_report | Research Intelligence | importance → `info` |
+| todo_digest | TODO Digest | — (no chip; summary line) |
+| reminder | Reminder | `info` (⏰ time) |
+| approval_required | Approval Required | risk → `warning`/`danger` |
+| execution_completed | Runtime Completed | `success` |
+| execution_failed | Runtime Failed | `danger` |
+| security_alert | Security Alert | severity → `danger`/`warning` |
+| scheduler_report | Scheduler Report | health → `success`/`warning` |
+| weekly_review | Weekly Operations | — (KPI metrics lead) |
+| monthly_executive | Monthly Executive Report | — (highlights lead) |
+| conversations/qa_transcript | Q&A Transcript | — |
+| conversations/conversation_summary | Conversation Summary | — (TL;DR panel) |
+| conversations/action_items | Action Items | per-item marks |
+| conversations/decision_summary | Decision Summary | per-decision `status` |
 
 ---
 

@@ -1,57 +1,72 @@
-{#-
-  EMAIL TYPE 4 · TODO Digest  (daily productivity email)
-  Personality: brand indigo.
-
-  Context:
-    eyebrow="TODO Digest", subject, subtitle, timestamp, version
-    todo = {today:[[task,priority,est]], upcoming:[[task,due]], blocked:[{title,reason}],
-            completed:[str], quick_links:[{label,href,variant}]}
--#}
 {% extends "base.html" %}
-{% block accent %}#4F46E5{% endblock %}
+{# TODO Digest — the day, planned. Scannable rows, one action. #}
 {% block content %}
 {% import "partials/section.html" as sec %}
-{% import "partials/badge.html" as bdg %}
-{% import "partials/divider.html" as rule %}
+{% import "partials/list_row.html" as lst %}
 {% import "partials/button.html" as btn %}
-{% import "partials/table.html" as tbl %}
+{% import "partials/divider.html" as rule %}
 
-{% if todo.today %}
-{% call sec.section("Today", eyebrow="Focus", accent="#4F46E5") %}{% endcall %}
-{{ rule.spacer(12) }}
-{{ tbl.data_table(columns=["Task","Priority","Est."], rows=todo.today, aligns=["left","left","right"]) }}
+{% if summary_line %}
+<tr><td style="padding-top:24px;">
+  <p class="nx-body" style="margin:0; color:#3F434B; font-size:15px; line-height:24px;">{{ summary_line }}</p>
+</td></tr>
 {% endif %}
 
-{% if todo.upcoming %}
-{{ rule.divider() }}
-{% call sec.section("Upcoming", eyebrow="Soon") %}{% endcall %}
-{{ rule.spacer(12) }}
-{{ tbl.data_table(columns=["Task","Due"], rows=todo.upcoming, aligns=["left","right"]) }}
+{% if todo and todo.get('today') %}
+<tr><td>
+  {% call sec.section("Today", eyebrow="Focus") %}
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+      {% for t in todo.today %}
+      <tr><td style="padding:{% if loop.first %}0{% else %}7px{% endif %} 0 7px 0;">
+        {{ lst.list_row(t[0], lead=None, meta=(t[1] ~ (' · ' ~ t[2] if t|length > 2 else '')), status='pending') }}
+      </td></tr>
+      {% endfor %}
+    </table>
+  {% endcall %}
+</td></tr>
 {% endif %}
 
-{% if todo.blocked %}
-{{ rule.divider() }}
-{% call sec.section("Blocked", eyebrow="Attention", accent="#D97706") %}{% endcall %}
-{{ rule.spacer(10) }}
-{% for b in todo.blocked %}
-{% call sec.panel("warning", title=b.title) %}{{ b.reason }}{% endcall %}
-{% if not loop.last %}{{ rule.spacer(8) }}{% endif %}
-{% endfor %}
+{% if todo and todo.get('upcoming') %}
+<tr><td>
+  {% call sec.section("Upcoming", eyebrow="Soon") %}
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+      {% for t in todo.upcoming %}
+      <tr><td style="padding:{% if loop.first %}0{% else %}7px{% endif %} 0 7px 0;">
+        {{ lst.list_row(t[0], lead=None, meta=(t[1] if t|length > 1 else None), status='neutral') }}
+      </td></tr>
+      {% endfor %}
+    </table>
+  {% endcall %}
+</td></tr>
 {% endif %}
 
-{% if todo.completed %}
-{{ rule.divider() }}
-{% call sec.section("Completed", eyebrow="Done", accent="#16A34A") %}
-  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
-  {% for c in todo.completed %}
-    <tr><td valign="top" width="22" style="vertical-align:top;width:22px;color:#16A34A;font-weight:700;">✓</td><td valign="top" class="nx-muted" style="vertical-align:top;padding-bottom:6px;color:#64748B;text-decoration:line-through;">{{ c }}</td></tr>
+{% if todo and todo.get('blocked') %}
+<tr><td style="padding-top:28px;">
+  {% for b in todo.blocked %}
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-bottom:{% if not loop.last %}10px{% else %}0{% endif %};">
+    {% call sec.panel('warning', title=b.title) %}Blocked — {{ b.reason }}.{% endcall %}
+  </td></tr></table>
   {% endfor %}
-  </table>
-{% endcall %}
+</td></tr>
 {% endif %}
 
-{% if todo.quick_links %}
-{{ rule.divider() }}
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td align="center">{{ btn.button_row(todo.quick_links) }}</td></tr></table>
+{% if todo and todo.get('completed') %}
+<tr><td>
+  {% call sec.section("Completed", eyebrow="Done") %}
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+      {% for c in todo.completed %}
+      <tr><td style="padding:{% if loop.first %}0{% else %}7px{% endif %} 0 7px 0;">
+        {{ lst.list_row(c, lead=None, status='done') }}
+      </td></tr>
+      {% endfor %}
+    </table>
+  {% endcall %}
+</td></tr>
+{% endif %}
+
+{% if todo and todo.get('quick_links') %}
+<tr><td>{{ rule.divider(28) }}</td></tr>
+<tr><td>{{ btn.button(todo.quick_links[0].label, todo.quick_links[0].href, 'primary') }}</td></tr>
+<tr><td style="height:8px; line-height:8px; font-size:0;">&nbsp;</td></tr>
 {% endif %}
 {% endblock %}

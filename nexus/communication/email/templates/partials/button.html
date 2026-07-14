@@ -1,51 +1,51 @@
-{#-
-  Button — bulletproof CTA. VML fallback gives Outlook real rounded buttons;
-  every other client uses the padded anchor. Stacks full-width on mobile.
-  Import:  {% import "partials/button.html" as btn %}
-  Use:     {{ btn.button("Open dashboard", "https://...", "primary") }}
-           {{ btn.button("Approve", "https://...", "success") }}
-           {{ btn.button("Reject", "https://...", "danger-outline") }}
-           {{ btn.button_row([{"label":"Approve","href":"#","variant":"success"},
-                              {"label":"Reject","href":"#","variant":"danger-outline"}]) }}
+{#- =====================================================================
+    Button — bulletproof CTA (VML fallback for Outlook).
+      button(label, href, variant='primary', full=True, width=536)
+      button_row(buttons)   buttons=[{label, href, variant?}]
 
-  variants: primary · neutral · success · danger · danger-outline · ghost
--#}
-{% set _BTN = {
-  'primary':        ('#4F46E5', '#FFFFFF', '#4F46E5'),
-  'neutral':        ('#0F172A', '#FFFFFF', '#0F172A'),
-  'success':        ('#16A34A', '#FFFFFF', '#16A34A'),
-  'danger':         ('#DC2626', '#FFFFFF', '#DC2626'),
-  'danger-outline': ('#FFFFFF', '#B91C1C', '#FCA5A5'),
-  'ghost':          ('#FFFFFF', '#334155', '#CBD5E1')
-} %}
-{% macro button(label, href, variant='primary', full=False) -%}
+    Philosophy: one solid ink button per email (the single anchor).
+    Secondary actions are 'outline' or 'ghost' — never a second solid
+    block competing for attention. Calm, dependable, gently rounded.
+    Variants: primary · outline · ghost · danger (reserved for security).
+   ===================================================================== -#}
+{%- set _BTN = {
+  'primary': ('#16181D', '#FFFFFF', '#16181D'),
+  'outline': ('transparent', '#16181D', '#D7D9DE'),
+  'ghost':   ('transparent', '#16181D', 'transparent'),
+  'danger':  ('#B23B33', '#FFFFFF', '#B23B33')
+} -%}
+{% macro button(label, href, variant='primary', full=True, width=536) -%}
 {%- set c = _BTN.get(variant, _BTN['primary']) -%}
-<table role="presentation" cellpadding="0" cellspacing="0" border="0" class="nx-btn" style="{% if full %}width:100%;{% endif %}">
+{%- set cls = 'nx-btn-primary' if variant == 'primary' else ('nx-btn-outline' if variant == 'outline' else '') -%}
+{%- set solid = variant in ('primary', 'danger') -%}
+<table role="presentation" class="nx-btn" cellpadding="0" cellspacing="0" border="0" {% if full %}width="100%"{% endif %} style="{% if full %}width:100%;{% endif %}">
   <tr>
-    <td align="center" bgcolor="{{ c[0] }}" style="border-radius:8px; border:1px solid {{ c[2] }};">
+    <td align="center" class="{{ cls }}" {% if solid %}bgcolor="{{ c[0] }}"{% endif %} style="border-radius:12px; background:{{ c[0] }};{% if variant == 'outline' or variant == 'ghost' %} border:1px solid {{ c[2] }};{% endif %}">
       <!--[if mso]>
-      <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="{{ href }}" style="height:42px;v-text-anchor:middle;width:240px;" arcsize="19%" strokecolor="{{ c[2] }}" fillcolor="{{ c[0] }}">
-        <w:anchorlock/>
-        <center style="color:{{ c[1] }};font-family:sans-serif;font-size:14px;font-weight:600;">{{ label }}</center>
+      <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="{{ href }}" style="height:46px;v-text-anchor:middle;width:{{ width }}px;" arcsize="26%" {% if variant == 'outline' or variant == 'ghost' %}strokecolor="{{ c[2] }}" fillcolor="{{ '#FFFFFF' if c[0]=='transparent' else c[0] }}"{% else %}stroke="f" fillcolor="{{ c[0] }}"{% endif %}>
+      <w:anchorlock/><center style="color:{{ c[1] }};font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;font-size:14px;font-weight:600;">{{ label }}</center>
       </v:roundrect>
       <![endif]-->
-      <!--[if !mso]><!-- -->
-      <a href="{{ href }}" style="display:inline-block; padding:11px 22px; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; font-size:14px; line-height:20px; font-weight:600; color:{{ c[1] }}; text-decoration:none; border-radius:8px; letter-spacing:0.1px;">{{ label }}</a>
-      <!--<![endif]-->
+      <a href="{{ href }}" class="{{ cls }}" style="display:inline-block; {% if full %}width:100%; box-sizing:border-box;{% endif %} color:{{ c[1] }}; background:{{ c[0] }}; font-size:14px; font-weight:600; line-height:20px; padding:13px 24px; border-radius:12px; text-align:center; mso-hide:all;{% if variant == 'outline' or variant == 'ghost' %} border:1px solid {{ c[2] }};{% endif %}">{{ label }}</a>
     </td>
   </tr>
 </table>
 {%- endmacro %}
 
-{#- horizontal button group; stacks on mobile via .nx-stack -#}
 {% macro button_row(buttons) -%}
-<table role="presentation" cellpadding="0" cellspacing="0" border="0">
+{%- set n = buttons | length -%}
+{%- if n == 1 -%}
+  {{ button(buttons[0].label, buttons[0].href, buttons[0].get('variant','primary'), True, 536) }}
+{%- else -%}
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
   <tr>
-    {% for b in buttons %}
-    <td class="nx-stack" valign="top" style="padding-right:{% if not loop.last %}10px{% else %}0{% endif %};">
-      {{ button(b.label, b.href, b.get('variant','primary')) }}
+    {%- for b in buttons -%}
+    <td class="nx-stack" valign="top" width="{{ ((536 - 12) / 2) | int }}" style="width:{{ ((536 - 12) / 2) | int }}px;">
+      {{ button(b.label, b.href, b.get('variant', 'outline' if not loop.first else 'primary'), True, ((536 - 12) / 2) | int) }}
     </td>
-    {% endfor %}
+    {%- if not loop.last -%}<td class="nx-stack-gap" width="12" style="width:12px; font-size:0; line-height:0;">&nbsp;</td>{%- endif -%}
+    {%- endfor -%}
   </tr>
 </table>
+{%- endif -%}
 {%- endmacro %}

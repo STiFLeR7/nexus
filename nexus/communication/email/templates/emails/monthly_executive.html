@@ -1,66 +1,91 @@
-{#-
-  EMAIL TYPE 12 · Monthly Executive Report  (CEO style)
-  Personality: deep navy — the most composed, narrative-led layout.
-
-  Context:
-    eyebrow="Monthly Executive Report", subject, subtitle, timestamp, version
-    exec = {highlights:[str], kpis:[{label,value,delta,trend}],
-            growth:[{label,pct,tone}], reliability:[[k,v]], execution:[[k,v]],
-            research:[[k,v]], architecture:[str], recommendations:[str],
-            roadmap:[{time,title,tone,body}]}
--#}
 {% extends "base.html" %}
-{% block accent %}#0F172A{% endblock %}
+{# Monthly Executive Report — the wide-angle view. Composed and confident. #}
 {% block content %}
 {% import "partials/section.html" as sec %}
-{% import "partials/divider.html" as rule %}
 {% import "partials/metric_card.html" as mc %}
-{% import "partials/timeline.html" as tl %}
 {% import "partials/table.html" as tbl %}
+{% import "partials/timeline.html" as tl %}
 
-{% if exec.highlights %}
-{% call sec.section("Highlights", eyebrow="The month in brief") %}
-  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
-  {% for h in exec.highlights %}<tr><td valign="top" width="20" style="vertical-align:top;width:20px;color:#4F46E5;font-weight:700;">★</td><td valign="top" style="vertical-align:top;padding-bottom:8px;">{{ h }}</td></tr>{% endfor %}
-  </table>
-{% endcall %}
+{% if exec %}
+{% if exec.get('highlights') %}
+<tr><td style="padding-top:24px;">
+  {% call sec.section("Highlights", eyebrow="The month", top=0) %}
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+      {% for h in exec.highlights %}
+      <tr>
+        <td valign="top" width="18" style="width:18px; color:#16181D; font-size:13px; line-height:21px;">●</td>
+        <td valign="top" class="nx-body" style="color:#3F434B; font-size:14px; line-height:21px; padding-bottom:{% if not loop.last %}9px{% else %}0{% endif %};">{{ h }}</td>
+      </tr>
+      {% endfor %}
+    </table>
+  {% endcall %}
+</td></tr>
 {% endif %}
 
-{% if exec.kpis %}{{ rule.spacer(18) }}{{ mc.metric_row(exec.kpis) }}{% endif %}
-
-{% if exec.growth %}
-{{ rule.divider() }}
-{% call sec.section("Growth", eyebrow="Trajectory", accent="#16A34A") %}{% endcall %}
-{{ rule.spacer(14) }}
-{% for g in exec.growth %}{{ tbl.progress(g.pct, g.tone | default("success"), g.label) }}{% if not loop.last %}{{ rule.spacer(14) }}{% endif %}{% endfor %}
+{% if exec.get('kpis') %}
+<tr><td>{% call sec.section("Key indicators", eyebrow="Month totals") %}{{ mc.metric_row(exec.kpis) }}{% endcall %}</td></tr>
 {% endif %}
 
-{% if exec.reliability %}{{ rule.divider() }}{% call sec.section("Reliability", eyebrow="Operations", accent="#16A34A") %}{% endcall %}{{ rule.spacer(12) }}{{ tbl.kv_grid(exec.reliability) }}{% endif %}
-{% if exec.execution %}{{ rule.divider() }}{% call sec.section("Execution", eyebrow="Delivery", accent="#6366F1") %}{% endcall %}{{ rule.spacer(12) }}{{ tbl.kv_grid(exec.execution) }}{% endif %}
-{% if exec.research %}{{ rule.divider() }}{% call sec.section("Research", eyebrow="Intelligence", accent="#0EA5E9") %}{% endcall %}{{ rule.spacer(12) }}{{ tbl.kv_grid(exec.research) }}{% endif %}
-
-{% if exec.architecture %}
-{{ rule.divider() }}
-{% call sec.section("Architecture", eyebrow="Platform") %}
-  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
-  {% for a in exec.architecture %}<tr><td valign="top" width="20" style="vertical-align:top;width:20px;color:#64748B;font-weight:700;">▪</td><td valign="top" style="vertical-align:top;padding-bottom:8px;">{{ a }}</td></tr>{% endfor %}
-  </table>
-{% endcall %}
+{% if exec.get('growth') %}
+<tr><td>
+  {% call sec.section("Growth", eyebrow="Month over month") %}
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+      {% for g in exec.growth %}
+      <tr><td style="padding-bottom:{% if not loop.last %}16px{% else %}0{% endif %};">{{ tbl.progress(g.pct, g.get('tone','ink'), g.label) }}</td></tr>
+      {% endfor %}
+    </table>
+  {% endcall %}
+</td></tr>
 {% endif %}
 
-{% if exec.recommendations %}
-{{ rule.divider() }}
-{% call sec.section("Recommendations", eyebrow="Strategy") %}
-  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
-  {% for rec in exec.recommendations %}<tr><td valign="top" width="20" style="vertical-align:top;width:20px;color:#4F46E5;font-weight:700;">→</td><td valign="top" style="vertical-align:top;padding-bottom:8px;">{{ rec }}</td></tr>{% endfor %}
-  </table>
-{% endcall %}
+{% if exec.get('reliability') %}
+<tr><td>{% call sec.section("Reliability", eyebrow="Stability") %}{{ tbl.kv_grid(exec.reliability) }}{% endcall %}</td></tr>
+{% endif %}
+{% if exec.get('execution') %}
+<tr><td>{% call sec.section("Execution", eyebrow="Throughput") %}{{ tbl.kv_grid(exec.execution) }}{% endcall %}</td></tr>
+{% endif %}
+{% if exec.get('research') %}
+<tr><td>{% call sec.section("Research", eyebrow="Intelligence") %}{{ tbl.kv_grid(exec.research) }}{% endcall %}</td></tr>
 {% endif %}
 
-{% if exec.roadmap %}
-{{ rule.divider() }}
-{% call sec.section("Roadmap", eyebrow="What's next", accent="#7C3AED") %}{% endcall %}
-{{ rule.spacer(12) }}
-{{ tl.timeline(exec.roadmap) }}
+{% if exec.get('architecture') %}
+<tr><td>
+  {% call sec.section("Architecture", eyebrow="What changed") %}
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+      {% for a in exec.architecture %}
+      <tr>
+        <td valign="top" width="18" class="nx-faint" style="width:18px; color:#8A8F98; font-size:13px; line-height:21px;">▪</td>
+        <td valign="top" class="nx-body" style="color:#3F434B; font-size:14px; line-height:21px; padding-bottom:{% if not loop.last %}8px{% else %}0{% endif %};">{{ a }}</td>
+      </tr>
+      {% endfor %}
+    </table>
+  {% endcall %}
+</td></tr>
+{% endif %}
+
+{% if exec.get('recommendations') %}
+<tr><td>
+  {% call sec.section("Recommendations", eyebrow="Next") %}
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+      {% for rec in exec.recommendations %}
+      <tr>
+        <td valign="top" width="18" class="nx-faint" style="width:18px; color:#AEB2BA; font-size:13px; line-height:21px;">→</td>
+        <td valign="top" class="nx-body" style="color:#3F434B; font-size:14px; line-height:21px; padding-bottom:{% if not loop.last %}8px{% else %}0{% endif %};">{{ rec }}</td>
+      </tr>
+      {% endfor %}
+    </table>
+  {% endcall %}
+</td></tr>
+{% endif %}
+
+{% if exec.get('roadmap') %}
+<tr><td>
+  {% call sec.section("Roadmap", eyebrow="Ahead") %}
+    {{ tl.timeline(exec.roadmap) }}
+  {% endcall %}
+</td></tr>
+{% endif %}
+
+<tr><td style="height:8px; line-height:8px; font-size:0;">&nbsp;</td></tr>
 {% endif %}
 {% endblock %}

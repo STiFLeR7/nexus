@@ -1,83 +1,113 @@
-# Nexus Email Component Library
+# Nexus Email Component Library (v2)
 
-The reusable building blocks. Every email is composed from these — authors
-should reach for an existing component before writing bespoke HTML. Each entry
-lists the import, signature, parameters, an example, variants, and rendering
-notes.
+The reusable building blocks. Compose every email from these — reach for an
+existing macro before writing bespoke HTML. Each entry gives the import, signature,
+an example, and notes.
 
-> Import a partial once at the top of your `{% block content %}`:
-> `{% import "partials/metric_card.html" as mc %}`
-> Header and footer are auto-included by `base.html`; you don't import them.
+> Import partials **inside** `{% block content %}` (Jinja inheritance quirk — see
+> `EMAIL_TEMPLATE_GUIDELINES.md` §1):
+> `{% import "partials/list_row.html" as lst %}`
+> Header and footer are auto-included by `base.html`; you never import them.
 
 ---
 
 ## Layout & shell
 
 ### `base.html` — master layout
-- **Blocks:** `title`, `preheader`, `accent` (top-bar hex = personality), `content`.
-- **Provides:** `<head>`, dark-mode + responsive `<style>`, page→container→card
-  scaffold, header/footer includes, preheader text.
-- **Use:** `{% extends "base.html" %}` then override `accent` + `content`.
+- **Blocks:** `title`, `preheader`, `content`.
+- **Provides:** head, dark-mode + responsive `<style>`, canvas → card scaffold,
+  header/footer includes, preheader text.
+- **Use:** `{% extends "base.html" %}` then override `content` only. *(There is no
+  `accent` block — personality comes from the eyebrow + a state chip.)*
 
 ### `partials/header.html` — brand lockup
-- **Renders:** monogram tile + "Nexus" wordmark, right-aligned `timestamp`,
+- **Renders:** ink monogram tile + "Nexus" wordmark, right-aligned `timestamp`,
   `eyebrow`, `subject` (`<h1>`), `subtitle`, hairline.
-- **Context:** `eyebrow, subject, subtitle, timestamp, accent`.
-- **Notes:** logo is a bulletproof CSS tile (no image). Emits `<tr>` rows.
+- **Context:** `eyebrow, subject, subtitle, timestamp`.
 
-### `partials/footer.html` — closer
+### `partials/footer.html` — quiet closer
 - **Renders:** `brand_links`, brand line + `version`, automation note, generated-at.
 - **Context:** `brand_links, version, footer_note, timestamp`.
 
 ---
 
+## Signature patterns — `list_row.html` → `lst`
+
+The most Nexus-specific blocks, quoted directly from the reference.
+
+### List row
+Status mark · two-tone text (muted lead · ink subject) · trailing meta/chevron.
+
+```jinja
+{% import "partials/list_row.html" as lst %}
+{{ lst.list_row("Community Chair", lead="Vote on", meta="3 candidates",
+                status="done", href="#") }}
+{{ lst.list_rows([
+   {"subject":"Ship priority feed", "meta":"P1", "status":"pending"},
+   {"subject":"Recovery check", "meta":"active", "status":"active"}
+]) }}
+```
+- **`list_row(subject, lead=None, meta=None, status=None, href=None)`**
+- **`list_rows(items)`** — items are dicts of the same params; pure-spacing list.
+- **`mark(status)`** — leading indicator: `done/success`→green check,
+  `pending/todo/open`→empty ring, `warning/danger/info`→dot.
+
+### Option row
+Bordered, rounded choice with a trailing radio (approval options, decisions).
+
+```jinja
+{{ lst.option_rows([
+   {"label":"Joanna Sharpe", "selected":true},
+   {"label":"William Lewis-Norton"}
+]) }}
+```
+- **`option_row(label, selected=False)`**, **`option_rows(items)`**.
+
+---
+
 ## Content components
 
-### Section — `section.html` → `sec`
-Titled content block with accent tick + optional eyebrow. Call form.
+### Section — `section.html` → `sec.section`
+Quiet titled group (eyebrow + title), no coloured tick. Call form.
 
 ```jinja
 {% import "partials/section.html" as sec %}
-{% call sec.section("Today's health", eyebrow="System", accent="#16A34A") %}
-  ...inner html...
-{% endcall %}
+{% call sec.section("System health", eyebrow="Past 24 hours") %} ... {% endcall %}
 ```
-- **Params:** `title`, `eyebrow=None`, `accent="#4F46E5"`; body via `{{ caller() }}`.
+- **`section(title, eyebrow=None, top=28)`**; body via `{{ caller() }}`.
 
 ### Panel — `section.html` → `sec.panel`
-Soft tinted callout for info/success/warning/error/neutral.
+The only place a tint touches a block. Soft callout for TL;DR / cause / alerts.
 
 ```jinja
 {% call sec.panel("warning", title="Throughput dip") %}−8% vs 7-day avg.{% endcall %}
 ```
-- **Params:** `tone="info"` (`info·success·warning·error·neutral`), `title=None`.
-- **Notes:** left accent bar + leading glyph; use for alerts, root cause, TL;DR.
+- **`panel(tone='info', title=None)`** — `info·success·warning·error·neutral`.
 
 ### Code / artifact block — `section.html` → `sec.code_block`
-Monospace dark surface for logs, stack traces, file lists, raw events.
+Light monospace inset (not a dark slab) for logs, traces, file lists.
 
 ```jinja
 {{ sec.code_block(incident.stderr, label="stderr") }}
 ```
-- **Params:** `content`, `label=None`. Wraps long lines; safe on mobile.
+- **`code_block(content, label=None)`** — wraps long lines; safe on mobile.
 
-### Metric card — `metric_card.html` → `mc`
-Single KPI, or a responsive row that stacks on mobile (**prefer the row**).
+### Metric — `metric_card.html` → `mc`
+Unboxed two-tone stats, hairline-separated (prefer the row).
 
 ```jinja
 {% import "partials/metric_card.html" as mc %}
 {{ mc.metric_row([
    {"label":"Uptime","value":"99.98%","delta":"+0.04","trend":"up"},
-   {"label":"Tasks","value":"24","trend":"flat"},
-   {"label":"Failures","value":"1","delta":"-2","trend":"down-good","accent":"#DC2626"}
+   {"label":"Failures","value":"1","delta":"-2","trend":"down-good"}
 ]) }}
 ```
-- **`metric_card(label, value, delta=None, trend='flat', accent='#0F172A')`**
-- **`metric_row(items)`** — up to 3 across; `.nx-stack` collapses to full-width rows ≤ 600px.
+- **`metric(label, value, delta=None, trend='flat')`**
+- **`metric_row(items)`** — up to 3; stacks ≤600px.
 - **trend:** `up`(green▲) `down`(red▼) `flat`(→) `up-bad`(red▲) `down-good`(green▼).
 
 ### Timeline — `timeline.html` → `tl`
-Vertical event sequence (scheduler runs, failure stages, audit, conversation).
+Aligned dots + spacing (no heavy rail). Scheduler runs, failure stages, roadmap.
 
 ```jinja
 {% import "partials/timeline.html" as tl %}
@@ -86,128 +116,89 @@ Vertical event sequence (scheduler runs, failure stages, audit, conversation).
    {"time":"10:00","title":"Research run","tone":"info"}
 ]) }}
 ```
-- **Params:** `events=[{time,title,body?,tone?}]`. tone → dot colour
-  (`success·warning·danger·info·pending·neutral`).
+- **`timeline(events)`** — `events=[{time?, title, body?, tone?}]`.
 
-### Data table — `table.html` → `tbl.data_table`
-Bordered, header-styled table with per-column alignment.
-
+### Data table / kv grid / progress — `table.html` → `tbl`
 ```jinja
 {% import "partials/table.html" as tbl %}
-{{ tbl.data_table(columns=["Job","Status","Duration"],
-                  rows=[["research","Succeeded","12s"],["sweep","Skipped","—"]],
-                  aligns=["left","left","right"]) }}
-```
-- **Params:** `columns`, `rows` (list of cell lists), `aligns=None`.
-
-### Key/value grid — `table.html` → `tbl.kv_grid`
-Metadata block (definition-list style); label left, value right.
-
-```jinja
+{{ tbl.data_table(["Job","Status","Duration"],
+                  [["research","Succeeded","12s"]], ["left","left","right"]) }}
 {{ tbl.kv_grid([["Runtime","nexus"],["Repository","workspace_root"]]) }}
+{{ tbl.progress(72, "success", "Step budget") }}
 ```
-- **Params:** `pairs=[[key,value], ...]`.
-
-### Progress bar — `table.html` → `tbl.progress`
-Completion / budget / "chart bar". Bulletproof (table fill, no CSS gradients).
-
-```jinja
-{{ tbl.progress(72, "brand", "Step budget") }}
-```
-- **Params:** `pct`, `tone="brand"` (`brand·success·warning·danger·info`), `label=None`.
-- **Notes:** clamps 0–100. Stacked bars approximate charts in email; real charts
-  ship as pre-rendered images in the PDF export.
+- **`data_table(columns, rows, aligns=None)`** — hairline rows, muted header.
+- **`kv_grid(pairs)`** — `pairs=[[label, value], ...]`.
+- **`progress(pct, tone='ink', label=None)`** — clamps 0–100; bulletproof fill.
 
 ---
 
 ## Indicators & actions
 
-### Badge — `badge.html` → `bdg.badge`
-Static rounded label (tags, subsystem, IDs).
+### Status chip / dot — `status_chip.html` → `chip`
+```jinja
+{% import "partials/status_chip.html" as chip %}
+{{ chip.status_chip("Healthy", "success") }}   {{ chip.dot("warning") }}
+```
+- **`status_chip(text, status='info')`** — `success·warning·danger·info·pending·neutral`.
+- **`dot(status='info', size=8)`** — bare dot for inline use.
 
+### Badge — `badge.html` → `bdg`
 ```jinja
 {% import "partials/badge.html" as bdg %}
 {{ bdg.badge("Governance", "brand") }}  {{ bdg.badge("CVE-2026-1", "danger", mono=True) }}
 ```
-- **Params:** `text`, `tone="neutral"` (`neutral·brand·success·warning·danger·info·pending`), `mono=False`.
-
-### Status chip — `status_chip.html` → `chip.status_chip`
-A state with a leading status dot (liveness, task/job state, risk).
-
-```jinja
-{% import "partials/status_chip.html" as chip %}
-{{ chip.status_chip("Healthy", "success") }}
-{{ chip.status_chip("MEDIUM RISK", "warning") }}
-```
-- **Params:** `text`, `status="info"` (`success·warning·danger·info·pending·neutral`).
+- **`badge(text, tone='neutral', mono=False)`** —
+  `neutral·brand·success·warning·danger·info·pending`.
 
 ### Divider / spacer — `divider.html` → `rule`
-Consistent vertical rhythm.
-
 ```jinja
 {% import "partials/divider.html" as rule %}
-{{ rule.divider() }}     {# hairline + 20px above/below #}
-{{ rule.spacer(24) }}    {# invisible gap only #}
+{{ rule.divider(24) }}   {# hairline + 24px above/below #}
+{{ rule.spacer(16) }}    {# invisible gap #}
 ```
-- **`divider(space=20)`**, **`spacer(space=16)`**.
 
 ### Button — `button.html` → `btn`
-Bulletproof CTA (VML for Outlook), full-width-on-mobile, and a button group.
+One solid ink anchor per email; secondaries are outline/ghost. VML for Outlook.
 
 ```jinja
 {% import "partials/button.html" as btn %}
 {{ btn.button("Open dashboard", url, "primary") }}
 {{ btn.button_row([
-   {"label":"✓ Approve","href":a,"variant":"success"},
-   {"label":"✕ Reject","href":r,"variant":"danger-outline"}
+   {"label":"Approve","href":a,"variant":"primary"},
+   {"label":"Reject","href":r,"variant":"outline"}
 ]) }}
 ```
-- **`button(label, href, variant='primary', full=False)`** — variants:
-  `primary·neutral·success·danger·danger-outline·ghost`.
-- **`button_row(buttons)`** — stacks vertically ≤ 600px.
+- **`button(label, href, variant='primary', full=True, width=536)`** — variants
+  `primary·outline·ghost·danger`.
+- **`button_row(buttons)`** — 1 button = full width; 2 = side by side, stack ≤600px.
 
 ---
 
 ## Higher-order patterns (compositions)
 
-These aren't separate files — they're conventional compositions of the above,
-used across templates and worth standardising:
-
 | Pattern | Built from | Seen in |
 |---|---|---|
-| **Status card** | `panel` + `status_chip` + `kv_grid` | approval, security, completed |
-| **Event card** | white card + title + `badge` + caption + link | morning digest (research) |
-| **Task card** | `data_table` row or card + `badge` priority | todo, digest |
-| **Approval card** | `panel` + risk `chip` + `kv_grid` + `code_block(files)` + `button_row` | approval_required |
-| **Incident report** | `panel(error)` + `kv_grid` + `timeline` + `code_block` + numbered recovery | execution_failed |
-| **Statistics panel** | `metric_row` + `progress` bars | operational, weekly, monthly |
-| **Info/Alert/Warning/Error/Success panels** | `panel(tone)` | everywhere |
-| **Link preview** | event card with title + source `badge` + "Read →" | research, digest |
-| **Priority / severity indicator** | `status_chip` + `badge` | approval, security |
-| **Key-value grid** | `kv_grid` | metadata blocks |
-| **Chat bubble** | aligned table + tinted `<td>` | qa_transcript |
+| **Verdict + evidence** | state `chip` + ink subject + `kv_grid` | completed, failed, approval |
+| **Operational list** | `list_rows` (mark · two-tone · meta) | digest, todo, research, artifacts |
+| **Decision surface** | `chip` + `kv_grid` + `code_block` + `button_row` | approval_required |
+| **Incident report** | `panel(error)` + `kv_grid` + `timeline` + `code_block` + numbered steps | execution_failed |
+| **Statistics block** | `metric_row` + `progress` | operational, weekly, monthly |
+| **Callout** | `panel(tone)` | TL;DR, root cause, alerts |
+| **Chat bubble** | aligned table + ink/inset bubble | qa_transcript |
 
 ---
 
 ## Q&A / conversational family mapping
 
-Four template files cover the whole conversational family; the rest are
-**presets of these** (same structure, different `eyebrow`/`subject`/emphasis):
+Four files cover the whole conversational family; the rest are **presets** (same
+structure, different `eyebrow`/`subject`/emphasis):
 
 | Requested type | Use template | Notes |
 |---|---|---|
 | Q&A transcript | `conversations/qa_transcript.html` | chat bubbles, operator vs Dex |
-| Conversation summary | `conversations/conversation_summary.html` | TL;DR + key points + decisions + actions |
-| Meeting notes | `conversation_summary` | eyebrow "Meeting Notes"; topics = agenda |
-| AI session recap | `conversation_summary` | eyebrow "Session Recap" |
-| Knowledge capture | `conversation_summary` | lead with `key_points`; add `references` |
-| Daily conversation digest | `conversation_summary` | eyebrow "Conversation Digest"; multiple topics |
-| Research discussion | `conversation_summary` | accent `#0EA5E9`; emphasise insights |
+| Conversation summary | `conversations/conversation_summary.html` | TL;DR + points + decisions + actions |
+| Meeting notes / Session recap / Knowledge capture / Daily digest | `conversation_summary` | change `eyebrow`; topics = agenda |
 | Decision summary | `conversations/decision_summary.html` | per-decision rationale + alternatives |
-| Action items | `conversations/action_items.html` | checklist with owner/due/priority |
-| Follow-ups | `action_items` | summary_line "Follow-ups"; lower priority tone |
-| Operator notes | `conversation_summary` | free-form `key_points` only |
+| Action items / Follow-ups | `conversations/action_items.html` | checklist with owner/due/priority |
 
-This keeps the surface small and consistent while covering every requested
-conversational format. New conversational variants should reuse one of these
-four rather than adding files.
+New conversational variants should reuse one of these four rather than adding files.

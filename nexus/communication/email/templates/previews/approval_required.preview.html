@@ -1,8 +1,9 @@
 <!DOCTYPE html>
+
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="x-apple-disable-message-reformatting">
   <meta name="color-scheme" content="light dark">
@@ -13,134 +14,116 @@
   <![endif]-->
   <style>
     /* ---- resets ---- */
-    html, body { margin: 0 !important; padding: 0 !important; height: 100% !important; width: 100% !important; }
-    * { -ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%; }
-    table, td { mso-table-lspace: 0pt !important; mso-table-rspace: 0pt !important; border-collapse: collapse !important; }
-    img { -ms-interpolation-mode: bicubic; border: 0; height: auto; line-height: 100%; outline: none; text-decoration: none; }
-    a { text-decoration: none; }
-    a[x-apple-data-detectors] { color: inherit !important; text-decoration: none !important; }
-    .nx-link:hover { text-decoration: underline !important; }
+    html, body { margin:0 !important; padding:0 !important; height:100% !important; width:100% !important; }
+    * { -ms-text-size-adjust:100%; -webkit-text-size-adjust:100%; }
+    table, td { mso-table-lspace:0pt; mso-table-rspace:0pt; border-collapse:collapse; }
+    img { -ms-interpolation-mode:bicubic; border:0; height:auto; line-height:100%; outline:none; text-decoration:none; }
+    a { text-decoration:none; }
+    body { background:#E9EAEC; }
 
-    /* ---- responsive (mobile-first overrides at <=600px) ---- */
-    @media screen and (max-width: 600px) {
-      .nx-container { width: 100% !important; }
-      .nx-px { padding-left: 20px !important; padding-right: 20px !important; }
-      .nx-stack { display: block !important; width: 100% !important; box-sizing: border-box; }
-      .nx-stack-gap { height: 12px !important; line-height: 12px !important; }
-      .nx-hero { font-size: 26px !important; line-height: 34px !important; }
-      .nx-title { font-size: 21px !important; line-height: 28px !important; }
-      .nx-metric-value { font-size: 24px !important; }
-      .nx-btn a { display: block !important; width: 100% !important; box-sizing: border-box; }
-      .nx-hide-sm { display: none !important; }
+    /* ---- type ---- */
+    .nx-font { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif; }
+    .nx-mono { font-family:"SFMono-Regular",ui-monospace,Menlo,Consolas,"Liberation Mono",monospace; }
+
+    /* ---- responsive ---- */
+    @media screen and (max-width:600px) {
+      .nx-container { width:100% !important; }
+      .nx-px { padding-left:22px !important; padding-right:22px !important; }
+      .nx-stack { display:block !important; width:100% !important; box-sizing:border-box !important; }
+      .nx-stack-gap { display:none !important; height:14px !important; }
+      .nx-hide-sm { display:none !important; }
+      .nx-title { font-size:21px !important; line-height:28px !important; }
+      .nx-metric-value { font-size:24px !important; }
+      .nx-btn a, .nx-btn table { width:100% !important; }
+      .nx-right-sm { text-align:left !important; }
     }
 
     /* ---- dark mode ---- */
     @media (prefers-color-scheme: dark) {
-      body, .nx-page { background: #0B0F19 !important; }
-      .nx-card, .nx-surface { background: #111827 !important; border-color: #1F2937 !important; }
-      .nx-muted-surface { background: #0F1623 !important; border-color: #1F2937 !important; }
-      .nx-ink { color: #F9FAFB !important; }
-      .nx-body { color: #CBD5E1 !important; }
-      .nx-muted { color: #9CA3AF !important; }
-      .nx-faint { color: #6B7280 !important; }
-      .nx-border, .nx-divider td { border-color: #1F2937 !important; }
-      .nx-footer { background: #0B0F19 !important; }
-      .nx-wordmark { color: #F9FAFB !important; }
-      .nx-invert-soft { background: #0F1623 !important; }
+      body, .nx-canvas { background:#0E0F12 !important; }
+      .nx-card { background:#17191E !important; box-shadow:none !important; }
+      .nx-ink { color:#F3F4F6 !important; }
+      .nx-body { color:#C7CBD2 !important; }
+      .nx-muted { color:#8B9097 !important; }
+      .nx-faint { color:#6C7079 !important; }
+      .nx-border, .nx-border-t, .nx-border-b { border-color:#2A2D34 !important; }
+      .nx-inset { background:#1E2026 !important; }
+      .nx-hairline { background:#2A2D34 !important; }
+      .nx-monogram { background:#F3F4F6 !important; color:#17191E !important; }
+      .nx-btn-primary a { background:#F3F4F6 !important; color:#17191E !important; }
+      .nx-btn-outline a { border-color:#3A3D44 !important; color:#E5E7EB !important; }
     }
-    [data-ogsc] .nx-ink { color: #F9FAFB !important; }
-    [data-ogsc] .nx-body { color: #CBD5E1 !important; }
-    [data-ogsc] .nx-card { background: #111827 !important; border-color: #1F2937 !important; }
+    [data-ogsc] body, [data-ogsc] .nx-canvas { background:#0E0F12 !important; }
+    [data-ogsc] .nx-card { background:#17191E !important; }
+    [data-ogsc] .nx-ink { color:#F3F4F6 !important; }
+    [data-ogsc] .nx-body { color:#C7CBD2 !important; }
+    [data-ogsc] .nx-muted { color:#8B9097 !important; }
+    [data-ogsc] .nx-border, [data-ogsc] .nx-border-t, [data-ogsc] .nx-border-b { border-color:#2A2D34 !important; }
+    [data-ogsc] .nx-inset { background:#1E2026 !important; }
   </style>
 </head>
-<body class="nx-page" style="margin:0; padding:0; width:100%; background:#F1F5F9;">
-  
-  <div style="display:none; max-height:0; overflow:hidden; mso-hide:all; font-size:1px; line-height:1px; color:#F1F5F9; opacity:0;">
-    A governed task is blocked awaiting your decision.
-    &#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;
+<body class="nx-font" style="margin:0; padding:0; background:#E9EAEC; -webkit-font-smoothing:antialiased;">
+
+  <!-- preheader (hidden inbox preview) -->
+  <div style="display:none; max-height:0; overflow:hidden; mso-hide:all; font-size:1px; line-height:1px; color:#E9EAEC; opacity:0;">
+    &nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;
   </div>
 
-  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" class="nx-page" style="background:#F1F5F9;">
+  <table role="presentation" class="nx-canvas" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#E9EAEC;">
     <tr>
       <td align="center" style="padding:32px 16px;">
+
         <!--[if mso]><table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0"><tr><td><![endif]-->
-        <table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0" class="nx-container" style="width:600px; max-width:600px; margin:0 auto;">
-
-          
+        <table role="presentation" class="nx-container" width="600" cellpadding="0" cellspacing="0" border="0" style="width:600px; max-width:600px;">
           <tr>
-            <td style="height:4px; line-height:4px; font-size:4px; background:#D97706; border-radius:14px 14px 0 0;">&nbsp;</td>
-          </tr>
+            <td class="nx-card" style="background:#FFFFFF; border-radius:18px; box-shadow:0 1px 2px rgba(16,18,24,0.04), 0 6px 24px rgba(16,18,24,0.05);">
 
-          
-          <tr>
-            <td class="nx-card nx-surface" style="background:#FFFFFF; border:1px solid #E2E8F0; border-top:0; border-radius:0 0 14px 14px; box-shadow:0 1px 2px rgba(16,24,40,.06), 0 1px 3px rgba(16,24,40,.10);">
               <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
 
                 <tr>
-  <td class="nx-px" style="padding:28px 32px 0 32px;">
+  <td class="nx-px" style="padding:30px 32px 0 32px;">
     <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
       <tr>
-        
-        <td align="left" valign="middle" style="vertical-align:middle;">
+        <td align="left" valign="middle">
           <table role="presentation" cellpadding="0" cellspacing="0" border="0">
             <tr>
-              <td valign="middle" style="vertical-align:middle;">
-                <table role="presentation" width="32" height="32" cellpadding="0" cellspacing="0" border="0" style="width:32px; height:32px;">
-                  <tr>
-                    <td align="center" valign="middle" style="width:32px; height:32px; background:#0F172A; border-radius:8px; color:#FFFFFF; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; font-size:18px; font-weight:700; line-height:32px; text-align:center;">N</td>
-                  </tr>
-                </table>
+              <td valign="middle" style="padding-right:10px;">
+                <div class="nx-monogram nx-mono" style="width:30px; height:30px; background:#16181D; border-radius:8px; color:#FFFFFF; font-size:15px; font-weight:600; line-height:30px; text-align:center;">N</div>
               </td>
-              <td valign="middle" style="vertical-align:middle; padding-left:10px;">
-                <span class="nx-wordmark nx-ink" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; font-size:16px; font-weight:600; letter-spacing:0.2px; color:#0F172A;">Nexus</span>
-              </td>
+              <td valign="middle" class="nx-ink" style="color:#16181D; font-size:15px; font-weight:600; letter-spacing:-0.1px;">Nexus</td>
             </tr>
           </table>
         </td>
         
-        <td align="right" valign="middle" style="vertical-align:middle;">
-          <span class="nx-faint" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; font-size:12px; font-weight:500; color:#94A3B8; letter-spacing:0.2px;">Jun 26, 2026 · 08:00 IST</span>
-        </td>
+        <td align="right" valign="middle" class="nx-muted nx-mono" style="color:#8A8F98; font-size:12px;">Jun 26, 2026 · 08:00 IST</td>
+        
       </tr>
     </table>
   </td>
 </tr>
 
-
 <tr>
-  <td class="nx-px" style="padding:24px 32px 0 32px;">
-    <span style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; font-size:12px; font-weight:700; letter-spacing:1.2px; text-transform:uppercase; color:#4F46E5;">Approval Required</span>
+  <td class="nx-px" style="padding:26px 32px 0 32px;">
+    
+    <div class="nx-muted" style="color:#8A8F98; font-size:11px; font-weight:600; letter-spacing:1.4px; text-transform:uppercase;">Approval Required</div>
+    
+    
+    <h1 class="nx-title nx-ink" style="margin:8px 0 0 0; color:#16181D; font-size:22px; line-height:30px; font-weight:600; letter-spacing:-0.3px;">Approval Required — Deploy v1.2.0</h1>
+    
+    
   </td>
 </tr>
 
-
-
 <tr>
-  <td class="nx-px" style="padding:8px 32px 0 32px;">
-    <h1 class="nx-title nx-ink" style="margin:0; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; font-size:24px; line-height:32px; font-weight:600; letter-spacing:-0.4px; color:#0F172A;">Approval Required — Deploy v1.2.0</h1>
-  </td>
-</tr>
-
-
-
-<tr>
-  <td class="nx-px" style="padding:8px 32px 0 32px;">
-    <p class="nx-muted" style="margin:0; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; font-size:15px; line-height:24px; font-weight:400; color:#64748B;">A governed task is blocked awaiting your decision.</p>
-  </td>
-</tr>
-
-
-<tr>
-  <td class="nx-px" style="padding:20px 32px 0 32px;">
-    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" class="nx-divider">
-      <tr><td style="height:1px; line-height:1px; font-size:1px; background:#E2E8F0; border-bottom:1px solid #E2E8F0;">&nbsp;</td></tr>
-    </table>
+  <td class="nx-px" style="padding:26px 32px 0 32px;">
+    <div class="nx-hairline" style="height:1px; line-height:1px; font-size:0; background:#E7E8EB;">&nbsp;</div>
   </td>
 </tr>
 
                 <tr>
-                  <td class="nx-px" style="padding:8px 32px 32px 32px;">
-                    
+                  <td class="nx-px" style="padding-left:32px; padding-right:32px;">
+                    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+                      
 
 
 
@@ -148,289 +131,166 @@
 
 
 
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#FFFBEB; border:1px solid #FDE68A; border-left:3px solid #B45309; border-radius:10px;">
-  <tr>
-    <td style="padding:14px 16px;">
-      
-      <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="padding-bottom:4px;"><tr>
-        <td valign="middle" style="vertical-align:middle; padding-right:8px; color:#B45309; font-size:13px; line-height:18px; font-weight:700;">▲</td>
-        <td valign="middle" style="vertical-align:middle;"><span style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; font-size:14px; line-height:20px; font-weight:600; color:#B45309;">Authorization needed before execution</span></td>
-      </tr></table>
-      
-      <div class="nx-body" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; font-size:14px; line-height:21px; color:#334155;">
-  Deploy v1.2.0 to production
-</div>
-    </td>
-  </tr>
-</table>
+<tr><td style="padding-top:24px;">
+  <div style="padding-bottom:14px;"><span style="display:inline-block; background:#FBF3E6; color:#9A6206; border-radius:20px; font-size:11px; font-weight:600; line-height:14px; padding:4px 10px 4px 8px; letter-spacing:0.2px;"><span style="display:inline-block; width:6px; height:6px; border-radius:50%; background:#E0920A; vertical-align:middle; margin-right:6px; margin-top:-1px;">&nbsp;</span>MEDIUM risk</span></div>
+  <span class="nx-body" style="color:#3F434B; font-size:18px; line-height:26px;"><span class="nx-muted" style="color:#8A8F98;">Authorize </span><span class="nx-ink" style="color:#16181D; font-weight:600;">Deploy v1.2.0 to production</span></span>
+  <p class="nx-body" style="margin:10px 0 0 0; color:#3F434B; font-size:14px; line-height:23px;">Roll out the priority-feed release.</p>
+</td></tr>
 
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="height:18px; line-height:18px; font-size:18px;">&nbsp;</td></tr></table>
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
-  <tr>
-    <td style="padding-top:8px;">
-      <div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; font-size:11px; font-weight:700; letter-spacing:1.1px; text-transform:uppercase; color:#94A3B8; padding-bottom:6px;">Governance</div>
-      <table role="presentation" cellpadding="0" cellspacing="0" border="0"><tr>
-        <td valign="middle" style="vertical-align:middle; padding-right:10px;">
-          <table role="presentation" width="3" height="16" cellpadding="0" cellspacing="0" border="0" style="width:3px;height:16px;"><tr><td style="width:3px;height:16px;background:#4F46E5;border-radius:999px;font-size:1px;line-height:1px;">&nbsp;</td></tr></table>
-        </td>
-        <td valign="middle" style="vertical-align:middle;">
-          <h2 class="nx-ink" style="margin:0; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; font-size:16px; line-height:22px; font-weight:600; letter-spacing:-0.2px; color:#0F172A;">Risk assessment</h2>
-        </td>
-      </tr></table>
-    </td>
-  </tr>
-  <tr>
-    <td class="nx-body" style="padding-top:12px; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; font-size:15px; line-height:24px; color:#334155;">
-      
-  <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="display:inline-block;">
-  <tr>
-    <td style="background:#FFFBEB; border:1px solid #B4530922; border-radius:999px; padding:4px 11px 4px 9px;">
-      <table role="presentation" cellpadding="0" cellspacing="0" border="0"><tr>
-        <td valign="middle" style="vertical-align:middle; padding-right:6px;">
-          <table role="presentation" width="7" height="7" cellpadding="0" cellspacing="0" border="0" style="width:7px;height:7px;"><tr>
-            <td style="width:7px; height:7px; background:#D97706; border-radius:999px; font-size:1px; line-height:1px;">&nbsp;</td>
-          </tr></table>
-        </td>
-        <td valign="middle" style="vertical-align:middle;">
-          <span style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; font-size:12px; line-height:16px; font-weight:600; color:#B45309; letter-spacing:0.2px;">MEDIUM RISK</span>
-        </td>
-      </tr></table>
-    </td>
-  </tr>
-</table>
-
-    </td>
-  </tr>
-</table>
-
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="height:16px; line-height:16px; font-size:16px;">&nbsp;</td></tr></table>
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" class="nx-muted-surface" style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:10px;">
-  
-  <tr>
-    <td width="38%" class="nx-muted" style="width:38%; padding:10px 16px; border-bottom:1px solid #EEF2F6; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; font-size:13px; line-height:18px; font-weight:500; color:#64748B; vertical-align:top;">Requester</td>
-    <td class="nx-ink" style="padding:10px 16px; border-bottom:1px solid #EEF2F6; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; font-size:13px; line-height:18px; font-weight:600; color:#0F172A; vertical-align:top; text-align:right;">scheduler</td>
-  </tr>
-  
-  <tr>
-    <td width="38%" class="nx-muted" style="width:38%; padding:10px 16px; border-bottom:1px solid #EEF2F6; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; font-size:13px; line-height:18px; font-weight:500; color:#64748B; vertical-align:top;">Runtime</td>
-    <td class="nx-ink" style="padding:10px 16px; border-bottom:1px solid #EEF2F6; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; font-size:13px; line-height:18px; font-weight:600; color:#0F172A; vertical-align:top; text-align:right;">nexus</td>
-  </tr>
-  
-  <tr>
-    <td width="38%" class="nx-muted" style="width:38%; padding:10px 16px; border-bottom:1px solid #EEF2F6; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; font-size:13px; line-height:18px; font-weight:500; color:#64748B; vertical-align:top;">Repository</td>
-    <td class="nx-ink" style="padding:10px 16px; border-bottom:1px solid #EEF2F6; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; font-size:13px; line-height:18px; font-weight:600; color:#0F172A; vertical-align:top; text-align:right;">workspace_root</td>
-  </tr>
-  
-  <tr>
-    <td width="38%" class="nx-muted" style="width:38%; padding:10px 16px; border-bottom:0; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; font-size:13px; line-height:18px; font-weight:500; color:#64748B; vertical-align:top;">Audit ID</td>
-    <td class="nx-ink" style="padding:10px 16px; border-bottom:0; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; font-size:13px; line-height:18px; font-weight:600; color:#0F172A; vertical-align:top; text-align:right;">a1b2c3d4</td>
-  </tr>
-  
-</table>
-
-
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="height:16px; line-height:16px; font-size:16px;">&nbsp;</td></tr></table>
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
-  <tr>
-    <td style="padding-top:8px;">
-      <div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; font-size:11px; font-weight:700; letter-spacing:1.1px; text-transform:uppercase; color:#94A3B8; padding-bottom:6px;">Why</div>
-      <table role="presentation" cellpadding="0" cellspacing="0" border="0"><tr>
-        <td valign="middle" style="vertical-align:middle; padding-right:10px;">
-          <table role="presentation" width="3" height="16" cellpadding="0" cellspacing="0" border="0" style="width:3px;height:16px;"><tr><td style="width:3px;height:16px;background:#4F46E5;border-radius:999px;font-size:1px;line-height:1px;">&nbsp;</td></tr></table>
-        </td>
-        <td valign="middle" style="vertical-align:middle;">
-          <h2 class="nx-ink" style="margin:0; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; font-size:16px; line-height:22px; font-weight:600; letter-spacing:-0.2px; color:#0F172A;">Reason</h2>
-        </td>
-      </tr></table>
-    </td>
-  </tr>
-  <tr>
-    <td class="nx-body" style="padding-top:12px; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; font-size:15px; line-height:24px; color:#334155;">
-      Scheduled release window opened at 08:00 IST.
-    </td>
-  </tr>
-</table>
-
-
-
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="height:16px; line-height:16px; font-size:16px;">&nbsp;</td></tr></table>
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
-  <tr>
-    <td style="padding-top:8px;">
-      <div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; font-size:11px; font-weight:700; letter-spacing:1.1px; text-transform:uppercase; color:#94A3B8; padding-bottom:6px;">Scope</div>
-      <table role="presentation" cellpadding="0" cellspacing="0" border="0"><tr>
-        <td valign="middle" style="vertical-align:middle; padding-right:10px;">
-          <table role="presentation" width="3" height="16" cellpadding="0" cellspacing="0" border="0" style="width:3px;height:16px;"><tr><td style="width:3px;height:16px;background:#4F46E5;border-radius:999px;font-size:1px;line-height:1px;">&nbsp;</td></tr></table>
-        </td>
-        <td valign="middle" style="vertical-align:middle;">
-          <h2 class="nx-ink" style="margin:0; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; font-size:16px; line-height:22px; font-weight:600; letter-spacing:-0.2px; color:#0F172A;">Task detail</h2>
-        </td>
-      </tr></table>
-    </td>
-  </tr>
-  <tr>
-    <td class="nx-body" style="padding-top:12px; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; font-size:15px; line-height:24px; color:#334155;">
-      Roll out the priority-feed release to the production control plane.
-    </td>
-  </tr>
-</table>
-
-
-
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="height:16px; line-height:16px; font-size:16px;">&nbsp;</td></tr></table>
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
-  <tr>
-    <td style="padding-top:8px;">
-      <div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; font-size:11px; font-weight:700; letter-spacing:1.1px; text-transform:uppercase; color:#94A3B8; padding-bottom:6px;">Impact</div>
-      <table role="presentation" cellpadding="0" cellspacing="0" border="0"><tr>
-        <td valign="middle" style="vertical-align:middle; padding-right:10px;">
-          <table role="presentation" width="3" height="16" cellpadding="0" cellspacing="0" border="0" style="width:3px;height:16px;"><tr><td style="width:3px;height:16px;background:#4F46E5;border-radius:999px;font-size:1px;line-height:1px;">&nbsp;</td></tr></table>
-        </td>
-        <td valign="middle" style="vertical-align:middle;">
-          <h2 class="nx-ink" style="margin:0; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; font-size:16px; line-height:22px; font-weight:600; letter-spacing:-0.2px; color:#0F172A;">Files in scope</h2>
-        </td>
-      </tr></table>
-    </td>
-  </tr>
-  <tr>
-    <td class="nx-body" style="padding-top:12px; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; font-size:15px; line-height:24px; color:#334155;">
-      
-    </td>
-  </tr>
-</table>
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="height:10px; line-height:10px; font-size:10px;">&nbsp;</td></tr></table>
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#0F172A; border:1px solid #1E293B; border-radius:10px;">
-  <tr><td style="padding:10px 14px 0 14px;"><span style="font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; font-size:11px; font-weight:600; letter-spacing:0.4px; text-transform:uppercase; color:#64748B;">3 path(s)</span></td></tr>
-  <tr><td style="padding:12px 14px;"><pre style="margin:0; font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,'Liberation Mono',monospace; font-size:12.5px; line-height:19px; color:#E2E8F0; white-space:pre-wrap; word-break:break-word;">nexus/api.py
-nexus/config.py
-nexus/intelligence/feed.py</pre></td></tr>
-</table>
-
-
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" class="nx-divider">
-  <tr><td style="padding:20px 0 0 0;"></td></tr>
-  <tr><td style="height:1px; line-height:1px; font-size:1px; background:#E2E8F0; border-bottom:1px solid #E2E8F0;">&nbsp;</td></tr>
-  <tr><td style="padding:20px 0 0 0;"></td></tr>
-</table>
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td align="center">
-  <table role="presentation" cellpadding="0" cellspacing="0" border="0">
-  <tr>
+<tr><td>
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr><td style="padding-top:28px;">
+    <div class="nx-muted" style="color:#8A8F98; font-size:11px; font-weight:600; letter-spacing:1.2px; text-transform:uppercase; padding-bottom:4px;">Metadata</div>
+    <div class="nx-ink" style="color:#16181D; font-size:15px; font-weight:600; letter-spacing:-0.1px; padding-bottom:14px;">Request detail</div>
     
-    <td class="nx-stack" valign="top" style="padding-right:10px;">
-      <table role="presentation" cellpadding="0" cellspacing="0" border="0" class="nx-btn" style="">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr>
+    <td class="nx-muted nx-border-b" valign="top" width="42%" style="width:42%; color:#8A8F98; font-size:13px; line-height:20px; padding:10px 12px 10px 0; border-bottom:1px solid #EEEFF1;">Requested by</td>
+    <td class="nx-ink nx-border-b" valign="top" align="right" style="color:#16181D; font-size:13px; font-weight:500; line-height:20px; padding:10px 0 10px 0; border-bottom:1px solid #EEEFF1;">scheduler</td>
+  </tr><tr>
+    <td class="nx-muted nx-border-b" valign="top" width="42%" style="width:42%; color:#8A8F98; font-size:13px; line-height:20px; padding:10px 12px 10px 0; border-bottom:1px solid #EEEFF1;">Runtime</td>
+    <td class="nx-ink nx-border-b" valign="top" align="right" style="color:#16181D; font-size:13px; font-weight:500; line-height:20px; padding:10px 0 10px 0; border-bottom:1px solid #EEEFF1;">nexus</td>
+  </tr><tr>
+    <td class="nx-muted nx-border-b" valign="top" width="42%" style="width:42%; color:#8A8F98; font-size:13px; line-height:20px; padding:10px 12px 10px 0; border-bottom:1px solid #EEEFF1;">Repository</td>
+    <td class="nx-ink nx-border-b" valign="top" align="right" style="color:#16181D; font-size:13px; font-weight:500; line-height:20px; padding:10px 0 10px 0; border-bottom:1px solid #EEEFF1;">workspace_root</td>
+  </tr><tr>
+    <td class="nx-muted " valign="top" width="42%" style="width:42%; color:#8A8F98; font-size:13px; line-height:20px; padding:10px 12px 10px 0;">Audit ID</td>
+    <td class="nx-ink " valign="top" align="right" style="color:#16181D; font-size:13px; font-weight:500; line-height:20px; padding:10px 0 10px 0;">a1b2c3d4</td>
+  </tr></table>
+  
+  </td></tr>
+</table>
+</td></tr>
+
+
+<tr><td style="padding-top:24px;">
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
   <tr>
-    <td align="center" bgcolor="#16A34A" style="border-radius:8px; border:1px solid #16A34A;">
+    <td class="nx-inset nx-border" style="background:#F4F7FC; border:1px solid #D8E2F6; border-radius:12px; padding:16px 18px;">
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td valign="top" width="22" style="width:22px;">
+            <span style="display:inline-block; width:18px; height:18px; border-radius:50%; background:#2C5FB8; color:#FFFFFF; font-size:11px; font-weight:700; line-height:18px; text-align:center;">i</span>
+          </td>
+          <td valign="top" style="padding-left:10px;">
+            <div class="nx-ink" style="color:#16181D; font-size:13px; font-weight:600; padding-bottom:3px;">Why now</div>
+            <div class="nx-body" style="color:#3F434B; font-size:13px; line-height:21px;">Scheduled release window opened.</div>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+</td></tr>
+
+
+
+<tr><td>
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr><td style="padding-top:28px;">
+    <div class="nx-muted" style="color:#8A8F98; font-size:11px; font-weight:600; letter-spacing:1.2px; text-transform:uppercase; padding-bottom:4px;">Files affected</div>
+    <div class="nx-ink" style="color:#16181D; font-size:15px; font-weight:600; letter-spacing:-0.1px; padding-bottom:14px;">Scope</div>
+    
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr><td class="nx-muted nx-mono" style="color:#8A8F98; font-size:11px; letter-spacing:0.3px; padding-bottom:6px;">2 file(s)</td></tr>
+  <tr>
+    <td class="nx-inset nx-border" style="background:#F6F6F7; border:1px solid #E7E8EB; border-radius:10px; padding:14px 16px;">
+      <pre class="nx-mono nx-ink" style="margin:0; color:#16181D; font-size:12px; line-height:19px; white-space:pre-wrap; word-break:break-word;">nexus/api.py
+nexus/config.py</pre>
+    </td>
+  </tr>
+</table>
+  
+  </td></tr>
+</table>
+</td></tr>
+
+
+<tr><td><table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr>
+  <td style="padding:28px 0;">
+    <div class="nx-hairline" style="height:1px; line-height:1px; font-size:0; background:#E7E8EB;">&nbsp;</div>
+  </td>
+</tr></table></td></tr>
+<tr><td>
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr><td class="nx-stack" valign="top" width="262" style="width:262px;">
+      <table role="presentation" class="nx-btn" cellpadding="0" cellspacing="0" border="0" width="100%" style="width:100%;">
+  <tr>
+    <td align="center" class="nx-btn-primary" bgcolor="#16181D" style="border-radius:12px; background:#16181D;">
       <!--[if mso]>
-      <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="#" style="height:42px;v-text-anchor:middle;width:240px;" arcsize="19%" strokecolor="#16A34A" fillcolor="#16A34A">
-        <w:anchorlock/>
-        <center style="color:#FFFFFF;font-family:sans-serif;font-size:14px;font-weight:600;">✓ Approve</center>
+      <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="#" style="height:46px;v-text-anchor:middle;width:262px;" arcsize="26%" stroke="f" fillcolor="#16181D">
+      <w:anchorlock/><center style="color:#FFFFFF;font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;font-size:14px;font-weight:600;">Approve</center>
       </v:roundrect>
       <![endif]-->
-      <!--[if !mso]><!-- -->
-      <a href="#" style="display:inline-block; padding:11px 22px; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; font-size:14px; line-height:20px; font-weight:600; color:#FFFFFF; text-decoration:none; border-radius:8px; letter-spacing:0.1px;">✓ Approve</a>
-      <!--<![endif]-->
+      <a href="#" class="nx-btn-primary" style="display:inline-block; width:100%; box-sizing:border-box; color:#FFFFFF; background:#16181D; font-size:14px; font-weight:600; line-height:20px; padding:13px 24px; border-radius:12px; text-align:center; mso-hide:all;">Approve</a>
     </td>
   </tr>
 </table>
-    </td>
-    
-    <td class="nx-stack" valign="top" style="padding-right:0;">
-      <table role="presentation" cellpadding="0" cellspacing="0" border="0" class="nx-btn" style="">
+    </td><td class="nx-stack-gap" width="12" style="width:12px; font-size:0; line-height:0;">&nbsp;</td><td class="nx-stack" valign="top" width="262" style="width:262px;">
+      <table role="presentation" class="nx-btn" cellpadding="0" cellspacing="0" border="0" width="100%" style="width:100%;">
   <tr>
-    <td align="center" bgcolor="#FFFFFF" style="border-radius:8px; border:1px solid #FCA5A5;">
+    <td align="center" class="nx-btn-outline"  style="border-radius:12px; background:transparent; border:1px solid #D7D9DE;">
       <!--[if mso]>
-      <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="#" style="height:42px;v-text-anchor:middle;width:240px;" arcsize="19%" strokecolor="#FCA5A5" fillcolor="#FFFFFF">
-        <w:anchorlock/>
-        <center style="color:#B91C1C;font-family:sans-serif;font-size:14px;font-weight:600;">✕ Reject</center>
+      <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="#" style="height:46px;v-text-anchor:middle;width:262px;" arcsize="26%" strokecolor="#D7D9DE" fillcolor="#FFFFFF">
+      <w:anchorlock/><center style="color:#16181D;font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;font-size:14px;font-weight:600;">Reject</center>
       </v:roundrect>
       <![endif]-->
-      <!--[if !mso]><!-- -->
-      <a href="#" style="display:inline-block; padding:11px 22px; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; font-size:14px; line-height:20px; font-weight:600; color:#B91C1C; text-decoration:none; border-radius:8px; letter-spacing:0.1px;">✕ Reject</a>
-      <!--<![endif]-->
+      <a href="#" class="nx-btn-outline" style="display:inline-block; width:100%; box-sizing:border-box; color:#16181D; background:transparent; font-size:14px; font-weight:600; line-height:20px; padding:13px 24px; border-radius:12px; text-align:center; mso-hide:all; border:1px solid #D7D9DE;">Reject</a>
     </td>
   </tr>
 </table>
-    </td>
-    
-  </tr>
+    </td></tr>
 </table>
-</td></tr></table>
+</td></tr>
+
+<tr><td align="center" class="nx-muted" style="color:#8A8F98; font-size:12px; padding-top:14px;">This request expires in 4 hours.</td></tr>
+
+<tr><td style="height:8px; line-height:8px; font-size:0;">&nbsp;</td></tr>
 
 
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="height:14px; line-height:14px; font-size:14px;">&nbsp;</td></tr></table>
-<p class="nx-faint" style="margin:0;text-align:center;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;font-size:12px;color:#94A3B8;">This request expires in 4 hours. No action means it is denied (fail-closed).</p>
-
-
+                    </table>
                   </td>
                 </tr>
 
-              </table>
-            </td>
-          </tr>
-
-          <tr>
-  <td style="height:16px; line-height:16px; font-size:16px;">&nbsp;</td>
+                <tr>
+  <td class="nx-px" style="padding:34px 32px 0 32px;">
+    <div class="nx-hairline" style="height:1px; line-height:1px; font-size:0; background:#E7E8EB;">&nbsp;</div>
+  </td>
 </tr>
+
 <tr>
-  <td class="nx-footer nx-px" style="padding:0 32px;">
+  <td class="nx-px" style="padding:18px 32px 30px 32px;">
     <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
       
-      
       <tr>
-        <td align="center" style="padding-bottom:14px;">
-          <a class="nx-link nx-muted" href="#" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; font-size:13px; font-weight:500; color:#64748B; padding:0 10px;">Dashboard</a><span style="color:#CBD5E1;">·</span><a class="nx-link nx-muted" href="#" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; font-size:13px; font-weight:500; color:#64748B; padding:0 10px;">Docs</a><span style="color:#CBD5E1;">·</span><a class="nx-link nx-muted" href="#" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; font-size:13px; font-weight:500; color:#64748B; padding:0 10px;">Settings</a>
+        <td align="left" style="padding-bottom:12px;">
+          <a href="https://nexus.local/dashboard" class="nx-muted" style="color:#8A8F98; font-size:12px; font-weight:500;">Dashboard</a><span class="nx-faint" style="color:#CBCED4; padding:0 8px;">·</span><a href="https://nexus.local/docs" class="nx-muted" style="color:#8A8F98; font-size:12px; font-weight:500;">Docs</a><span class="nx-faint" style="color:#CBCED4; padding:0 8px;">·</span><a href="https://nexus.local/settings" class="nx-muted" style="color:#8A8F98; font-size:12px; font-weight:500;">Settings</a>
         </td>
       </tr>
       
-
-      
       <tr>
-        <td align="center" style="padding-bottom:6px;">
-          <table role="presentation" cellpadding="0" cellspacing="0" border="0">
-            <tr>
-              <td valign="middle" style="vertical-align:middle;">
-                <span class="nx-ink" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; font-size:13px; font-weight:600; color:#0F172A;">Nexus</span>
-              </td>
-              <td valign="middle" style="vertical-align:middle; padding:0 8px; color:#CBD5E1;">·</td>
-              <td valign="middle" style="vertical-align:middle;">
-                <span class="nx-faint" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; font-size:13px; font-weight:500; color:#94A3B8;">AI Orchestration Control Plane</span>
-              </td>
-              
-              <td valign="middle" style="vertical-align:middle; padding:0 8px; color:#CBD5E1;">·</td>
-              <td valign="middle" style="vertical-align:middle;">
-                <span class="nx-faint" style="font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,'Liberation Mono',monospace; font-size:12px; font-weight:500; color:#94A3B8;">v1.2.0</span>
-              </td>
-              
-            </tr>
-          </table>
+        <td align="left" class="nx-muted" style="color:#8A8F98; font-size:12px; line-height:19px;">
+          <span class="nx-body" style="color:#3F434B; font-weight:500;">Nexus</span> — AI Orchestration Control Plane · v1.2.0
         </td>
       </tr>
-
-      
       <tr>
-        <td align="center" style="padding-bottom:4px;">
-          <span class="nx-faint" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; font-size:12px; line-height:18px; font-weight:400; color:#94A3B8;">Automated message generated by your Nexus control plane. Replies are not monitored.</span>
+        <td align="left" class="nx-faint" style="color:#AEB2BA; font-size:11px; line-height:18px; padding-top:6px;">
+          Automated operational message. You are receiving this because you are an operator of this control plane.<br>Generated Jun 26, 2026 · 08:00 IST.
         </td>
       </tr>
-
-      
-      <tr>
-        <td align="center" style="padding-bottom:8px;">
-          <span class="nx-faint" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; font-size:11px; font-weight:400; color:#CBD5E1;">Generated Jun 26, 2026 · 08:00 IST</span>
-        </td>
-      </tr>
-      
     </table>
   </td>
 </tr>
-<tr>
-  <td style="height:24px; line-height:24px; font-size:24px;">&nbsp;</td>
-</tr>
 
+              </table>
+
+            </td>
+          </tr>
         </table>
         <!--[if mso]></td></tr></table><![endif]-->
+
       </td>
     </tr>
   </table>
+
 </body>
 </html>

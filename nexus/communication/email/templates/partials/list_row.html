@@ -1,0 +1,79 @@
+{#- =====================================================================
+    List row & option row — the signature Nexus patterns, quoted directly
+    from the reference design.
+
+      list_rows(items)   items=[{subject, lead?, meta?, status?, href?}]
+      list_row(subject, lead=None, meta=None, status=None, href=None)
+      option_rows(items) items=[{label, selected?}]
+      option_row(label, selected=False)
+
+    list_row  = leading status mark · two-tone text (muted lead · ink
+                subject) · trailing meta/chevron.  Pure-spacing separation
+                (no rules) — the reference's calm list.
+    option_row = bordered rounded row with a trailing radio — for choices
+                (approval options, decisions).
+   ===================================================================== -#}
+{% macro mark(status) -%}
+{%- if status in ('done', 'success', 'completed') -%}
+  <span style="display:inline-block; width:18px; height:18px; border-radius:50%; background:#2F9E68; color:#FFFFFF; font-size:11px; font-weight:700; line-height:18px; text-align:center;">✓</span>
+{%- elif status in ('pending', 'todo', 'open') -%}
+  <span style="display:inline-block; width:16px; height:16px; border-radius:50%; border:1.5px solid #CBCED4; background:#FFFFFF; line-height:16px;">&nbsp;</span>
+{%- elif status == 'warning' -%}
+  <span style="display:inline-block; width:9px; height:9px; border-radius:50%; background:#E0920A; margin:4px 3px;">&nbsp;</span>
+{%- elif status in ('danger', 'failed', 'error') -%}
+  <span style="display:inline-block; width:9px; height:9px; border-radius:50%; background:#DA4A41; margin:4px 3px;">&nbsp;</span>
+{%- elif status in ('active', 'info', 'running') -%}
+  <span style="display:inline-block; width:9px; height:9px; border-radius:50%; background:#3D78D6; margin:4px 3px;">&nbsp;</span>
+{%- else -%}
+  <span style="display:inline-block; width:9px; height:9px; border-radius:50%; background:#C6C9CF; margin:4px 3px;">&nbsp;</span>
+{%- endif -%}
+{%- endmacro %}
+
+{% macro list_row(subject, lead=None, meta=None, status=None, href=None) -%}
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr>
+    {% if status %}<td valign="top" width="28" style="width:28px; padding-top:1px;">{{ mark(status) }}</td>{% endif %}
+    <td valign="middle" style="padding-right:10px;">
+      <span class="nx-body" style="color:#3F434B; font-size:14px; line-height:21px;">{% if lead %}<span class="nx-muted" style="color:#8A8F98;">{{ lead }} </span>{% endif %}<span class="nx-ink" style="color:#16181D; font-weight:600;">{{ subject }}</span></span>
+    </td>
+    {% if meta %}<td valign="middle" align="right" class="nx-muted" style="color:#8A8F98; font-size:12px; white-space:nowrap;">{{ meta }}</td>{% endif %}
+    {% if href %}<td valign="middle" align="right" width="16" style="width:16px;"><a href="{{ href }}" class="nx-faint" style="color:#C2C5CC; font-size:16px; line-height:16px;">&rsaquo;</a></td>{% endif %}
+  </tr>
+</table>
+{%- endmacro %}
+
+{% macro list_rows(items) -%}
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+  {%- for it in items -%}
+  <tr><td style="padding:{% if loop.first %}0{% else %}7px{% endif %} 0 7px 0;">
+    {{ list_row(it.subject, it.get('lead'), it.get('meta'), it.get('status'), it.get('href')) }}
+  </td></tr>
+  {%- endfor -%}
+</table>
+{%- endmacro %}
+
+{% macro option_row(label, selected=False) -%}
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr>
+    <td class="nx-border" style="border:1px solid {{ '#16181D' if selected else '#E1E2E6' }}; border-radius:10px; padding:13px 16px;">
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr>
+        <td valign="middle" class="nx-ink" style="color:#16181D; font-size:14px; font-weight:500;">{{ label }}</td>
+        <td valign="middle" align="right" width="20" style="width:20px;">
+          {% if selected %}<span style="display:inline-block; width:16px; height:16px; border-radius:50%; background:#16181D; border:1.5px solid #16181D;">&nbsp;</span>
+          {% else %}<span style="display:inline-block; width:16px; height:16px; border-radius:50%; border:1.5px solid #CBCED4; background:#FFFFFF;">&nbsp;</span>{% endif %}
+        </td>
+      </tr></table>
+    </td>
+  </tr>
+</table>
+{%- endmacro %}
+
+{% macro option_rows(items) -%}
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+  {%- for it in items -%}
+  <tr><td style="padding:{% if loop.first %}0{% else %}8px{% endif %} 0 0 0;">
+    {{ option_row(it.label, it.get('selected', False)) }}
+  </td></tr>
+  {%- endfor -%}
+</table>
+{%- endmacro %}

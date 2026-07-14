@@ -1,67 +1,56 @@
-{#-
-  EMAIL TYPE 6 · Approval Required  (one of the most important emails)
-  Personality: amber attention. Must convey risk clearly and make Approve/Reject
-  unmistakable. Governance flags come from the trusted server-side table.
-
-  Context:
-    eyebrow="Approval Required", subject, subtitle, timestamp, version
-    request = {requester, task_title, task_description, runtime, repository,
-               reason, risk, risk_tone, files:[str], approve_url, reject_url, audit_id, expires}
--#}
 {% extends "base.html" %}
-{% block accent %}#D97706{% endblock %}
+{# Approval Required — serious, unambiguous, never alarmist. The decision
+   surface: context, then one clear pair of actions. Echoes the reference
+   "vote" panel. #}
 {% block content %}
 {% import "partials/section.html" as sec %}
-{% import "partials/badge.html" as bdg %}
-{% import "partials/status_chip.html" as chip %}
-{% import "partials/divider.html" as rule %}
-{% import "partials/button.html" as btn %}
 {% import "partials/table.html" as tbl %}
+{% import "partials/status_chip.html" as chip %}
+{% import "partials/button.html" as btn %}
+{% import "partials/divider.html" as rule %}
 
-{% call sec.panel("warning", title="Authorization needed before execution") %}
-  {{ request.task_title | default("A governed task is blocked awaiting your decision.") }}
-{% endcall %}
+{% if request %}
+<tr><td style="padding-top:24px;">
+  {% if request.get('risk') %}<div style="padding-bottom:14px;">{{ chip.status_chip(request.risk ~ ' risk', request.get('risk_tone','warning')) }}</div>{% endif %}
+  <span class="nx-body" style="color:#3F434B; font-size:18px; line-height:26px;"><span class="nx-muted" style="color:#8A8F98;">Authorize </span><span class="nx-ink" style="color:#16181D; font-weight:600;">{{ request.task_title }}</span></span>
+  {% if request.get('task_description') %}<p class="nx-body" style="margin:10px 0 0 0; color:#3F434B; font-size:14px; line-height:23px;">{{ request.task_description }}</p>{% endif %}
+</td></tr>
 
-{{ rule.spacer(18) }}
-{% call sec.section("Risk assessment", eyebrow="Governance") %}
-  {{ chip.status_chip((request.risk | default("MEDIUM")) ~ " RISK", request.risk_tone | default("warning")) }}
-{% endcall %}
+<tr><td>
+  {% call sec.section("Request detail", eyebrow="Metadata") %}
+    {{ tbl.kv_grid([
+      ["Requested by", request.get('requester','—')],
+      ["Runtime", request.get('runtime','—')],
+      ["Repository", request.get('repository','—')],
+      ["Audit ID", request.get('audit_id','—')]
+    ]) }}
+  {% endcall %}
+</td></tr>
 
-{{ rule.spacer(16) }}
-{{ tbl.kv_grid([
-  ["Requester", request.requester | default("system")],
-  ["Runtime", request.runtime | default("nexus")],
-  ["Repository", request.repository | default("workspace_root")],
-  ["Audit ID", request.audit_id | default("—")]
-]) }}
-
-{% if request.reason %}
-{{ rule.spacer(16) }}
-{% call sec.section("Reason", eyebrow="Why") %}{{ request.reason }}{% endcall %}
+{% if request.get('reason') %}
+<tr><td style="padding-top:24px;">
+  {% call sec.panel('info', title="Why now") %}{{ request.reason }}{% endcall %}
+</td></tr>
 {% endif %}
 
-{% if request.task_description %}
-{{ rule.spacer(16) }}
-{% call sec.section("Task detail", eyebrow="Scope") %}{{ request.task_description }}{% endcall %}
+{% if request.get('files') %}
+<tr><td>
+  {% call sec.section("Scope", eyebrow="Files affected") %}
+    {{ sec.code_block(request.files | join('\n'), label=(request.files | length) ~ " file(s)") }}
+  {% endcall %}
+</td></tr>
 {% endif %}
 
-{% if request.files %}
-{{ rule.spacer(16) }}
-{% call sec.section("Files in scope", eyebrow="Impact") %}{% endcall %}
-{{ rule.spacer(10) }}
-{{ sec.code_block(request.files | join("\n"), label=(request.files | length | string) ~ " path(s)") }}
-{% endif %}
-
-{{ rule.divider() }}
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td align="center">
+<tr><td>{{ rule.divider(28) }}</td></tr>
+<tr><td>
   {{ btn.button_row([
-    {"label":"✓ Approve","href": request.approve_url | default("#"), "variant":"success"},
-    {"label":"✕ Reject","href": request.reject_url | default("#"), "variant":"danger-outline"}
+    {"label": "Approve", "href": request.get('approve_url','#'), "variant": "primary"},
+    {"label": "Reject", "href": request.get('reject_url','#'), "variant": "outline"}
   ]) }}
-</td></tr></table>
-
-{% if request.expires %}
-{{ rule.spacer(14) }}
-<p class="nx-faint" style="margin:0;text-align:center;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;font-size:12px;color:#94A3B8;">This request expires {{ request.expires }}. No action means it is denied (fail-closed).</p>
+</td></tr>
+{% if request.get('expires') %}
+<tr><td align="center" class="nx-muted" style="color:#8A8F98; font-size:12px; padding-top:14px;">This request expires {{ request.expires }}.</td></tr>
+{% endif %}
+<tr><td style="height:8px; line-height:8px; font-size:0;">&nbsp;</td></tr>
 {% endif %}
 {% endblock %}

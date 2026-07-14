@@ -1,68 +1,74 @@
-{#-
-  EMAIL TYPE 3 · Research Intelligence Report
-  Personality: research sky-blue. Reads like a sharp analyst briefing.
-
-  Context:
-    eyebrow="Research Intelligence", subject, subtitle, timestamp, version
-    brief = {headline, importance, importance_tone, summary,
-             insights:[str], sources:[{title,source,url,score}],
-             recommendations:[str], actions:[{label,href,variant}], tags:[str]}
--#}
 {% extends "base.html" %}
-{% block accent %}#0EA5E9{% endblock %}
+{# Research Intelligence — high-signal findings, calmly presented. #}
 {% block content %}
 {% import "partials/section.html" as sec %}
-{% import "partials/badge.html" as bdg %}
+{% import "partials/list_row.html" as lst %}
 {% import "partials/status_chip.html" as chip %}
-{% import "partials/divider.html" as rule %}
+{% import "partials/badge.html" as bdg %}
 {% import "partials/button.html" as btn %}
-{% import "partials/table.html" as tbl %}
+{% import "partials/divider.html" as rule %}
 
-{% if brief.headline %}
-{% call sec.section(brief.headline, eyebrow="Headline", accent="#0EA5E9") %}
-  {{ chip.status_chip((brief.importance | default("NOTABLE")), brief.importance_tone | default("info")) }}
-  {% if brief.tags %}&nbsp;{% for t in brief.tags %}{{ bdg.badge(t, "neutral") }} {% endfor %}{% endif %}
-{% endcall %}
+{% if brief %}
+<tr><td style="padding-top:24px;">
+  {% if brief.get('importance') %}<div style="padding-bottom:14px;">{{ chip.status_chip(brief.importance, brief.get('importance_tone','info')) }}</div>{% endif %}
+  {% if brief.get('headline') %}<div class="nx-ink" style="color:#16181D; font-size:18px; line-height:26px; font-weight:600; letter-spacing:-0.2px;">{{ brief.headline }}</div>{% endif %}
+  {% if brief.get('summary') %}<p class="nx-body" style="margin:10px 0 0 0; color:#3F434B; font-size:14px; line-height:23px;">{{ brief.summary }}</p>{% endif %}
+</td></tr>
+
+{% if brief.get('insights') %}
+<tr><td>
+  {% call sec.section("Key insights", eyebrow="Signal") %}
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+      {% for ins in brief.insights %}
+      <tr>
+        <td valign="top" width="18" style="width:18px; color:#16181D; font-size:13px; line-height:21px;">●</td>
+        <td valign="top" class="nx-body" style="color:#3F434B; font-size:14px; line-height:21px; padding-bottom:{% if not loop.last %}9px{% else %}0{% endif %};">{{ ins }}</td>
+      </tr>
+      {% endfor %}
+    </table>
+  {% endcall %}
+</td></tr>
 {% endif %}
 
-{% if brief.summary %}
-{{ rule.spacer(16) }}
-{% call sec.section("Summary", eyebrow="TL;DR") %}{{ brief.summary }}{% endcall %}
+{% if brief.get('sources') %}
+<tr><td>
+  {% call sec.section("Sources", eyebrow="Provenance") %}
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+      {% for s in brief.sources %}
+      <tr><td style="padding:{% if loop.first %}0{% else %}7px{% endif %} 0 7px 0;">
+        {{ lst.list_row(s.title, lead=None, meta=(s.source ~ ' · ★' ~ s.score), status='info', href=s.url) }}
+      </td></tr>
+      {% endfor %}
+    </table>
+  {% endcall %}
+</td></tr>
 {% endif %}
 
-{% if brief.insights %}
-{{ rule.divider() }}
-{% call sec.section("Key insights", eyebrow="Analysis", accent="#0EA5E9") %}
-  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
-  {% for ins in brief.insights %}
-    <tr><td valign="top" width="20" style="vertical-align:top;width:20px;color:#0EA5E9;font-weight:700;">●</td><td valign="top" style="vertical-align:top;padding-bottom:8px;">{{ ins }}</td></tr>
-  {% endfor %}
-  </table>
-{% endcall %}
+{% if brief.get('recommendations') %}
+<tr><td>
+  {% call sec.section("Recommendations", eyebrow="Next") %}
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+      {% for rec in brief.recommendations %}
+      <tr>
+        <td valign="top" width="18" class="nx-faint" style="width:18px; color:#AEB2BA; font-size:13px; line-height:21px;">→</td>
+        <td valign="top" class="nx-body" style="color:#3F434B; font-size:14px; line-height:21px; padding-bottom:{% if not loop.last %}8px{% else %}0{% endif %};">{{ rec }}</td>
+      </tr>
+      {% endfor %}
+    </table>
+  {% endcall %}
+</td></tr>
 {% endif %}
 
-{% if brief.sources %}
-{{ rule.divider() }}
-{% call sec.section("Sources", eyebrow="Provenance") %}{% endcall %}
-{{ rule.spacer(12) }}
-{% set ns = namespace(rows=[]) %}
-{% for s in brief.sources %}{% set ns.rows = ns.rows + [[s.title, s.source | default('—'), '★ ' ~ (s.score | default('—')) ~ '/5']] %}{% endfor %}
-{{ tbl.data_table(columns=["Title","Source","Score"], rows=ns.rows, aligns=["left","left","right"]) }}
+{% if brief.get('tags') %}
+<tr><td style="padding-top:20px;">
+  {% for tag in brief.tags %}<span style="display:inline-block; margin:0 6px 6px 0;">{{ bdg.badge(tag, 'neutral') }}</span>{% endfor %}
+</td></tr>
 {% endif %}
 
-{% if brief.recommendations %}
-{{ rule.divider() }}
-{% call sec.section("Recommendations", eyebrow="So what") %}
-  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
-  {% for rec in brief.recommendations %}
-    <tr><td valign="top" width="20" style="vertical-align:top;width:20px;color:#4F46E5;font-weight:700;">→</td><td valign="top" style="vertical-align:top;padding-bottom:8px;">{{ rec }}</td></tr>
-  {% endfor %}
-  </table>
-{% endcall %}
+{% if brief.get('actions') %}
+<tr><td>{{ rule.divider(28) }}</td></tr>
+<tr><td>{{ btn.button(brief.actions[0].label, brief.actions[0].href, 'primary') }}</td></tr>
+<tr><td style="height:8px; line-height:8px; font-size:0;">&nbsp;</td></tr>
 {% endif %}
-
-{% if brief.actions %}
-{{ rule.divider() }}
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td align="center">{{ btn.button_row(brief.actions) }}</td></tr></table>
 {% endif %}
 {% endblock %}

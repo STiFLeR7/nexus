@@ -1,34 +1,32 @@
-{#-
-  Q&A FAMILY · Decision Summary
-  Personality: success green — decisions are settled outcomes.
-
-  Context:
-    eyebrow="Decision Summary", subject, subtitle, timestamp, version
-    decisions = [{title, decision, rationale, alternatives:[str], owner, date, status, status_tone}]
--#}
 {% extends "base.html" %}
-{% block accent %}#16A34A{% endblock %}
+{# Decision Summary — per-decision rationale and alternatives. #}
 {% block content %}
-{% import "partials/section.html" as sec %}
-{% import "partials/badge.html" as bdg %}
 {% import "partials/status_chip.html" as chip %}
+{% import "partials/badge.html" as bdg %}
 {% import "partials/divider.html" as rule %}
-{% import "partials/table.html" as tbl %}
 
-{% for d in decisions %}
-{% call sec.section(d.title, eyebrow="Decision " ~ loop.index|string, accent="#16A34A") %}
-  {{ chip.status_chip(d.status | default("Decided"), d.status_tone | default("success")) }}
-  {% if d.owner %}&nbsp;{{ bdg.badge("@" ~ d.owner, "neutral") }}{% endif %}
-  {% if d.date %}&nbsp;{{ bdg.badge(d.date, "neutral") }}{% endif %}
-  <div style="padding-top:12px;"><span class="nx-ink" style="font-weight:600;color:#0F172A;">Decision:</span> {{ d.decision }}</div>
-  {% if d.rationale %}<div style="padding-top:8px;"><span class="nx-muted" style="color:#64748B;font-weight:600;">Rationale:</span> {{ d.rationale }}</div>{% endif %}
-{% endcall %}
-{% if d.alternatives %}
-{{ rule.spacer(10) }}
-{% call sec.panel("neutral", title="Alternatives considered") %}
-  {% for alt in d.alternatives %}• {{ alt }}<br>{% endfor %}
-{% endcall %}
+{% if decisions %}
+<tr><td style="padding-top:24px;">
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+    {% for d in decisions %}
+    <tr><td>
+      {% if d.get('status') %}<div style="padding-bottom:12px;">{{ chip.status_chip(d.status, d.get('status_tone','success')) }}</div>{% endif %}
+      <div class="nx-ink" style="color:#16181D; font-size:16px; font-weight:600; line-height:24px; letter-spacing:-0.2px;">{{ d.title }}</div>
+      {% if d.get('decision') %}<p class="nx-body" style="margin:8px 0 0 0; color:#3F434B; font-size:14px; line-height:22px;">{{ d.decision }}</p>{% endif %}
+      {% if d.get('rationale') %}<p class="nx-muted" style="margin:8px 0 0 0; color:#8A8F98; font-size:13px; line-height:21px;"><span class="nx-body" style="color:#3F434B; font-weight:500;">Rationale.</span> {{ d.rationale }}</p>{% endif %}
+      {% if d.get('alternatives') %}
+      <div style="padding-top:12px;">
+        <span class="nx-muted" style="color:#8A8F98; font-size:12px;">Alternatives considered:</span>
+        <div style="padding-top:8px;">{% for a in d.alternatives %}<span style="display:inline-block; margin:0 6px 6px 0;">{{ bdg.badge(a, 'neutral') }}</span>{% endfor %}</div>
+      </div>
+      {% endif %}
+      {% if d.get('owner') or d.get('date') %}<div class="nx-faint" style="color:#AEB2BA; font-size:12px; padding-top:10px;">{{ d.get('owner','') }}{% if d.get('owner') and d.get('date') %} · {% endif %}{{ d.get('date','') }}</div>{% endif %}
+    </td></tr>
+    {% if not loop.last %}<tr><td>{{ rule.divider(24) }}</td></tr>{% endif %}
+    {% endfor %}
+  </table>
+</td></tr>
+
+<tr><td style="height:8px; line-height:8px; font-size:0;">&nbsp;</td></tr>
 {% endif %}
-{% if not loop.last %}{{ rule.divider() }}{% endif %}
-{% endfor %}
 {% endblock %}

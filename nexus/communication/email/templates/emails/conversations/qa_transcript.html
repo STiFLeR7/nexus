@@ -1,51 +1,42 @@
-{#-
-  Q&A FAMILY · Q&A Transcript
-  Personality: communication indigo. A faithful, readable record of a Dex session.
-
-  Context:
-    eyebrow="Q&A Transcript", subject, subtitle, timestamp, version
-    transcript = {participants:[str], turns:[{role, name, time, text}]}
-                 role: "operator" (right/indigo) | "dex" (left/surface) | "system"
--#}
 {% extends "base.html" %}
-{% block accent %}#4F46E5{% endblock %}
+{# Q&A Transcript — faithful, neutral record of a conversation. #}
 {% block content %}
 {% import "partials/section.html" as sec %}
 {% import "partials/badge.html" as bdg %}
-{% import "partials/divider.html" as rule %}
 
-{% if transcript.participants %}
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td>
-  {% for p in transcript.participants %}{{ bdg.badge(p, "neutral") }} {% endfor %}
-</td></tr></table>
-{{ rule.spacer(16) }}
+{% if transcript %}
+{% if transcript.get('participants') %}
+<tr><td style="padding-top:24px;">
+  <div class="nx-muted" style="color:#8A8F98; font-size:12px;">Participants: {% for p in transcript.participants %}<span class="nx-ink" style="color:#16181D; font-weight:500;">{{ p }}</span>{% if not loop.last %}, {% endif %}{% endfor %}</div>
+</td></tr>
 {% endif %}
 
-{% for turn in transcript.turns %}
-{% if turn.role == "operator" %}
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr>
-  <td width="15%" class="nx-hide-sm" style="width:15%;font-size:1px;line-height:1px;">&nbsp;</td>
-  <td style="padding:0 0 10px 0;">
-    <div style="text-align:right;"><span class="nx-faint" style="font-family:-apple-system,sans-serif;font-size:11px;color:#94A3B8;">{{ turn.name | default("You") }}{% if turn.time %} · {{ turn.time }}{% endif %}</span></div>
-    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="background:#4F46E5;border-radius:12px 12px 4px 12px;padding:12px 14px;">
-      <span style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;font-size:14px;line-height:21px;color:#FFFFFF;">{{ turn.text }}</span>
-    </td></tr></table>
-  </td>
-</tr></table>
-{% elif turn.role == "system" %}
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td align="center" style="padding:6px 0 12px 0;">
-  <span class="nx-faint" style="font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:11px;color:#94A3B8;">{{ turn.text }}</span>
-</td></tr></table>
-{% else %}
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr>
-  <td style="padding:0 0 10px 0;">
-    <div><span class="nx-faint" style="font-family:-apple-system,sans-serif;font-size:11px;color:#94A3B8;">{{ turn.name | default("Dex") }}{% if turn.time %} · {{ turn.time }}{% endif %}</span></div>
-    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td class="nx-muted-surface" style="background:#F8FAFC;border:1px solid #E2E8F0;border-radius:12px 12px 12px 4px;padding:12px 14px;">
-      <span class="nx-body" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;font-size:14px;line-height:21px;color:#334155;">{{ turn.text }}</span>
-    </td></tr></table>
-  </td>
-  <td width="15%" class="nx-hide-sm" style="width:15%;font-size:1px;line-height:1px;">&nbsp;</td>
-</tr></table>
+<tr><td style="padding-top:18px;">
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+    {% for turn in transcript.get('turns', []) %}
+    {% if turn.role == 'system' %}
+    <tr><td align="center" style="padding:8px 0;">
+      <span class="nx-muted nx-mono nx-inset" style="display:inline-block; background:#F2F3F5; color:#8A8F98; font-size:11px; padding:4px 10px; border-radius:20px;">{{ turn.text }}</span>
+    </td></tr>
+    {% elif turn.role == 'operator' %}
+    <tr><td align="right" style="padding:6px 0;">
+      <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="max-width:74%;"><tr><td style="background:#16181D; border-radius:14px 14px 4px 14px; padding:11px 15px;">
+        <div style="color:#9CA0A8; font-size:11px; padding-bottom:3px;">{{ turn.get('name','You') }}{% if turn.get('time') %} · {{ turn.time }}{% endif %}</div>
+        <div style="color:#FFFFFF; font-size:14px; line-height:21px;">{{ turn.text }}</div>
+      </td></tr></table>
+    </td></tr>
+    {% else %}
+    <tr><td align="left" style="padding:6px 0;">
+      <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="max-width:74%;"><tr><td class="nx-inset nx-border" style="background:#F6F6F7; border:1px solid #EEEFF1; border-radius:14px 14px 14px 4px; padding:11px 15px;">
+        <div class="nx-muted" style="color:#8A8F98; font-size:11px; padding-bottom:3px;">{{ turn.get('name','Dex') }}{% if turn.get('time') %} · {{ turn.time }}{% endif %}</div>
+        <div class="nx-body" style="color:#3F434B; font-size:14px; line-height:21px;">{{ turn.text }}</div>
+      </td></tr></table>
+    </td></tr>
+    {% endif %}
+    {% endfor %}
+  </table>
+</td></tr>
+
+<tr><td style="height:8px; line-height:8px; font-size:0;">&nbsp;</td></tr>
 {% endif %}
-{% endfor %}
 {% endblock %}
