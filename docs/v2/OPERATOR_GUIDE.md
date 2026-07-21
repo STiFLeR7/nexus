@@ -27,10 +27,13 @@ Two facts every operator needs before anything else:
    (a Goal, a Plan, an approval decision, a schedule) is a *projection* — a read derived by folding the
    event log, never an independent record. If you ever see a discrepancy between "what the system says
    happened" and "what's in the log," the log is right.
-2. **v2 has no production entrypoint today.** `pyproject.toml`'s only installed script, `python -m
-   nexus`, and the Docker image all launch v1. Running v2 today means writing your own small driver
-   script that calls the composition roots below directly (see §3 and §11) — see the P17 report's GA
-   Checklist for what a real cutover requires.
+2. **v2 has a production entrypoint as of RC1.** `python -m nexus_scheduler` (registered as the
+   `nexus-v2` console script) boots the full durable spine — pipeline + approval exchange +
+   operations + scheduler — over a real SQLite file and ticks the Scheduler against the real wall
+   clock until interrupted (see §3 and §7, and `docs/v2/RC1_PRODUCTIZATION_REPORT.md`). It authors
+   no goals itself — registering a `SpineRequest`/schedule is still a caller concern via the same
+   composition-root API (see §3). `python -m nexus` and the Docker image still launch v1 unchanged;
+   the two entrypoints are independent processes with no shared startup logic.
 
 ---
 
@@ -207,13 +210,15 @@ reasoning, execution, or governance itself.
 - **`cancel`/`pause`/`resume`/`expire`** — durable lifecycle transitions on the schedule itself (distinct
   from execution's own pause/resume, which Orchestration owns).
 
-**Known scale ceiling (P17 §3.2/§4.2 — the single most significant finding this program made):**
-`tick()` is **quadratic** in the number of currently-registered schedules. At 500 schedules, one `tick()`
-call takes ~1.9 seconds; at 1000, ~9.6 seconds. Root cause: `tick()`'s per-schedule completion check
-(`_maybe_complete`) re-fetches and re-reconstructs *every* schedule from the full event history, once per
-schedule in the outer loop, instead of reusing the value the outer loop already reconstructed. **Do not
-register more than a few hundred schedules against one scheduler instance today** without accounting for
-this; it is documented as an open production risk, not fixed in this program (see the P17 report for why).
+**Scale ceiling fixed in RC1 (was P17 §3.2/§4.2 — the single most significant finding that program made):**
+`tick()` used to be **quadratic** in the number of currently-registered schedules (~9.6 seconds at 1000
+schedules), because its per-schedule completion check (`_maybe_complete`) re-fetched and re-reconstructed
+*every* schedule from the full event history once per schedule in the outer loop. RC1 fixed this by
+reusing the outer loop's already-reconstructed schedule plus the occurrence count it just fired, so
+`_maybe_complete` no longer touches the event log at all. `tick()` is now linear in the number of
+registered schedules (~10 ms at 1000, ~27 ms at 2000 — see `docs/v2/RC1_PRODUCTIZATION_REPORT.md` for the
+full before/after benchmark). No behavior changed — same dispatch order, same completion semantics, same
+replay/restart guarantees; only the internal cost changed.
 
 ---
 
@@ -247,7 +252,7 @@ proven rather than described.
 |---|---|
 | A pipeline run I expected to complete is stuck `WAITING` | An approval gate is pending — check `approval.pending(session_id)`; nothing auto-resumes a `GOVERNED` schedule's gate |
 | A restarted process re-ran something I thought was already done | Almost certainly a bug if reproducible — every consumer in this platform is designed to key off durable facts (open an issue against the specific subsystem); check first whether you reopened the *same* db file |
-| `scheduler.tick()` is taking multiple seconds | You very likely have several hundred+ registered schedules — this is the known O(n²) ceiling (§7); reduce the schedule count or expect this until it's fixed |
+| `scheduler.tick()` is taking multiple seconds | Fixed in RC1 (§7) — `tick()` is now linear; if you still see multi-second ticks, check you're running RC1-or-later code, not the pre-fix `nexus_scheduler/scheduler.py` |
 | A `PolicyDecision`-shaped object appears somewhere unexpected | Should be structurally impossible outside `nexus_policy` — every consumer reads a verdict via `.simulate(...)`, never constructs one; treat this as a serious bug report |
 | I can't find any log output | v2 had no logging before P17; pass `observability=LoggingObservability()` to your composition root and configure the `"nexus.infra"` logger (§10) |
 | Two different `PolicyContext` classes show up in a stack trace | Harmless naming coincidence — `nexus_engineering.model.PolicyContext` (a read-only policy-verdict projection) vs. `nexus_policy.composition.PolicyContext` (the Policy composition-root bundle); different objects, not a bug |
