@@ -24,6 +24,8 @@ from nexus_core.contracts.status import PolicyStatus
 from nexus_core.domain.policy import Policy
 
 EXECUTION_ACTION_CLASS = "execution"
+KNOWLEDGE_GROUNDING_ACTION_CLASS = "knowledge_grounding"
+AUTONOMOUS_EXECUTION_ACTION_CLASS = "autonomous_execution"
 
 # --- transcribed from nexus/core/policy_defaults.py (v1), ADR-004 §9 ----------- #
 ALLOWED_RUNTIMES: tuple[str, ...] = ("gemini", "claude", "nexus", "hermes")
@@ -47,6 +49,61 @@ DEFAULT_POLICY = Policy(
     status=PolicyStatus.ENABLED,
     category=PolicyCategory.GOVERNANCE,
 )
+
+
+def knowledge_grounding_baseline() -> Policy:
+    """The overridable allow-baseline governing Knowledge grounding (P14 learning loop).
+
+    Grounding prior Knowledge onto a future execution is a *governed* action class (INV-30 leans
+    governed); this baseline permits it so the learning loop is on by default, while any
+    higher-specificity deny policy filters it out per goal/subject. It mirrors
+    ``policy.execution.allow-baseline`` — a data-only governance default the consuming learning
+    integration *registers* and *queries*; only this engine ever evaluates it (INV-28).
+    """
+    return Policy(
+        identity="policy.knowledge.allow-grounding-baseline",
+        version="1",
+        purpose="Allow a governed knowledge-grounding action when no deny policy applies.",
+        conditions={
+            "attr": "action_class",
+            "op": "eq",
+            "value": KNOWLEDGE_GROUNDING_ACTION_CLASS,
+        },
+        decision=PolicyDecision.ALLOW,
+        priority=0,
+        owner=_GOVERNANCE,
+        status=PolicyStatus.ENABLED,
+        category=PolicyCategory.GOVERNANCE,
+        governed_action_class=KNOWLEDGE_GROUNDING_ACTION_CLASS,
+    )
+
+
+def autonomous_execution_baseline() -> Policy:
+    """The overridable allow-baseline governing autonomous (scheduled) execution (P16 autonomy).
+
+    Starting a constitutional execution *autonomously* — a Scheduler dispatch with no human in the loop —
+    is a *governed* action class: this baseline permits it so governed autonomy is available by default,
+    while any higher-specificity deny policy withholds it (per mode / schedule / domain). It mirrors
+    ``policy.execution.allow-baseline`` — a data-only governance default the autonomy coordinator
+    *registers* and *queries*; only this engine ever evaluates it (INV-28), and autonomy stays fail-closed
+    (INV-30) when a deny applies.
+    """
+    return Policy(
+        identity="policy.autonomy.allow-autonomous-baseline",
+        version="1",
+        purpose="Allow a governed autonomous-execution action when no deny policy applies.",
+        conditions={
+            "attr": "action_class",
+            "op": "eq",
+            "value": AUTONOMOUS_EXECUTION_ACTION_CLASS,
+        },
+        decision=PolicyDecision.ALLOW,
+        priority=0,
+        owner=_GOVERNANCE,
+        status=PolicyStatus.ENABLED,
+        category=PolicyCategory.GOVERNANCE,
+        governed_action_class=AUTONOMOUS_EXECUTION_ACTION_CLASS,
+    )
 
 
 def v1_seed_policies() -> tuple[Policy, ...]:
