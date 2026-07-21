@@ -43,6 +43,7 @@ _CONSUMER_PACKAGES = [
     "nexus_workflows",
     "nexus_approval",
     "nexus_operations",
+    "nexus_scheduler",
 ]
 
 _REPO_ROOT = Path(__file__).resolve().parents[3]

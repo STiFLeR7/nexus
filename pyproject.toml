@@ -80,6 +80,10 @@ packages = [
     "nexus_research",
     "nexus_briefings",
     "nexus_operator",
+    "nexus_human_interaction",
+    "nexus_approval",
+    "nexus_operations",
+    "nexus_scheduler",
 ]
 
 [tool.pytest.ini_options]
