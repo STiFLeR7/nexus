@@ -41,6 +41,8 @@ _CONSUMER_PACKAGES = [
     "nexus_briefings",
     "nexus_research",
     "nexus_workflows",
+    "nexus_approval",
+    "nexus_operations",
 ]
 
 _REPO_ROOT = Path(__file__).resolve().parents[3]
