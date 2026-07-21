@@ -19,6 +19,7 @@ from dataclasses import dataclass
 from nexus_infra import InfrastructureContext
 from nexus_policy.defaults import v1_seed_policies
 from nexus_policy.engine import PolicyEngine
+from nexus_policy.events import POLICY_REGISTERED
 from nexus_policy.observability import PolicyObservability
 from nexus_policy.registry import InMemoryPolicyRegistry
 
@@ -42,6 +43,14 @@ def build_policy(
 
     ``seed`` registers the v1-migrated governance defaults (ADR-004 §9) so the engine is
     verdict-parity with v1 out of the box; pass ``seed=False`` for an empty registry.
+
+    A durable infrastructure already carrying ``policy.registered`` facts (a restart over a
+    reopened log) is **rebuilt** from those facts instead of re-seeded — re-seeding would re-emit
+    the same ``(identity, version)`` under a fresh real-clock timestamp, which a real (non-fixed)
+    clock turns into a hard ``DuplicateEventError`` rather than a harmless no-op (the two events
+    have the same identifier but different content). Rebuilding is what the registry's own
+    ``rebuild`` method exists for (ADR-007 restart determinism) — this was simply never called
+    from this composition root.
     """
     obs = PolicyObservability(infrastructure.observability)
     registry = InMemoryPolicyRegistry(
@@ -50,7 +59,10 @@ def build_policy(
         observability=obs,
         now=now,
     )
-    if seed:
+    existing = tuple(infrastructure.event_store.read_all())
+    if any(event.type == POLICY_REGISTERED for event in existing):
+        registry.rebuild(existing)
+    elif seed:
         for policy in v1_seed_policies():
             registry.register(policy)
     engine = PolicyEngine(registry, emitter=infrastructure, observability=obs, now=now)
