@@ -67,13 +67,18 @@ class PipelineBuilder:
         *,
         timestamps: TimestampSource | None = None,
         knowledge_repositories: KnowledgeRepositories | None = None,
+        infrastructure: InfrastructureContext | None = None,
     ) -> None:
         self._timestamps = timestamps or FixedTimestampSource()
         self._knowledge_repositories = knowledge_repositories
+        # The durable seam (P13/F-2): when an infrastructure context is injected the pipeline wires
+        # every engine over it instead of a fresh in-memory one, so a durable (ADR-007) log carries
+        # the whole Goal→Knowledge run and a reopened file replays/restarts it. Default is unchanged.
+        self._infrastructure = infrastructure
 
     def build(self) -> Pipeline:
         """Assemble a fresh pipeline; every engine shares one event log and one clock."""
-        infra = build_infrastructure(observability=InMemoryObservability())
+        infra = self._infrastructure or build_infrastructure(observability=InMemoryObservability())
         ts = self._timestamps
         capability_registry = InMemoryCapabilityRegistry()
         harness_registry = InMemoryHarnessRegistry()
