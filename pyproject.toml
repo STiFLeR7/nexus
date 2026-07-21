@@ -25,6 +25,7 @@ dependencies = [
 
 [project.scripts]
 nexus = "nexus.__main__:main"
+nexus-v2 = "nexus_scheduler.__main__:main"
 
 [dependency-groups]
 dev = [
