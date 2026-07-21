@@ -128,11 +128,13 @@ class Scheduler:
             if not schedule.is_active:
                 continue
             fired = set(schedule.dispatched)
+            newly_fired = 0
             for index, occurrence_at in due_occurrences(schedule.trigger, now):
                 if index in fired:
                     continue  # already dispatched (idempotent across restart — INV-18)
                 outcomes.append(self._dispatch(schedule, index, occurrence_at, now))
-            self._maybe_complete(schedule.identity, schedule.trigger, now)
+                newly_fired += 1
+            self._maybe_complete(schedule, newly_fired, now)
         return tuple(outcomes)
 
     def _dispatch(
@@ -178,12 +180,13 @@ class Scheduler:
             return sevents.SCHEDULER_DISPATCH_REQUESTED
         return sevents.SCHEDULER_DISPATCH_DENIED
 
-    def _maybe_complete(self, identity: str, trigger: ScheduleTrigger, now: str) -> None:
-        schedule = reconstruct_schedule(self._history(), identity)
-        if schedule is None or not schedule.is_active:
-            return
-        if is_exhausted(trigger, now, len(schedule.dispatched)):
-            self._transition(identity, sevents.SCHEDULER_COMPLETED)
+    def _maybe_complete(self, schedule: Schedule, newly_fired: int, now: str) -> None:
+        """Complete ``schedule`` if this tick exhausted it — reuses the caller's already-reconstructed
+        schedule and the occurrences it just fired, rather than re-fetching and re-reconstructing the
+        entire schedule set a second time per schedule (the O(n^2) cost `tick()` used to pay)."""
+        total_dispatched = len(schedule.dispatched) + newly_fired
+        if is_exhausted(schedule.trigger, now, total_dispatched):
+            self._transition(schedule.identity, sevents.SCHEDULER_COMPLETED)
 
     # -- read-only projections (the log is truth) ---------------------------- #
 
