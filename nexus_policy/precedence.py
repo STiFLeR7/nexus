@@ -29,7 +29,7 @@ def version_key(version: str) -> tuple[int, tuple[int, ...] | str]:
 def resolve(applicable: tuple[tuple[Policy, int], ...]) -> Policy:
     """Pick the winning :class:`Policy` from a non-empty ``(policy, specificity)`` set."""
     best: Policy | None = None
-    best_key: tuple[int, int, tuple[int, ...] | str] | None = None
+    best_key: tuple[int, int, tuple[int, tuple[int, ...] | str]] | None = None
     for policy, spec in applicable:
         key = (spec, policy.priority, version_key(policy.version))
         if (

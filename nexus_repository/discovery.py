@@ -89,7 +89,11 @@ def read_package_json(root: str, top: set[str], evidence: list[str]) -> dict[str
 
 
 def technology(
-    snapshot: RepositorySnapshot, top: set[str], py: dict, pkg: dict, evidence: list[str]
+    snapshot: RepositorySnapshot,
+    top: set[str],
+    py: dict[str, object],
+    pkg: dict[str, object],
+    evidence: list[str],
 ) -> TechnologyStack:
     frameworks: set[str] = set()
     for name in _dep_names(pkg.get("dependencies")) + _dep_names(pkg.get("devDependencies")):
@@ -129,7 +133,7 @@ def technology(
     )
 
 
-def dependencies(py: dict, pkg: dict) -> DependencyProfile:
+def dependencies(py: dict[str, object], pkg: dict[str, object]) -> DependencyProfile:
     if pkg:
         return DependencyProfile(
             manifest="package.json",
@@ -145,7 +149,9 @@ def dependencies(py: dict, pkg: dict) -> DependencyProfile:
     return DependencyProfile(manifest=None, direct=(), dev=())
 
 
-def build(root: str, top: set[str], py: dict, pkg: dict, evidence: list[str]) -> BuildProfile:
+def build(
+    root: str, top: set[str], py: dict[str, object], pkg: dict[str, object], evidence: list[str]
+) -> BuildProfile:
     system: str | None = None
     commands: list[str] = []
     makefile_targets: list[str] = []
@@ -172,7 +178,11 @@ def build(root: str, top: set[str], py: dict, pkg: dict, evidence: list[str]) ->
 
 
 def test(
-    snapshot: RepositorySnapshot, top: set[str], py: dict, pkg: dict, evidence: list[str]
+    snapshot: RepositorySnapshot,
+    top: set[str],
+    py: dict[str, object],
+    pkg: dict[str, object],
+    evidence: list[str],
 ) -> TestProfile:
     frameworks: list[str] = []
     command: str | None = None
@@ -257,7 +267,7 @@ def ci(root: str, top: set[str], evidence: list[str]) -> CiProfile:
 
 
 def conventions(
-    root: str, top: set[str], py: dict, pkg: dict, evidence: list[str]
+    root: str, top: set[str], py: dict[str, object], pkg: dict[str, object], evidence: list[str]
 ) -> ConventionHints:
     formatters: list[str] = []
     linters: list[str] = []
@@ -327,13 +337,13 @@ def _dep_names(section: object) -> list[str]:
     return sorted(section.keys()) if isinstance(section, dict) else []
 
 
-def py_dependency_names(py: dict) -> list[str]:
+def py_dependency_names(py: dict[str, object]) -> list[str]:
     project = py.get("project")
     deps = project.get("dependencies") if isinstance(project, dict) else None
     return _split_requirement_names(deps)
 
 
-def _py_optional_names(py: dict) -> list[str]:
+def _py_optional_names(py: dict[str, object]) -> list[str]:
     project = py.get("project")
     optional = project.get("optional-dependencies") if isinstance(project, dict) else None
     names: list[str] = []
@@ -359,7 +369,7 @@ def _split_requirement_names(deps: object) -> list[str]:
     return names
 
 
-def _pyproject_build_backend(py: dict) -> str | None:
+def _pyproject_build_backend(py: dict[str, object]) -> str | None:
     system = py.get("build-system")
     if isinstance(system, dict):
         backend = system.get("build-backend")
@@ -368,24 +378,25 @@ def _pyproject_build_backend(py: dict) -> str | None:
     return None
 
 
-def _pyproject_has_tool(py: dict, tool: str) -> bool:
+def _pyproject_has_tool(py: dict[str, object], tool: str) -> bool:
     tools = py.get("tool")
     return isinstance(tools, dict) and tool in tools
 
 
-def _has_pytest_config(py: dict) -> bool:
+def _has_pytest_config(py: dict[str, object]) -> bool:
     tools = py.get("tool")
     return isinstance(tools, dict) and "pytest" in tools
 
 
-def _pyproject_line_length(py: dict) -> int | None:
+def _pyproject_line_length(py: dict[str, object]) -> int | None:
     tools = py.get("tool")
     if not isinstance(tools, dict):
         return None
     for tool in ("ruff", "black"):
         config = tools.get(tool)
-        if isinstance(config, dict) and isinstance(config.get("line-length"), int):
-            return config["line-length"]
+        length = config.get("line-length") if isinstance(config, dict) else None
+        if isinstance(length, int):
+            return length
     return None
 
 

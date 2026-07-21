@@ -93,7 +93,7 @@ class PipelineBuilder:
                 infra, harness_registry=harness_registry, timestamps=ts
             ),
             harness=build_harness(infra, timestamps=ts),
-            runtime=build_runtime(infra, timestamps=ts),
+            runtime=build_runtime(infra, harness_registry=harness_registry, timestamps=ts),
             execution=build_execution(infra, timestamps=ts),
             validation=build_validation(infra, timestamps=ts),
             recovery=build_recovery(infra, timestamps=ts),

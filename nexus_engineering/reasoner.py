@@ -521,7 +521,9 @@ class DeterministicReasoner:
                 "no Policy Context → assume not-permitted, route to approval gate (fail-closed, INV-30)"
             )
             gates.append("approval gate: policy context unavailable")
-            assumptions = ("Policy Context absent; autonomy capped at gated (fail-closed)",)
+            assumptions: tuple[str, ...] = (
+                "Policy Context absent; autonomy capped at gated (fail-closed)",
+            )
         else:
             assumptions = ()
             pol_infl.append(f"policy decision = {pol.decision} (matched {pol.matched_policy})")
@@ -672,7 +674,13 @@ class DeterministicReasoner:
         ]
         return tuple(notes)
 
-    def _rationale(self, klass, approach, risk, autonomy) -> str:
+    def _rationale(
+        self,
+        klass: WorkClassification,
+        approach: Recommendation,
+        risk: RiskLevel,
+        autonomy: AutonomyLevel,
+    ) -> str:
         return (
             f"Classified as {klass.value}; chose a {approach.selection[0]} approach at {risk.value} risk; "
             f"autonomy {autonomy.value} within the policy ceiling. One coherent decision (INV-31)."

@@ -84,13 +84,13 @@ def _apply(op: str, actual: Any, value: Any) -> bool:
     if op == "not_in":
         return actual not in value
     if op == "gt":
-        return actual > value
+        return bool(actual > value)
     if op == "gte":
-        return actual >= value
+        return bool(actual >= value)
     if op == "lt":
-        return actual < value
+        return bool(actual < value)
     if op == "lte":
-        return actual <= value
+        return bool(actual <= value)
     if op == "contains":
         return value in actual
     if op == "contains_any":

@@ -48,7 +48,7 @@ def build_execution_actuation(
         adapter.descriptor()
     )  # candidate discovery for Orchestration (INV-37); no event
 
-    runtime = build_runtime(infrastructure, timestamps=ts)
+    runtime = build_runtime(infrastructure, harness_registry=registry, timestamps=ts)
     execution = build_execution(infrastructure, timestamps=ts)
     # The Runtime Manager registration (which emits ``runtime.registered`` and sizes capacity) is done
     # per-run by the actuator (idempotent), so a restart over a reopened durable log re-populates the

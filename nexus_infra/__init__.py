@@ -61,6 +61,7 @@ from nexus_infra.observability import (
     InfraEvent,
     InfraEventType,
     InMemoryObservability,
+    LoggingObservability,
     NullObservability,
     Observability,
 )
@@ -110,6 +111,7 @@ __all__ = [
     "InfrastructureError",
     "IntegrityError",
     "KnowledgeRepository",
+    "LoggingObservability",
     "ManualClock",
     "NullObservability",
     "Observability",

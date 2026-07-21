@@ -41,6 +41,7 @@ from nexus_estimation.rules import (
     score_complexity,
 )
 from nexus_estimation.signals import merge_signals, signals_from_work_package
+from nexus_estimation.vocabulary import ComplexityBand, ConfidenceBand, EstimateKind
 
 
 class EstimationEngine:
@@ -79,7 +80,7 @@ class EstimationEngine:
             complexity_score, complexity_band, signals, model
         )
 
-        def _est_id(kind) -> str:
+        def _est_id(kind: EstimateKind) -> str:
             return ids.estimate_id(subject, kind, model.version, signals)
 
         complexity = ComplexityEstimate(
@@ -164,7 +165,12 @@ class EstimationEngine:
 
     # -- persistence + events ----------------------------------------------- #
 
-    def _record(self, report: EstimationReport, complexity_band, confidence_band) -> None:
+    def _record(
+        self,
+        report: EstimationReport,
+        complexity_band: ComplexityBand,
+        confidence_band: ConfidenceBand,
+    ) -> None:
         self._obs.estimated(complexity_band, confidence_band)
         if self._repos is not None:
             self._repos.reports.add(report)

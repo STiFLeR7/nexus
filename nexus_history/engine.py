@@ -21,6 +21,8 @@ from __future__ import annotations
 from collections.abc import Callable
 
 from nexus_core.domain.event import Event
+from nexus_core.events.interfaces import EventEmitter
+from nexus_core.persistence.interfaces import EventStore
 from nexus_history import ids
 from nexus_history.events import EXECUTION_HISTORY_PROJECTED, build_event, system_now
 from nexus_history.model import ExecutionHistoryProfile, HistoryQuery
@@ -37,8 +39,8 @@ class ExecutionHistory:
     def __init__(
         self,
         *,
-        reader=None,
-        emitter=None,
+        reader: EventStore | None = None,
+        emitter: EventEmitter | None = None,
         repositories: HistoryRepositories | None = None,
         observability: HistoryObservability | None = None,
         now: Callable[[], str] | None = None,

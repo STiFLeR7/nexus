@@ -20,7 +20,7 @@ from __future__ import annotations
 
 from nexus_core.contracts.base import Reference
 from nexus_core.contracts.enums import ResourceAvailability
-from nexus_core.registries.interfaces import HarnessCategory, HarnessDescriptor
+from nexus_core.registries.interfaces import HarnessCategory, HarnessDescriptor, HarnessRegistry
 
 # The availability values RM treats as "reachable" at intake (doc 06 §5). ``UNKNOWN`` is
 # resolved conservatively as *not* reachable — no silent optimistic assumption.
@@ -69,7 +69,7 @@ class InMemoryHarnessRegistry:
 class RuntimeRegistry:
     """The ``RUNTIME``-category read view over a ``HarnessRegistry`` (not a new store)."""
 
-    def __init__(self, harness_registry: InMemoryHarnessRegistry) -> None:
+    def __init__(self, harness_registry: HarnessRegistry) -> None:
         self._registry = harness_registry
 
     # -- registration (adapter side; delegates to the underlying store) ------- #

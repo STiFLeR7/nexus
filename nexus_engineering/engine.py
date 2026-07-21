@@ -18,6 +18,7 @@ from __future__ import annotations
 from collections.abc import Callable
 
 from nexus_core.domain.event import Event
+from nexus_core.events.interfaces import EventEmitter
 from nexus_engineering import ids
 from nexus_engineering.events import ENGINEERING_STRATEGIZED, build_event, system_now
 from nexus_engineering.model import EngineeringStrategy, ReasoningInputs
@@ -33,7 +34,7 @@ class EngineeringIntelligence:
         self,
         reasoner: Reasoner | None = None,
         *,
-        emitter=None,
+        emitter: EventEmitter | None = None,
         repositories: EngineeringRepositories | None = None,
         observability: EngineeringObservability | None = None,
         now: Callable[[], str] | None = None,

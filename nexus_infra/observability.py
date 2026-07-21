@@ -2,13 +2,17 @@
 
 The substrate emits structured *infrastructure events*, counters, and timings so
 operators (and later, Supervision) can derive health. This module provides the
-sink interface plus an in-memory implementation for tests and a null
-implementation for the default, zero-overhead path. It builds **no** dashboards,
-stores nothing durably, and never influences projected state.
+sink interface plus an in-memory implementation for tests, a null implementation
+for the default, zero-overhead path, and a stdlib-``logging``-backed implementation
+an operator can wire in for a production process (P17 — the platform shipped with
+no sink an operator could actually read after process exit; this closes that gap
+additively, without touching the protocol or any existing sink). It builds **no**
+dashboards, stores nothing durably itself, and never influences projected state.
 """
 
 from __future__ import annotations
 
+import logging
 from collections.abc import Iterator, Mapping
 from contextlib import contextmanager
 from dataclasses import dataclass, field
@@ -94,6 +98,45 @@ class InMemoryObservability:
     def events_of(self, type_: InfraEventType) -> tuple[InfraEvent, ...]:
         """All recorded events of a given type (insertion order)."""
         return tuple(e for e in self.events if e.type is type_)
+
+
+class LoggingObservability:
+    """Writes each infrastructure event/counter/observation as one structured line via ``logging``.
+
+    A production-usable sink: an operator configures the ``"nexus.infra"`` logger's handlers/level
+    (file, stdout, a log-shipping handler — this class makes no assumption) and every append,
+    concurrency conflict, transaction outcome, and snapshot operation becomes one log record. Errors
+    (``HANDLER_FAILED``, ``CONCURRENCY_CONFLICT``, ``EVENT_DEAD_LETTERED``) log at ``WARNING``;
+    everything else logs at ``INFO``. Never raises — a broken log handler must not break the platform.
+    """
+
+    def __init__(self, logger: logging.Logger | None = None) -> None:
+        self._logger = logger or logging.getLogger("nexus.infra")
+
+    _WARNING_TYPES = frozenset(
+        {
+            InfraEventType.HANDLER_FAILED,
+            InfraEventType.CONCURRENCY_CONFLICT,
+            InfraEventType.EVENT_DEAD_LETTERED,
+        }
+    )
+
+    def record(self, event: InfraEvent) -> None:
+        level = logging.WARNING if event.type in self._WARNING_TYPES else logging.INFO
+        self._logger.log(
+            level,
+            "%s subject=%s at_sequence=%s detail=%s",
+            event.type.value,
+            event.subject,
+            event.at_sequence,
+            dict(event.detail),
+        )
+
+    def increment(self, name: str, value: int = 1) -> None:
+        self._logger.info("counter %s +%s", name, value)
+
+    def observe(self, name: str, value: float) -> None:
+        self._logger.info("observation %s=%s", name, value)
 
 
 @contextmanager
