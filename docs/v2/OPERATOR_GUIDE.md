@@ -1,9 +1,12 @@
 # Nexus v2 — Operator Guide
 
-Status: **Written for the constitutional spine as it exists at P17** (December 2026 audit). This guide
-describes the `nexus_*` v2 packages built across programs P0–P16 — an event-sourced constitutional
-reasoning platform — not the currently-deployed v1 product (`nexus/`, the Discord/FastAPI pilot). See
-`docs/v2/P17_PRODUCTION_READINESS_REPORT.md` for the gap between "built and tested" and "deployed."
+Status: **Written for the constitutional spine as it exists at P17** (December 2026 audit), and updated
+in place for the RC1 and RC2 hardening passes. This guide describes the `nexus_*` v2 packages built
+across programs P0–P16 — an event-sourced constitutional reasoning platform — not the currently-deployed
+v1 product (`nexus/`, the Discord/FastAPI pilot). See `docs/v2/P17_PRODUCTION_READINESS_REPORT.md` for
+the gap between "built and tested" and "deployed," `docs/v2/RC1_PRODUCTIZATION_REPORT.md` for the
+production entrypoint and release-engineering pass, and `docs/v2/RC2_EXECUTION_IDENTITY_REPORT.md` for
+the cross-goal execution-identity fixes referenced in §9.
 
 ---
 
@@ -57,7 +60,7 @@ Two facts every operator needs before anything else:
 | `nexus_reflection` | Reflect | deterministic aggregation → Knowledge Candidates | — |
 | `nexus_knowledge` | Learn | governs acceptance of Knowledge; read-only serving to Reason/Contextualize/Plan | — |
 | `nexus_policy` | Govern (sole evaluator) | the only component that ever constructs a policy verdict; fail-closed by default | `policy.*` |
-| `nexus_human_interaction` | Govern (surface) | the operator façade — submit/inspect/replay/restart/explain; delegates approvals | `interaction.*` |
+| `nexus_human_interaction` | Govern (surface)‡ | the operator façade — submit/inspect/replay/restart/explain; delegates approvals | `interaction.*` |
 | `nexus_approval` | Govern (approval lifecycle) | Requested→Pending→Approved\|Denied\|Expired, durably, for every gate | `approval.*` |
 | `nexus_operations` | Operate | read-only platform observation (sessions, execution status, approval queues, health, diagnostics) | `operations.*` |
 | `nexus_scheduler` | Foundation (timing) | *when* a Goal or platform operation begins; Policy-mediated autonomy | `scheduler.*` |
@@ -69,6 +72,12 @@ Two facts every operator needs before anything else:
 subsystems — their names collide with Constitution concepts (an unbuilt "Operator Profile" grounding
 subsystem; a "Research" capability that doesn't exist in the Constitution at all). See the P17 report
 §1.6 before reading older docs that group them differently.
+
+‡ `nexus_human_interaction`'s composition root (`build_human_interaction()`) is not wired into
+`nexus_scheduler.bootstrap()` (the live v2 entrypoint) — it builds its own independent
+`ConstitutionalPipeline`/`ApprovalExchange` pair. Real, tested code; the same "built, unwired" shape as
+`nexus_integration` and the consumer applications below, currently reachable only via a caller that
+constructs it directly (e.g. tests).
 
 **Note on `execution.*` producer attribution:** Actuation's traversal events carry `producer="runtime"`
 (they reuse the Runtime Engine's event builder) even though their type namespace is `execution.*`. This
@@ -252,6 +261,7 @@ proven rather than described.
 |---|---|
 | A pipeline run I expected to complete is stuck `WAITING` | An approval gate is pending — check `approval.pending(session_id)`; nothing auto-resumes a `GOVERNED` schedule's gate |
 | A restarted process re-ran something I thought was already done | Almost certainly a bug if reproducible — every consumer in this platform is designed to key off durable facts (open an issue against the specific subsystem); check first whether you reopened the *same* db file |
+| A second goal on a shared durable log silently skipped its own Intent/Planning/Actuation, or two goals collided on validation/runtime events | Fixed in RC2 — restart-seeding and Runtime Session scoping previously keyed off a work-item id or "first fact in the log" rather than the goal actually being run; see `docs/v2/RC2_EXECUTION_IDENTITY_REPORT.md`. Confirm you're running RC2-or-later code. |
 | `scheduler.tick()` is taking multiple seconds | Fixed in RC1 (§7) — `tick()` is now linear; if you still see multi-second ticks, check you're running RC1-or-later code, not the pre-fix `nexus_scheduler/scheduler.py` |
 | A `PolicyDecision`-shaped object appears somewhere unexpected | Should be structurally impossible outside `nexus_policy` — every consumer reads a verdict via `.simulate(...)`, never constructs one; treat this as a serious bug report |
 | I can't find any log output | v2 had no logging before P17; pass `observability=LoggingObservability()` to your composition root and configure the `"nexus.infra"` logger (§10) |
