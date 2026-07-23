@@ -1,6 +1,11 @@
 # Nexus — Onboarding Guide
 
 > For new contributors and anyone joining the Nexus project.
+>
+> **This guide onboards you to Nexus v1** (`nexus/`, released as `v1.0.0`/`v1.0.1`). For the v2
+> platform (`nexus_*` packages, released as `v2.0.0`), start with
+> [docs/internals/WALKTHROUGH-v2.md](docs/internals/WALKTHROUGH-v2.md) instead. See
+> [docs/README.md](docs/README.md) if you're not sure which one you need.
 
 ---
 
@@ -20,22 +25,22 @@ Read every document in `docs/` in order. They are the source of truth:
 
 | Document | Reading Time | Key Takeaway |
 |---|---|---|
-| [00_BRIEF.md](docs/00_BRIEF.md) | 10 min | Vision, purpose, what Nexus is and is not |
-| [01_ARCHITECTURE.md](docs/01_ARCHITECTURE.md) | 15 min | Six-layer architecture, data flows |
-| [02_TECH_STACK.md](docs/02_TECH_STACK.md) | 5 min | Technology choices |
-| [03_AGENT_DESIGN.md](docs/03_AGENT_DESIGN.md) | 10 min | Agent taxonomy, routing, memory model |
-| [04_INTEGRATION_SPECS.md](docs/04_INTEGRATION_SPECS.md) | 15 min | Integration contracts and event flows |
-| [05_CRITICAL_CONSTRAINTS.md](docs/05_CRITICAL_CONSTRAINTS.md) | 10 min | **Read twice. These are non-negotiable.** |
-| [06_DEVELOPMENT_PHASES.md](docs/06_DEVELOPMENT_PHASES.md) | 10 min | Build order and phase exit criteria |
-| [07_HERMES_AGENT.md](docs/07_HERMES_AGENT.md) | 10 min | External references and evaluation requirements |
-| [08_MEMORY_ARCHITECTURE.md](docs/08_MEMORY_ARCHITECTURE.md) | 10 min | Memory philosophy, domains, patterns |
-| [RULES.md](docs/RULES.md) | 10 min | **Operating rules for all contributors** |
+| [00_BRIEF.md](docs/v1/00_BRIEF.md) | 10 min | Vision, purpose, what Nexus is and is not |
+| [01_ARCHITECTURE.md](docs/v1/01_ARCHITECTURE.md) | 15 min | Six-layer architecture, data flows |
+| [02_TECH_STACK.md](docs/v1/02_TECH_STACK.md) | 5 min | Technology choices |
+| [03_AGENT_DESIGN.md](docs/v1/03_AGENT_DESIGN.md) | 10 min | Agent taxonomy, routing, memory model |
+| [04_INTEGRATION_SPECS.md](docs/v1/04_INTEGRATION_SPECS.md) | 15 min | Integration contracts and event flows |
+| [05_CRITICAL_CONSTRAINTS.md](docs/v1/05_CRITICAL_CONSTRAINTS.md) | 10 min | **Read twice. These are non-negotiable.** |
+| [06_DEVELOPMENT_PHASES.md](docs/v1/06_DEVELOPMENT_PHASES.md) | 10 min | Build order and phase exit criteria |
+| [07_NEXUS_AGENT.md](docs/v1/07_NEXUS_AGENT.md) | 10 min | External references and evaluation requirements |
+| [08_MEMORY_ARCHITECTURE.md](docs/v1/08_MEMORY_ARCHITECTURE.md) | 10 min | Memory philosophy, domains, patterns |
+| [RULES.md](docs/v1/RULES.md) | 10 min | **Operating rules for all contributors** |
 
 ---
 
 ## Step 2: Understand the Core Model
 
-### Nexus is NOT a chatbot.
+### Nexus Is NOT a Chatbot
 
 ```
 WRONG:
@@ -83,7 +88,7 @@ Follow [DEVELOPMENT.md](DEVELOPMENT.md) for setup instructions.
 
 ## Step 5: The 27 Constraints
 
-Read `docs/05_CRITICAL_CONSTRAINTS.md` one more time. These 27 constraints are the laws of Nexus.
+Read `docs/v1/05_CRITICAL_CONSTRAINTS.md` one more time. These 27 constraints are the laws of Nexus.
 
 The most critical:
 
@@ -108,12 +113,11 @@ The most critical:
 
 Tasks are tracked in `blueprint/ROADMAP.md`.
 
-The project is currently in **pre-Phase 0**.
-
-First available work:
-1. Phase 0, AP-001: Repository structure
-2. Phase 0, AP-011: Pi evaluation (parallel)
-3. Phase 0, AP-012: Hermes investigation (parallel)
+Nexus v1 is past Phase 0 — it has shipped `v1.0.0` ("Operational Intelligence") and is in the
+`v1.0.1` "Alignment" line. For the current, authoritative list of in-progress and next-available work,
+read [blueprint/STATUS.md](blueprint/STATUS.md) (current status) and
+[blueprint/ROADMAP.md](blueprint/ROADMAP.md) (full phased plan) directly rather than relying on a task
+list fixed at onboarding-guide-writing time — those two files are kept current; this guide is not.
 
 When you start an AP:
 1. Update its status in `blueprint/ROADMAP.md` to 🔄 In Progress
