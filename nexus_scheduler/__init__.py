@@ -46,7 +46,7 @@ from nexus_scheduler.scheduled_operations import (
 )
 from nexus_scheduler.scheduler import Scheduler
 
-__version__ = "2.0.0a1"
+__version__ = "2.0.0"
 
 __all__ = [
     "DIAGNOSTICS_SWEEP",

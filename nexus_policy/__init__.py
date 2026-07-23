@@ -38,6 +38,8 @@ from nexus_policy.observability import PolicyObservability
 from nexus_policy.precedence import resolve, version_key
 from nexus_policy.registry import InMemoryPolicyRegistry
 
+__version__ = "2.0.0"
+
 __all__ = [
     "ALLOWED_RUNTIMES",
     "AUTONOMOUS_EXECUTION_ACTION_CLASS",
@@ -56,6 +58,7 @@ __all__ = [
     "PolicyEvaluation",
     "PolicyObservability",
     "PolicyRef",
+    "__version__",
     "autonomous_execution_baseline",
     "build_policy",
     "knowledge_grounding_baseline",

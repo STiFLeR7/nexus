@@ -50,6 +50,8 @@ from nexus_repository.profile import (
 )
 from nexus_repository.scanner import RepositorySnapshot, scan_tree
 
+__version__ = "2.0.0"
+
 __all__ = [
     "REPOSITORY_PROFILED",
     "SCANNER_VERSION",
@@ -74,6 +76,7 @@ __all__ = [
     "RepositorySnapshot",
     "TechnologyStack",
     "TestProfile",
+    "__version__",
     "build_repository",
     "build_repository_repositories",
     "scan_tree",

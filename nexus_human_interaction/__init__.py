@@ -39,7 +39,7 @@ from nexus_human_interaction.model import (
 from nexus_human_interaction.reference import reference_operator_request
 from nexus_human_interaction.session import reconstruct_interaction_session
 
-__version__ = "2.0.0a1"
+__version__ = "2.0.0"
 
 __all__ = [
     "INTERACTION_PRODUCER",

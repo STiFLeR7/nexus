@@ -51,7 +51,7 @@ from nexus_reflection.vocabulary import (
     ReflectionStage,
 )
 
-__version__ = "2.0.0a1"
+__version__ = "2.0.0"
 
 __all__ = [
     "DEFAULT_ANALYZERS",

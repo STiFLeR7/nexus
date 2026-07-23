@@ -28,7 +28,7 @@ from nexus_runtime_shell.invoker import (
     SubprocessShellInvoker,
 )
 
-__version__ = "2.0.0a1"
+__version__ = "2.0.0"
 
 __all__ = [
     "SHELL_CAPABILITIES",

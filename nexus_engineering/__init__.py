@@ -49,6 +49,8 @@ from nexus_engineering.vocabulary import (
     WorkClassification,
 )
 
+__version__ = "2.0.0"
+
 __all__ = [
     "ENGINEERING_STRATEGIZED",
     "REASONER_VERSION",
@@ -70,6 +72,7 @@ __all__ = [
     "RiskLevel",
     "ValidationRigor",
     "WorkClassification",
+    "__version__",
     "build_engineering",
     "build_engineering_repositories",
     "signals_from_goal",

@@ -54,6 +54,8 @@ from nexus_estimation.vocabulary import (
     ResourceClass,
 )
 
+__version__ = "2.0.0"
+
 __all__ = [
     "DEFAULT_MODEL",
     "ESTIMATION_ESTIMATED",
@@ -76,6 +78,7 @@ __all__ = [
     "HistoricalStat",
     "ResourceClass",
     "ResourceEstimate",
+    "__version__",
     "build_estimation",
     "build_estimation_repositories",
     "estimate_cost",

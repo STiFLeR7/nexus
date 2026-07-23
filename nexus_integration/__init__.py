@@ -47,6 +47,8 @@ from nexus_integration.model import (
 from nexus_integration.observability import MigrationObservability
 from nexus_integration.recorder import DecisionRecorder
 
+__version__ = "2.0.0"
+
 __all__ = [
     "EMPTY_COHORT",
     "MIGRATION_DECISION_DIFF",
@@ -74,6 +76,7 @@ __all__ = [
     "ProbabilisticComparator",
     "RollbackCoordinator",
     "ShadowDecisionCoordinator",
+    "__version__",
     "build_integration",
     "default_comparators",
 ]

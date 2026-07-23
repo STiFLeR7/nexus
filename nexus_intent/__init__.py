@@ -39,6 +39,8 @@ from nexus_intent.model import (
 from nexus_intent.observability import IntentObservability
 from nexus_intent.persistence import IntentRepositories, build_intent_repositories
 
+__version__ = "2.0.0"
+
 __all__ = [
     "INTENT_RESOLVED",
     "INTERPRETER_VERSION",
@@ -53,6 +55,7 @@ __all__ = [
     "IntentRequest",
     "IntentResolution",
     "Interpreter",
+    "__version__",
     "build_intent",
     "build_intent_repositories",
     "request_from_text",

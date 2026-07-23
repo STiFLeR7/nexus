@@ -48,6 +48,8 @@ from nexus_history.model import (
 )
 from nexus_history.persistence import HistoryRepositories, build_history_repositories
 
+__version__ = "2.0.0"
+
 __all__ = [
     "EXECUTION_HISTORY_PROJECTED",
     "PROJECTOR_VERSION",
@@ -71,6 +73,7 @@ __all__ = [
     "TimelineEntry",
     "ValidationHistory",
     "WorkPackageHistory",
+    "__version__",
     "build_history",
     "build_history_repositories",
 ]

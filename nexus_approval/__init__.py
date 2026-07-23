@@ -35,7 +35,7 @@ from nexus_approval.model import (
 )
 from nexus_approval.session import reconstruct_approval_session
 
-__version__ = "2.0.0a1"
+__version__ = "2.0.0"
 
 __all__ = [
     "APPROVAL_APPROVED",
