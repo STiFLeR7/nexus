@@ -209,7 +209,9 @@ def test_two_goals_with_identical_work_item_keys_do_not_collide() -> None:
     coordinator = _pipeline(infra)
 
     first = coordinator.run(spine_reference_request(run="r1"))
-    second = coordinator.run(spine_reference_request(run="r2"))  # must not raise DuplicateEventError
+    second = coordinator.run(
+        spine_reference_request(run="r2")
+    )  # must not raise DuplicateEventError
 
     assert first.status is SpineStatus.COMPLETED and first.succeeded
     assert second.status is SpineStatus.COMPLETED and second.succeeded
@@ -248,8 +250,14 @@ def test_replay_after_two_concurrent_goals_reconstructs_each_independently(tmp_p
     # find_execution_state scans a caller-supplied slice (RC2's _seed filters by request.correlation
     # the same way) — a reconstruction correctly scoped per goal must not return the other goal's state.
     first_events = tuple(e for e in events if e.correlation_identifier == first_request.correlation)
-    second_events = tuple(e for e in events if e.correlation_identifier == second_request.correlation)
+    second_events = tuple(
+        e for e in events if e.correlation_identifier == second_request.correlation
+    )
     assert find_execution_state(first_events) == first.execution_state
     assert find_execution_state(second_events) == second.execution_state
-    assert first.execution_state != second.execution_state  # distinct sessions, not one overwriting the other
-    assert first.execution_state != second.execution_state  # distinct sessions, not one overwriting the other
+    assert (
+        first.execution_state != second.execution_state
+    )  # distinct sessions, not one overwriting the other
+    assert (
+        first.execution_state != second.execution_state
+    )  # distinct sessions, not one overwriting the other

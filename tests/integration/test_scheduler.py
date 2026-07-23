@@ -83,11 +83,7 @@ def test_recurring_schedule_occurrences_each_run_their_own_goal() -> None:
     scheduler.tick(T0)
     scheduler.tick(T2)
 
-    goals = {
-        e.payload["goal"]
-        for e in infra.event_store.read_all()
-        if e.type == "intent.resolved"
-    }
+    goals = {e.payload["goal"] for e in infra.event_store.read_all() if e.type == "intent.resolved"}
     plans = {
         e.identifier
         for e in infra.event_store.read_all()

@@ -18,7 +18,10 @@ from tests.unit.nexus_execution.actuation.fixtures import item, make_plan, to_in
 
 
 def _actuated(
-    *, fail: bool = False, goal_identity: str = "g1", infrastructure: InfrastructureContext | None = None
+    *,
+    fail: bool = False,
+    goal_identity: str = "g1",
+    infrastructure: InfrastructureContext | None = None,
 ):
     plan = make_plan((item("a"), item("b", depends_on=("a",))), goal_identity=goal_identity)
     infra, ctx = wired(infrastructure, fail=fail)

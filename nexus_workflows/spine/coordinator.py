@@ -176,7 +176,9 @@ def _find_own_plan(events: tuple[Event, ...], goal_identity: str) -> ExecutionPl
     return None
 
 
-def _find_own_execution_state(events: tuple[Event, ...], goal_identity: str) -> ExecutionState | None:
+def _find_own_execution_state(
+    events: tuple[Event, ...], goal_identity: str
+) -> ExecutionState | None:
     for event in events:
         if event.type != EXECUTION_COMPLETED:
             continue
