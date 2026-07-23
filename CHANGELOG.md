@@ -10,6 +10,114 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ---
 
+## [2.0.0] — 2026-07-23 — "Constitutional Spine"
+
+> First stable release of the **v2 constitutional platform** — a from-scratch, event-sourced
+> reasoning/execution spine (~30 `nexus_*` packages), architecturally and operationally independent of
+> the v1 lineage below (zero cross-imports, confirmed both directions). Every `nexus_*` package already
+> self-versioned as `2.0.0a1` throughout its P0–P17 build-out; this release graduates that alpha to
+> stable. It does **not** supersede or replace v1 — the two run as separate processes
+> (`python -m nexus` / `python -m nexus_scheduler`) sharing one repository. See
+> `docs/v2/V1_RELEASE_READINESS_REPORT.md` for the full audit, validation, and GA evidence behind this
+> entry.
+
+### Added
+
+- **The constitutional reasoning spine** — thirteen single-owner capabilities (Understand → Reason →
+  Ground → Contextualize → Plan → Coordinate → Execute → Act → Observe → Validate → Recover → Reflect →
+  Learn), fused into one deterministic Goal→Knowledge driver (`nexus_workflows.spine`), governed
+  throughout by the Policy Engine and Human Interaction, measured throughout by Observability and
+  Operations — built across the P0–P17 program and ratified in `docs/v2/ARCHITECTURE_CONSTITUTION.md`
+  against 39 architectural invariants and ADR-001 through ADR-004/007/008.
+- **Durable, event-sourced persistence** — an append-only SQLite/WAL event log is the single source of
+  truth for every subsystem; all state and checkpoints are deterministic projections of that log
+  (INV-13/14), enabling exact replay and restart from any interruption point.
+- **Governed autonomy** — the Constitutional Scheduler (`nexus_scheduler`) drives one-time, recurring,
+  and delayed goal dispatch under `AutonomyMode` (fully-automatic or human-governed), fronted by the
+  Approval Exchange (`nexus_approval`) and a read-only Operations plane (`nexus_operations`).
+- **The v2 production entrypoint** — `python -m nexus_scheduler` (`nexus-v2` console script) boots the
+  full durable spine and drives it against the real wall clock; introduced additively in RC1, alongside
+  v1's untouched `python -m nexus` entrypoint.
+
+### Fixed (RC1 — Release Engineering & Production Hardening)
+
+- Scheduler tick dispatch rewritten from O(n²) to linear in the number of tracked schedules, with no
+  behavioral change (`nexus_scheduler/scheduler.py`).
+- Policy registration and Runtime registration both made restart/re-actuation-safe under a real,
+  advancing wall clock — a class of bug invisible under every pre-RC1 test's fixed-clock convention,
+  where the same deterministic identifier re-emitted at a genuinely different timestamp previously
+  raised `DuplicateEventError` on the second process start.
+- `adr/ADR-009-runtime-selection-ownership.md` proposed to resolve an INV-37 ownership contradiction
+  (currently **Proposed**, not yet ratified — see Known Limitations).
+
+### Fixed (RC2 — Execution Identity & Session Isolation)
+
+- **Cross-goal Runtime Session collision.** Runtime Session identity was derived from a work-item key
+  alone (unique only within one plan), so two goals whose plans produced a same-keyed work item minted
+  the identical Runtime Session id and collided on every downstream `runtime.*`/`validation.*` event
+  scope. Fixed by including the already-goal-scoped Execution Session id (`nexus_execution/actuation/dispatch.py`).
+- **Cross-goal scope-lookup collision.** The Execution→Validation seam resolved a node's runtime scope
+  by scanning the *entire* durable log (every goal ever run in the process) keyed by bare node id, so
+  two goals sharing a node key could resolve to the wrong (or an overwritten) scope. Fixed by filtering
+  to the current execution session (`nexus_workflows/spine/bridge.py`).
+- **Silent cross-goal state adoption (the deepest defect found).** Restart-seeding scanned the entire
+  durable log for the *first* Goal/Plan/ExecutionState of each type, with no check that it belonged to
+  the request being resumed. A second goal sharing a durable log with an already-completed first goal
+  would silently adopt that goal's state, skip its own Intent→Actuation entirely, and report success
+  having never actually run. Fixed by matching reconstructed artifacts against the goal identity the
+  current request actually resolves to (`nexus_workflows/spine/coordinator.py`).
+- All three fixes are additive propagation of identity that already existed in the codebase — no new
+  identity concept, no ownership change, no ADR required. Full evidence, reproduction, and regression
+  tests in `docs/v2/RC2_EXECUTION_IDENTITY_REPORT.md`.
+
+### Changed
+
+- Version identifier reconciled platform-wide: every `nexus_*` package's `__version__` graduated from
+  `2.0.0a1` to `2.0.0`; `pyproject.toml`'s `[project] version` (previously a stale, unrelated `0.1.0`)
+  now reads `2.0.0`. Resolves the four-way version disagreement `docs/v2/P17_PRODUCTION_READINESS_REPORT.md`
+  §7.2 flagged as a pre-GA blocker.
+- `pydantic` dependency constraint tightened to `>=2.0,<3` (was unbounded) so a future breaking major
+  version cannot silently break the build.
+- Added the repository's `LICENSE` file (MIT) — previously declared in `pyproject.toml` and referenced
+  by a `README.md` badge, but the file itself did not exist.
+
+### Known Limitations
+
+- **No v1→v2 data migration tool.** The two strata use entirely different persistence models (v1:
+  async SQLAlchemy CRUD + a separate audit log; v2: synchronous, fully event-sourced) and remain fully
+  isolated. `ADR-008-shadow-migration.md` documents a designed-but-unbuilt migration path. v2 today only
+  supports a greenfield (empty durable log) start.
+- **Durable schema is unversioned.** `nexus_infra/durable.py` uses `CREATE TABLE IF NOT EXISTS` only —
+  idempotent bootstrap, no migration mechanism. A future schema change has no upgrade path for an
+  existing durable file.
+- **ADR-009 (INV-37 runtime-selection ownership) remains unratified** — Proposed status, carried forward
+  from RC1.
+- **Two frozen-contract candidates remain un-frozen** despite meeting the freeze trigger: `engineering_strategy`
+  and `repository_understanding`. Their shape can still change without the formal process the other 18
+  frozen contracts get.
+- **`nexus_briefings` and `nexus_operator` remain unwired** into the running product (real, tested code;
+  zero live callers) — flagged since P17, unchanged.
+- A latent, not-currently-triggered identity-collision shape remains in `GraphNode.identifier` and its
+  checkpoint reference (both pure functions of a work-item key alone) — safe today only because every
+  consumer looks them up inside an already goal-scoped container; documented in
+  `docs/v2/RC2_EXECUTION_IDENTITY_REPORT.md` §9 as a fast-follow, not a defect in the current code path.
+- `ConstitutionalPipeline.execution_graph()`/`execution_state()` (read-only inspection methods) share the
+  same un-scoped-reconstruction shape RC2 fixed on the restart path — dormant (cannot corrupt the log,
+  only a read-path ambiguity), not fixed, documented as a fast-follow.
+- Recovery is invoked with `checkpoint_ref=None` unconditionally — an independent INV-18 gap noted during
+  RC2's audit, unrelated to identity, not in RC2's scope.
+
+### Migration Notes
+
+- No database migration required for a fresh v2 deployment — the durable schema is created from the
+  current models on first run.
+- v1 and v2 are independent processes; running v2 alongside an existing v1 deployment requires no changes
+  to v1 and shares no runtime state.
+- See `docs/v2/RC1_MIGRATION_GUIDE.md` for the full v1→v2 migration guide, rollback procedure, and
+  deployment checklist.
+
+---
+
 ## [1.1.0] — 2026-06-25 — "Containment"
 
 Pilot operational release. Validated through a **real operational bring-up** (no mocks) — boot,
