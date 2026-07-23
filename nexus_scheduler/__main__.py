@@ -101,13 +101,14 @@ def run_service(
     """
     now = system_now
     ticks = 0
-    while max_ticks is None or ticks < max_ticks:
+    while True:
         outcomes = scheduler.tick(now())
         if outcomes:
             _LOGGER.info("tick dispatched %d occurrence(s)", len(outcomes))
         ticks += 1
-        if max_ticks is None or ticks < max_ticks:
-            sleep(tick_interval)
+        if max_ticks is not None and ticks >= max_ticks:
+            break
+        sleep(tick_interval)
     return ticks
 
 

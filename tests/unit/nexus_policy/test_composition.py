@@ -47,3 +47,55 @@ def test_policies_persist_through_the_infrastructure_repository() -> None:
     build_policy(infra, now=lambda: "t")
     # The shared PolicyRepository read-model holds the seed policies (projection, not authority).
     assert infra.policies.get("policy.execution.allow-baseline") is not None
+
+
+def test_build_policy_over_a_restarted_log_does_not_reseed_or_crash_under_a_real_clock() -> None:
+    """A second build_policy(seed=True) call over the same infra, at a genuinely different
+    timestamp (a real restart, not the fixed clock every other test uses across two calls),
+    must rebuild from the existing log rather than re-emit the same seed policies — a real,
+    reproduced crash this test guards against (DuplicateEventError: same identifier, different
+    timestamp)."""
+    infra = build_infrastructure()
+    build_policy(infra, now=lambda: "2026-01-01T00:00:00+00:00")
+
+    second = build_policy(infra, now=lambda: "2026-01-01T00:05:00+00:00")  # must not raise
+
+    identities = {p.identity for p in second.registry.enabled()}
+    assert "policy.execution.allow-baseline" in identities
+    types = [e.type for e in infra.event_store.read_all()]
+    assert types.count(POLICY_REGISTERED) == 4  # not re-emitted a second time
+
+
+def test_build_policy_seed_still_applies_over_a_log_with_unrelated_existing_policies() -> None:
+    """``seed=True`` must still register the v1 defaults when the log already has *some* policy
+    history that isn't the product of a prior identical seed call (e.g. a caller that registers
+    a custom policy directly before ever calling build_policy) — the rebuild-from-log step must
+    not silently substitute for seeding."""
+    infra = build_infrastructure()
+    build_policy(infra, seed=False, now=lambda: "t").registry.register(
+        _custom_policy("policy.custom.example")
+    )
+
+    ctx = build_policy(infra, now=lambda: "t")
+
+    identities = {p.identity for p in ctx.registry.enabled()}
+    assert "policy.custom.example" in identities  # the pre-existing registration survived
+    assert "policy.execution.allow-baseline" in identities  # and the v1 defaults were still seeded
+
+
+def _custom_policy(identity: str):  # type: ignore[no-untyped-def]
+    from nexus_core.contracts.enums import PolicyCategory, PolicyDecision
+    from nexus_core.contracts.status import PolicyStatus
+    from nexus_core.domain.policy import Policy
+
+    return Policy(
+        identity=identity,
+        version="1",
+        purpose="test",
+        conditions={"attr": "action_class", "op": "eq", "value": "custom"},
+        decision=PolicyDecision.ALLOW,
+        priority=0,
+        owner="test",
+        status=PolicyStatus.ENABLED,
+        category=PolicyCategory.GOVERNANCE,
+    )
