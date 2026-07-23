@@ -19,11 +19,13 @@ back earlier reservations in the batch, and raises.
 
 from __future__ import annotations
 
+from contextlib import suppress
 from dataclasses import dataclass
 
 from nexus_core.contracts.base import Struct, ValueObject
 from nexus_core.events.interfaces import EventEmitter
 from nexus_core.registries.interfaces import HarnessDescriptor
+from nexus_infra.errors import DuplicateEventError
 from nexus_runtime import events, ids
 from nexus_runtime.allocation import Allocation, AllocationLedger, RuntimeSelector, SelectionResult
 from nexus_runtime.events import SystemTimestampSource, TimestampSource
@@ -76,22 +78,35 @@ class RuntimeManager:
     # -- registration (doc 04 §3) -------------------------------------------- #
 
     def register_runtime(self, descriptor: HarnessDescriptor) -> HarnessDescriptor:
-        """Register a ``RUNTIME`` descriptor into the Registry view and announce it."""
+        """Register a ``RUNTIME`` descriptor into the Registry view and announce it.
+
+        The announce event's identifier is ``ids.event_id(identity, "registered", 0)`` — a pure
+        function of ``identity`` alone, so a collision on it can only mean "this identity was
+        already announced" (a fresh ``RuntimeManager``/registry built for a later actuation in
+        the same process, or a restart over a reopened durable log — the registry itself is
+        in-memory and carries no history across either). Under a real, advancing clock this
+        re-announcement is *not* byte-identical (``Event.timestamp`` differs), so the durable
+        store correctly raises ``DuplicateEventError`` rather than silently absorbing it — which
+        made every second actuation sharing a runtime identity in the same process fail. Caught
+        here as the safe no-op it already is: identity determines the payload, so a second
+        announcement for the same identity carries the same category/version/capabilities.
+        """
         registered = self._registry.register(descriptor)
         correlation = ids.correlation_id(registered.identity)
-        self._emit(
-            registered.identity,
-            events.RUNTIME_REGISTERED,
-            "registered",
-            0,
-            correlation,
-            {
-                "runtime": registered.identity,
-                "category": registered.category.value,
-                "version": registered.version,
-                "capabilities": [c.identifier for c in registered.advertised_capabilities],
-            },
-        )
+        with suppress(DuplicateEventError):
+            self._emit(
+                registered.identity,
+                events.RUNTIME_REGISTERED,
+                "registered",
+                0,
+                correlation,
+                {
+                    "runtime": registered.identity,
+                    "category": registered.category.value,
+                    "version": registered.version,
+                    "capabilities": [c.identifier for c in registered.advertised_capabilities],
+                },
+            )
         self._obs.registered()
         return registered
 
