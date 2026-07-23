@@ -17,6 +17,7 @@ from __future__ import annotations
 from collections.abc import Callable
 
 from nexus_core.domain.event import Event
+from nexus_core.events.interfaces import EventEmitter
 from nexus_intent import ids
 from nexus_intent.events import INTENT_RESOLVED, build_event, system_now
 from nexus_intent.interpreter import DeterministicInterpreter, Interpreter
@@ -32,7 +33,7 @@ class IntentResolution:
         self,
         interpreter: Interpreter | None = None,
         *,
-        emitter=None,
+        emitter: EventEmitter | None = None,
         repositories: IntentRepositories | None = None,
         observability: IntentObservability | None = None,
         now: Callable[[], str] | None = None,

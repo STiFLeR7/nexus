@@ -29,7 +29,10 @@ from __future__ import annotations
 
 from collections.abc import Callable
 
+from nexus_core.contracts.base import Struct
 from nexus_core.contracts.enums import ApprovalTaxonomy, PolicyDecision
+from nexus_core.domain.event import Event
+from nexus_core.domain.policy import Policy
 from nexus_core.events.interfaces import EventEmitter
 from nexus_policy.conditions import matches, specificity
 from nexus_policy.defaults import DEFAULT_POLICY
@@ -51,7 +54,7 @@ class PolicyEngine:
         emitter: EventEmitter | None = None,
         observability: PolicyObservability | None = None,
         now: Callable[[], str] | None = None,
-        default_policy=DEFAULT_POLICY,
+        default_policy: Policy = DEFAULT_POLICY,
     ) -> None:
         self._registry = registry
         self._emitter = emitter
@@ -90,7 +93,7 @@ class PolicyEngine:
             )
 
         view = request.evaluation_view()
-        applicable: list[tuple] = []
+        applicable: list[tuple[Policy, int]] = []
         trace: list[str] = []
         for policy in sorted(self._registry.enabled(), key=lambda p: p.identity):
             if matches(policy.conditions, view):
@@ -150,7 +153,7 @@ class PolicyEngine:
         applicable: tuple[PolicyRef, ...],
         trace: tuple[str, ...],
         approval_source: ApprovalTaxonomy | None = None,
-        constraints=None,
+        constraints: Struct | None = None,
     ) -> PolicyEvaluation:
         approval = None
         if decision is PolicyDecision.REQUIRE_APPROVAL:
@@ -180,7 +183,7 @@ class PolicyEngine:
         if self._emitter is not None:
             self._emitter.emit(self._decision_event(evaluation))
 
-    def _decision_event(self, evaluation: PolicyEvaluation):
+    def _decision_event(self, evaluation: PolicyEvaluation) -> Event:
         payload = {
             "decision": evaluation.decision.value,
             "action_class": evaluation.action_class,

@@ -16,6 +16,7 @@ from __future__ import annotations
 from collections.abc import Callable
 
 from nexus_core.domain.event import Event
+from nexus_core.events.interfaces import EventEmitter
 from nexus_repository import discovery, ids
 from nexus_repository.events import REPOSITORY_PROFILED, build_event, system_now
 from nexus_repository.graph import module_graph, package_inventory
@@ -43,7 +44,7 @@ class RepositoryIntelligence:
     def __init__(
         self,
         *,
-        emitter=None,
+        emitter: EventEmitter | None = None,
         repositories: RepositoryRepositories | None = None,
         observability: RepositoryObservability | None = None,
         now: Callable[[], str] | None = None,
@@ -65,7 +66,7 @@ class RepositoryIntelligence:
         root: str,
         *,
         correlation_identifier: str = "",
-        repository_history=None,
+        repository_history: object | None = None,
         persist: bool = True,
     ) -> RepositoryProfile:
         """Scan ``root`` into one immutable, facts-only profile (identical tree → identical profile).
@@ -150,7 +151,7 @@ class RepositoryIntelligence:
         )
 
     @staticmethod
-    def _history_seam(repository_history) -> ExecutionHistory:
+    def _history_seam(repository_history: object | None) -> ExecutionHistory:
         """Map Execution History's read-only seam into RI's own ``ExecutionHistory`` (duck-typed)."""
         if repository_history is None:
             return ExecutionHistory()

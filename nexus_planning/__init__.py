@@ -59,7 +59,7 @@ from nexus_planning.validators import (
 )
 from nexus_planning.work_package_generator import WorkPackageGenerator
 
-__version__ = "2.0.0a1"
+__version__ = "2.0.0"
 
 __all__ = [
     "CapabilityRequirementSet",

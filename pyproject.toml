@@ -1,6 +1,6 @@
 [project]
 name = "nexus"
-version = "0.1.0"
+version = "2.0.0"
 description = "Nexus — AI Orchestration Control Plane"
 readme = "README.md"
 requires-python = ">=3.12"
@@ -11,7 +11,7 @@ dependencies = [
     "uvicorn[standard]>=0.34.0",
     "sqlalchemy[asyncio]>=2.0.0",
     "aiosqlite>=0.21.0",
-    "pydantic>=2.0",
+    "pydantic>=2.0,<3",
     "pydantic-settings>=2.0",
     "structlog>=24.0.0",
     "apscheduler>=3.10.0",
@@ -25,6 +25,7 @@ dependencies = [
 
 [project.scripts]
 nexus = "nexus.__main__:main"
+nexus-v2 = "nexus_scheduler.__main__:main"
 
 [dependency-groups]
 dev = [
@@ -80,6 +81,10 @@ packages = [
     "nexus_research",
     "nexus_briefings",
     "nexus_operator",
+    "nexus_human_interaction",
+    "nexus_approval",
+    "nexus_operations",
+    "nexus_scheduler",
 ]
 
 [tool.pytest.ini_options]

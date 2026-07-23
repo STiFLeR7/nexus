@@ -21,10 +21,14 @@ from nexus_policy.composition import PolicyContext, build_policy
 from nexus_policy.conditions import MalformedConditionError, matches, specificity
 from nexus_policy.defaults import (
     ALLOWED_RUNTIMES,
+    AUTONOMOUS_EXECUTION_ACTION_CLASS,
     DEFAULT_POLICY,
     EXECUTION_ACTION_CLASS,
     GLOBAL_COMMAND_BLACKLIST,
+    KNOWLEDGE_GROUNDING_ACTION_CLASS,
     REQUIRED_RUNTIME_POLICY,
+    autonomous_execution_baseline,
+    knowledge_grounding_baseline,
     v1_seed_policies,
 )
 from nexus_policy.engine import PolicyEngine
@@ -34,11 +38,15 @@ from nexus_policy.observability import PolicyObservability
 from nexus_policy.precedence import resolve, version_key
 from nexus_policy.registry import InMemoryPolicyRegistry
 
+__version__ = "2.0.0"
+
 __all__ = [
     "ALLOWED_RUNTIMES",
+    "AUTONOMOUS_EXECUTION_ACTION_CLASS",
     "DEFAULT_POLICY",
     "EXECUTION_ACTION_CLASS",
     "GLOBAL_COMMAND_BLACKLIST",
+    "KNOWLEDGE_GROUNDING_ACTION_CLASS",
     "POLICY_EVALUATED",
     "POLICY_REGISTERED",
     "REQUIRED_RUNTIME_POLICY",
@@ -50,7 +58,10 @@ __all__ = [
     "PolicyEvaluation",
     "PolicyObservability",
     "PolicyRef",
+    "__version__",
+    "autonomous_execution_baseline",
     "build_policy",
+    "knowledge_grounding_baseline",
     "matches",
     "resolve",
     "specificity",

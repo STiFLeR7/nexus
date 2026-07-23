@@ -33,7 +33,7 @@ from nexus_research.topic import (
 )
 from nexus_research.workflow import ResearchWorkflow
 
-__version__ = "2.0.0a1"
+__version__ = "2.0.0"
 
 __all__ = [
     "RESEARCH_CAPABILITY",

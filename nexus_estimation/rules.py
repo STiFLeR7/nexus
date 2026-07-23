@@ -106,11 +106,11 @@ def estimate_resource(
     band: ComplexityBand,
     signals: Mapping[str, float],
     model: EstimationModel,
-) -> tuple[ResourceClass, dict, tuple[Factor, ...], tuple[str, ...]]:
+) -> tuple[ResourceClass, dict[str, object], tuple[Factor, ...], tuple[str, ...]]:
     """Execution footprint: a resource class from the complexity band + a deterministic profile."""
     resource_class = RESOURCE_CLASS_FOR_BAND[band]
     concurrency = max(1, int(signals.get("work_package_count", 1.0)))
-    profile = {
+    profile: dict[str, object] = {
         "footprint_score": complexity_score,
         "memory_class": resource_class.value,
         "concurrency_hint": concurrency,

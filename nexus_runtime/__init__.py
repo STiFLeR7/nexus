@@ -67,7 +67,7 @@ from nexus_runtime.validators import (
 )
 from nexus_runtime.vocabulary import RuntimeLifecycleState
 
-__version__ = "2.0.0a1"
+__version__ = "2.0.0"
 
 __all__ = [
     "TERMINAL_STATES",

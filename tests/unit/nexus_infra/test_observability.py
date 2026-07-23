@@ -11,10 +11,13 @@ The substrate emits structured infrastructure events, counters, and timings.
 
 from __future__ import annotations
 
+import logging
+
 from nexus_infra import (
     InfraEvent,
     InfraEventType,
     InMemoryObservability,
+    LoggingObservability,
     ManualClock,
     NullObservability,
 )
@@ -115,3 +118,49 @@ def test_null_observability_methods_are_no_ops() -> None:
     assert obs.increment("anything") is None
     assert obs.increment("anything", 5) is None
     assert obs.observe("metric", 1.23) is None
+
+
+# -- LoggingObservability ------------------------------------------------------ #
+
+
+def test_logging_observability_logs_infra_events_at_info(caplog) -> None:  # type: ignore[no-untyped-def]
+    logger = logging.getLogger("nexus.infra.test")
+    obs = LoggingObservability(logger)
+
+    with caplog.at_level(logging.INFO, logger="nexus.infra.test"):
+        obs.record(InfraEvent(InfraEventType.EVENT_APPENDED, subject="evt-1", at_sequence=3))
+
+    assert len(caplog.records) == 1
+    record = caplog.records[0]
+    assert record.levelno == logging.INFO
+    assert "event.appended" in record.message
+    assert "evt-1" in record.message
+
+
+def test_logging_observability_logs_conflicts_at_warning(caplog) -> None:  # type: ignore[no-untyped-def]
+    logger = logging.getLogger("nexus.infra.test")
+    obs = LoggingObservability(logger)
+
+    with caplog.at_level(logging.INFO, logger="nexus.infra.test"):
+        obs.record(InfraEvent(InfraEventType.CONCURRENCY_CONFLICT, subject="stream-1"))
+
+    assert caplog.records[0].levelno == logging.WARNING
+
+
+def test_logging_observability_logs_counters_and_observations(caplog) -> None:  # type: ignore[no-untyped-def]
+    logger = logging.getLogger("nexus.infra.test")
+    obs = LoggingObservability(logger)
+
+    with caplog.at_level(logging.INFO, logger="nexus.infra.test"):
+        obs.increment("event_store.appended")
+        obs.observe("commit_latency_ns", 12.5)
+
+    assert len(caplog.records) == 2
+    assert "event_store.appended" in caplog.records[0].message
+    assert "commit_latency_ns" in caplog.records[1].message
+
+
+def test_logging_observability_defaults_to_a_named_logger() -> None:
+    obs = LoggingObservability()
+
+    assert obs._logger.name == "nexus.infra"

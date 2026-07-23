@@ -54,7 +54,17 @@ class InMemoryPolicyRegistry:
     # -- PolicyRegistry protocol -------------------------------------------- #
 
     def register(self, policy: Policy) -> None:
-        """Admit ``policy`` at its ``(identity, version)``; emit the fact, then project."""
+        """Admit ``policy`` at its ``(identity, version)``; emit the fact, then project.
+
+        A no-op when this exact ``(identity, version)`` is already known with identical content —
+        restart-safe even under a real, advancing clock. Without this, re-registering an
+        already-durable baseline policy (as every composition root that seeds one unconditionally
+        does) would re-emit the same event identifier with a fresh timestamp, which a durable store
+        correctly rejects as a content mismatch rather than silently ignoring (only a byte-identical
+        re-emission — e.g. under a frozen test clock — is treated as a harmless duplicate).
+        """
+        if self._by_key.get((policy.identity, policy.version)) == policy:
+            return
         if self._emitter is not None:
             payload = {
                 "policy": policy.model_dump(mode="json"),

@@ -9,6 +9,7 @@ opinion). All pure functions of the tree.
 from __future__ import annotations
 
 import os
+from collections.abc import Callable
 
 from nexus_repository.profile import (
     ConstitutionalArtifacts,
@@ -103,7 +104,9 @@ def health_signals(
 # -- helpers ----------------------------------------------------------------- #
 
 
-def _collect(root: str, dirs: tuple[str, ...], keep, max_hits: int) -> tuple[str, ...]:
+def _collect(
+    root: str, dirs: tuple[str, ...], keep: Callable[[str], bool], max_hits: int
+) -> tuple[str, ...]:
     hits: list[str] = []
     for rel in dirs:
         base = os.path.join(root, *rel.split("/"))

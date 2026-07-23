@@ -256,8 +256,8 @@ class DeterministicInterpreter:
                 return priority
         return Priority.MEDIUM
 
-    def _ambiguities(self, objective: str, lowered: str) -> list[dict]:
-        found: list[dict] = []
+    def _ambiguities(self, objective: str, lowered: str) -> list[dict[str, object]]:
+        found: list[dict[str, object]] = []
         vague = [t for t in _VAGUE_TERMS if t in lowered]
         if vague:
             found.append({"kind": "vague_terms", "detail": sorted(vague)})
@@ -277,7 +277,7 @@ class DeterministicInterpreter:
         return missing
 
     def _clarifications(
-        self, base: str, ambiguities: list[dict], missing: list[str]
+        self, base: str, ambiguities: list[dict[str, object]], missing: list[str]
     ) -> tuple[ClarificationRequest, ...]:
         out: list[ClarificationRequest] = []
         for i, amb in enumerate(ambiguities):
@@ -304,7 +304,11 @@ class DeterministicInterpreter:
         return tuple(out)
 
     def _confidence(
-        self, objective: str, domain: Domain | None, ambiguities: list, missing: list
+        self,
+        objective: str,
+        domain: Domain | None,
+        ambiguities: list[dict[str, object]],
+        missing: list[str],
     ) -> IntentConfidence:
         factors = [
             f"objective_words={len(objective.split())}",
@@ -326,8 +330,8 @@ class DeterministicInterpreter:
         objective: str,
         domain: Domain,
         priority: Priority,
-        constraints,
-        confidence_level,
+        constraints: tuple[Constraint, ...],
+        confidence_level: InterpretationConfidence,
         correlation: str,
     ) -> Goal:
         return Goal(

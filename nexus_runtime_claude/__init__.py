@@ -28,7 +28,7 @@ from nexus_runtime_claude.invoker import (
     StubClaudeInvoker,
 )
 
-__version__ = "2.0.0a1"
+__version__ = "2.0.0"
 
 __all__ = [
     "CLAUDE_CAPABILITIES",

@@ -16,7 +16,7 @@ from nexus_infra import content_hash
 _VOLATILE = ("identity", "timestamp", "correlation_identifier")
 
 
-def facts_digest(profile_dump: dict) -> str:
+def facts_digest(profile_dump: Struct) -> str:
     """Content digest over the historical facts (volatile fields excluded)."""
     facts = {k: v for k, v in profile_dump.items() if k not in _VOLATILE}
     return content_hash(facts)[:16]
@@ -28,7 +28,7 @@ def _scope_token(scope: str) -> str:
     return token[:32] or "global"
 
 
-def profile_id(scope: str, profile_dump: dict) -> str:
+def profile_id(scope: str, profile_dump: Struct) -> str:
     """A content-addressed id for one ExecutionHistoryProfile (idempotent on an identical log)."""
     return f"eh-{_scope_token(scope)}-{facts_digest(profile_dump)}"
 

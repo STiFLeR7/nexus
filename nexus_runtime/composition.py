@@ -16,6 +16,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
+from nexus_core.registries.interfaces import HarnessRegistry
 from nexus_infra import InfrastructureContext
 from nexus_runtime.events import TimestampSource
 from nexus_runtime.observability import RuntimeObservability
@@ -29,7 +30,7 @@ class RuntimeContext:
     """The wired runtime layer (immutable wiring, stateful components)."""
 
     infrastructure: InfrastructureContext
-    harness_registry: InMemoryHarnessRegistry
+    harness_registry: HarnessRegistry
     registry: RuntimeRegistry
     repositories: RuntimeRepositories
     manager: RuntimeManager
@@ -38,7 +39,7 @@ class RuntimeContext:
 def build_runtime(
     infrastructure: InfrastructureContext,
     *,
-    harness_registry: InMemoryHarnessRegistry | None = None,
+    harness_registry: HarnessRegistry | None = None,
     repositories: RuntimeRepositories | None = None,
     timestamps: TimestampSource | None = None,
 ) -> RuntimeContext:

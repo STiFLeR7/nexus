@@ -61,6 +61,7 @@ from nexus_infra.observability import (
     InfraEvent,
     InfraEventType,
     InMemoryObservability,
+    LoggingObservability,
     NullObservability,
     Observability,
 )
@@ -77,7 +78,7 @@ from nexus_infra.serialization import VersionedSerializer, canonical_json, conte
 from nexus_infra.snapshots import InMemorySnapshotStore, SnapshotRecord
 from nexus_infra.unit_of_work import InMemoryUnitOfWork
 
-__version__ = "2.0.0a1"
+__version__ = "2.0.0"
 
 __all__ = [
     "ArtifactRepository",
@@ -110,6 +111,7 @@ __all__ = [
     "InfrastructureError",
     "IntegrityError",
     "KnowledgeRepository",
+    "LoggingObservability",
     "ManualClock",
     "NullObservability",
     "Observability",

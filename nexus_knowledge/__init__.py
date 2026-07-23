@@ -47,7 +47,7 @@ from nexus_knowledge.vocabulary import (
     KnowledgeLifecycle,
 )
 
-__version__ = "2.0.0a1"
+__version__ = "2.0.0"
 
 __all__ = [
     "DEFAULT_PERSISTENCE_POLICY",

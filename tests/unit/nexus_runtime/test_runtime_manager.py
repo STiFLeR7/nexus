@@ -15,11 +15,14 @@ from __future__ import annotations
 
 import pytest
 
+from nexus_infra import build_infrastructure
 from nexus_runtime import (
     CapabilityMismatchError,
+    FixedTimestampSource,
     PreparationResult,
     RuntimeLifecycleState,
     UnresolvedRuntimeError,
+    build_runtime,
 )
 from nexus_runtime.events import (
     RUNTIME_ALLOCATED,
@@ -135,6 +138,35 @@ def test_register_multiple_runtimes_emits_one_registered_event_each() -> None:
 
     registered = [e for e in env.events() if e.type == RUNTIME_REGISTERED]
     assert len(registered) == len(runtimes)
+
+
+def test_register_runtime_is_safe_across_a_fresh_manager_under_a_different_clock() -> None:
+    """A second RuntimeManager (a later actuation, or a restart) re-announcing the same runtime
+    identity over the shared log must not crash just because the announcement's timestamp
+    differs from the first — the announced fact (identity/category/version/capabilities) is
+    identical, so the event id (a pure function of identity alone) colliding is expected, not an
+    error. Regression test for a real crash reproduced against this exact scenario: a second
+    build_execution_actuation() sharing a runtime identity over one durable infra under a real,
+    advancing clock previously raised DuplicateEventError on the second actuation's registration.
+    """
+    infrastructure = build_infrastructure()
+    d = descriptor("claude-code")
+
+    first = build_runtime(
+        infrastructure, timestamps=FixedTimestampSource("2026-01-01T00:00:00+00:00")
+    )
+    first.manager.register_runtime(d)
+
+    # A fresh manager/registry (as a later actuation or a restart would construct) over the same
+    # shared event log, at a genuinely different timestamp.
+    second = build_runtime(
+        infrastructure, timestamps=FixedTimestampSource("2026-01-01T00:05:00+00:00")
+    )
+    result = second.manager.register_runtime(d)  # must not raise
+
+    assert result.identity == "claude-code"
+    registered = [e for e in infrastructure.event_store.read_all() if e.type == RUNTIME_REGISTERED]
+    assert len(registered) == 1  # the second announcement was absorbed, not appended again
 
 
 # ===========================================================================

@@ -12,6 +12,7 @@ from __future__ import annotations
 from collections.abc import Callable
 from typing import Any
 
+from nexus_core.contracts.base import Struct
 from nexus_core.domain.event import Event
 from nexus_integration.events import (
     MIGRATION_DECISION_DIFF,
@@ -93,7 +94,7 @@ class DecisionRecorder:
         )
 
     def _emit(
-        self, identifier: str, event_type: str, identity: DecisionIdentity, payload: dict
+        self, identifier: str, event_type: str, identity: DecisionIdentity, payload: Struct
     ) -> Event:
         event = build_event(
             identifier, event_type, identity.correlation_identifier, payload, self._now()

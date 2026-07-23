@@ -16,13 +16,13 @@ from nexus_infra import content_hash
 _VOLATILE = ("identity", "timestamp", "correlation_identifier", "execution_history")
 
 
-def facts_digest(profile_dump: dict) -> str:
+def facts_digest(profile_dump: Struct) -> str:
     """Content digest over the repository facts (volatile/lookup fields excluded)."""
     facts = {k: v for k, v in profile_dump.items() if k not in _VOLATILE}
     return content_hash(facts)[:16]
 
 
-def profile_id(root: str, profile_dump: dict) -> str:
+def profile_id(root: str, profile_dump: Struct) -> str:
     """A content-addressed id for one RepositoryProfile (idempotent on identical trees)."""
     name = os.path.basename(os.path.normpath(root)) or "repo"
     return f"rp-{name}-{facts_digest(profile_dump)}"

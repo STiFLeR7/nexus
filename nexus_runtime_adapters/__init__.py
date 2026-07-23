@@ -39,7 +39,7 @@ from nexus_runtime_adapters.registry import (
 )
 from nexus_runtime_adapters.selection import select_runtime
 
-__version__ = "2.0.0a1"
+__version__ = "2.0.0"
 
 __all__ = [
     "AdapterFactory",
