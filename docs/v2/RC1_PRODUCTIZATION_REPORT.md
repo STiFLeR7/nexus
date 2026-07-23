@@ -14,9 +14,11 @@ was left in the working tree uncommitted, unlike every prior program this branch
 ## Executive Summary
 
 RC1 closes four of P17's five named GA blockers and formally documents the resolution path for the
-fifth. **P10–P17 are now committed** — 14 disciplined, logically-grouped commits, each mapped to its
+fifth. **P10–P17 are now committed** — 8 disciplined, logically-grouped commits, each mapped to its
 implementation report, with real isolated diffs even where a fix and its target landed in the same
-never-before-committed file (see §1). **A v2 production entrypoint exists** — `python -m nexus_scheduler`
+never-before-committed file (see §1), plus 9 additional RC1-specific commits (the entrypoint, both
+scheduler and policy fixes, the ADR, migration/operator docs, this report, and two more fixes this
+program's own pre-merge review found — §2.5, §7). **A v2 production entrypoint exists** — `python -m nexus_scheduler`
 / the `nexus-v2` console script — and is exercised by an automated regression suite plus a direct smoke
 test (§2). **`Scheduler.tick()` is now linear instead of quadratic** — the ~9.6-second-at-1000-schedules
 ceiling P17 measured is gone, replaced by ~7–10 ms at 1000 schedules and ~14–27 ms at 2000, verified
@@ -27,19 +29,36 @@ for Architecture Review Board ratification — not implemented, per this workstr
 (`docs/v2/RC1_MIGRATION_GUIDE.md`), stating plainly what is and is not supported today rather than
 inventing a migration tool (§5).
 
-**One real defect was found and fixed as a necessary consequence of building the entrypoint, not as
-speculative work:** `build_constitutional_pipeline`'s policy-seeding step was never restart-safe under a
-*real*, advancing wall clock — every existing restart test used a frozen clock across both boot calls,
-which accidentally masked a `DuplicateEventError` that a genuine second production restart would have
-hit immediately. This is disclosed in full in §2.3 and fixed with the registry's own pre-existing (but
-previously unwired) `rebuild()` projection method — the same "reuse the existing, designed-for-this
-mechanism" pattern P17 used for the INV-36 fix.
+**Three real defects were found and fixed as a direct consequence of building and reviewing the
+entrypoint, not as speculative work** — all share one root cause and were found in two passes: first
+while writing the entrypoint's own regression tests (§2.3), then in a dedicated adversarial code review
+of this branch's diff performed before merge, which deliberately re-tested the entrypoint end-to-end with
+more than one goal in the same process (something no test in this program or in P17 had done — see §2.5
+for why that matters). All three are instances of the same pattern: a deterministic event identifier,
+re-emitted under a *real*, advancing wall clock, collides with itself in the durable store — same
+identifier, different timestamp, which the store correctly treats as a conflict (`DuplicateEventError`)
+rather than the harmless byte-identical duplicate it silently absorbs. Every restart/multi-call test in
+this program and in P17 used a frozen clock across calls, which accidentally masked all three:
+
+1. `build_constitutional_pipeline`'s policy-seeding step (§2.3) — fixed with the registry's own
+   pre-existing (but previously unwired) `rebuild()` projection method.
+2. That same fix's own `seed`/rebuild interaction had a narrower gap (§2.3) — corrected in review before
+   merge.
+3. `RuntimeManager.register_runtime` (§2.5) — the *same* bug, unfixed by the first pass because it lives
+   in a different subsystem with no rebuild mechanism at all; found by the pre-merge review, reproduced
+   directly, and fixed.
+
+**One severe, pre-existing architectural gap was found and deliberately NOT fixed** — see §2.5 and §7.
+It is unrelated to the timestamp pattern above, goes deeper than this program's additive-only scope, and
+materially changes what "the entrypoint works" can honestly claim today. Read §2.5 before treating this
+report's entrypoint claims as unconditional.
 
 **Zero regressions.** The full v2-scoped suite (`tests/unit/nexus_*`, `tests/integration`, the exact set
-`.github/workflows/core-ci.yml` runs) passes at 2931 tests (up from P17's 2927 — the 4 new entrypoint
-regression tests this program added), 1 opt-in skip, the same 1 pre-existing-and-unrelated
-`test_state_machines.py` error `--noconftest` has always produced. mypy-strict (388 source files, 0
-errors) and ruff remain clean across the same 30-package v2 scope P17 closed.
+`.github/workflows/core-ci.yml` runs) passes at 2934 tests (up from P17's 2927 — 7 new regression tests
+this program added, across the entrypoint, the policy fixes, and the runtime-manager fix), 1 opt-in skip,
+the same 1 pre-existing-and-unrelated `test_state_machines.py` error `--noconftest` has always produced.
+mypy-strict (388 source files, 0 errors) and ruff remain clean across the same 30-package v2 scope P17
+closed.
 
 **What RC1 does not close:** the durable schema remains unversioned (deliberately — building a migration
 mechanism was out of this program's scope; `RC1_MIGRATION_GUIDE.md` §5 states the "frozen until a real
@@ -94,9 +113,10 @@ prior commits, not reconstructed from memory.
 after every commit that touched source (not just at the end) — see §6 for final numbers. Nothing was
 committed unverified.
 
-**Release branch.** `release/rc1-v2-productization`, created off `master`, currently 14 commits ahead,
-clean working tree, ready for review. Per the standing session rule, **no push and no PR were made** —
-that step needs explicit instruction.
+**Release branch.** `release/rc1-v2-productization`, created off `master`, currently 17 commits ahead,
+clean working tree. Pushed and opened as a PR against `master` on explicit instruction; two of the 17
+commits were added after the PR was opened, during the adversarial pre-merge review this report's §2.5
+and §7 describe.
 
 ---
 
@@ -182,6 +202,69 @@ Constitutional Pipeline and reaches `pipeline.completed` in exactly one `run_ser
 durable file reconstructs an identical schedule (the test that caught §2.3). Plus a direct manual smoke
 test: `python -m nexus_scheduler --db <tmp> --once` boots, ticks once, and exits 0, producing a real
 SQLite file.
+
+**Every test above exercises exactly one goal per process.** §2.5 explains why that boundary matters and
+was not exceeded lightly.
+
+### 2.5 What a pre-merge adversarial review found: one more real fix, and one severe unfixed gap
+
+Before merging this branch, its own diff was put through an adversarial multi-angle code review (8
+independent finder passes plus cross-verification — see the PR discussion for the full methodology). Two
+angles (cross-file tracing and altitude) independently asked the same question: does the restart-safety
+pattern just fixed for `nexus_policy` (§2.3) recur anywhere else the entrypoint's real clock now reaches?
+It does.
+
+**Fixed: `RuntimeManager.register_runtime` had the identical bug.** Every actuation calls it to announce
+its runtime, on a *fresh* `RuntimeManager`/registry built per actuation (unlike Policy, Harness/Runtime
+registration has no rebuild-from-log mechanism at all). Two actuations in the same process sharing a
+runtime identity — the ordinary case for any deployment running more than one goal — re-announce that
+identity, and under a real clock the second announcement's timestamp differs, raising
+`DuplicateEventError`. Reproduced directly (two `build_execution_actuation()` calls over one durable
+infra, real clock, second call crashes) and fixed the same way as the policy case: the announcement event
+id is a pure function of runtime identity alone, so a collision on it can only mean "already announced" —
+caught and treated as the no-op it already claimed to be. Full details and the regression test are in the
+commit `fix(runtime): make register_runtime restart/re-actuation-safe under a real clock`.
+
+**Found, reproduced, and deliberately NOT fixed: work-item-keyed session/event scoping is not
+goal-unique.** Tracing one step further (why did the *second* goal's actuation crash somewhere else
+entirely, in Validation, even after the runtime-manager fix) surfaced a second, larger, and unrelated
+defect: `nexus_execution/actuation/dispatch.py`'s `_project_intake` builds
+`package_identity=f"actuation-pkg-{node.identifier}"`, and the runtime session/validation event scope
+that flows from it is derived from that *node identifier alone* — the work item's key (e.g. `"draft"`) —
+never from the enclosing Goal, pipeline session, or correlation. Two different goals whose plans both
+happen to produce a work item keyed `"draft"` (which the only reference `SpineRequest` builder available
+today, `nexus_workflows.spine.spine_reference_request`, always does — its work-item keys are hardcoded,
+not parameterized) get the *same* runtime-session and validation-event scope. Reproduced directly:
+scheduling two `FULLY_AUTOMATIC` goals built from that reference helper and ticking once crashes inside
+`nexus_validation` with `DuplicateEventError`, downstream of a session/event identifier that is identical
+for both goals.
+
+This is **not** the timestamp pattern above — it is a real content collision (the two goals' validation
+facts are genuinely different, not idempotent duplicates), so catching `DuplicateEventError` the way the
+other three fixes did would be **wrong**: it would silently drop the second goal's validation fact rather
+than record it, corrupting the log exactly the way that error exists to prevent. A correct fix means
+threading goal/session identity into node/session scope construction somewhere in the
+Orchestration→Runtime→Execution chain — real, multi-subsystem, behavioral surgery, not a small additive
+fix, and squarely the kind of architectural change every program in this series (P17 and this one) was
+told not to make unilaterally.
+
+**This is pre-existing, not RC1-introduced** — the scoping scheme dates to P11 and was never RC1's to
+build. It surfaces now because RC1's entrypoint is the first thing to plausibly run more than one goal
+against a real clock in one process; every prior "concurrent sessions" measurement in this program and in
+P17 (`scripts/p17_scale.py::scale_concurrent_sessions`) used `FixedTimestampSource` and the same
+reference-request helper for every run, which means — by the same mechanism — those 50 "independent"
+runs most likely produced byte-identical events for their shared "draft"/"review" nodes and were silently
+deduplicated rather than genuinely exercised as 50 distinct sessions. That measurement's throughput number
+is very likely still representative (the work performed per run is the same either way), but its
+"50/50 completed, independent sessions" framing should be read as unverified for genuine independence,
+not certainly false.
+
+**Practical scope of what is and isn't safe today:** one goal per process is fully verified (§2.4).
+Multiple goals in one process are safe *only* if their plans never produce two work items with the same
+key — true for hand-built, real `SpineRequest`s with distinct work-item keys (not reproducible with the
+reference/demo fixture used throughout this program's own tests). This is now the operative constraint on
+the entrypoint's practical use until fixed; see §7 for its position in the risk list and §8 for how it
+changes the GA recommendation.
 
 ---
 
@@ -344,7 +427,7 @@ Carried forward from P17, with RC1's disposition stated for each:
 
 | # | Risk | P17 status | RC1 status |
 |---|---|---|---|
-| 1 | No entrypoint launches v2 | Blocker | **Closed** (§2) |
+| 1 | No entrypoint launches v2 | Blocker | **Closed** (§2) — scoped to single-goal-per-process; see #12 |
 | 2 | `Scheduler.tick()` O(n²) | Blocker | **Closed** (§3, §6) |
 | 3 | P9–P16 uncommitted | Blocker | **Closed** (§1) |
 | 4 | No schema migration mechanism | Blocker | **Not closed, deliberately** — "frozen until built" policy documented (§5); building the mechanism was out of scope |
@@ -355,36 +438,55 @@ Carried forward from P17, with RC1's disposition stated for each:
 | 9 | Deployment artifact (Dockerfile stage for v2) | Operational gap | Unchanged — `nexus-v2` exists as a console script; no container packaging was built |
 | 10 | Graceful shutdown hook | Operational gap | Unchanged — proven safe (WAL atomicity) but no explicit flush hook |
 | 11 | Version/changelog disagreement | Hygiene | Unchanged |
+| 12 | **Runtime-session/validation event scope is keyed by work-item identifier alone, not by goal/session identity** | Not known to P17 (never exercised — every multi-run measurement used a frozen clock and the same reference fixture, see §2.5) | **New finding, found in this program's own pre-merge review, NOT fixed** — see §2.5. Two goals whose plans produce a same-keyed work item collide in the durable log under a real clock; the collision is a genuine content conflict, not a safe duplicate, so it cannot be papered over the way the timestamp-only bugs were. Requires threading goal/session identity through Orchestration→Runtime→Execution's scope construction — real cross-subsystem behavioral work, out of this program's additive-only scope. **This is now the platform's most severe open risk** — more severe than any item P17 originally listed, because it is a silent data-corruption path (a dropped validation fact), not a crash-on-restart or a performance ceiling. |
 
-**New finding from this program, already fixed (not carried forward as a risk):** the policy restart-
-safety defect (§2.3) — disposed of, not merely documented, because it blocked the entrypoint workstream
-itself from being genuinely restart-safe.
+**New findings from this program, already fixed (not carried forward as risks):** the policy restart-
+safety defect (§2.3) and the `RuntimeManager.register_runtime` restart/re-actuation-safety defect (§2.5)
+— both disposed of, not merely documented, because they blocked the entrypoint workstream itself from
+being genuinely safe to run. Risk #12 above is the one defect this program found and did **not** dispose
+of, because doing so responsibly requires architectural work outside this program's mandate.
 
 ---
 
 ## 8. GA Recommendation
 
-**Conditionally recommended for General Availability**, contingent on the two items this program
-deliberately left open — both correctly out of scope for RC1, both requiring their own scoped work, not a
-redo of this program:
+**Not recommended for unconditional General Availability.** This is a downgrade from this report's
+original conclusion (conditional GA pending only ADR-009 ratification and a migration decision), issued
+after this branch's own pre-merge adversarial code review found risk #12 above (§7, §2.5): a real,
+reproduced, silent data-corruption path (a dropped validation fact under `DuplicateEventError`, not a
+crash that fails loudly) whenever two goals in one process produce a same-keyed work item. This is a more
+serious class of problem than anything this report previously listed, and it was found only because the
+review deliberately tested the new entrypoint with more than one goal — something no test in this program
+or in P17 had done before merge.
 
-1. **INV-37's ADR-009 needs Architecture Review Board ratification.** Until ratified, the platform's own
-   invariant set is not internally consistent — a documentation/decision gap, not an implementation one
-   (§4 estimates near-zero implementation risk once ratified).
-2. **A schema-migration mechanism and a real v1→v2 data-migration path remain unbuilt.** Acceptable
-   indefinitely for a greenfield-only v2 deployment (the only kind this program supports); a hard
-   prerequisite for any cutover that must preserve v1's existing pilot data (§5).
+**Three items now gate a genuine GA recommendation, in priority order:**
 
-Every other blocker P17 named is closed: the platform is committed, launchable, and its one measured
-production-scale ceiling is gone. Replay and restart determinism were re-verified end-to-end after every
-change in this program (§1's verification note, §2.3's restart-safety fix, §3.2's no-behavior-change
-confirmation) — including, for the first time, a genuine restart under a real advancing clock, which is a
-*stronger* determinism proof than any restart test that existed before this program (all of which used a
-frozen clock across both boot calls).
+1. **Risk #12 (new, this review): runtime-session/validation scope must incorporate goal/session identity,
+   not work-item identifier alone.** This is the one true blocker among the three — it is a correctness
+   defect with a silent-corruption failure mode, not a documentation gap or a greenfield-vs-migration
+   scoping question. Recommend a narrowly-scoped follow-up program: trace every place node/session scope
+   is constructed (`nexus_execution/actuation/dispatch.py`'s `_project_intake` is the entry point; the
+   fix likely needs to reach into Orchestration's `RuntimeRequest` construction and/or the Runtime
+   session-scope derivation), design the fix as a real ADR-reviewed change (given it touches a near-frozen
+   contract-adjacent seam), and prove it with a genuine multi-goal, real-clock, shared-work-item-key
+   regression test — the exact scenario this review used to reproduce it.
+2. **INV-37's ADR-009 needs Architecture Review Board ratification** (unchanged from this report's
+   original conclusion; §4).
+3. **A schema-migration mechanism and a real v1→v2 data-migration path remain unbuilt** (unchanged;
+   acceptable indefinitely for greenfield-only deployment; §5).
 
-**If the two open items are resolved** — ADR-009 ratified (or an alternative decided and documented), and
-either a schema-migration mechanism is built or the deployment target is confirmed greenfield-only — **the
-platform has no remaining evidence-backed blocker to General Availability.** No further audit-only program
-is recommended; what remains is two pieces of concrete, scoped follow-up work (an ADR decision meeting,
-and either a migration-tooling program or an explicit greenfield-only deployment decision), not a return
-to broad readiness assessment.
+**What is still true and still solid:** every blocker P17 originally named is closed or has a proposed
+resolution path (§1–§6); the platform is committed, launchable for the single-goal-per-process case that
+is fully verified, and its one measured production-scale ceiling is gone; two additional real restart/
+re-actuation-safety defects were found and fixed by this program's own pre-merge review, not left for a
+future program to discover the hard way; and every fix in this program — including the two found during
+review — was verified against the full v2-scoped suite with zero regressions (§6, §Executive Summary).
+This program's engineering discipline held under adversarial pressure; what it found is a genuine reason
+to gate GA, not a reason to distrust the rest of the work.
+
+**Recommendation: merge this branch** (every fix in it is a real, net improvement, independently verified
+— reverting any of them would restore a known bug, not remove a risk) **but do not recommend v2 for GA
+until risk #12 is resolved and proven.** Multi-goal-per-process autonomous operation — the core value
+proposition of the Scheduler this program just made performant and the entrypoint this program just
+shipped — is not yet safe to claim for any deployment where two goals might share a work-item key, which
+today means "not safe to claim in general," since nothing enforces work-item-key uniqueness across goals.
