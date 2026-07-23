@@ -131,6 +131,61 @@ def find_execution_state(events: tuple[Event, ...]) -> ExecutionState | None:
     return None
 
 
+# --------------------------------------------------------------------------- #
+# RC2 — goal-scoped restart reconstruction (``_seed``'s own finders)               #
+# --------------------------------------------------------------------------- #
+#
+# ``find_goal``/``find_strategy``/``find_plan``/``find_execution_state`` above return the *first*
+# matching fact anywhere in ``events`` — correct only when the log holds exactly one goal. ``_seed``
+# scans the *entire* durable log (every goal ever run on this infra), so it must instead find the fact
+# that belongs to the request it is actually resuming — matched via each artifact's own goal-reference
+# field (never inferred from log position). ``correlation_identifier`` is not a safe key for this: the
+# Scheduler deliberately reuses one correlation across every occurrence of a recurring schedule, so two
+# genuinely different goal runs (occurrence 0 and occurrence 1) would otherwise look like the same run.
+
+
+def _own_goal_identity(request: SpineRequest) -> str:
+    """The Goal identity Intent Resolution derives for ``request`` (``nexus_intent`` interpreter)."""
+    return f"goal-{request.identity}"
+
+
+def _find_own_goal(events: tuple[Event, ...], goal_identity: str) -> Goal | None:
+    for event in events:
+        if event.type == INTENT_RESOLVED and event.payload.get("goal") == goal_identity:
+            return IntentAnalysis.model_validate(event.payload["analysis"]).goal
+    return None
+
+
+def _find_own_strategy(events: tuple[Event, ...], goal_identity: str) -> EngineeringStrategy | None:
+    for event in events:
+        if event.type != ENGINEERING_STRATEGIZED:
+            continue
+        strategy = EngineeringStrategy.model_validate(event.payload["strategy"])
+        if strategy.subject_identifier == goal_identity:
+            return strategy
+    return None
+
+
+def _find_own_plan(events: tuple[Event, ...], goal_identity: str) -> ExecutionPlan | None:
+    for event in events:
+        if event.type != PLANNING_EXECUTION_PLAN_ASSEMBLED:
+            continue
+        plan = ExecutionPlan.model_validate(event.payload["execution_plan"])
+        if plan.plan.parent_goal.identifier == goal_identity:
+            return plan
+    return None
+
+
+def _find_own_execution_state(events: tuple[Event, ...], goal_identity: str) -> ExecutionState | None:
+    for event in events:
+        if event.type != EXECUTION_COMPLETED:
+            continue
+        state = ExecutionState.model_validate(event.payload["execution_state"])
+        if state.goal_ref.identifier == goal_identity:
+            return state
+    return None
+
+
 def reconstruct_pipeline_session(events: tuple[Event, ...], session_id: str) -> PipelineSession:
     """Rebuild the pipeline session from the ``pipeline.*`` stream (the log is truth — INV-13/14)."""
     prefix = f"evt-{session_id}-"
@@ -259,7 +314,7 @@ class ConstitutionalPipeline:
         control = control or SpineControl()
         ctx = _RunCtx()
         prior = tuple(self._infra.event_store.read_all())
-        resume = self._seed(prior, ctx)  # reconstruct completed boundaries from the log
+        resume = self._seed(prior, ctx, request)  # reconstruct completed boundaries from the log
         reconstructed = tuple(stage.value for stage in ORDERED_STAGES if _idx(stage) < _idx(resume))
         self._announce(request, resume, reconstructed)
 
@@ -341,12 +396,20 @@ class ConstitutionalPipeline:
 
     # -- restart seeding (reconstruct completed boundaries from the log) ------ #
 
-    def _seed(self, events: tuple[Event, ...], ctx: _RunCtx) -> SpineStage:
-        """Fill ``ctx`` with the log-embedded artifacts and return the first stage to (re)run."""
-        goal = find_goal(events)
-        strategy = find_strategy(events)
-        plan = find_plan(events)
-        state = find_execution_state(events)
+    def _seed(self, events: tuple[Event, ...], ctx: _RunCtx, request: SpineRequest) -> SpineStage:
+        """Fill ``ctx`` with *this request's own* log-embedded artifacts; return the first stage to (re)run.
+
+        ``events`` is the entire durable log (every goal ever run on this infra), so each artifact is
+        matched to ``request``'s own goal identity (RC2's ``_find_own_*`` — see the note above them),
+        not merely the first fact of its type. Without this, a second goal run on the same log would
+        seed from the *first* goal's Goal/Plan/ExecutionState found in the log and silently skip
+        straight to Validation on someone else's execution, never running its own Intent→Actuation.
+        """
+        goal_identity = _own_goal_identity(request)
+        goal = _find_own_goal(events, goal_identity)
+        strategy = _find_own_strategy(events, goal_identity)
+        plan = _find_own_plan(events, goal_identity)
+        state = _find_own_execution_state(events, goal_identity)
         if goal is not None:
             ctx.goal, ctx.goal_ref = goal, Reference(target_type="goal", identifier=goal.identity)
         if strategy is not None:

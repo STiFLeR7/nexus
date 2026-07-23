@@ -191,3 +191,65 @@ def test_pipeline_events_have_one_producer_and_the_session_reconstructs() -> Non
 
     session = reconstruct_pipeline_session(events, run.pipeline_session.identity)
     assert session.stages_completed == _ALL_STAGES  # lineage reconstructs the full pipeline
+
+
+# --------------------------------------------------------------------------- #
+# RC2 — cross-goal execution identity isolation                                  #
+# --------------------------------------------------------------------------- #
+#
+# ``spine_reference_request`` always produces work items keyed "draft"/"review" regardless of
+# ``run=``, so two requests with different ``run`` values are two different goals whose plans
+# collide on work-item key — the exact shape RC1's pre-merge review reproduced as a
+# ``DuplicateEventError`` crash (or, under a fixed clock, silently merged facts) inside Runtime
+# Session / Validation event scope. These tests drive that scenario for real, over one shared log.
+
+
+def test_two_goals_with_identical_work_item_keys_do_not_collide() -> None:
+    infra = build_infrastructure()
+    coordinator = _pipeline(infra)
+
+    first = coordinator.run(spine_reference_request(run="r1"))
+    second = coordinator.run(spine_reference_request(run="r2"))  # must not raise DuplicateEventError
+
+    assert first.status is SpineStatus.COMPLETED and first.succeeded
+    assert second.status is SpineStatus.COMPLETED and second.succeeded
+    assert all(d == "passed" for d in first.validation_decisions + second.validation_decisions)
+
+    runtime_scopes = {
+        e.identifier.rsplit("-created-0000", 1)[0].removeprefix("evt-")
+        for e in infra.event_store.read_all()
+        if e.type == "runtime.session_created"
+    }
+    # Two goals x two work items (draft, review) = four distinct runtime-session scopes, not two.
+    assert len(runtime_scopes) == 4
+
+
+def test_replay_after_two_concurrent_goals_reconstructs_each_independently(tmp_path) -> None:
+    db = str(tmp_path / "concurrent.db")
+    first_request = spine_reference_request(run="r1")
+    second_request = spine_reference_request(run="r2")
+
+    infra = build_durable_infrastructure(db)
+    coordinator = _pipeline(infra)
+    first = coordinator.run(first_request)
+    second = coordinator.run(second_request)
+
+    events = build_durable_infrastructure(db).event_store.read_all()  # reopened file
+    first_session = reconstruct_pipeline_session(events, first_request.pipeline_session_id)
+    second_session = reconstruct_pipeline_session(events, second_request.pipeline_session_id)
+
+    assert first_session.status is SpineStatus.COMPLETED
+    assert second_session.status is SpineStatus.COMPLETED
+    assert first_session.stages_completed == _ALL_STAGES
+    assert second_session.stages_completed == _ALL_STAGES
+
+    from nexus_workflows.spine import find_execution_state
+
+    # find_execution_state scans a caller-supplied slice (RC2's _seed filters by request.correlation
+    # the same way) — a reconstruction correctly scoped per goal must not return the other goal's state.
+    first_events = tuple(e for e in events if e.correlation_identifier == first_request.correlation)
+    second_events = tuple(e for e in events if e.correlation_identifier == second_request.correlation)
+    assert find_execution_state(first_events) == first.execution_state
+    assert find_execution_state(second_events) == second.execution_state
+    assert first.execution_state != second.execution_state  # distinct sessions, not one overwriting the other
+    assert first.execution_state != second.execution_state  # distinct sessions, not one overwriting the other

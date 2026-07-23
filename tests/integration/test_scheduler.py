@@ -70,6 +70,34 @@ def test_restart_never_double_dispatches(tmp_path) -> None:
     assert len(completed) == 1  # the Goal executed exactly once across the restart
 
 
+def test_recurring_schedule_occurrences_each_run_their_own_goal() -> None:
+    """RC2: every occurrence of a recurring schedule shares one ``correlation_identifier`` by design
+    (``Scheduler._dispatch``: ``correlation_identifier=schedule.correlation_identifier or f"cor-{schedule.identity}"``)
+    — restart/seed reconstruction must not mistake that shared correlation for "the same goal run" and
+    let occurrence 1 silently reuse occurrence 0's already-completed Intent/Plan/ExecutionState.
+    """
+    infra = build_infrastructure()
+    _, _, scheduler = _platform(infra)
+    _goal(scheduler, "rec", ScheduleTrigger.interval(3600, anchor=T0, max_occurrences=3))
+
+    scheduler.tick(T0)
+    scheduler.tick(T2)
+
+    goals = {
+        e.payload["goal"]
+        for e in infra.event_store.read_all()
+        if e.type == "intent.resolved"
+    }
+    plans = {
+        e.identifier
+        for e in infra.event_store.read_all()
+        if e.type == "planning.execution_plan_assembled"
+    }
+    # Three distinct occurrences → three distinct goals and three distinct plans, not one reused thrice.
+    assert goals == {"goal-rec-0", "goal-rec-1", "goal-rec-2"}
+    assert len(plans) == 3
+
+
 def test_replay_reconstructs_scheduling_history(tmp_path) -> None:
     db = str(tmp_path / "replay.db")
     _, _, scheduler = _platform(build_durable_infrastructure(db))
