@@ -49,6 +49,31 @@ Ratifying these two ADRs closes the persistence and migration-mechanism decision
 
 ---
 
+## 5. ADR-005/006 Gap and the ADR-010 Numbering Collision (added by Phase 5's documentation audit)
+
+This report's job is tracking every ADR's status; two gaps in that tracking were found and are recorded
+here rather than left silent (full investigation: `docs/DOCUMENTATION_PHASE5_REPORT.md` §2).
+
+- **ADR-005 and ADR-006 were never filed.** Both are referenced prospectively across
+  `ARCHITECTURE_CONSTITUTION.md`, `CONSTITUTIONAL_MIGRATION_BLUEPRINT.md`,
+  `IMPLEMENTATION_READINESS_REVIEW.md`, and `CONSTITUTIONAL_ENGINEERING_PROGRAM.md` — always as a decision
+  "to ratify," never as a past-tense claim of acceptance (the one table cell reading "Accepted in P0" is
+  under a column literally headed "Status target"). Git history has no trace of either number ever
+  existing as a file. Both decisions' substance shipped anyway: `nexus_engineering` (ADR-005's Engineering
+  Intelligence split) and `nexus_policy`/`nexus_repository`/`nexus_human_interaction`/`nexus_operations`
+  (ADR-006's subsystem-naming, one of its two conflicting drafted definitions) are real, tested packages.
+  `CONSTITUTIONAL_ENGINEERING_PROGRAM.md`'s *other* definition of ADR-006 ("Program Sequencing") was
+  ratified, but its decision was absorbed into ADR-008 rather than filed under its own number — see §2
+  above, "Policy-first order is now authoritative in ADR-008." No ADR-005/006 file has ever existed to be
+  lost, and none is fabricated here.
+- **ADR-010 is a numbering collision this report previously didn't flag.** v2's own planned ADR-010
+  (correlation-event gateway / INV-39 transport freeze) remains unwritten, as already noted above. Separately,
+  and unrelated to it, `blueprint/DECISIONS/ADR-010-execution-timeouts.md` is v1's real, ratified,
+  independently-numbered ADR-010 — actively cited in shipped v1 code (`nexus/execution/runners/*.py`,
+  `docs/v1/ORCHESTRATION.md` §6.1). The two must not be conflated; v1's ADR-010 is not a gap of any kind.
+
+---
+
 ### References
 - `adr/ADR-007-persistence-authority.md`, `adr/ADR-008-shadow-migration.md`
 - `docs/v2/P0_ADR007_PERSISTENCE_SPIKE.md`, `docs/v2/P0_ADR008_SHADOW_MIGRATION_SPIKE.md`
