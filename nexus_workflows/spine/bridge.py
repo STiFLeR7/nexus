@@ -32,7 +32,7 @@ def execution_results(
     state: ExecutionState, events: tuple[Event, ...]
 ) -> tuple[ExecutionResult, ...]:
     """Reconstruct one ExecutionResult per executed node (the frozen contract Validation consumes)."""
-    node_scope = _node_scopes(events)
+    node_scope = _node_scopes(events, state.identity)
     results: list[ExecutionResult] = []
     for node in state.nodes:
         if node.status not in _DISPATCHED:
@@ -60,17 +60,26 @@ def _result(node: NodeState, scope: str, events: tuple[Event, ...]) -> Execution
     )
 
 
-def _node_scopes(events: tuple[Event, ...]) -> dict[str, str]:
-    """Map each node id to its execution-session scope via the frozen ``runtime.session_created`` fact."""
+def _node_scopes(events: tuple[Event, ...], session_identity: str) -> dict[str, str]:
+    """Map each node id to its execution-session scope via the frozen ``runtime.session_created`` fact.
+
+    ``events`` is the *entire* durable log (every goal ever run in this process), so the scan is
+    restricted to facts stamped for this ``session_identity`` (RC2) — otherwise two goals whose plans
+    both produce a node with the same key would overwrite each other's entry in ``mapping``, handing
+    Validation the wrong (or a since-overwritten) goal's runtime scope for a node id shared by both.
+    """
     mapping: dict[str, str] = {}
+    marker = f"-{session_identity}-"
     for event in events:
         if event.type != RUNTIME_SESSION_CREATED:
             continue
+        # Event ids are the runtime's frozen ``evt-{scope}-created-0000`` scheme (created is seq 0).
+        scope = event.identifier.removeprefix("evt-").removesuffix("-created-0000")
+        if marker not in f"-{scope}-":
+            continue  # a different execution session's runtime fact
         node = event.payload.get("node")
         if node is None:
             continue
-        # Event ids are the runtime's frozen ``evt-{scope}-created-0000`` scheme (created is seq 0).
-        scope = event.identifier.removeprefix("evt-").removesuffix("-created-0000")
         mapping[str(node)] = scope
     return mapping
 

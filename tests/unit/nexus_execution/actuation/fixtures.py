@@ -38,10 +38,10 @@ def item(key: str, **overrides: object) -> WorkItemSpec:
     return WorkItemSpec(key=key, objective=objective, **overrides)  # type: ignore[arg-type]
 
 
-def make_plan(work_items: tuple[WorkItemSpec, ...]) -> ExecutionPlan:
+def make_plan(work_items: tuple[WorkItemSpec, ...], *, goal_identity: str = "g1") -> ExecutionPlan:
     """A real, deterministic ExecutionPlan from the incumbent P10 producer (throwaway infra)."""
     infra = build_infrastructure()  # throwaway — the plan is an immutable input
-    goal = make_goal()
+    goal = make_goal(identity=goal_identity)
     inputs = PlanningInputs(
         goal=goal,
         engineering_strategy=strategy_for(goal, persist=False),

@@ -119,7 +119,13 @@ def _project_intake(
     correlation: str,
     attempt: int = 1,
 ) -> RuntimeIntake:
-    """Project a node's Orchestration assignment into the Runtime Manager's intake (the seam)."""
+    """Project a node's Orchestration assignment into the Runtime Manager's intake (the seam).
+
+    ``package_identity`` includes ``session_identity`` (the goal-scoped Execution Session id) because
+    ``node.identifier`` alone is only unique *within one plan* (RC2) — two goals whose plans both produce
+    a work item with the same key would otherwise mint the same Runtime Session id and collide on every
+    downstream ``runtime.*``/``validation.*`` event scope.
+    """
     candidates = runtime_request.candidate_harness_refs if runtime_request else ()
     policy = runtime_request.runtime_policy if runtime_request else {}
     coordination = runtime_request.coordination if runtime_request else CoordinationModel.SEQUENTIAL
@@ -130,7 +136,7 @@ def _project_intake(
         else Reference(target_type=_SESSION_TARGET_TYPE, identifier=session_identity)
     )
     return RuntimeIntake(
-        package_identity=f"actuation-pkg-{node.identifier}",
+        package_identity=f"actuation-pkg-{session_identity}-{node.identifier}",
         node=node.identifier,
         session_ref=session_ref,
         work_package=work_package,
