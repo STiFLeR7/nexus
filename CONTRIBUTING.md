@@ -1,6 +1,12 @@
 # Contributing to Nexus
 
-> Read [docs/RULES.md](docs/RULES.md) before contributing. These rules are non-negotiable.
+> **This file covers Nexus v1** (`nexus/`, the Discord-fronted control plane). Contributing to the
+> released v2 platform (`nexus_*` packages)? See
+> [docs/development/CONTRIBUTING.md](docs/development/CONTRIBUTING.md) instead — its rules (frozen
+> architecture, `make check` gate) are different from v1's. See [docs/README.md](docs/README.md) if
+> you're not sure which codebase you're working in.
+
+> Read [docs/RULES.md](docs/v1/RULES.md) before contributing. These rules are non-negotiable.
 
 ---
 
@@ -157,7 +163,7 @@ pytest --cov=nexus --cov-report=html
 
 ### Branch Naming
 
-```
+```text
 feat/phase-0-ap1-repository-structure
 fix/task-engine-state-recovery
 test/approval-workflow-coverage
@@ -168,7 +174,7 @@ docs/blueprint-phase-0-decisions
 
 Use conventional commits:
 
-```
+```text
 feat(task): implement task lifecycle state machine
 fix(approval): persist approval state on Discord disconnect
 test(execution): add end-to-end Gemini runner coverage

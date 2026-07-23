@@ -1,5 +1,9 @@
 # Nexus — Development Guide
 
+> **This file covers Nexus v1** (`nexus/`). For the released v2 platform (`nexus_*` packages), see
+> [docs/development/DEVELOPMENT.md](docs/development/DEVELOPMENT.md) instead — it uses `uv`/`make`,
+> not `pip`/`venv`. See [docs/README.md](docs/README.md) if you're not sure which applies to you.
+
 > This guide is for active contributors and covers daily development workflows.
 > Read [CONTRIBUTING.md](CONTRIBUTING.md) first.
 
@@ -287,7 +291,7 @@ git push origin feat/phase-0-ap001-repository-structure
 
 ### Commit Message Format
 
-```
+```text
 <type>(<scope>): <description>
 
 Types: feat, fix, test, docs, refactor, chore
@@ -322,7 +326,7 @@ Recommended settings (`.vscode/settings.json`):
 
 ## Troubleshooting
 
-### Database locked error
+### Database Locked Error
 
 ```bash
 # SQLite WAL mode should prevent this. If it occurs:
@@ -331,7 +335,7 @@ Recommended settings (`.vscode/settings.json`):
 # 3. If needed: rm nexus.db-wal nexus.db-shm
 ```
 
-### Discord bot not connecting
+### Discord Bot Not Connecting
 
 ```bash
 # Check:
@@ -340,7 +344,7 @@ Recommended settings (`.vscode/settings.json`):
 # 3. Bot is in the correct server
 ```
 
-### OpenRouter request failures
+### OpenRouter Request Failures
 
 ```bash
 # Check:

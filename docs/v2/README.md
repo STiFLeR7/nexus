@@ -2,13 +2,24 @@
 
 > **Operational Intelligence Platform for Human-Governed AI Execution**
 
-**Status:** Architecture Design (Target)  
-**Version:** Next Architecture (Pre-v2)  
+**Status:** Released — `v2.0.0` ("Constitutional Spine"), tagged and merged to `master`.  
+**Version:** v2.0.0  
 **Audience:** Engineers, Architects, AI Runtime Developers, Contributors
+
+> The documents in this directory were written as the **target architecture** before implementation
+> began (Phase 0). Implementation followed them through P1–P17, RC1, and RC2, and the platform is now
+> released as `v2.0.0` — see `docs/v2/V1_RELEASE_READINESS_REPORT.md` and
+> `docs/v2/V2_RELEASE_EXECUTION_REPORT.md` for the release evidence, and
+> `docs/internals/WALKTHROUGH-v2.md` for a code-level tour of the shipped implementation. This directory
+> remains the authoritative design record; treat it as describing the platform as built, not as a
+> not-yet-built proposal.
+>
+> **Looking for one page that indexes every subsystem instead of reading these files one at a time?**
+> See [`docs/architecture/README.md`](../architecture/README.md), the architecture portal.
 
 ---
 
-# Overview
+## Overview
 
 Nexus is evolving from an AI Orchestration Control Plane into an **Operational Intelligence Platform**.
 
@@ -32,7 +43,7 @@ Rather than improving execution, Nexus now focuses on understanding work before 
 
 ---
 
-# Vision
+## Vision
 
 Execution is becoming commoditized.
 
@@ -50,9 +61,9 @@ Execution becomes only one capability of the platform.
 
 ---
 
-# Evolution
+## Evolution
 
-## Nexus v1
+### Nexus v1
 
 Nexus v1 established the execution foundation.
 
@@ -74,7 +85,7 @@ The platform coordinates execution reliably and transparently.
 
 ---
 
-## Nexus Next
+### Nexus Next
 
 The next architecture introduces a higher layer.
 
@@ -96,11 +107,11 @@ Execution becomes one stage inside a much larger operational lifecycle.
 
 ---
 
-# Design Philosophy
+## Design Philosophy
 
 Nexus is built around several architectural principles.
 
-## Goals instead of Commands
+### Goals instead of Commands
 
 Operators express goals.
 
@@ -108,7 +119,7 @@ Nexus determines how those goals should be achieved.
 
 ---
 
-## Context before Execution
+### Context before Execution
 
 Execution should never begin without sufficient context.
 
@@ -116,7 +127,7 @@ The platform assembles operational context before selecting tools or runtimes.
 
 ---
 
-## Skills instead of Prompts
+### Skills instead of Prompts
 
 Operational knowledge is represented as reusable Skills.
 
@@ -126,7 +137,7 @@ They are independent of any particular AI model.
 
 ---
 
-## Planning before Orchestration
+### Planning before Orchestration
 
 Planning decides what work should happen.
 
@@ -138,7 +149,7 @@ These responsibilities remain independent.
 
 ---
 
-## Evidence instead of Claims
+### Evidence instead of Claims
 
 Successful execution is determined through observable evidence.
 
@@ -146,7 +157,7 @@ Completion is never based solely on runtime responses.
 
 ---
 
-## Learning instead of History
+### Learning instead of History
 
 Execution history is useful.
 
@@ -156,7 +167,7 @@ Nexus stores patterns, reflections, failures, and successful strategies to impro
 
 ---
 
-# Capability Layers
+## Capability Layers
 
 The platform is organized into capability layers.
 
@@ -203,7 +214,7 @@ No layer should assume responsibilities belonging to another.
 
 ---
 
-# Architectural Goals
+## Architectural Goals
 
 The next architecture is designed to be:
 
@@ -220,7 +231,7 @@ The next architecture is designed to be:
 
 ---
 
-# Document Structure
+## Document Structure
 
 This directory contains the target architecture for the next generation of
 Nexus. The pipeline documents (00–26) describe the 13 capability layers and the
@@ -261,7 +272,7 @@ CONSISTENCY) finalize the Phase 0 baseline.
 | `MIGRATION_FROM_V1.md` | Conceptual migration from Nexus v1 to v2 |
 | `CONSISTENCY_REPORT.md` | Phase 0 consistency audit and corrections |
 
-## Related Phase 0 Artifacts
+### Related Phase 0 Artifacts
 
 | Location | Purpose |
 |----------|---------|
@@ -271,17 +282,19 @@ CONSISTENCY) finalize the Phase 0 baseline.
 
 ---
 
-# Design Status
+## Design Status
 
-These documents describe the **target architecture**.
+These documents describe the architecture **as designed and, as of `v2.0.0`, as released.**
 
-They are intentionally independent of the current implementation.
-
-Implementation will evolve incrementally while preserving the architectural principles defined here.
+They were written independently of any implementation (Phase 0), so that implementation would be built
+*against* them rather than the reverse. Implementation followed incrementally across P1–P17 and two
+hardening passes (RC1, RC2), each verified against the principles defined here rather than revising them
+to match convenience — see `docs/v2/ADR_RATIFICATION_REPORT.md` for the small number of places where
+implementation experience did require a documented, reviewed correction (e.g. ADR-009).
 
 ---
 
-# North Star
+## North Star
 
 Nexus is not an AI assistant.
 

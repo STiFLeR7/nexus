@@ -1,336 +1,209 @@
 # Nexus
 
-> **AI Orchestration Control Plane for Human-Governed Autonomous Execution**
+> **A governed, deterministic control plane for AI-driven execution.**
 
-[![Status](https://img.shields.io/badge/status-released%20(pilot)-brightgreen)](blueprint/STATUS.md)
-[![Version](https://img.shields.io/badge/release-v1.0.0%20%2B%20v1.0.1%20alignment-blue)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/release-v2.0.0-blue)](CHANGELOG.md)
+[![Status](https://img.shields.io/badge/status-released-brightgreen)](docs/v2/V2_RELEASE_EXECUTION_REPORT.md)
 [![Python](https://img.shields.io/badge/python-3.12%2B-blue)](https://python.org)
 [![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 [![Core CI](https://img.shields.io/github/actions/workflow/status/STiFLeR7/nexus/core-ci.yml?branch=master&label=core%20CI)](https://github.com/STiFLeR7/nexus/actions/workflows/core-ci.yml)
 [![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
 [![Checked with mypy](https://img.shields.io/badge/mypy-strict-blue)](https://mypy-lang.org/)
 
-> **Release status:** Nexus is **released as v1.0.0** ("Operational Intelligence", git tag `v1.0.0`)
-> and is currently in the **v1.0.1 "Alignment"** line — a correctness/safety/operational-completeness
-> pass (no new features). It is **pilot-ready as an attended, single-operator governed-execution
-> console**, with a now-operational single-node autonomy layer. For the authoritative, per-subsystem
-> status see **[architecture-status-summary.md](blueprint/implementations/v1.0.1/architecture-status-summary.md)**.
-
 ---
 
 ## What is Nexus?
 
-Nexus is an **AI Orchestration Control Plane** that acts as a persistent, governed digital operations
-manager.
+Nexus turns an operator's goal into governed, auditable, replayable execution. It resolves intent,
+plans the work, selects and allocates a runtime, executes it, judges the outcome against evidence (not
+the runtime's own claim of success), recovers from failure deterministically, and durably records what
+was learned — with a policy engine that can deny any of it, fail-closed, at every step.
 
-It is **not** a chatbot. It is **not** a Discord bot project. It is **not** a wrapper around an LLM.
+It is **not** a chatbot, an agent-wrapper, or a prompt library. Decisions about *what* runs, *when*, and
+*whether it's allowed* are deterministic and rule-based; the LLM runtimes it drives are one interchangeable
+component in a much larger governed pipeline, not the thing making the decisions.
 
-Nexus is a deterministic, auditable, and recoverable orchestration system that coordinates:
+> **Two systems live in this repository.** The platform described in this README is **Nexus v2**
+> (`nexus_*`, 31 packages) — an independent, from-scratch rebuild released as `v2.0.0`. An earlier,
+> separately-released system, **Nexus v1** (`nexus/`, `v1.0.0`/`v1.0.1`), also lives here — a
+> Discord-fronted orchestration console. The two share no code, schema, or process in either direction.
+> If you're looking for v1: [ONBOARDING.md](ONBOARDING.md). Not sure which you need? [docs/README.md](docs/README.md).
 
-- **Tasks** — creation, lifecycle, prioritization (✅ production-ready)
-- **Approvals** — un-bypassable, DB-backed governance workflows with audit trails (✅ production-ready)
-- **Agent Execution** — runtime registry over Gemini / Claude / Nexus adapters (🟡 governed core ready; Gemini/Claude stubbed, Nexus Experimental)
-- **Research** — autonomous monitoring (✅ engine built, now scheduled; activates when feeds are configured)
-- **Communication** — Discord, Email (future: WhatsApp, Slack)
-- **Scheduling** — APScheduler-driven jobs for research, briefings, expiry sweeps, metrics, health (✅ single-node, new in v1.0.1)
-- **Memory** — event-sourced persistent state, checkpoint replay, immutable audit history (✅ production-ready)
+## Why Nexus Exists
 
-> **Conversation is a feature. Orchestration is the product.**
+Running an AI agent is easy. Trusting it in production is not — because "did this actually work" is a
+harder question than "did the model return a plausible-looking response," and "can I explain why this
+ran" is a harder question than "it ran." Nexus exists because those two questions need a real answer
+before autonomy is safe to grant: every execution must be evidence-validated, every decision must have
+exactly one accountable owner, and every state must be reconstructible from a durable, append-only log —
+not trusted from memory.
 
----
+## Core Capabilities
 
-## What problem does it solve?
+Nexus is organized as thirteen single-owner capabilities (Constitution: no two subsystems ever own the
+same decision), grouped into four planes:
 
-It de-fragments AI operations. Instead of chatting in one tool, tracking tasks in another, approving
-actions manually, and running agents from terminals with no audit trail, Nexus centralizes that
-surface so one operator can delegate work, approve privileged actions in Discord, run agents against
-allow-listed repositories, and keep a complete, recoverable record — all under continuous human
-governance.
-
----
-
-## Core Philosophy
-
-```
-AI should assist execution.
-AI should not control execution.
-Human governance remains the final authority.
-All execution paths must remain observable, auditable, and interruptible.
-```
-
-- **Determinism over cleverness** — routing, workflows, and decisions are rule-based, not LLM-dependent
-- **Persistence over convenience** — every important state survives restarts (event-sourced)
-- **Governance over automation** — humans approve execution; Nexus coordinates it
-- **Auditability over speed** — every action produces a traceable, immutable event
-
----
-
-## Architecture Overview
-
-```
-          User (Director / Operator)
-                     │
-                     ▼
-        ┌─────────────────────────┐
-        │   COMMUNICATION LAYER   │
-        │  Discord │ Email │ ...  │
-        └────────────┬────────────┘
-                     │
-                     ▼
-        ┌─────────────────────────┐
-        │     EVENT GATEWAY       │
-        │  Normalize · Route ·    │
-        │  Transactional Outbox   │
-        └────────────┬────────────┘
-                     │
-                     ▼
-        ┌─────────────────────────┐
-        │      NEXUS CORE         │
-        │  Task Engine            │
-        │  Approval Engine (gate) │
-        │  Runtime Governance     │
-        │  Workflow Orchestrator  │
-        └──────┬──────┬──────┬────┘
-               │      │      │
-           Memory  Scheduler Intel
-        (event-   (APSched)  (OpenRouter)
-         sourced)    │
-               │     ▼ jobs: research · briefing · approval-expiry
-               │       · metrics-aggregation · outbox/checkpoint health
-               ▼      ▼      ▼
-        ┌─────────────────────────┐
-        │    EXECUTION LAYER      │
-        │  Runtime Registry +     │
-        │  Adapters: Gemini /     │
-        │  Claude / Nexus        │
-        │  (11-gate governance)   │
-        └─────────────────────────┘
-```
-
-See [docs/01_ARCHITECTURE.md](docs/01_ARCHITECTURE.md) for the design specification, and
-[architecture-status-summary.md](blueprint/implementations/v1.0.1/architecture-status-summary.md) for
-the **current built status** of every subsystem.
-
----
-
-## Major Capabilities (current status)
-
-| Capability | Status | Notes |
+| Plane | Capabilities | What it owns |
 |---|---|---|
-| Task management | ✅ Production Ready | Guarded lifecycle, locking, Discord CRUD, full audit |
-| Approval workflows | ✅ Production Ready | Un-bypassable DB gate; **fail-closed** owner auth (v1.0.1) |
-| Runtime governance (11-gate) | ✅ Production Ready | Audits every execution decision |
-| Memory (event-sourced) | ✅ Production Ready | Immutable `audit_log` + checkpoint replay |
-| Communication outbox | ✅ Production Ready | Lease-based, backoff, dead-letter, audited |
-| Scheduler (single-node) | ✅ Operational | 6 audited jobs; **new in v1.0.1** |
-| Metrics persistence | ✅ Operational | Collection + **scheduled aggregation/retention** (v1.0.1) |
-| Research engine | 🟡 Operational (latent) | Built + scheduled; activates once `research_feeds` configured |
-| Daily briefing engine | 🟡 Operational | Built + scheduled 08:00 (Asia/Kolkata) |
-| Gemini / Claude runtimes | 🟠 Stubbed | Generic shell runners; real CLI binary integration pending |
-| Nexus runtime | 🟠 Experimental | Honest: no prod mock, provider-backed search (`SearchProvider` DI), goal-derived planning, structured tool-calls, truthful outcomes (v1.1.0 H-2). Lifecycle safety (terminate/resume) = Pilot/H-4 |
-| Sandbox isolation | 🟢 Pilot Safe | **Default-secure fail-closed** + boot-validated + workspace-confined (v1.1.0 Track S). Isolation opt-in (`provider=docker`); residual R-04/R-08/R-09 |
+| **Reasoning & Grounding** | Intent Resolution, Engineering Intelligence, Repository Intelligence, Execution History, Estimation, Context Engineering | Understanding *what* is being asked and the state of the world it's being asked in |
+| **Planning & Governance** | Planning, Policy Engine, Orchestration, Harness | Deciding *what work* should happen, and whether it's *allowed* to |
+| **Execution** | Runtime Manager, Runtime Adapters, Execution Engine | Actually running the work, against exactly one deterministically-allocated runtime |
+| **Post-Execution** | Validation, Recovery, Reflection, Knowledge | Judging the outcome from evidence, recovering from failure, and durably remembering what happened |
 
----
+Two more subsystems make it operable rather than just correct: the **Scheduler** (governed autonomy —
+Manual / Governed / Fully-Automatic — and deterministic timing, never a wall clock inside the platform)
+and the **Approval Exchange** (the human-in-the-loop gate execution pauses at and resumes from). See
+[docs/architecture/README.md](docs/architecture/README.md) for the full portal into all thirteen.
 
-## Runtime Support
+## Architecture
 
-Execution flows through a **Runtime Registry** with a CLI/Agent **adapter split** and an 11-gate
-governance layer that authorizes every run:
-
-- **Gemini** (`gemini`) — CLI adapter (currently a governed generic shell runner).
-- **Claude** (`claude`) — CLI adapter (currently a governed generic shell runner).
-- **Nexus** — Agent adapter (autonomous loop). **Experimental** (v1.1.0 H-2): real model decisions via
-  structured tool-calls, provider-backed search, goal-derived planning, truthful exit status. Not yet
-  lifecycle-safe (no terminate/resume) — that is the Pilot bar (H-4).
-
-The governance abstraction and registry are production-quality; the **concrete runtime behaviors are
-still stubbed/mocked** and must not be represented as full CLI/agent integrations.
-
-## Governance Model
-
-Every governed execution must pass an **un-bypassable, database-backed approval gate**
-(`nexus/execution/service.py`) and the **11-gate runtime governance** checks
-(`nexus/execution/governance.py`), each decision written to the immutable `audit_log`. As of v1.0.1,
-owner authorization **fails closed**: if no `discord.owner_ids` are configured, the application
-**refuses to start** (no fail-open, no degraded mode).
-
-## Research Engine
-
-A production-grade crawl→dedup→summarize→persist pipeline with resumable runs. It is now driven by the
-scheduler (`research_collection`, every 2h) but ships with **empty `research_feeds`**, so it safely
-audited-skips until an operator configures feeds. Currently RSS/Atom only.
-
-## Briefing Engine
-
-Generates and dispatches the daily operational briefing, scheduled at **08:00 Asia/Kolkata**
-(`daily_briefing`).
-
-## Scheduler
-
-APScheduler-backed, single-node, behind a replaceable `SchedulerPort`. Jobs invoke services only
-(no business logic in jobs), every fire is audited (`SCHEDULER_JOB_STARTED/COMPLETED/FAILED/SKIPPED`):
-`research_collection` · `daily_briefing` · `approval_expiration_sweep` · `metrics_aggregation` ·
-`outbox_health` (read-only) · `checkpoint_health` (read-only). Multi-node coordination is designed but
-future (see [scheduler-future-scaling.md](blueprint/implementations/v1.0.1/scheduler-future-scaling.md)).
-
-## Sandboxing
-
-Execution sandbox is configurable (`docker` / `local` / `mock`) and is **default-secure** as of
-v1.1.0 Track S (**Pilot Safe**, `ADR-sandbox-pilot-safe`):
-
-- **Fails closed by default.** With sandboxing disabled or an unrecognized provider, the manager
-  **refuses to execute** rather than silently running on the host (no fail-open).
-- **Boot-validated.** Startup aborts on an incoherent sandbox config or an unavailable
-  policy-enforcing provider (Docker availability is probed at boot).
-- **Honest enforcement.** Each execution is audited with whether the provider actually enforces the
-  policy (`policy_enforced`); a host run is declared, never pretended.
-- **Workspace-confined file tools.** Agent `read_file`/`write_file` are confined to the approved
-  workspace (path traversal / absolute / symlink escapes fail closed).
-
-Container isolation remains **opt-in**: set `sandbox.enabled=true`, `sandbox.provider=docker` (Docker
-present), and ideally `filesystem_policy=readonly` before running untrusted commands. Running on the
-host (`provider=local`) is possible only as a deliberate, startup-warned, audited choice. Residual
-items: command-blacklist robustness (R-04, governance-owned), shell exec surface (R-08), and the
-non-readonly default mount (R-09).
-
----
-
-## Tech Stack
-
-| Concern | Technology |
-|---|---|
-| Runtime | Python 3.12+ |
-| API Framework | FastAPI (ASGI) |
-| ORM | SQLAlchemy 2.x (async, aiosqlite) |
-| Validation | Pydantic v2 / Pydantic Settings |
-| Database | SQLite (WAL) → PostgreSQL (future) |
-| Scheduler | APScheduler (AsyncIOScheduler) |
-| Discord | discord.py |
-| Email | SMTP / Resend |
-| LLM Gateway | OpenRouter |
-| Logging | structlog |
-| Testing | pytest / pytest-asyncio |
-| Tooling | ruff, mypy (strict), uv |
-| Containerization | Docker |
-| CI | GitHub Actions |
-
----
-
-## Project Structure
-
-```
-nexus/
-├── docs/                    # Design-intent documentation (target architecture)
-├── blueprint/               # Living memory: status, roadmap, decisions, audits, implementations
-│   ├── STATUS.md            # Current project status (authoritative)
-│   ├── ROADMAP.md           # Reconstructed history + forward direction
-│   ├── DECISIONS/           # 21 ADRs
-│   ├── onboarding/          # Accepted v1.0.0 onboarding audit (reality source)
-│   ├── implementations/     # Per-release implementation reports (incl. v1.0.1/)
-│   ├── architecture/        # Architecture & design records
-│   └── reports/             # Reviews, gap analyses, classifications
-├── nexus/                   # Application source
-│   ├── api.py               # FastAPI app + lifespan (DB, outbox, metrics, scheduler, Discord)
-│   ├── core/                # types/events, exceptions, metrics, health
-│   ├── approvals/           # Approval engine (fail-closed owner auth)
-│   ├── execution/           # Approval gate, 11-gate governance, runners/
-│   ├── gateway/             # Event gateway, outbox(es), outbox_health
-│   ├── memory/              # Event-sourced manager, models, checkpoint_health
-│   ├── intelligence/        # OpenRouter client / model routing
-│   ├── communication/       # Discord, Email adapters
-│   ├── scheduling/          # APScheduler foundation: scheduler, jobs, orchestrator
-│   └── agents/              # Agent definitions
-├── tests/                   # unit / integration / e2e
-├── config/                  # repositories.yaml, settings.yaml
-├── alembic/                 # Migrations (incomplete; create_all is current schema source)
-└── .github/                 # CI
+```mermaid
+flowchart LR
+    subgraph RG["Reasoning & Grounding"]
+        direction TB
+        Intent["Intent Resolution"]
+        Eng["Engineering Intelligence"]
+        Ctx["Context Engineering"]
+    end
+    subgraph PG["Planning & Governance"]
+        direction TB
+        Plan["Planning"]
+        Policy["Policy Engine"]
+    end
+    subgraph EX["Execution"]
+        direction TB
+        Orch["Orchestration"]
+        Harness["Harness"]
+        RT["Runtime Manager + Adapters"]
+        Engine["Execution Engine"]
+    end
+    subgraph PE["Post-Execution"]
+        direction TB
+        Val["Validation"]
+        Rec["Recovery"]
+        Refl["Reflection"]
+        Know["Knowledge"]
+    end
+    RG --> PG --> EX --> PE
+    Know -. "informs future runs" .-> RG
+    Log[("Durable, append-only\nevent log")]
+    RG --- Log
+    PG --- Log
+    EX --- Log
+    PE --- Log
 ```
 
----
+Every plane reads from and writes to the same durable event log — nothing is a private datastore, and
+every projection (a Goal, a Plan, an ExecutionState) is reconstructed from it, never mutated in place.
+This is what makes replay and restart exact rather than best-effort.
 
-## Development Status
+## Example Execution Lifecycle
 
-| Phase / Release | Status |
-|---|---|
-| Phase 0 — Project Foundation | ✅ Complete |
-| Phase 1 — Core Infrastructure | ✅ Complete |
-| Phase 2 — Task Management / MVP | ✅ Complete |
-| Phase 3 — Execution Runtime, Registry & Governance | ✅ Complete |
-| Phase 8 — Pi Evaluation (parallel) | ✅ Complete (ADR-003: custom orchestration) |
-| **v1.0.0 — "Operational Intelligence"** | ✅ Released (tag `v1.0.0`) |
-| **v1.0.1 — "Alignment"** | 🔄 In progress (A-001/A-002/A-003 done; A-004 this doc; A-005/A-006 pending) |
-| Future — distributed scheduling, PostgreSQL, extra integrations | ⚪ Future |
+One request drives all nine constitutional stages, in this fixed order, through
+`ConstitutionalPipeline.run(...)`:
 
-See [blueprint/ROADMAP.md](blueprint/ROADMAP.md) for the full reconstructed history and direction.
+```mermaid
+flowchart LR
+    A[Intent] --> B[Engineering] --> C[Context] --> D[Planning] --> E[Actuation] --> F[Validation] --> G[Recovery] --> H[Reflection] --> I[Knowledge]
+```
 
----
+`Actuation` is not a single step — it's Orchestration selecting what's executable, Harness compiling it
+into a runtime-ready package, the Runtime Manager allocating exactly one runtime, and the Execution Engine
+running it, bridged together as one stage of the pipeline. If a run is interrupted at any point, restarting
+it replays the durable log and resumes from the last completed stage — it never re-runs work already done,
+and (verified directly, `docs/v2/RC2_EXECUTION_IDENTITY_REPORT.md`) it never adopts another goal's state by
+mistake, even when two goals share the same durable log concurrently.
 
-## Getting Started
+## Why Nexus is Different
 
-### Prerequisites
+- **Deterministic, not best-effort.** Routing, scheduling, and governance decisions are rule-based. The
+  same input, replayed against the same log, reconstructs the same state — every time.
+- **Single-owner governance.** Every kind of decision (policy, planning, runtime selection, validation...)
+  has exactly one subsystem that makes it. No two subsystems can silently disagree about who's in charge.
+- **Fail-closed by default.** An action with no matching policy is denied, not allowed through.
+- **Evidence-validated, not self-reported.** Whether an execution succeeded is judged from deterministic
+  evidence the platform collects — never taken as the runtime's own word for it.
+- **Replay and restart are load-bearing, not aspirational.** Measured, not assumed:
+  replaying 20,000 events reconstructs state in ~216 ms; restarting from the same scale takes ~181 ms
+  (`docs/v2/RC1_PRODUCTIZATION_REPORT.md` §6).
+- **Governed autonomy, not unattended autonomy.** A goal can run Manual, Governed, or Fully-Automatic —
+  the platform never grants more autonomy than the operator's policy allows.
 
-- Python 3.12+
-- (Optional) Docker — required for sandbox isolation and the documented PostgreSQL path
-- Discord Bot Token **and at least one owner ID** (the app fails closed without owners)
-- OpenRouter API Key
-- SMTP / Resend credentials (for email)
+## Installation
 
-### Quick Start
+Requires Python 3.12+ and [`uv`](https://docs.astral.sh/uv/).
 
 ```bash
-# Clone
-git clone https://github.com/hill-patel/nexus.git
+git clone https://github.com/STiFLeR7/nexus.git
 cd nexus
-
-# Install (editable, with dev extras)
-pip install -e ".[dev]"        # or: uv pip install -e ".[dev]"
-
-# Configure
-cp config/settings.example.yaml config/settings.yaml   # edit credentials
-# REQUIRED: set discord.owner_ids (or DISCORD_OWNERS) — startup fails closed if empty
-
-# Run
-python -m nexus
+uv sync
 ```
 
-> **Note:** the schema is currently created at startup via `create_all`; Alembic migrations are
-> incomplete. `alembic upgrade head` is not yet the authoritative path.
+## Quick Start
 
----
+```bash
+# Boot the full constitutional platform over a durable SQLite log, run one scheduler tick, exit.
+python -m nexus_scheduler --db nexus_v2.db --once --log-level INFO
 
-## Documentation
+# Or run it as a long-lived service (default: one tick every 5 seconds until interrupted):
+python -m nexus_scheduler --db nexus_v2.db
+```
 
-| Document | Purpose |
+Registering work is a caller concern via the same composition-root API the entrypoint itself uses
+(`Scheduler.schedule_goal` / `schedule_operation`) — the entrypoint boots the platform, it doesn't author
+Goals for you. See [docs/internals/WALKTHROUGH-v2.md](docs/internals/WALKTHROUGH-v2.md) for the full
+composition-root pattern and a worked example of how one Goal's identity flows through every stage above.
+
+## Documentation Map
+
+| Start here | For |
 |---|---|
-| [blueprint/STATUS.md](blueprint/STATUS.md) | **Current** project status (authoritative) |
-| [architecture-status-summary.md](blueprint/implementations/v1.0.1/architecture-status-summary.md) | **Per-subsystem built status** (single source of truth) |
-| [blueprint/ROADMAP.md](blueprint/ROADMAP.md) | Reconstructed history + forward direction |
-| [NEXUS_FIRST_IMPRESSION.md](NEXUS_FIRST_IMPRESSION.md) | Accepted v1.0.0 onboarding audit summary |
-| [blueprint/DECISIONS/](blueprint/DECISIONS/) | 21 Architectural Decision Records |
-| [docs/00_BRIEF.md](docs/00_BRIEF.md) | Executive summary and vision |
-| [docs/01_ARCHITECTURE.md](docs/01_ARCHITECTURE.md) | Architectural design specification |
-| [docs/RULES.md](docs/RULES.md) | Project rules and operating standards |
+| [docs/getting-started/README.md](docs/getting-started/README.md) | Brand new — clone to first successful run in under 15 minutes |
+| [docs/README.md](docs/README.md) | Not sure where to go — routes v1 vs. v2, explains the whole doc tree |
+| [docs/tutorials/README.md](docs/tutorials/README.md) | Learning by doing — ten guided tutorials, each pointing at a runnable example |
+| [docs/internals/WALKTHROUGH-v2.md](docs/internals/WALKTHROUGH-v2.md) | Reading the v2 code for the first time |
+| [docs/architecture/README.md](docs/architecture/README.md) | The full architecture portal — Constitution, ADRs, every subsystem |
+| [docs/benchmarks/README.md](docs/benchmarks/README.md) | What's actually been measured, and what hasn't |
+| [docs/v2/OPERATOR_GUIDE.md](docs/v2/OPERATOR_GUIDE.md) | Running and operating the platform |
+| [docs/development/CONTRIBUTING.md](docs/development/CONTRIBUTING.md) | Contributing to v2 |
+| [docs/releases/README.md](docs/releases/README.md) | How versioning, releases, and long-term maintenance actually work |
 
-> The numbered `docs/` are **design-intent** documents (target architecture). For what is **actually
-> built today**, always defer to `architecture-status-summary.md`.
+## Examples
 
----
+Ten runnable examples in [`examples/`](examples/), each demonstrating one architectural capability
+against real, released APIs — no pseudo-code, no invented functionality. Start with
+[`examples/01-hello-nexus`](examples/01-hello-nexus/) (the smallest complete run) and
+[`examples/10-autonomous-workflow`](examples/10-autonomous-workflow/) (the full showcase); see
+[`examples/README.md`](examples/README.md) for the complete learning progression. Prefer a guided,
+concept-by-concept path instead? [`docs/tutorials/README.md`](docs/tutorials/README.md) walks through the
+same examples with explanation in between.
 
-## Blueprint (Living Memory)
+## Integrations
 
-The `blueprint/` directory is the project's living memory and the **authoritative record** of status,
-decisions, audits, and implementation history. See [blueprint/README.md](blueprint/README.md).
+Three runtime adapters ship today, each implementing the same `RuntimeAdapter` protocol
+(`nexus_execution.adapter`) so the platform never branches on provider identity above the adapter layer:
 
----
+| Adapter | Package | Drives |
+|---|---|---|
+| Claude Code | `nexus_runtime_claude` | Anthropic's Claude Code CLI |
+| Gemini CLI | `nexus_runtime_gemini` | Google's Gemini CLI |
+| Shell | `nexus_runtime_shell` | A local shell process |
 
-## Owner
+`nexus_runtime_adapters` is the generic registry/discovery layer a new provider plugs into — see
+`docs/runtime/adapters/ADAPTER_REGISTRY.md`.
 
-**Hill Patel** — AI Engineer, Technical Operator, Builder
+## Roadmap
 
----
+No dedicated v2 roadmap document exists yet. The most current forward-looking source is
+`CHANGELOG.md`'s `[2.0.0]` entry's own "Known Limitations" section (no v1→v2 data migration tool, an
+unversioned durable schema, ADR-009 filed but unratified, two subsystems built but not yet wired to an
+entrypoint). Nexus v1's roadmap is tracked separately in `blueprint/ROADMAP.md`.
 
-## North Star
+## Contributing
 
-> Nexus should become a trusted operational control plane that continuously manages tasks, context,
-> approvals, research, and execution while remaining transparent, recoverable, and governed by human
-> intent.
+v2: [docs/development/CONTRIBUTING.md](docs/development/CONTRIBUTING.md) (`make check` runs the same
+lint/type/test gate as CI). v1: [CONTRIBUTING.md](CONTRIBUTING.md) (root).
+
+## License
+
+[MIT](LICENSE).

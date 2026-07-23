@@ -1,6 +1,13 @@
 # Testing Guide
 
-How tests are organized, run, and written for the `nexus_core` foundation.
+How tests are organized, run, and written for the `nexus_core` foundation, and — per §2.1 below — for
+every package built on top of it. See `docs/development/DEVELOPMENT.md` §3 for the full, current 31-package
+inventory; this guide's per-layer prose below stops narrating each package individually at Phase 6
+(`nexus_harness`) purely to stay proportionate — every later package (`nexus_execution`, `nexus_validation`,
+`nexus_recovery`, `nexus_reflection`, `nexus_knowledge`, `nexus_workflows`, `nexus_policy`, `nexus_approval`,
+`nexus_operations`, `nexus_scheduler`, and the rest) follows the exact same discipline described here
+(construct real objects, assert failure not just success, determinism tests where the layer is required to
+be deterministic), under its own mirrored `tests/unit/<package>/` directory.
 
 ---
 
@@ -83,6 +90,24 @@ Packages, Execution Manifests, and event streams, and `test_integration.py` prov
 `Planning → Orchestration → Harness` composes end-to-end over one shared
 infrastructure — the Harness compiles Orchestration's output into runtime-ready
 packages with no coupling between the layers and no side effects.
+
+### 2.1 Packages built after Phase 6
+
+Every package from `nexus_execution` onward (see `DEVELOPMENT.md` §3 for the full list) has its own
+`tests/unit/<package>/` suite following this same shape — a `helpers.py`/`factories.py` shared-builder
+module where the package needs one, a `test_determinism.py` where the layer is required to be deterministic,
+and `test_integration.py`/`test_guardrails.py` where the layer composes with its neighbors or is
+constitutionally forbidden from reaching one. `tests/integration/` holds the cross-cutting suites that
+don't belong to one package alone — the full Constitutional Pipeline (`test_constitutional_spine.py`), the
+Scheduler (`test_scheduler.py`), the Approval Exchange (`test_approval_exchange.py`), and the production
+entrypoint (`test_v2_entrypoint.py`).
+
+**Coverage-gate scope, disclosed honestly:** `pytest`'s `--cov-fail-under=95` gate (§4) currently only
+tracks 20 of the 31 v2 packages — the same 20 the `Makefile`'s `PACKAGES` variable lists (see
+`DEVELOPMENT.md` §6 for the full list and why). The remaining 11 packages are still run and must still
+pass, they're simply not yet coverage-gated; two of them (`nexus_repository`, `nexus_scheduler`) sit below
+the 95% floor on their lowest-covered modules today (60% and ~90% respectively, per
+`docs/v2/P17_PRODUCTION_READINESS_REPORT.md`) — a known, tracked gap, not silently omitted.
 
 ## 3. Running tests
 
