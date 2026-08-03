@@ -33,8 +33,12 @@ def main() -> None:
     print(f"pipeline status:      {run.status.value}   (still reaches Knowledge)")
     print(f"run.succeeded:        {run.succeeded}   (but this run did not succeed)")
     print(f"execution outcomes:   {run.execution_outcomes}")
-    print(f"validation decisions: {run.validation_decisions}   (evidence-judged, not self-reported)")
-    print(f"recovery decisions:   {run.recovery_decisions}   (a deterministic, bounded continuation)")
+    print(
+        f"validation decisions: {run.validation_decisions}   (evidence-judged, not self-reported)"
+    )
+    print(
+        f"recovery decisions:   {run.recovery_decisions}   (a deterministic, bounded continuation)"
+    )
     print(f"knowledge recorded:   {bool(run.knowledge_item_ids)}   ({run.knowledge_item_ids})")
 
     assert run.status.value == "completed"

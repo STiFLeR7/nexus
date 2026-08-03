@@ -48,9 +48,7 @@ def main() -> None:
     print(f"3. Explanation before a decision: state={explanation.state.value}")
 
     # -- Approved -> resumed execution ---------------------------------------------- #
-    decision = exchange.approve(
-        request, "node-review", decided_by="alice", reason="looks correct"
-    )
+    decision = exchange.approve(request, "node-review", decided_by="alice", reason="looks correct")
     print(f"4. Decision recorded: state={decision.state.value}, resumed={decision.resumed}")
     print(f"   pipeline status after resuming: {decision.pipeline_status}")
 

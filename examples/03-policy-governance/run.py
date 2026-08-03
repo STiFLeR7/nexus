@@ -13,11 +13,13 @@ from __future__ import annotations
 import sys
 
 from nexus_infra import build_infrastructure
-from nexus_policy import DecisionRequest, EXECUTION_ACTION_CLASS, build_policy
+from nexus_policy import EXECUTION_ACTION_CLASS, DecisionRequest, build_policy
 
 
 def main() -> None:
-    sys.stdout.reconfigure(encoding="utf-8")  # policy reasoning traces may include Unicode (e.g. "->")
+    sys.stdout.reconfigure(
+        encoding="utf-8"
+    )  # policy reasoning traces may include Unicode (e.g. "->")
     infra = build_infrastructure()
     policy = build_policy(infra)  # seed=True by default: registers the v1-migrated defaults
 
