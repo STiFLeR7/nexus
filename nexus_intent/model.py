@@ -75,6 +75,8 @@ class IntentAnalysis(ValueObject):
     operator_preferences: Mapping[str, str] = {}
     """Extracted operator preferences (bias only) — consumed read-only by Engineering Intelligence."""
     reasoning_trace: tuple[str, ...] = ()
+    """Explicit operator-declared work steps, captured as data for Planning to assemble."""
+    declared_steps: tuple[Mapping[str, Any], ...] = ()
     timestamp: str = ""
 
 
@@ -106,11 +108,16 @@ class IntentRequest:
 
 # convenience default for callers that only have a bare string
 def request_from_text(
-    identity: str, text: str, *, correlation_identifier: str = ""
+    identity: str,
+    text: str,
+    *,
+    correlation_identifier: str = "",
+    source: Mapping[str, Any] | None = None,
 ) -> IntentRequest:
     """Build a natural-language :class:`IntentRequest` from raw text."""
     return IntentRequest(
         identity=identity,
         raw_request=text,
         correlation_identifier=correlation_identifier or identity,
+        source=source,
     )

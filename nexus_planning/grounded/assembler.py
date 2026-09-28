@@ -105,16 +105,46 @@ class GroundedPlanner:
         constraints = tuple(context.constraints) if context is not None else ()
 
         if inputs.work_items:
-            # Thread the ContextPackage's operative constraints onto each declared work item.
+            # Explicit caller decomposition is authoritative, even when Intent also recorded
+            # a declared sequence from request text.
             items = tuple(
                 item.model_copy(update={"constraints": item.constraints + constraints})
                 for item in inputs.work_items
+            )
+        elif inputs.operator_steps:
+            template = inputs.operator_step_template
+            default_capabilities = (
+                template.capability_requirements
+                if template is not None and template.capability_requirements
+                else tuple(inputs.engineering_strategy.skill_requirements.selection)
+                if inputs.engineering_strategy is not None
+                else ()
+            )
+            default_skills = template.skill_refs if template is not None else ()
+            items = tuple(
+                item.model_copy(
+                    update={
+                        "constraints": item.constraints + constraints,
+                        "capability_requirements": item.capability_requirements
+                        or default_capabilities,
+                        "skill_refs": item.skill_refs or default_skills,
+                    }
+                )
+                for item in (WorkItemSpec.model_validate(step) for step in inputs.operator_steps)
             )
         else:
             items = (self._default_item(inputs, constraints),)
 
         return PlanningRequest(
             work_items=items,
+            assumptions=inputs.assumptions
+            + (
+                ()
+                if inputs.work_items or inputs.operator_steps
+                else (
+                    "No task sequence was explicitly declared; represented the requested outcome as one atomic work item.",
+                )
+            ),
             context_ref=context_ref,
             correlation_identifier=correlation,
         )
@@ -138,6 +168,7 @@ class GroundedPlanner:
             return ()
         return (
             Reference(target_type="context_package", identifier=context.identity),
+            *((inputs.repository_profile_ref,) if inputs.repository_profile_ref else ()),
             *context.supporting_artifacts,
         )
 

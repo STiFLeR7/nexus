@@ -15,6 +15,7 @@ forever. No randomness, no clock here; no import of any downstream engine.
 
 from __future__ import annotations
 
+import re
 from typing import Protocol
 
 from nexus_core.contracts.base import Constraint, Correlation, Reference
@@ -64,6 +65,17 @@ _DOMAIN_SIGNALS: dict[Domain, tuple[str, ...]] = {
         "build",
         "compile",
         "merge",
+        "cli",
+        "config",
+        "configuration",
+        "export",
+        "exports",
+        "command",
+        "commands",
+        "json",
+        "csv",
+        "version",
+        "option",
     ),
     Domain.RESEARCH: (
         "research",
@@ -104,6 +116,7 @@ _VAGUE_TERMS = (
     "etc",
     "and so on",
     "as needed",
+    "better",
 )
 
 _PRIORITY_MARKERS: dict[Priority, tuple[str, ...]] = {
@@ -203,6 +216,7 @@ class DeterministicInterpreter:
             resolved=resolved,
             operator_preferences=preferences,
             reasoning_trace=tuple(trace),
+            declared_steps=self._declared_steps(text),
             timestamp=now,
         )
         return analysis.model_copy(update={"identity": ids.analysis_id(request, self.version)})
@@ -225,6 +239,8 @@ class DeterministicInterpreter:
                 evidence.append(f"{domain.value}:{sorted(hits)}")
         if not scores:
             return None, evidence
+        if lowered.startswith(("document ", "write ", "draft ")) and Domain.WRITING in scores:
+            return Domain.WRITING, evidence
         top = max(scores.values())
         chosen = next(d for d in _DOMAIN_SIGNALS if scores.get(d, 0) == top)
         return chosen, evidence
@@ -265,6 +281,19 @@ class DeterministicInterpreter:
             found.append(
                 {"kind": "underspecified", "detail": "the request is too short to be sure"}
             )
+        words = objective.split()
+        if (
+            not found
+            and len(words) <= 4
+            and words
+            and words[0].lower() in {"fix", "improve", "update", "make"}
+        ):
+            found.append(
+                {
+                    "kind": "acceptance_unspecified",
+                    "detail": "no specific behavior or completion condition was stated",
+                }
+            )
         return found
 
     def _missing(self, objective: str, domain: Domain | None) -> list[str]:
@@ -281,12 +310,18 @@ class DeterministicInterpreter:
     ) -> tuple[ClarificationRequest, ...]:
         out: list[ClarificationRequest] = []
         for i, amb in enumerate(ambiguities):
+            question = (
+                "What specific behavior or outcome should change, and what would count as done?"
+                if str(amb.get("kind"))
+                in {"vague_terms", "underspecified", "acceptance_unspecified"}
+                else f"Could you clarify the {amb.get('kind')} in your request?"
+            )
             out.append(
                 ClarificationRequest(
                     identity=f"clr-{base}-a{i}",
                     kind=ClarificationKind.AMBIGUITY,
                     subject=str(amb.get("kind")),
-                    question=f"Could you clarify the {amb.get('kind')} in your request?",
+                    question=question,
                     reason=f"detected {amb.get('kind')}: {amb.get('detail')}",
                 )
             )
@@ -301,7 +336,7 @@ class DeterministicInterpreter:
                     reason=item,
                 )
             )
-        return tuple(out)
+        return tuple(out[:3])
 
     def _confidence(
         self,
@@ -351,3 +386,62 @@ class DeterministicInterpreter:
         if interaction_required:
             return f"understood objective '{objective}' but require clarification before producing a Goal"
         return f"understood objective '{objective}' in domain {domain.value if domain else 'software'}; resolved to a Goal"
+
+    def _declared_steps(self, text: str) -> tuple[dict[str, object], ...]:
+        """Capture an explicit first/then sequence without inventing a decomposition."""
+        # ponytail: handles only literal first/then phrasing; broaden after a separately evaluated parser exists.
+        match = re.search(
+            r"\bfirst\b(.*?)(?:[,;]\s*|\s+)then\s+(.+)", text, re.IGNORECASE | re.DOTALL
+        )
+        if match is None:
+            return ()
+        before = text[: match.start()].strip(" .;,")
+        first_clause = match.group(1).strip(" .;,")
+        if (
+            not first_clause
+            or re.fullmatch(r"(?:it|this|that|the\s+\w+)", first_clause, re.IGNORECASE)
+            or re.fullmatch(
+                r"(?:change|modify|update|implement|fix|add)\s+(?:the\s+)?(?:function|it|this|that)",
+                first_clause,
+                re.IGNORECASE,
+            )
+        ):
+            sentences = re.split(r"(?<=[.!?])\s+", before)
+            candidate = sentences[-1] if sentences else before
+            if re.fullmatch(
+                r"(?:implement|change|add|write|test|modify|update|fix)\s+(?:it|this|that|the\s+\w+)",
+                candidate.strip(" .;,"),
+                re.IGNORECASE,
+            ):
+                candidate = sentences[-2] if len(sentences) > 1 else before
+                if " and " in candidate.lower():
+                    candidate = re.split(r"\s+and\s+", candidate, maxsplit=1, flags=re.IGNORECASE)[
+                        0
+                    ]
+            first_clause = candidate
+        elif first_clause.lower().endswith(("implement", "change", "add", "write", "test")):
+            first_clause = before
+        first_clause = first_clause.strip(" .;,")
+        follow_up = re.split(r"[.!?]\s+", match.group(2), maxsplit=1)[0].strip(" .;,")
+        independent = "independently" in match.group(2).lower()
+        clauses = (
+            [part.strip(" .;,") for part in re.split(r"\s+and\s+", follow_up)]
+            if independent
+            else [follow_up]
+        )
+        objectives = [first_clause, *clauses]
+        objectives = [objective for objective in objectives if objective]
+        if len(objectives) < 2:
+            return ()
+        steps: list[dict[str, object]] = []
+        for index, objective in enumerate(objectives):
+            steps.append(
+                {
+                    "key": f"step-{index + 1}",
+                    "objective": objective,
+                    "depends_on": ["step-1"]
+                    if independent and index > 0
+                    else ([f"step-{index}"] if index else []),
+                }
+            )
+        return tuple(steps)

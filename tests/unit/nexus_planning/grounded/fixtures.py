@@ -8,9 +8,9 @@ Engineering producer) so the tests exercise true three-input integration. Determ
 from __future__ import annotations
 
 from nexus_context import ContextRequest, build_context_engineering
-from nexus_infra import build_infrastructure
+from nexus_infra import InfrastructureContext, build_infrastructure
 from nexus_planning import FixedTimestampSource, WorkItemSpec
-from nexus_planning.grounded import PlanningInputs, build_grounded_planning
+from nexus_planning.grounded import GroundedPlanningContext, PlanningInputs, build_grounded_planning
 from tests.unit.nexus_engineering.fixtures import make_goal, strategy_for
 
 
@@ -40,7 +40,7 @@ def make_inputs(
     )
 
 
-def wired_grounded():
+def wired_grounded() -> tuple[InfrastructureContext, GroundedPlanningContext]:
     """A fresh infra plus a grounded-planning context with a fixed clock."""
     infra = build_infrastructure()
     return infra, build_grounded_planning(infra, timestamps=FixedTimestampSource())

@@ -1,0 +1,74 @@
+[
+  {
+    "case_id": "S1",
+    "intent_identity": "ia-phase2-S1-e069bf40bbfeb5ce",
+    "plan_identity": "plan-goal-phase2-S1-v1",
+    "repository_profile_identity": "rp-fixture_repository-33fba9c44e55176b",
+    "resume_stage": "actuation",
+    "interpreter_calls": 0,
+    "repository_rescans": 0
+  },
+  {
+    "case_id": "S2",
+    "intent_identity": "ia-phase2-S2-b0e8484cf6a3e495",
+    "plan_identity": "plan-goal-phase2-S2-v1",
+    "repository_profile_identity": "rp-fixture_repository-33fba9c44e55176b",
+    "resume_stage": "actuation",
+    "interpreter_calls": 0,
+    "repository_rescans": 0
+  },
+  {
+    "case_id": "S3",
+    "intent_identity": "ia-phase2-S3-b10943088212a2e1",
+    "plan_identity": "plan-goal-phase2-S3-v1",
+    "repository_profile_identity": "rp-fixture_repository-33fba9c44e55176b",
+    "resume_stage": "actuation",
+    "interpreter_calls": 0,
+    "repository_rescans": 0
+  },
+  {
+    "case_id": "S4",
+    "intent_identity": "ia-phase2-S4-c9950e86c6e61fb3",
+    "plan_identity": "plan-goal-phase2-S4-v1",
+    "repository_profile_identity": "rp-fixture_repository-33fba9c44e55176b",
+    "resume_stage": "actuation",
+    "interpreter_calls": 0,
+    "repository_rescans": 0
+  },
+  {
+    "case_id": "M1",
+    "intent_identity": "ia-phase2-M1-31f6f6038f2ec41f",
+    "plan_identity": "plan-goal-phase2-M1-v1",
+    "repository_profile_identity": "rp-fixture_repository-33fba9c44e55176b",
+    "resume_stage": "actuation",
+    "interpreter_calls": 0,
+    "repository_rescans": 0
+  },
+  {
+    "case_id": "M2",
+    "intent_identity": "ia-phase2-M2-1dad537130475a8d",
+    "plan_identity": "plan-goal-phase2-M2-v1",
+    "repository_profile_identity": "rp-fixture_repository-33fba9c44e55176b",
+    "resume_stage": "actuation",
+    "interpreter_calls": 0,
+    "repository_rescans": 0
+  },
+  {
+    "case_id": "M3",
+    "intent_identity": "ia-phase2-M3-af227b8aaa1d6e68",
+    "plan_identity": "plan-goal-phase2-M3-v1",
+    "repository_profile_identity": "rp-fixture_repository-33fba9c44e55176b",
+    "resume_stage": "actuation",
+    "interpreter_calls": 0,
+    "repository_rescans": 0
+  },
+  {
+    "case_id": "M4",
+    "intent_identity": "ia-phase2-M4-3229f03737f3ff09",
+    "plan_identity": "plan-goal-phase2-M4-v1",
+    "repository_profile_identity": "rp-fixture_repository-33fba9c44e55176b",
+    "resume_stage": "actuation",
+    "interpreter_calls": 0,
+    "repository_rescans": 0
+  }
+]

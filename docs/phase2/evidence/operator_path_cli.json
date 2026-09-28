@@ -1,0 +1,31 @@
+{
+  "test": "scripts/nexus_cli.py --plan / --resume",
+  "passed": true,
+  "plan_process": {
+    "status": "stopped after planning",
+    "runtime_counts": {
+      "runtime.started": 0,
+      "runtime.artifact_emitted": 0
+    },
+    "work_items": [
+      "work item node-step-1: implement a --version option",
+      "work item node-step-2: add a focused test for it"
+    ],
+    "dependencies": [
+      "dependency: node-step-1 -> node-step-2"
+    ],
+    "source_refs_present": true,
+    "assumptions_present": true
+  },
+  "resume_process": {
+    "status": "completed",
+    "runtime_counts": {
+      "runtime.started": 2,
+      "runtime.artifact_emitted": 4
+    }
+  },
+  "replay_process": {
+    "status": "completed",
+    "runtime_counts_unchanged": true
+  }
+}

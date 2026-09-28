@@ -1,0 +1,66 @@
+[
+  {
+    "case_id": "A1",
+    "request": "Fix the CLI.",
+    "clarifications": [
+      {
+        "identity": "clr-phase2-A1-a0",
+        "kind": "ambiguity",
+        "subject": "acceptance_unspecified",
+        "question": "What specific behavior or outcome should change, and what would count as done?",
+        "reason": "detected acceptance_unspecified: no specific behavior or completion condition was stated"
+      }
+    ],
+    "goal": null,
+    "context_package": null,
+    "plan": null
+  },
+  {
+    "case_id": "A2",
+    "request": "Make configuration better.",
+    "clarifications": [
+      {
+        "identity": "clr-phase2-A2-a0",
+        "kind": "ambiguity",
+        "subject": "vague_terms",
+        "question": "What specific behavior or outcome should change, and what would count as done?",
+        "reason": "detected vague_terms: ['better']"
+      }
+    ],
+    "goal": null,
+    "context_package": null,
+    "plan": null
+  },
+  {
+    "case_id": "A3",
+    "request": "Improve exports.",
+    "clarifications": [
+      {
+        "identity": "clr-phase2-A3-a0",
+        "kind": "ambiguity",
+        "subject": "underspecified",
+        "question": "What specific behavior or outcome should change, and what would count as done?",
+        "reason": "detected underspecified: the request is too short to be sure"
+      }
+    ],
+    "goal": null,
+    "context_package": null,
+    "plan": null
+  },
+  {
+    "case_id": "A4",
+    "request": "Update the CLI appropriately.",
+    "clarifications": [
+      {
+        "identity": "clr-phase2-A4-a0",
+        "kind": "ambiguity",
+        "subject": "vague_terms",
+        "question": "What specific behavior or outcome should change, and what would count as done?",
+        "reason": "detected vague_terms: ['appropriately']"
+      }
+    ],
+    "goal": null,
+    "context_package": null,
+    "plan": null
+  }
+]

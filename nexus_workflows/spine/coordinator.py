@@ -23,6 +23,7 @@ log-embedded ExecutionPlan, so it is never persisted as a second copy of another
 
 from __future__ import annotations
 
+import os
 from collections.abc import Callable
 from dataclasses import dataclass, field
 
@@ -65,6 +66,7 @@ from nexus_recovery import RecoveryContextBundle
 from nexus_recovery.plan import RecoveryPlan
 from nexus_reflection import ReflectionContextBundle
 from nexus_reflection.report import ReflectionReport
+from nexus_repository import RepositoryProfile, build_repository
 from nexus_runtime.events import SystemTimestampSource, TimestampSource
 from nexus_validation import ValidationContext
 from nexus_validation.report import ValidationReport
@@ -274,6 +276,7 @@ class _RunCtx:
     plan_ref: Reference | None = None
     clarifications: tuple[ClarificationRequest, ...] = ()
     intent_analysis: IntentAnalysis | None = None
+    repository_profile: RepositoryProfile | None = None
 
 
 class ConstitutionalPipeline:
@@ -301,6 +304,7 @@ class ConstitutionalPipeline:
     ) -> None:
         self._infra = infrastructure
         self._intent = intent
+        self._repository = build_repository(infrastructure)
         self._engineering = engineering
         self._estimation = estimation
         self._policy = policy
@@ -421,12 +425,31 @@ class ConstitutionalPipeline:
         strategy = _find_own_strategy(events, goal_identity)
         plan = _find_own_plan(events, goal_identity)
         state = _find_own_execution_state(events, goal_identity)
+        ctx.repository_profile = next(
+            (
+                RepositoryProfile.model_validate(event.payload["profile"])
+                for event in events
+                if event.type == "repository.profiled"
+                and request.repository_root is not None
+                and event.payload.get("request") == request.identity
+                and event.payload.get("root") == os.path.abspath(request.repository_root)
+            ),
+            None,
+        )
         for event in events:
             if event.type == INTENT_RESOLVED and event.payload.get("intent") == request.identity:
                 ctx.intent_analysis = IntentAnalysis.model_validate(event.payload["analysis"])
                 if ctx.intent_analysis.intent.raw_request != request.request_text:
                     raise ValueError(
                         f"request identity {request.identity!r} was already used for different text"
+                    )
+                stored_root = (ctx.intent_analysis.intent.source or {}).get("repository_root")
+                requested_root = (
+                    os.path.abspath(request.repository_root) if request.repository_root else None
+                )
+                if stored_root != requested_root:
+                    raise ValueError(
+                        f"request identity {request.identity!r} was already used with a different repository root"
                     )
                 if ctx.intent_analysis.correlation_identifier != request.correlation:
                     raise ValueError(
@@ -502,7 +525,12 @@ class ConstitutionalPipeline:
     ) -> tuple[bool, Reference | None]:
         analysis = ctx.intent_analysis or self._intent.engine.resolve(
             request_from_text(
-                request.identity, request.request_text, correlation_identifier=request.correlation
+                request.identity,
+                request.request_text,
+                correlation_identifier=request.correlation,
+                source={"repository_root": os.path.abspath(request.repository_root)}
+                if request.repository_root
+                else None,
             )
         )
         ctx.intent_analysis = analysis
@@ -540,9 +568,17 @@ class ConstitutionalPipeline:
         grounding = self._grounding(
             ctx, request
         )  # Knowledge → Context (INV-06, read-only, provenance)
+        if request.repository_root and ctx.repository_profile is None:
+            ctx.repository_profile = self._repository.engine.profile(
+                request.repository_root,
+                correlation_identifier=request.correlation,
+                request_identifier=request.identity,
+            )
         result = self._grounded_context.assembler.assemble(
             GroundingInputs(
                 goal=ctx.goal,
+                intent=ctx.intent_analysis,
+                repository_profile=ctx.repository_profile,
                 engineering_strategy=ctx.strategy,
                 knowledge=grounding.items,
             ),
@@ -588,6 +624,20 @@ class ConstitutionalPipeline:
                 engineering_strategy=ctx.strategy,
                 context_package=ctx.context_package,
                 work_items=request.work_items,
+                operator_steps=ctx.intent_analysis.declared_steps
+                if ctx.intent_analysis is not None
+                else (),
+                operator_step_template=request.planning_step_template,
+                assumptions=ctx.intent_analysis.intent.assumptions
+                if ctx.intent_analysis is not None
+                else (),
+                repository_profile_ref=(
+                    Reference(
+                        target_type="repository_profile", identifier=ctx.repository_profile.identity
+                    )
+                    if ctx.repository_profile is not None
+                    else None
+                ),
             )
         )
         ctx.plan = plan

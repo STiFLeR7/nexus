@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from dataclasses import replace
+
 from nexus_core.domain.execution_graph import ExecutionGraph
 from nexus_core.domain.plan import Plan
 from nexus_planning.grounded import ExecutionPlan
@@ -36,6 +38,17 @@ def test_default_decomposition_is_the_atomic_single_package() -> None:
     ].objective  # the Goal's objective, one package (no invented sub-tasks)
 
 
+def test_explicit_work_items_remain_authoritative_over_interpreted_steps() -> None:
+    _, ctx = wired_grounded()
+    inputs = replace(
+        make_inputs(work_items=(item("caller-authored"),)),
+        operator_steps=({"key": "interpreted", "objective": "different inferred objective"},),
+    )
+    ep = ctx.planner.plan(inputs)
+    assert len(ep.work_packages) == 1
+    assert ep.work_packages[0].objective == "do caller-authored"
+
+
 def test_context_package_is_a_first_class_input() -> None:
     _, ctx = wired_grounded()
     ep = ctx.planner.plan(make_inputs(work_items=(item("a"),)))
@@ -49,9 +62,10 @@ def test_context_constraints_flow_to_work_packages() -> None:
     inputs = make_inputs(work_items=(item("a"),))
     ep = ctx.planner.plan(inputs)
     # The ContextPackage's operative constraints are threaded onto the work items → packages.
-    assert inputs.context_package.constraints  # precondition: the goal carries a constraint
+    context_package = inputs.context_package
+    assert context_package is not None and context_package.constraints
     wp_constraints = ep.work_packages[0].constraints
-    for constraint in inputs.context_package.constraints:
+    for constraint in context_package.constraints:
         assert constraint in wp_constraints  # Constraint.detail is a dict → compare by ==, not hash
 
 

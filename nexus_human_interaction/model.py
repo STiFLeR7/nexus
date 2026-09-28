@@ -16,8 +16,10 @@ from nexus_context import RawContextFragment
 from nexus_core.contracts.base import Reference, ValueObject
 from nexus_core.contracts.enums import KnowledgeType
 from nexus_core.domain import Capability
+from nexus_core.domain.context_package import ContextPackage
 from nexus_intent.model import ClarificationRequest
 from nexus_planning import WorkItemSpec
+from nexus_planning.grounded.model import ExecutionPlan
 from nexus_workflows.spine import PipelineSession
 from nexus_workflows.spine.learning import KnowledgeSelection
 
@@ -41,6 +43,8 @@ class OperatorRequest:
     capabilities: tuple[Capability, ...] = ()
     fail: bool = False
     correlation_identifier: str = ""
+    repository_root: str | None = None
+    planning_step_template: WorkItemSpec | None = None
 
     @property
     def interaction_session_id(self) -> str:
@@ -88,6 +92,11 @@ class InteractionResponse:
     progress: tuple[str, ...]
     pending_approvals: tuple[ApprovalRequest, ...] = field(default_factory=tuple)
     clarification_requests: tuple[ClarificationRequest, ...] = ()
+    execution_plan: ExecutionPlan | None = None
+    grounding_selection: dict[str, object] | None = None
+    intent_analysis: dict[str, object] | None = None
+    context_package: ContextPackage | None = None
+    repository_profile: dict[str, object] | None = None
 
     @property
     def succeeded(self) -> bool:

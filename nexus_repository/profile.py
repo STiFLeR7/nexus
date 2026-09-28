@@ -182,6 +182,7 @@ class RepositoryProfile(ValueObject):
     health: HealthSignals
     execution_history: ExecutionHistory
     file_count: int
+    files: tuple[str, ...] = ()
     evidence: tuple[str, ...]
     correlation_identifier: str = ""
     timestamp: str = ""

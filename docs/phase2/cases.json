@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "case_source": "GROUNDED_PLAN_GATE.md",
+  "cases": [
+    {"id":"A1","kind":"clarify","request":"Fix the CLI.","references":["README.md","src/fixture_cli/main.py"]},
+    {"id":"A2","kind":"clarify","request":"Make configuration better.","references":["src/fixture_cli/config.py","tests/test_config.py"]},
+    {"id":"A3","kind":"clarify","request":"Improve exports.","references":["src/fixture_cli/export.py","tests/test_export.py"]},
+    {"id":"A4","kind":"clarify","request":"Update the CLI appropriately.","references":["README.md","src/fixture_cli/main.py"]},
+    {"id":"S1","kind":"atomic","request":"Add a `--version` option to the CLI that prints the installed version and exits; add a focused test for the option.","references":["src/fixture_cli/main.py","tests/test_main.py","pyproject.toml"],"expected_objectives":[["--version","focused test"]]},
+    {"id":"S2","kind":"atomic","request":"When the config file is missing, return an empty config dict; add a test for that behavior.","references":["src/fixture_cli/config.py","tests/test_config.py"],"expected_objectives":[["missing","empty config","test"]]},
+    {"id":"S3","kind":"atomic","request":"Add a test confirming `export_json` writes valid JSON that can be read back.","references":["src/fixture_cli/export.py","tests/test_export.py"],"expected_objectives":[["test","export_json","valid json"]]},
+    {"id":"S4","kind":"atomic","request":"Document the existing `run` and `status` commands in the README, including the test command.","references":["README.md"],"expected_objectives":[["document","run","status","test command"]]},
+    {"id":"M1","kind":"multi_step","request":"Add a `--version` option to the CLI. Implement it first, then add a test that verifies the printed version and exit behavior.","references":["src/fixture_cli/main.py","tests/test_main.py","pyproject.toml"],"expected_steps":2,"expected_edges":[["step-1","step-2"]],"expected_objectives":[["--version"],["test","printed version","exit behavior"]]},
+    {"id":"M2","kind":"multi_step","request":"For missing config files, make `load_config` return an empty dict. First change the function, then add a regression test for the missing-file case.","references":["src/fixture_cli/config.py","tests/test_config.py"],"expected_steps":2,"expected_edges":[["step-1","step-2"]],"expected_objectives":[["missing config","load_config","empty dict"],["regression test","missing-file"]]},
+    {"id":"M3","kind":"multi_step","request":"Add CSV export alongside JSON. First implement `export_csv`, then test that the output can be parsed back as rows.","references":["src/fixture_cli/export.py","tests/test_export.py","pyproject.toml"],"expected_steps":2,"expected_edges":[["step-1","step-2"]],"expected_objectives":[["export_csv"],["test","parsed back","rows"]]},
+    {"id":"M4","kind":"multi_step","request":"Add a `--version` option and document it. Implement the option first; then write its test and update the README. The test and documentation can happen independently after implementation.","references":["src/fixture_cli/main.py","tests/test_main.py","README.md","pyproject.toml"],"expected_steps":3,"expected_edges":[["step-1","step-2"],["step-1","step-3"]],"expected_objectives":[["--version"],["test"],["readme"]],"required_citations":["src/fixture_cli/main.py"]}
+  ]
+}

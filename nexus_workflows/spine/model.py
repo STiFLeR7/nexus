@@ -91,6 +91,8 @@ class SpineRequest:
     capabilities: tuple[Capability, ...] = ()
     fail: bool = False
     correlation_identifier: str = ""
+    repository_root: str | None = None
+    planning_step_template: WorkItemSpec | None = None
 
     @property
     def pipeline_session_id(self) -> str:

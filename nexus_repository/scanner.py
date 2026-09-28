@@ -65,6 +65,7 @@ class RepositorySnapshot:
     branch: str | None
     head_commit: str | None
     entries: tuple[str, ...]
+    files: tuple[str, ...]
     key_documents: tuple[str, ...]
     languages: tuple[str, ...]
     file_count: int
@@ -73,17 +74,19 @@ class RepositorySnapshot:
 def scan_tree(root: str, *, max_files: int = 8000) -> RepositorySnapshot:
     """Read ``root`` into a :class:`RepositorySnapshot` (deterministic; skips vendored dirs)."""
     if not os.path.isdir(root):
-        return RepositorySnapshot(root, False, False, None, None, (), (), (), 0)
+        return RepositorySnapshot(root, False, False, None, None, (), (), (), (), 0)
 
     entries = tuple(sorted(e for e in os.listdir(root) if not e.startswith(".git")))
     key_documents = tuple(d for d in _KEY_DOCUMENTS if os.path.isfile(os.path.join(root, d)))
 
     languages: set[str] = set()
+    files: list[str] = []
     file_count = 0
-    for _current, dirnames, filenames in os.walk(root):
+    for current, dirnames, filenames in os.walk(root):
         dirnames[:] = sorted(d for d in dirnames if d not in _IGNORE_DIRS)
         for name in sorted(filenames):
             file_count += 1
+            files.append(os.path.relpath(os.path.join(current, name), root).replace(os.sep, "/"))
             language = _EXT_LANGUAGE.get(os.path.splitext(name)[1].lower())
             if language is not None:
                 languages.add(language)
@@ -100,6 +103,7 @@ def scan_tree(root: str, *, max_files: int = 8000) -> RepositorySnapshot:
         branch=branch,
         head_commit=head,
         entries=entries,
+        files=tuple(sorted(files)),
         key_documents=key_documents,
         languages=tuple(sorted(languages)),
         file_count=file_count,

@@ -66,6 +66,7 @@ class RepositoryIntelligence:
         root: str,
         *,
         correlation_identifier: str = "",
+        request_identifier: str | None = None,
         repository_history: object | None = None,
         persist: bool = True,
     ) -> RepositoryProfile:
@@ -82,7 +83,7 @@ class RepositoryIntelligence:
         if not snapshot.exists:
             profile = self._finish(self._empty(root, history), correlation_identifier)
             if persist:
-                self._record(profile)
+                self._record(profile, request_identifier=request_identifier)
             return profile
 
         top = set(snapshot.entries)
@@ -131,11 +132,12 @@ class RepositoryIntelligence:
             health=health,
             execution_history=history,
             file_count=snapshot.file_count,
+            files=snapshot.files,
             evidence=tuple(sorted(set(evidence))),
         )
         profile = self._finish(draft, correlation_identifier)
         if persist:
-            self._record(profile)
+            self._record(profile, request_identifier=request_identifier)
         return profile
 
     # -- assembly ----------------------------------------------------------- #
@@ -222,12 +224,13 @@ class RepositoryIntelligence:
             ),
             execution_history=history,
             file_count=0,
+            files=(),
             evidence=(),
         )
 
     # -- persistence + events ----------------------------------------------- #
 
-    def _record(self, profile: RepositoryProfile) -> None:
+    def _record(self, profile: RepositoryProfile, *, request_identifier: str | None = None) -> None:
         self._obs.profiled(
             repository_type=profile.repository_type,
             primary_language=profile.technology.primary_language,
@@ -236,11 +239,14 @@ class RepositoryIntelligence:
         if self._repos is not None:
             self._repos.profiles.add(profile)
         if self._emitter is not None:
-            self._emitter.emit(self._profiled_event(profile))
+            self._emitter.emit(self._profiled_event(profile, request_identifier=request_identifier))
 
-    def _profiled_event(self, profile: RepositoryProfile) -> Event:
+    def _profiled_event(
+        self, profile: RepositoryProfile, *, request_identifier: str | None = None
+    ) -> Event:
         payload = {
             "root": profile.root,
+            "request": request_identifier,
             "repository_type": profile.repository_type,
             "scanner_version": profile.scanner_version,
             "file_count": profile.file_count,

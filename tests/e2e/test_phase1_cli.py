@@ -91,3 +91,66 @@ def test_cli_denial_keeps_artifact_absent(tmp_path: Path) -> None:
     assert _event_count(db, "runtime.started") == 0
     artifact_dir = tmp_path / ".nexus_llm_artifacts"
     assert not artifact_dir.exists() or not tuple(artifact_dir.iterdir())
+
+
+def test_cli_plan_inspect_then_resume_in_fresh_processes(tmp_path: Path) -> None:
+    db = tmp_path / "plan.sqlite"
+    repository = tmp_path / "repo"
+    repository.mkdir()
+    (repository / "README.md").write_text("# Small repository\n", encoding="utf-8")
+    (repository / "app.py").write_text("def main():\n    return 0\n", encoding="utf-8")
+
+    planned = _run_cli(
+        tmp_path,
+        db,
+        "--plan",
+        "Update the CLI: first implement a --version option, then add a focused test for it.",
+        "--repository-root",
+        str(repository),
+    )
+    assert planned.returncode == 0, planned.stderr
+    assert "plan paused before actuation" in planned.stdout
+    assert "source refs:" in planned.stdout
+    assert "assumptions:" in planned.stdout
+    assert planned.stdout.count("  work item ") == 2
+    assert "dependency:" in planned.stdout
+    session = re.search(r"session: (cli-[a-f0-9]+)", planned.stdout)
+    assert session is not None
+    identity = session.group(1)
+    assert _event_count(db, "runtime.started") == 0
+    assert _event_count(db, "runtime.artifact_emitted") == 0
+
+    resumed = _run_cli(tmp_path, db, "--resume", identity)
+    assert resumed.returncode == 0, resumed.stderr
+    assert "status: completed" in resumed.stdout
+    dispatches = _event_count(db, "runtime.started")
+    artifacts = _event_count(db, "runtime.artifact_emitted")
+    assert dispatches == 2
+
+    replay = _run_cli(tmp_path, db, "--resume", identity)
+    assert replay.returncode == 0, replay.stderr
+    assert "status: completed" in replay.stdout
+    assert _event_count(db, "runtime.started") == dispatches
+    assert _event_count(db, "runtime.artifact_emitted") == artifacts
+
+
+def test_cli_ambiguous_plan_requests_clarification_without_resume_instruction(
+    tmp_path: Path,
+) -> None:
+    db = tmp_path / "ambiguous.sqlite"
+    repository = tmp_path / "repo"
+    repository.mkdir()
+    planned = _run_cli(
+        tmp_path,
+        db,
+        "--plan",
+        "Fix the CLI.",
+        "--repository-root",
+        str(repository),
+    )
+    assert planned.returncode == 0, planned.stderr
+    assert "nexus needs clarification:" in planned.stdout
+    assert "clarification required before a plan can be resumed" in planned.stdout
+    assert "plan paused before actuation" not in planned.stdout
+    assert "run --resume" not in planned.stdout
+    assert _event_count(db, "runtime.started") == 0

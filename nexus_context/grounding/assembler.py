@@ -49,7 +49,17 @@ CONTEXT_GROUNDING_ASSEMBLED = "context.grounding.assembled"
 
 # Artifact kinds surfaced as Context Package supporting_artifacts (document-like grounding).
 _SUPPORTING_KINDS = frozenset(
-    {"adr", "contract", "invariant", "architecture_doc", "knowledge", "prior_execution"}
+    {
+        "adr",
+        "contract",
+        "invariant",
+        "architecture_doc",
+        "file",
+        "module",
+        "package",
+        "knowledge",
+        "prior_execution",
+    }
 )
 
 

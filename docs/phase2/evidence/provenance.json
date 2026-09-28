@@ -1,0 +1,1375 @@
+[
+  {
+    "case_id": "A1",
+    "raw_request": "Fix the CLI.",
+    "repository_root": "D:\\nexus\\docs\\phase2\\evidence\\fixture_repository",
+    "repository_profile": {
+      "identity": null,
+      "scanner_version": null,
+      "files": [],
+      "evidence": [],
+      "facts": null
+    },
+    "intent": {
+      "identity": "ia-phase2-A1-84684ae718fd8c5c",
+      "version": "1",
+      "resolved": false,
+      "domain": "software",
+      "operator_claim": "Fix the CLI.",
+      "ambiguity": [
+        {
+          "kind": "acceptance_unspecified",
+          "detail": "no specific behavior or completion condition was stated"
+        }
+      ],
+      "missing_information": [],
+      "assumptions": []
+    },
+    "grounding_records": [],
+    "goal_identity": null,
+    "context_package_identity": null,
+    "plan_identity": null,
+    "work_items": [],
+    "dependency_edges": [],
+    "assumptions": [],
+    "uncertainty": {
+      "confidence": {
+        "level": "low",
+        "score": 0.3,
+        "factors": [
+          "objective_words=3",
+          "domain=detected",
+          "ambiguities=1",
+          "missing=0"
+        ]
+      },
+      "ambiguity": [
+        {
+          "kind": "acceptance_unspecified",
+          "detail": "no specific behavior or completion condition was stated"
+        }
+      ],
+      "missing_information": []
+    },
+    "citations": [],
+    "citation_content_sha256": {},
+    "absent_artifacts": [
+      "goal",
+      "context_package",
+      "plan",
+      "grounding_selection"
+    ]
+  },
+  {
+    "case_id": "A2",
+    "raw_request": "Make configuration better.",
+    "repository_root": "D:\\nexus\\docs\\phase2\\evidence\\fixture_repository",
+    "repository_profile": {
+      "identity": null,
+      "scanner_version": null,
+      "files": [],
+      "evidence": [],
+      "facts": null
+    },
+    "intent": {
+      "identity": "ia-phase2-A2-ffb24cd2dc4fa910",
+      "version": "1",
+      "resolved": false,
+      "domain": "software",
+      "operator_claim": "Make configuration better.",
+      "ambiguity": [
+        {
+          "kind": "vague_terms",
+          "detail": [
+            "better"
+          ]
+        }
+      ],
+      "missing_information": [],
+      "assumptions": []
+    },
+    "grounding_records": [],
+    "goal_identity": null,
+    "context_package_identity": null,
+    "plan_identity": null,
+    "work_items": [],
+    "dependency_edges": [],
+    "assumptions": [],
+    "uncertainty": {
+      "confidence": {
+        "level": "low",
+        "score": 0.3,
+        "factors": [
+          "objective_words=3",
+          "domain=detected",
+          "ambiguities=1",
+          "missing=0"
+        ]
+      },
+      "ambiguity": [
+        {
+          "kind": "vague_terms",
+          "detail": [
+            "better"
+          ]
+        }
+      ],
+      "missing_information": []
+    },
+    "citations": [],
+    "citation_content_sha256": {},
+    "absent_artifacts": [
+      "goal",
+      "context_package",
+      "plan",
+      "grounding_selection"
+    ]
+  },
+  {
+    "case_id": "A3",
+    "raw_request": "Improve exports.",
+    "repository_root": "D:\\nexus\\docs\\phase2\\evidence\\fixture_repository",
+    "repository_profile": {
+      "identity": null,
+      "scanner_version": null,
+      "files": [],
+      "evidence": [],
+      "facts": null
+    },
+    "intent": {
+      "identity": "ia-phase2-A3-d97948b43fa0cb0c",
+      "version": "1",
+      "resolved": false,
+      "domain": "software",
+      "operator_claim": "Improve exports.",
+      "ambiguity": [
+        {
+          "kind": "underspecified",
+          "detail": "the request is too short to be sure"
+        }
+      ],
+      "missing_information": [],
+      "assumptions": []
+    },
+    "grounding_records": [],
+    "goal_identity": null,
+    "context_package_identity": null,
+    "plan_identity": null,
+    "work_items": [],
+    "dependency_edges": [],
+    "assumptions": [],
+    "uncertainty": {
+      "confidence": {
+        "level": "low",
+        "score": 0.3,
+        "factors": [
+          "objective_words=2",
+          "domain=detected",
+          "ambiguities=1",
+          "missing=0"
+        ]
+      },
+      "ambiguity": [
+        {
+          "kind": "underspecified",
+          "detail": "the request is too short to be sure"
+        }
+      ],
+      "missing_information": []
+    },
+    "citations": [],
+    "citation_content_sha256": {},
+    "absent_artifacts": [
+      "goal",
+      "context_package",
+      "plan",
+      "grounding_selection"
+    ]
+  },
+  {
+    "case_id": "A4",
+    "raw_request": "Update the CLI appropriately.",
+    "repository_root": "D:\\nexus\\docs\\phase2\\evidence\\fixture_repository",
+    "repository_profile": {
+      "identity": null,
+      "scanner_version": null,
+      "files": [],
+      "evidence": [],
+      "facts": null
+    },
+    "intent": {
+      "identity": "ia-phase2-A4-2d1d84647bd4d2f6",
+      "version": "1",
+      "resolved": false,
+      "domain": "software",
+      "operator_claim": "Update the CLI appropriately.",
+      "ambiguity": [
+        {
+          "kind": "vague_terms",
+          "detail": [
+            "appropriately"
+          ]
+        }
+      ],
+      "missing_information": [],
+      "assumptions": []
+    },
+    "grounding_records": [],
+    "goal_identity": null,
+    "context_package_identity": null,
+    "plan_identity": null,
+    "work_items": [],
+    "dependency_edges": [],
+    "assumptions": [],
+    "uncertainty": {
+      "confidence": {
+        "level": "low",
+        "score": 0.3,
+        "factors": [
+          "objective_words=4",
+          "domain=detected",
+          "ambiguities=1",
+          "missing=0"
+        ]
+      },
+      "ambiguity": [
+        {
+          "kind": "vague_terms",
+          "detail": [
+            "appropriately"
+          ]
+        }
+      ],
+      "missing_information": []
+    },
+    "citations": [],
+    "citation_content_sha256": {},
+    "absent_artifacts": [
+      "goal",
+      "context_package",
+      "plan",
+      "grounding_selection"
+    ]
+  },
+  {
+    "case_id": "S1",
+    "raw_request": "Add a `--version` option to the CLI that prints the installed version and exits; add a focused test for the option.",
+    "repository_root": "D:\\nexus\\docs\\phase2\\evidence\\fixture_repository",
+    "repository_profile": {
+      "identity": "rp-fixture_repository-33fba9c44e55176b",
+      "scanner_version": "1",
+      "files": [
+        "README.md",
+        "pyproject.toml",
+        "src/fixture_cli/config.py",
+        "src/fixture_cli/export.py",
+        "src/fixture_cli/main.py",
+        "tests/test_config.py",
+        "tests/test_export.py",
+        "tests/test_main.py"
+      ],
+      "evidence": [
+        "README.md",
+        "pyproject.toml"
+      ],
+      "facts": {
+        "repository_type": "python-application",
+        "technology": {
+          "primary_language": "python",
+          "languages": [
+            "markdown",
+            "python",
+            "toml"
+          ],
+          "frameworks": [],
+          "package_managers": []
+        },
+        "build": {
+          "build_system": null,
+          "build_commands": [],
+          "makefile_targets": []
+        },
+        "test": {
+          "frameworks": [
+            "pytest"
+          ],
+          "test_dirs": [
+            "tests"
+          ],
+          "test_command": "pytest"
+        }
+      }
+    },
+    "intent": {
+      "identity": "ia-phase2-S1-e069bf40bbfeb5ce",
+      "version": "1",
+      "resolved": true,
+      "domain": "software",
+      "operator_claim": "Add a `--version` option to the CLI that prints the installed version and exits; add a focused test for the option.",
+      "ambiguity": [],
+      "missing_information": [],
+      "assumptions": []
+    },
+    "grounding_records": [
+      {
+        "artifact_type": "file",
+        "identifier": "src/fixture_cli/main.py",
+        "source": "repository",
+        "relationship": "file path in the profiled repository inventory",
+        "priority": 150,
+        "selected": true,
+        "reason": "matches criterion 'version'"
+      },
+      {
+        "artifact_type": "file",
+        "identifier": "tests/test_main.py",
+        "source": "repository",
+        "relationship": "file path in the profiled repository inventory",
+        "priority": 150,
+        "selected": true,
+        "reason": "matches criterion 'test'"
+      },
+      {
+        "artifact_type": "execution_history",
+        "identifier": "(source absent)",
+        "source": "execution_history",
+        "relationship": "grounding source not supplied",
+        "priority": 0,
+        "selected": false,
+        "reason": "no execution-history profile provided"
+      },
+      {
+        "artifact_type": "knowledge",
+        "identifier": "(source absent)",
+        "source": "knowledge",
+        "relationship": "grounding source not supplied",
+        "priority": 0,
+        "selected": false,
+        "reason": "no knowledge items provided"
+      }
+    ],
+    "goal_identity": "goal-phase2-S1",
+    "context_package_identity": "context-goal-phase2-S1-v1",
+    "plan_identity": "plan-goal-phase2-S1-v1",
+    "work_items": [
+      {
+        "key": "main",
+        "objective": "Add a `--version` option to the CLI that prints the installed version and exits; add a focused test for the option",
+        "identity": "wp-goal-phase2-S1-main"
+      }
+    ],
+    "dependency_edges": [],
+    "assumptions": [
+      "No task sequence was explicitly declared; represented the requested outcome as one atomic work item."
+    ],
+    "uncertainty": {
+      "confidence": {
+        "level": "high",
+        "score": 0.9,
+        "factors": [
+          "objective_words=21",
+          "domain=detected",
+          "ambiguities=0",
+          "missing=0"
+        ]
+      },
+      "ambiguity": [],
+      "missing_information": []
+    },
+    "citations": [
+      "src/fixture_cli/main.py",
+      "tests/test_main.py"
+    ],
+    "citation_content_sha256": {
+      "src/fixture_cli/main.py": "7109e29589a444e2df27c4a872fe650549f1ae00cc411d118cedfc2bf04353bb",
+      "tests/test_main.py": "f1bd7e36f1caf2d8dcc4c72ee2256dd6a7bf203354f7b0c478577781c46bc50e"
+    },
+    "absent_artifacts": []
+  },
+  {
+    "case_id": "S2",
+    "raw_request": "When the config file is missing, return an empty config dict; add a test for that behavior.",
+    "repository_root": "D:\\nexus\\docs\\phase2\\evidence\\fixture_repository",
+    "repository_profile": {
+      "identity": "rp-fixture_repository-33fba9c44e55176b",
+      "scanner_version": "1",
+      "files": [
+        "README.md",
+        "pyproject.toml",
+        "src/fixture_cli/config.py",
+        "src/fixture_cli/export.py",
+        "src/fixture_cli/main.py",
+        "tests/test_config.py",
+        "tests/test_export.py",
+        "tests/test_main.py"
+      ],
+      "evidence": [
+        "README.md",
+        "pyproject.toml"
+      ],
+      "facts": {
+        "repository_type": "python-application",
+        "technology": {
+          "primary_language": "python",
+          "languages": [
+            "markdown",
+            "python",
+            "toml"
+          ],
+          "frameworks": [],
+          "package_managers": []
+        },
+        "build": {
+          "build_system": null,
+          "build_commands": [],
+          "makefile_targets": []
+        },
+        "test": {
+          "frameworks": [
+            "pytest"
+          ],
+          "test_dirs": [
+            "tests"
+          ],
+          "test_command": "pytest"
+        }
+      }
+    },
+    "intent": {
+      "identity": "ia-phase2-S2-b0e8484cf6a3e495",
+      "version": "1",
+      "resolved": true,
+      "domain": "software",
+      "operator_claim": "When the config file is missing, return an empty config dict; add a test for that behavior.",
+      "ambiguity": [],
+      "missing_information": [],
+      "assumptions": []
+    },
+    "grounding_records": [
+      {
+        "artifact_type": "file",
+        "identifier": "src/fixture_cli/config.py",
+        "source": "repository",
+        "relationship": "file path in the profiled repository inventory",
+        "priority": 150,
+        "selected": true,
+        "reason": "matches criterion 'config'"
+      },
+      {
+        "artifact_type": "file",
+        "identifier": "tests/test_config.py",
+        "source": "repository",
+        "relationship": "file path in the profiled repository inventory",
+        "priority": 150,
+        "selected": true,
+        "reason": "matches criterion 'config'"
+      },
+      {
+        "artifact_type": "execution_history",
+        "identifier": "(source absent)",
+        "source": "execution_history",
+        "relationship": "grounding source not supplied",
+        "priority": 0,
+        "selected": false,
+        "reason": "no execution-history profile provided"
+      },
+      {
+        "artifact_type": "knowledge",
+        "identifier": "(source absent)",
+        "source": "knowledge",
+        "relationship": "grounding source not supplied",
+        "priority": 0,
+        "selected": false,
+        "reason": "no knowledge items provided"
+      }
+    ],
+    "goal_identity": "goal-phase2-S2",
+    "context_package_identity": "context-goal-phase2-S2-v1",
+    "plan_identity": "plan-goal-phase2-S2-v1",
+    "work_items": [
+      {
+        "key": "main",
+        "objective": "When the config file is missing, return an empty config dict; add a test for that behavior",
+        "identity": "wp-goal-phase2-S2-main"
+      }
+    ],
+    "dependency_edges": [],
+    "assumptions": [
+      "No task sequence was explicitly declared; represented the requested outcome as one atomic work item."
+    ],
+    "uncertainty": {
+      "confidence": {
+        "level": "high",
+        "score": 0.9,
+        "factors": [
+          "objective_words=17",
+          "domain=detected",
+          "ambiguities=0",
+          "missing=0"
+        ]
+      },
+      "ambiguity": [],
+      "missing_information": []
+    },
+    "citations": [
+      "src/fixture_cli/config.py",
+      "tests/test_config.py"
+    ],
+    "citation_content_sha256": {
+      "src/fixture_cli/config.py": "954a304ab655241db544d44ea3d7347dc26ab1a701c8f192348b92d22012651c",
+      "tests/test_config.py": "939b489449feb814d3b0bbf73cfaaa109317621fc940371efa515231f96cb4d8"
+    },
+    "absent_artifacts": []
+  },
+  {
+    "case_id": "S3",
+    "raw_request": "Add a test confirming `export_json` writes valid JSON that can be read back.",
+    "repository_root": "D:\\nexus\\docs\\phase2\\evidence\\fixture_repository",
+    "repository_profile": {
+      "identity": "rp-fixture_repository-33fba9c44e55176b",
+      "scanner_version": "1",
+      "files": [
+        "README.md",
+        "pyproject.toml",
+        "src/fixture_cli/config.py",
+        "src/fixture_cli/export.py",
+        "src/fixture_cli/main.py",
+        "tests/test_config.py",
+        "tests/test_export.py",
+        "tests/test_main.py"
+      ],
+      "evidence": [
+        "README.md",
+        "pyproject.toml"
+      ],
+      "facts": {
+        "repository_type": "python-application",
+        "technology": {
+          "primary_language": "python",
+          "languages": [
+            "markdown",
+            "python",
+            "toml"
+          ],
+          "frameworks": [],
+          "package_managers": []
+        },
+        "build": {
+          "build_system": null,
+          "build_commands": [],
+          "makefile_targets": []
+        },
+        "test": {
+          "frameworks": [
+            "pytest"
+          ],
+          "test_dirs": [
+            "tests"
+          ],
+          "test_command": "pytest"
+        }
+      }
+    },
+    "intent": {
+      "identity": "ia-phase2-S3-b10943088212a2e1",
+      "version": "1",
+      "resolved": true,
+      "domain": "software",
+      "operator_claim": "Add a test confirming `export_json` writes valid JSON that can be read back.",
+      "ambiguity": [],
+      "missing_information": [],
+      "assumptions": []
+    },
+    "grounding_records": [
+      {
+        "artifact_type": "file",
+        "identifier": "src/fixture_cli/export.py",
+        "source": "repository",
+        "relationship": "file path in the profiled repository inventory",
+        "priority": 150,
+        "selected": true,
+        "reason": "matches criterion 'export'"
+      },
+      {
+        "artifact_type": "file",
+        "identifier": "tests/test_export.py",
+        "source": "repository",
+        "relationship": "file path in the profiled repository inventory",
+        "priority": 150,
+        "selected": true,
+        "reason": "matches criterion 'test'"
+      },
+      {
+        "artifact_type": "execution_history",
+        "identifier": "(source absent)",
+        "source": "execution_history",
+        "relationship": "grounding source not supplied",
+        "priority": 0,
+        "selected": false,
+        "reason": "no execution-history profile provided"
+      },
+      {
+        "artifact_type": "knowledge",
+        "identifier": "(source absent)",
+        "source": "knowledge",
+        "relationship": "grounding source not supplied",
+        "priority": 0,
+        "selected": false,
+        "reason": "no knowledge items provided"
+      }
+    ],
+    "goal_identity": "goal-phase2-S3",
+    "context_package_identity": "context-goal-phase2-S3-v1",
+    "plan_identity": "plan-goal-phase2-S3-v1",
+    "work_items": [
+      {
+        "key": "main",
+        "objective": "Add a test confirming `export_json` writes valid JSON that can be read back",
+        "identity": "wp-goal-phase2-S3-main"
+      }
+    ],
+    "dependency_edges": [],
+    "assumptions": [
+      "No task sequence was explicitly declared; represented the requested outcome as one atomic work item."
+    ],
+    "uncertainty": {
+      "confidence": {
+        "level": "high",
+        "score": 0.9,
+        "factors": [
+          "objective_words=13",
+          "domain=detected",
+          "ambiguities=0",
+          "missing=0"
+        ]
+      },
+      "ambiguity": [],
+      "missing_information": []
+    },
+    "citations": [
+      "src/fixture_cli/export.py",
+      "tests/test_export.py"
+    ],
+    "citation_content_sha256": {
+      "src/fixture_cli/export.py": "c8b3db66f264bc9f5c2fe47a92058f876482e36d37c62603b5263fa6dacf7f03",
+      "tests/test_export.py": "e879446a02f7ecebfb11b4d9eb6b8b759b68a938f0863c5374e8a090a6ef8d71"
+    },
+    "absent_artifacts": []
+  },
+  {
+    "case_id": "S4",
+    "raw_request": "Document the existing `run` and `status` commands in the README, including the test command.",
+    "repository_root": "D:\\nexus\\docs\\phase2\\evidence\\fixture_repository",
+    "repository_profile": {
+      "identity": "rp-fixture_repository-33fba9c44e55176b",
+      "scanner_version": "1",
+      "files": [
+        "README.md",
+        "pyproject.toml",
+        "src/fixture_cli/config.py",
+        "src/fixture_cli/export.py",
+        "src/fixture_cli/main.py",
+        "tests/test_config.py",
+        "tests/test_export.py",
+        "tests/test_main.py"
+      ],
+      "evidence": [
+        "README.md",
+        "pyproject.toml"
+      ],
+      "facts": {
+        "repository_type": "python-application",
+        "technology": {
+          "primary_language": "python",
+          "languages": [
+            "markdown",
+            "python",
+            "toml"
+          ],
+          "frameworks": [],
+          "package_managers": []
+        },
+        "build": {
+          "build_system": null,
+          "build_commands": [],
+          "makefile_targets": []
+        },
+        "test": {
+          "frameworks": [
+            "pytest"
+          ],
+          "test_dirs": [
+            "tests"
+          ],
+          "test_command": "pytest"
+        }
+      }
+    },
+    "intent": {
+      "identity": "ia-phase2-S4-c9950e86c6e61fb3",
+      "version": "1",
+      "resolved": true,
+      "domain": "writing",
+      "operator_claim": "Document the existing `run` and `status` commands in the README, including the test command.",
+      "ambiguity": [],
+      "missing_information": [],
+      "assumptions": []
+    },
+    "grounding_records": [
+      {
+        "artifact_type": "file",
+        "identifier": "README.md",
+        "source": "repository",
+        "relationship": "file path in the profiled repository inventory",
+        "priority": 150,
+        "selected": true,
+        "reason": "matches criterion 'readme'"
+      },
+      {
+        "artifact_type": "execution_history",
+        "identifier": "(source absent)",
+        "source": "execution_history",
+        "relationship": "grounding source not supplied",
+        "priority": 0,
+        "selected": false,
+        "reason": "no execution-history profile provided"
+      },
+      {
+        "artifact_type": "knowledge",
+        "identifier": "(source absent)",
+        "source": "knowledge",
+        "relationship": "grounding source not supplied",
+        "priority": 0,
+        "selected": false,
+        "reason": "no knowledge items provided"
+      }
+    ],
+    "goal_identity": "goal-phase2-S4",
+    "context_package_identity": "context-goal-phase2-S4-v1",
+    "plan_identity": "plan-goal-phase2-S4-v1",
+    "work_items": [
+      {
+        "key": "main",
+        "objective": "Document the existing `run` and `status` commands in the README, including the test command",
+        "identity": "wp-goal-phase2-S4-main"
+      }
+    ],
+    "dependency_edges": [],
+    "assumptions": [
+      "No task sequence was explicitly declared; represented the requested outcome as one atomic work item."
+    ],
+    "uncertainty": {
+      "confidence": {
+        "level": "high",
+        "score": 0.9,
+        "factors": [
+          "objective_words=14",
+          "domain=detected",
+          "ambiguities=0",
+          "missing=0"
+        ]
+      },
+      "ambiguity": [],
+      "missing_information": []
+    },
+    "citations": [
+      "README.md"
+    ],
+    "citation_content_sha256": {
+      "README.md": "1f81571c2f204be85e35f1971d81196aa3d158483d77ca166d559a9d17f91a14"
+    },
+    "absent_artifacts": []
+  },
+  {
+    "case_id": "M1",
+    "raw_request": "Add a `--version` option to the CLI. Implement it first, then add a test that verifies the printed version and exit behavior.",
+    "repository_root": "D:\\nexus\\docs\\phase2\\evidence\\fixture_repository",
+    "repository_profile": {
+      "identity": "rp-fixture_repository-33fba9c44e55176b",
+      "scanner_version": "1",
+      "files": [
+        "README.md",
+        "pyproject.toml",
+        "src/fixture_cli/config.py",
+        "src/fixture_cli/export.py",
+        "src/fixture_cli/main.py",
+        "tests/test_config.py",
+        "tests/test_export.py",
+        "tests/test_main.py"
+      ],
+      "evidence": [
+        "README.md",
+        "pyproject.toml"
+      ],
+      "facts": {
+        "repository_type": "python-application",
+        "technology": {
+          "primary_language": "python",
+          "languages": [
+            "markdown",
+            "python",
+            "toml"
+          ],
+          "frameworks": [],
+          "package_managers": []
+        },
+        "build": {
+          "build_system": null,
+          "build_commands": [],
+          "makefile_targets": []
+        },
+        "test": {
+          "frameworks": [
+            "pytest"
+          ],
+          "test_dirs": [
+            "tests"
+          ],
+          "test_command": "pytest"
+        }
+      }
+    },
+    "intent": {
+      "identity": "ia-phase2-M1-31f6f6038f2ec41f",
+      "version": "1",
+      "resolved": true,
+      "domain": "software",
+      "operator_claim": "Add a `--version` option to the CLI. Implement it first, then add a test that verifies the printed version and exit behavior.",
+      "ambiguity": [],
+      "missing_information": [],
+      "assumptions": []
+    },
+    "grounding_records": [
+      {
+        "artifact_type": "file",
+        "identifier": "src/fixture_cli/main.py",
+        "source": "repository",
+        "relationship": "file path in the profiled repository inventory",
+        "priority": 150,
+        "selected": true,
+        "reason": "matches criterion 'version'"
+      },
+      {
+        "artifact_type": "file",
+        "identifier": "tests/test_main.py",
+        "source": "repository",
+        "relationship": "file path in the profiled repository inventory",
+        "priority": 150,
+        "selected": true,
+        "reason": "matches criterion 'test'"
+      },
+      {
+        "artifact_type": "execution_history",
+        "identifier": "(source absent)",
+        "source": "execution_history",
+        "relationship": "grounding source not supplied",
+        "priority": 0,
+        "selected": false,
+        "reason": "no execution-history profile provided"
+      },
+      {
+        "artifact_type": "knowledge",
+        "identifier": "(source absent)",
+        "source": "knowledge",
+        "relationship": "grounding source not supplied",
+        "priority": 0,
+        "selected": false,
+        "reason": "no knowledge items provided"
+      }
+    ],
+    "goal_identity": "goal-phase2-M1",
+    "context_package_identity": "context-goal-phase2-M1-v1",
+    "plan_identity": "plan-goal-phase2-M1-v1",
+    "work_items": [
+      {
+        "key": "step-1",
+        "objective": "Add a `--version` option to the CLI",
+        "identity": "wp-goal-phase2-M1-step-1"
+      },
+      {
+        "key": "step-2",
+        "objective": "add a test that verifies the printed version and exit behavior",
+        "identity": "wp-goal-phase2-M1-step-2"
+      }
+    ],
+    "dependency_edges": [
+      [
+        "step-1",
+        "step-2"
+      ]
+    ],
+    "assumptions": [],
+    "uncertainty": {
+      "confidence": {
+        "level": "high",
+        "score": 0.9,
+        "factors": [
+          "objective_words=22",
+          "domain=detected",
+          "ambiguities=0",
+          "missing=0"
+        ]
+      },
+      "ambiguity": [],
+      "missing_information": []
+    },
+    "citations": [
+      "src/fixture_cli/main.py",
+      "tests/test_main.py"
+    ],
+    "citation_content_sha256": {
+      "src/fixture_cli/main.py": "7109e29589a444e2df27c4a872fe650549f1ae00cc411d118cedfc2bf04353bb",
+      "tests/test_main.py": "f1bd7e36f1caf2d8dcc4c72ee2256dd6a7bf203354f7b0c478577781c46bc50e"
+    },
+    "absent_artifacts": []
+  },
+  {
+    "case_id": "M2",
+    "raw_request": "For missing config files, make `load_config` return an empty dict. First change the function, then add a regression test for the missing-file case.",
+    "repository_root": "D:\\nexus\\docs\\phase2\\evidence\\fixture_repository",
+    "repository_profile": {
+      "identity": "rp-fixture_repository-33fba9c44e55176b",
+      "scanner_version": "1",
+      "files": [
+        "README.md",
+        "pyproject.toml",
+        "src/fixture_cli/config.py",
+        "src/fixture_cli/export.py",
+        "src/fixture_cli/main.py",
+        "tests/test_config.py",
+        "tests/test_export.py",
+        "tests/test_main.py"
+      ],
+      "evidence": [
+        "README.md",
+        "pyproject.toml"
+      ],
+      "facts": {
+        "repository_type": "python-application",
+        "technology": {
+          "primary_language": "python",
+          "languages": [
+            "markdown",
+            "python",
+            "toml"
+          ],
+          "frameworks": [],
+          "package_managers": []
+        },
+        "build": {
+          "build_system": null,
+          "build_commands": [],
+          "makefile_targets": []
+        },
+        "test": {
+          "frameworks": [
+            "pytest"
+          ],
+          "test_dirs": [
+            "tests"
+          ],
+          "test_command": "pytest"
+        }
+      }
+    },
+    "intent": {
+      "identity": "ia-phase2-M2-1dad537130475a8d",
+      "version": "1",
+      "resolved": true,
+      "domain": "software",
+      "operator_claim": "For missing config files, make `load_config` return an empty dict. First change the function, then add a regression test for the missing-file case.",
+      "ambiguity": [],
+      "missing_information": [],
+      "assumptions": []
+    },
+    "grounding_records": [
+      {
+        "artifact_type": "file",
+        "identifier": "src/fixture_cli/config.py",
+        "source": "repository",
+        "relationship": "file path in the profiled repository inventory",
+        "priority": 150,
+        "selected": true,
+        "reason": "matches criterion 'config'"
+      },
+      {
+        "artifact_type": "file",
+        "identifier": "tests/test_config.py",
+        "source": "repository",
+        "relationship": "file path in the profiled repository inventory",
+        "priority": 150,
+        "selected": true,
+        "reason": "matches criterion 'config'"
+      },
+      {
+        "artifact_type": "execution_history",
+        "identifier": "(source absent)",
+        "source": "execution_history",
+        "relationship": "grounding source not supplied",
+        "priority": 0,
+        "selected": false,
+        "reason": "no execution-history profile provided"
+      },
+      {
+        "artifact_type": "knowledge",
+        "identifier": "(source absent)",
+        "source": "knowledge",
+        "relationship": "grounding source not supplied",
+        "priority": 0,
+        "selected": false,
+        "reason": "no knowledge items provided"
+      }
+    ],
+    "goal_identity": "goal-phase2-M2",
+    "context_package_identity": "context-goal-phase2-M2-v1",
+    "plan_identity": "plan-goal-phase2-M2-v1",
+    "work_items": [
+      {
+        "key": "step-1",
+        "objective": "For missing config files, make `load_config` return an empty dict",
+        "identity": "wp-goal-phase2-M2-step-1"
+      },
+      {
+        "key": "step-2",
+        "objective": "add a regression test for the missing-file case",
+        "identity": "wp-goal-phase2-M2-step-2"
+      }
+    ],
+    "dependency_edges": [
+      [
+        "step-1",
+        "step-2"
+      ]
+    ],
+    "assumptions": [],
+    "uncertainty": {
+      "confidence": {
+        "level": "high",
+        "score": 0.9,
+        "factors": [
+          "objective_words=23",
+          "domain=detected",
+          "ambiguities=0",
+          "missing=0"
+        ]
+      },
+      "ambiguity": [],
+      "missing_information": []
+    },
+    "citations": [
+      "src/fixture_cli/config.py",
+      "tests/test_config.py"
+    ],
+    "citation_content_sha256": {
+      "src/fixture_cli/config.py": "954a304ab655241db544d44ea3d7347dc26ab1a701c8f192348b92d22012651c",
+      "tests/test_config.py": "939b489449feb814d3b0bbf73cfaaa109317621fc940371efa515231f96cb4d8"
+    },
+    "absent_artifacts": []
+  },
+  {
+    "case_id": "M3",
+    "raw_request": "Add CSV export alongside JSON. First implement `export_csv`, then test that the output can be parsed back as rows.",
+    "repository_root": "D:\\nexus\\docs\\phase2\\evidence\\fixture_repository",
+    "repository_profile": {
+      "identity": "rp-fixture_repository-33fba9c44e55176b",
+      "scanner_version": "1",
+      "files": [
+        "README.md",
+        "pyproject.toml",
+        "src/fixture_cli/config.py",
+        "src/fixture_cli/export.py",
+        "src/fixture_cli/main.py",
+        "tests/test_config.py",
+        "tests/test_export.py",
+        "tests/test_main.py"
+      ],
+      "evidence": [
+        "README.md",
+        "pyproject.toml"
+      ],
+      "facts": {
+        "repository_type": "python-application",
+        "technology": {
+          "primary_language": "python",
+          "languages": [
+            "markdown",
+            "python",
+            "toml"
+          ],
+          "frameworks": [],
+          "package_managers": []
+        },
+        "build": {
+          "build_system": null,
+          "build_commands": [],
+          "makefile_targets": []
+        },
+        "test": {
+          "frameworks": [
+            "pytest"
+          ],
+          "test_dirs": [
+            "tests"
+          ],
+          "test_command": "pytest"
+        }
+      }
+    },
+    "intent": {
+      "identity": "ia-phase2-M3-af227b8aaa1d6e68",
+      "version": "1",
+      "resolved": true,
+      "domain": "software",
+      "operator_claim": "Add CSV export alongside JSON. First implement `export_csv`, then test that the output can be parsed back as rows.",
+      "ambiguity": [],
+      "missing_information": [],
+      "assumptions": []
+    },
+    "grounding_records": [
+      {
+        "artifact_type": "file",
+        "identifier": "src/fixture_cli/export.py",
+        "source": "repository",
+        "relationship": "file path in the profiled repository inventory",
+        "priority": 150,
+        "selected": true,
+        "reason": "matches criterion 'export'"
+      },
+      {
+        "artifact_type": "file",
+        "identifier": "tests/test_export.py",
+        "source": "repository",
+        "relationship": "file path in the profiled repository inventory",
+        "priority": 150,
+        "selected": true,
+        "reason": "matches criterion 'export'"
+      },
+      {
+        "artifact_type": "execution_history",
+        "identifier": "(source absent)",
+        "source": "execution_history",
+        "relationship": "grounding source not supplied",
+        "priority": 0,
+        "selected": false,
+        "reason": "no execution-history profile provided"
+      },
+      {
+        "artifact_type": "knowledge",
+        "identifier": "(source absent)",
+        "source": "knowledge",
+        "relationship": "grounding source not supplied",
+        "priority": 0,
+        "selected": false,
+        "reason": "no knowledge items provided"
+      }
+    ],
+    "goal_identity": "goal-phase2-M3",
+    "context_package_identity": "context-goal-phase2-M3-v1",
+    "plan_identity": "plan-goal-phase2-M3-v1",
+    "work_items": [
+      {
+        "key": "step-1",
+        "objective": "implement `export_csv`",
+        "identity": "wp-goal-phase2-M3-step-1"
+      },
+      {
+        "key": "step-2",
+        "objective": "test that the output can be parsed back as rows",
+        "identity": "wp-goal-phase2-M3-step-2"
+      }
+    ],
+    "dependency_edges": [
+      [
+        "step-1",
+        "step-2"
+      ]
+    ],
+    "assumptions": [],
+    "uncertainty": {
+      "confidence": {
+        "level": "high",
+        "score": 0.9,
+        "factors": [
+          "objective_words=19",
+          "domain=detected",
+          "ambiguities=0",
+          "missing=0"
+        ]
+      },
+      "ambiguity": [],
+      "missing_information": []
+    },
+    "citations": [
+      "src/fixture_cli/export.py",
+      "tests/test_export.py"
+    ],
+    "citation_content_sha256": {
+      "src/fixture_cli/export.py": "c8b3db66f264bc9f5c2fe47a92058f876482e36d37c62603b5263fa6dacf7f03",
+      "tests/test_export.py": "e879446a02f7ecebfb11b4d9eb6b8b759b68a938f0863c5374e8a090a6ef8d71"
+    },
+    "absent_artifacts": []
+  },
+  {
+    "case_id": "M4",
+    "raw_request": "Add a `--version` option and document it. Implement the option first; then write its test and update the README. The test and documentation can happen independently after implementation.",
+    "repository_root": "D:\\nexus\\docs\\phase2\\evidence\\fixture_repository",
+    "repository_profile": {
+      "identity": "rp-fixture_repository-33fba9c44e55176b",
+      "scanner_version": "1",
+      "files": [
+        "README.md",
+        "pyproject.toml",
+        "src/fixture_cli/config.py",
+        "src/fixture_cli/export.py",
+        "src/fixture_cli/main.py",
+        "tests/test_config.py",
+        "tests/test_export.py",
+        "tests/test_main.py"
+      ],
+      "evidence": [
+        "README.md",
+        "pyproject.toml"
+      ],
+      "facts": {
+        "repository_type": "python-application",
+        "technology": {
+          "primary_language": "python",
+          "languages": [
+            "markdown",
+            "python",
+            "toml"
+          ],
+          "frameworks": [],
+          "package_managers": []
+        },
+        "build": {
+          "build_system": null,
+          "build_commands": [],
+          "makefile_targets": []
+        },
+        "test": {
+          "frameworks": [
+            "pytest"
+          ],
+          "test_dirs": [
+            "tests"
+          ],
+          "test_command": "pytest"
+        }
+      }
+    },
+    "intent": {
+      "identity": "ia-phase2-M4-3229f03737f3ff09",
+      "version": "1",
+      "resolved": true,
+      "domain": "software",
+      "operator_claim": "Add a `--version` option and document it. Implement the option first; then write its test and update the README. The test and documentation can happen independently after implementation.",
+      "ambiguity": [],
+      "missing_information": [],
+      "assumptions": []
+    },
+    "grounding_records": [
+      {
+        "artifact_type": "file",
+        "identifier": "README.md",
+        "source": "repository",
+        "relationship": "file path in the profiled repository inventory",
+        "priority": 150,
+        "selected": true,
+        "reason": "matches criterion 'readme'"
+      },
+      {
+        "artifact_type": "file",
+        "identifier": "src/fixture_cli/main.py",
+        "source": "repository",
+        "relationship": "file path in the profiled repository inventory",
+        "priority": 150,
+        "selected": true,
+        "reason": "matches criterion 'version'"
+      },
+      {
+        "artifact_type": "file",
+        "identifier": "tests/test_main.py",
+        "source": "repository",
+        "relationship": "file path in the profiled repository inventory",
+        "priority": 150,
+        "selected": true,
+        "reason": "matches criterion 'test'"
+      },
+      {
+        "artifact_type": "execution_history",
+        "identifier": "(source absent)",
+        "source": "execution_history",
+        "relationship": "grounding source not supplied",
+        "priority": 0,
+        "selected": false,
+        "reason": "no execution-history profile provided"
+      },
+      {
+        "artifact_type": "knowledge",
+        "identifier": "(source absent)",
+        "source": "knowledge",
+        "relationship": "grounding source not supplied",
+        "priority": 0,
+        "selected": false,
+        "reason": "no knowledge items provided"
+      }
+    ],
+    "goal_identity": "goal-phase2-M4",
+    "context_package_identity": "context-goal-phase2-M4-v1",
+    "plan_identity": "plan-goal-phase2-M4-v1",
+    "work_items": [
+      {
+        "key": "step-1",
+        "objective": "Add a `--version` option",
+        "identity": "wp-goal-phase2-M4-step-1"
+      },
+      {
+        "key": "step-2",
+        "objective": "write its test",
+        "identity": "wp-goal-phase2-M4-step-2"
+      },
+      {
+        "key": "step-3",
+        "objective": "update the README",
+        "identity": "wp-goal-phase2-M4-step-3"
+      }
+    ],
+    "dependency_edges": [
+      [
+        "step-1",
+        "step-2"
+      ],
+      [
+        "step-1",
+        "step-3"
+      ]
+    ],
+    "assumptions": [],
+    "uncertainty": {
+      "confidence": {
+        "level": "high",
+        "score": 0.9,
+        "factors": [
+          "objective_words=28",
+          "domain=detected",
+          "ambiguities=0",
+          "missing=0"
+        ]
+      },
+      "ambiguity": [],
+      "missing_information": []
+    },
+    "citations": [
+      "README.md",
+      "src/fixture_cli/main.py",
+      "tests/test_main.py"
+    ],
+    "citation_content_sha256": {
+      "README.md": "1f81571c2f204be85e35f1971d81196aa3d158483d77ca166d559a9d17f91a14",
+      "src/fixture_cli/main.py": "7109e29589a444e2df27c4a872fe650549f1ae00cc411d118cedfc2bf04353bb",
+      "tests/test_main.py": "f1bd7e36f1caf2d8dcc4c72ee2256dd6a7bf203354f7b0c478577781c46bc50e"
+    },
+    "absent_artifacts": []
+  }
+]

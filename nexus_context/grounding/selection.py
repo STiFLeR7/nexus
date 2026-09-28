@@ -232,10 +232,52 @@ class GroundingSelector:
             self._cand("package", p, "repository", "package in the repository")
             for p in profile.packages.packages
         ]
-        out += [
-            self._cand("file", f, "repository", "entry point in the repository")
-            for f in profile.structure.entry_points
-        ]
+        keywords = set(_tokenize(inputs.goal.outcome))
+        broad = {
+            "cli",
+            "test",
+            "tests",
+            "python",
+            "repository",
+            "repo",
+            "code",
+            "file",
+            "files",
+            "option",
+        }
+        terms = keywords - broad
+        paths = set(profile.files)
+        relevant = {path for path in paths if terms.intersection(_tokenize(path.replace("_", " ")))}
+        request_terms = set(_tokenize(inputs.goal.outcome))
+        if inputs.goal.domain.value == "software" and request_terms.intersection(
+            {"cli", "command", "commands", "option", "version"}
+        ):
+            relevant.update(
+                path
+                for path in paths
+                if path.rsplit("/", 1)[-1]
+                in {"main.py", "cli.py", "__main__.py", "main.ts", "index.js"}
+            )
+        if inputs.goal.domain.value == "software" and not relevant:
+            relevant.update(profile.structure.entry_points)
+        if inputs.goal.domain.value == "software":
+            source_stems = {
+                path.rsplit("/", 1)[-1].rsplit(".", 1)[0]
+                for path in relevant
+                if path.startswith("src/")
+            }
+            for path in paths:
+                name = path.rsplit("/", 1)[-1]
+                if path.startswith("tests/") and name.startswith("test_"):
+                    stem = name.removeprefix("test_").rsplit(".", 1)[0]
+                    if stem in source_stems:
+                        relevant.add(path)
+        for path in sorted(relevant)[:50]:
+            out.append(
+                self._cand(
+                    "file", path, "repository", "file path in the profiled repository inventory"
+                )
+            )
         return out
 
     def _history_candidates(self, inputs: GroundingInputs) -> list[_Candidate]:
@@ -288,6 +330,16 @@ class GroundingSelector:
     @staticmethod
     def _matches(cand: _Candidate, keywords: list[str]) -> str:
         """Return the first matching keyword (truthy) or '' — matched against the candidate text."""
+        if cand.artifact_type == "file" and cand.identifier.rsplit("/", 1)[-1] in {
+            "main.py",
+            "cli.py",
+            "__main__.py",
+            "main.ts",
+            "index.js",
+        }:
+            for keyword in keywords:
+                if keyword in {"cli", "command", "commands", "option", "version"}:
+                    return keyword
         for keyword in keywords:
             if keyword in cand.match_text:
                 return keyword

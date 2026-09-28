@@ -5,16 +5,17 @@ programmatically; nothing lets an actual person type a request and get an answer
 that missing front door. It wires the existing, previously-unwired
 :func:`nexus_human_interaction.build_human_interaction` façade to a terminal chat loop, using a
 real LLM runtime adapter (:mod:`nexus_runtime_llm`) chosen entirely by configuration
-(``NEXUS_LLM_PROVIDER``). It introduces no new orchestration and no bypass: every request still
-flows Goal -> Planning -> Execution -> Operations -> Response through the unmodified
-Constitutional Pipeline, exactly as ``examples/07-approval-exchange`` already demonstrates for a
-canned request.
+(``NEXUS_LLM_PROVIDER``). It introduces no orchestration bypass: ``--once`` drives the existing
+Goal -> Planning -> Execution -> Operations -> Response flow, while ``--plan`` stops after Planning
+for inspection and ``--resume`` continues that durable request in a separate process.
 
 Usage::
 
     uv run python scripts/nexus_cli.py                       # interactive, in-memory (no --db)
     uv run python scripts/nexus_cli.py --db nexus_personal.db # durable, replay/restart-capable
     uv run python scripts/nexus_cli.py --once "summarize this file"   # one request; gated work prompts
+    uv run python scripts/nexus_cli.py --db nexus.db --plan "Add a CLI version option" --repository-root .
+    uv run python scripts/nexus_cli.py --db nexus.db --resume cli-<session-id>
 
 Provider selection is pure configuration (see ``nexus_runtime_llm.config``):
 
@@ -44,6 +45,7 @@ from nexus_operations import OperationsContext, build_operations
 from nexus_planning import WorkItemSpec
 from nexus_runtime.events import SystemTimestampSource
 from nexus_runtime_llm import LLMRuntimeAdapter, build_llm_invoker, load_llm_provider_config
+from nexus_workflows.spine import SpineControl, SpineStage
 
 CAPABILITY_ID = "text_generation"
 ARTIFACTS_DIR = ".nexus_llm_artifacts"
@@ -72,13 +74,18 @@ def _capability() -> Capability:
     )
 
 
-def build_operator_request(request_text: str, *, identity: str) -> OperatorRequest:
-    """Deterministically translate raw terminal text into one OperatorRequest, one work item.
+def build_operator_request(
+    request_text: str,
+    *,
+    identity: str,
+    repository_root: str | None = None,
+    include_work_item: bool = True,
+) -> OperatorRequest:
+    """Build the deterministic operator request for execution or plan-first inspection.
 
-    Planning is rule-based, not LLM-driven (the Constitution's Article IV) — this script does not
-    ask an LLM to decompose the request into work items. It performs the one fixed, deterministic
-    mapping needed to exercise the full pipeline: one request, one work item, whose objective *is*
-    the request text; the LLM reasons inside Execution, not inside Planning.
+    Normal execution supplies one fixed work item. Plan-first mode leaves decomposition to Intent's
+    recorded explicit steps and provides the work-item template separately for execution metadata.
+    Neither path asks an LLM to decompose work.
     """
     work_item = WorkItemSpec(
         key="respond",
@@ -90,7 +97,7 @@ def build_operator_request(request_text: str, *, identity: str) -> OperatorReque
     return OperatorRequest(
         identity=identity,
         request_text=request_text,
-        work_items=(work_item,),
+        work_items=(work_item,) if include_work_item else (),
         knowledge_subject=request_text[:80] or "operator request",
         scope=f"cli-{identity}",
         knowledge_kind=KnowledgeType.LESSON,
@@ -101,6 +108,8 @@ def build_operator_request(request_text: str, *, identity: str) -> OperatorReque
         ),
         capabilities=(_capability(),),
         correlation_identifier=f"cor-{identity}",
+        repository_root=repository_root,
+        planning_step_template=work_item if not include_work_item else None,
     )
 
 
@@ -197,6 +206,51 @@ def _saved_request_text(infra: InfrastructureContext, identity: str) -> str:
     raise ValueError(f"no saved request for session {identity!r}")
 
 
+def _saved_repository_root(infra: InfrastructureContext, identity: str) -> str | None:
+    session = f"hi-{identity}"
+    for event in infra.event_store.read_all():
+        if (
+            event.type == "interaction.request_submitted"
+            and event.payload.get("session") == session
+        ):
+            value = event.payload.get("repository_root")
+            return str(value) if value is not None else None
+    raise ValueError(f"no saved request for session {identity!r}")
+
+
+def _print_plan(response: InteractionResponse) -> None:
+    print(f"  status: {response.status}")
+    if response.intent_analysis:
+        intent = response.intent_analysis
+        goal = cast(dict[str, object], intent.get("goal") or {})
+        intent_record = cast(dict[str, object], intent.get("intent") or {})
+        print(f"  intended outcome: {goal.get('outcome') or intent_record.get('raw_request', '')}")
+        uncertainty = (
+            intent_record.get("ambiguity")
+            or intent_record.get("missing_information")
+            or "none recorded"
+        )
+        print(f"  uncertainty: {uncertainty}")
+    if response.execution_plan:
+        plan = response.execution_plan
+        for node in plan.execution_graph.nodes:
+            package = next(
+                item
+                for item in plan.work_packages
+                if item.identifier == node.work_package_ref.identifier
+            )
+            print(f"  work item {node.identifier}: {package.objective}")
+        for source, target in plan.coordination.dependency_edges:
+            print(f"  dependency: {source} -> {target}")
+        print(
+            f"  source refs: {[(ref.target_type, ref.identifier) for ref in plan.context_references]}"
+        )
+        print(f"  assumptions: {plan.plan.assumptions}")
+        print("  plan paused before actuation; run --resume with this session ID to execute.")
+    elif response.clarification_requests:
+        print("  clarification required before a plan can be resumed.")
+
+
 def _print_pending(context: HumanInteractionContext, infra: InfrastructureContext) -> None:
     sessions = {
         str(event.payload.get("session", ""))
@@ -238,6 +292,12 @@ def main(argv: list[str] | None = None) -> None:
     parser.add_argument(
         "--resume", default=None, help="resume a durable request by its printed session ID"
     )
+    parser.add_argument(
+        "--plan", default=None, help="create and display a plan for this request, then stop"
+    )
+    parser.add_argument(
+        "--repository-root", default=None, help="explicit workspace root to profile for --plan"
+    )
     args = parser.parse_args(argv)
 
     infra = _build_infrastructure(args.db)
@@ -258,8 +318,12 @@ def main(argv: list[str] | None = None) -> None:
         _print_pending(context, infra)
         return
     if args.resume:
+        repository_root = _saved_repository_root(infra, args.resume)
         request = build_operator_request(
-            _saved_request_text(infra, args.resume), identity=args.resume
+            _saved_request_text(infra, args.resume),
+            identity=args.resume,
+            repository_root=repository_root,
+            include_work_item=repository_root is None,
         )
         response = context.facade.restart(request)
         _print_response(ops, request, response)
@@ -269,6 +333,29 @@ def main(argv: list[str] | None = None) -> None:
 
     if args.once is not None:
         run_one(context.facade, ops, args.once)
+        return
+
+    if args.plan is not None:
+        if not args.db:
+            parser.error(
+                "--plan requires --db so the operator can inspect, then resume the same plan"
+            )
+        if not args.repository_root:
+            parser.error("--plan requires --repository-root for explicit repository scope")
+        identity = f"cli-{uuid.uuid4().hex[:12]}"
+        print(f"  session: {identity}")
+        request = build_operator_request(
+            args.plan,
+            identity=identity,
+            repository_root=args.repository_root,
+            include_work_item=False,
+        )
+        response = context.facade.submit(
+            request, control=SpineControl(stop_after_stage=SpineStage.PLANNING)
+        )
+        _print_plan(response)
+        for clarification in response.clarification_requests:
+            print(f"  nexus needs clarification: {clarification.question}")
         return
 
     print("[nexus-cli] interactive mode — type a request, or 'exit' to quit.")

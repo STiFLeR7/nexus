@@ -7,8 +7,13 @@ the learning loop reaches the operator (Goal → Knowledge → next Goal through
 
 from __future__ import annotations
 
+from dataclasses import replace
+from pathlib import Path
+
+from nexus_core.contracts.base import Struct
 from nexus_core.contracts.enums import KnowledgeType
 from nexus_human_interaction import build_human_interaction, reference_operator_request
+from nexus_human_interaction.model import OperatorRequest
 from nexus_infra import build_durable_infrastructure, build_infrastructure
 from nexus_workflows.spine import SpineControl, SpineStage
 
@@ -25,7 +30,7 @@ def test_operator_submits_and_reaches_knowledge() -> None:
 
 
 def test_operator_flow_is_deterministic() -> None:
-    def once():
+    def once() -> list[tuple[str, str, Struct]]:
         facade = build_human_interaction(build_infrastructure()).facade
         facade.submit(reference_operator_request(run="r1"))
         return [(e.identifier, e.type, e.payload) for e in facade.history("op-arch-r1")]
@@ -33,7 +38,7 @@ def test_operator_flow_is_deterministic() -> None:
     assert once() == once()  # byte-identical operator + pipeline event stream across runs
 
 
-def test_interaction_replays_from_the_durable_log(tmp_path) -> None:
+def test_interaction_replays_from_the_durable_log(tmp_path: Path) -> None:
     db = str(tmp_path / "hi.db")
     build_human_interaction(build_durable_infrastructure(db)).facade.submit(
         reference_operator_request(run="r1")
@@ -45,7 +50,7 @@ def test_interaction_replays_from_the_durable_log(tmp_path) -> None:
     assert replayed.pipeline_session_ref.identifier == "pipe-op-arch-r1"
 
 
-def test_restart_resumes_without_replaying_completed_stages(tmp_path) -> None:
+def test_restart_resumes_without_replaying_completed_stages(tmp_path: Path) -> None:
     db = str(tmp_path / "restart.db")
     request = reference_operator_request(run="r1")
 
@@ -86,3 +91,54 @@ def test_learning_loop_reaches_the_operator_surface() -> None:
     # The operator can inspect the provenance of what grounded the run.
     lineage = second.facade.explain_lineage("op-arch-r2")
     assert lineage.knowledge_provenance.get("count") == r2.knowledge_grounding.consumed
+
+
+def test_shared_correlation_replay_keeps_repository_facts_request_scoped(
+    tmp_path: Path,
+) -> None:
+    first_root = tmp_path / "first"
+    second_root = tmp_path / "second"
+    first_root.mkdir()
+    second_root.mkdir()
+    (first_root / "alpha_module.py").write_text("alpha = True\n", encoding="utf-8")
+    (second_root / "beta_module.py").write_text("beta = True\n", encoding="utf-8")
+
+    facade = build_human_interaction(build_infrastructure(), learning=False).facade
+
+    def request(identity: str, root: Path, topic: str) -> OperatorRequest:
+        return replace(
+            reference_operator_request(run=identity),
+            request_text=f"Add a test for {topic} behavior.",
+            knowledge_subject=topic,
+            scope=topic,
+            correlation_identifier="shared-recurring-correlation",
+            repository_root=str(root),
+        )
+
+    first = request("shared-first", first_root, "alpha")
+    second = request("shared-second", second_root, "beta")
+    first_response = facade.submit(
+        first, control=SpineControl(stop_after_stage=SpineStage.PLANNING)
+    )
+    second_response = facade.submit(
+        second, control=SpineControl(stop_after_stage=SpineStage.PLANNING)
+    )
+    replayed_first = facade.restart(first)
+
+    assert first_response.execution_plan is not None
+    assert second_response.execution_plan is not None
+    assert replayed_first.execution_plan is not None
+    assert (
+        replayed_first.execution_plan.goal_ref.identifier
+        == first_response.execution_plan.goal_ref.identifier
+    )
+    assert replayed_first.repository_profile is not None
+    assert replayed_first.repository_profile["root"] == str(first_root.resolve())
+    selection = replayed_first.grounding_selection
+    assert selection is not None
+    selected_rows = selection["selected"]
+    assert isinstance(selected_rows, list)
+    assert all(isinstance(row, dict) for row in selected_rows)
+    selected_ids = {str(row["identifier"]) for row in selected_rows}
+    assert "alpha_module.py" in selected_ids
+    assert "beta_module.py" not in selected_ids

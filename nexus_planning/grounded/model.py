@@ -11,7 +11,9 @@ reconstructs it without re-planning.
 
 from __future__ import annotations
 
+from collections.abc import Mapping
 from dataclasses import dataclass, field
+from typing import Any
 
 from nexus_core.contracts.base import Reference, ValueObject
 from nexus_core.domain.context_package import ContextPackage
@@ -38,6 +40,10 @@ class PlanningInputs:
     engineering_strategy: EngineeringStrategy | None = None
     context_package: ContextPackage | None = None
     work_items: tuple[WorkItemSpec, ...] = field(default_factory=tuple)
+    operator_steps: tuple[Mapping[str, Any], ...] = field(default_factory=tuple)
+    operator_step_template: WorkItemSpec | None = None
+    assumptions: tuple[str, ...] = field(default_factory=tuple)
+    repository_profile_ref: Reference | None = None
 
 
 class CoordinationView(ValueObject):

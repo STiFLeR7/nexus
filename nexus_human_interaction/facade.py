@@ -11,7 +11,8 @@ facts so an operator session replays exactly and a restart resumes without repla
 
 from __future__ import annotations
 
-from collections.abc import Callable
+from collections.abc import Callable, Sequence
+from typing import Any
 
 from nexus_approval import (
     ApprovalDecision,
@@ -21,6 +22,7 @@ from nexus_approval import (
 )
 from nexus_core.contracts.base import Reference, Struct
 from nexus_core.contracts.enums import KnowledgeType
+from nexus_core.domain.context_package import ContextPackage
 from nexus_core.domain.event import Event
 from nexus_human_interaction import events as ievents
 from nexus_human_interaction.model import (
@@ -87,6 +89,7 @@ class HumanInteraction:
                 "subject": request.knowledge_subject,
                 "scope": request.scope,
                 "work_items": [item.key for item in request.work_items],
+                "repository_root": request.repository_root,
             },
         )
         run = self._pipeline.run(spine, control=control)
@@ -137,15 +140,20 @@ class HumanInteraction:
             raise ValueError(
                 f"request identity {request.identity!r} was already used for different text"
             )
+        if (
+            submitted is not None
+            and submitted.payload.get("repository_root") != request.repository_root
+        ):
+            raise ValueError(
+                f"request identity {request.identity!r} was already used with a different repository root"
+            )
         if recorded.correlation_identifier != request.correlation:
             raise ValueError(
                 f"request identity {request.identity!r} was already used with a different correlation"
             )
 
         payload = recorded.payload
-        own_events = tuple(
-            event for event in events if event.correlation_identifier == request.correlation
-        )
+        own_events = _request_events(events, request)
         goal = find_goal(own_events)
         plan = find_plan(own_events)
         execution = find_execution_state(own_events)
@@ -190,6 +198,13 @@ class HumanInteraction:
             progress=self._pipeline.session(f"pipe-{request.identity}").stages_completed,
             pending_approvals=self._approval.pending(f"pipe-{request.identity}"),
             clarification_requests=(),
+            execution_plan=plan,
+            grounding_selection=_grounding_selection(own_events),
+            intent_analysis=_event_payload(own_events, "intent.resolved", "analysis"),
+            context_package=_event_model(
+                own_events, "context.grounding.assembled", "package", ContextPackage
+            ),
+            repository_profile=_event_payload(own_events, "repository.profiled", "profile"),
         )
 
     # -- approval surface (delegates to the Approval Exchange, never bypassed) - #
@@ -295,6 +310,7 @@ class HumanInteraction:
     def _record(
         self, request: OperatorRequest, run: SpineRun, *, resumed: bool
     ) -> InteractionResponse:
+        own_events = _request_events(run.events, request)
         grounding = run.knowledge_grounding
         # If the run paused at an approval boundary, surface the request through the Approval Exchange
         # (it publishes idempotently; a run with no waiting gate is a no-op) — presentation, not logic.
@@ -329,6 +345,13 @@ class HumanInteraction:
             progress=run.pipeline_session.stages_completed,
             pending_approvals=pending,
             clarification_requests=run.clarification_requests,
+            execution_plan=find_plan(own_events),
+            grounding_selection=_grounding_selection(own_events),
+            intent_analysis=_event_payload(own_events, "intent.resolved", "analysis"),
+            context_package=_event_model(
+                own_events, "context.grounding.assembled", "package", ContextPackage
+            ),
+            repository_profile=_event_payload(own_events, "repository.profiled", "profile"),
         )
 
     def _emit(self, request: OperatorRequest, event_type: str, payload: Struct) -> None:
@@ -359,7 +382,59 @@ def _translate(request: OperatorRequest) -> SpineRequest:
         capabilities=request.capabilities,
         fail=request.fail,
         correlation_identifier=request.correlation_identifier,
+        repository_root=request.repository_root,
+        planning_step_template=request.planning_step_template,
     )
+
+
+def _grounding_selection(events: Sequence[Event]) -> dict[str, Any] | None:
+    for event in reversed(events):
+        if event.type == "context.grounding.selected":
+            return dict(event.payload)
+    return None
+
+
+def _request_events(events: Sequence[Event], request: OperatorRequest) -> tuple[Event, ...]:
+    goal_identity = f"goal-{request.identity}"
+    scoped: list[Event] = []
+    for event in events:
+        if event.correlation_identifier != request.correlation:
+            continue
+        payload = event.payload
+        if event.type == "intent.resolved" and payload.get("intent") != request.identity:
+            continue
+        if event.type == "repository.profiled" and payload.get("request") != request.identity:
+            continue
+        if event.type == "context.grounding.selected" and not event.identifier.startswith(
+            f"evt-context-{goal_identity}-v1-grounding-selected-"
+        ):
+            continue
+        if event.type == "context.grounding.assembled" and payload.get("goal") != goal_identity:
+            continue
+        if event.type == "planning.execution_plan_assembled":
+            plan = payload.get("execution_plan", {})
+            parent = plan.get("plan", {}).get("parent_goal", {})
+            if parent.get("identifier") != goal_identity:
+                continue
+        if event.type == "execution.completed":
+            state = payload.get("execution_state", {})
+            goal = state.get("goal_ref", {})
+            if goal.get("identifier") != goal_identity:
+                continue
+        scoped.append(event)
+    return tuple(scoped)
+
+
+def _event_model(events: Sequence[Event], event_type: str, payload_key: str, model: Any) -> Any:
+    event = next((item for item in reversed(events) if item.type == event_type), None)
+    return model.model_validate(event.payload[payload_key]) if event is not None else None
+
+
+def _event_payload(
+    events: Sequence[Event], event_type: str, payload_key: str
+) -> dict[str, Any] | None:
+    event = next((item for item in reversed(events) if item.type == event_type), None)
+    return dict(event.payload[payload_key]) if event is not None else None
 
 
 def _pipeline_session_id(identity: str) -> str:
