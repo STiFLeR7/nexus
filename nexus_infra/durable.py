@@ -26,6 +26,7 @@ from __future__ import annotations
 import json
 import sqlite3
 from collections.abc import Callable, Iterable
+from contextlib import suppress
 from typing import Any, Literal
 
 from pydantic import BaseModel
@@ -91,6 +92,14 @@ CREATE INDEX IF NOT EXISTS idx_snap_key ON snapshots(key, ord);
 """
 
 
+class _ClosingConnection(sqlite3.Connection):
+    """Close the connection when its final shared component reference is released."""
+
+    def __del__(self) -> None:
+        with suppress(Exception):
+            self.close()
+
+
 def connect(db_path: str) -> sqlite3.Connection:
     """Open a synchronous SQLite connection wired for explicit transactions.
 
@@ -99,7 +108,12 @@ def connect(db_path: str) -> sqlite3.Connection:
     while an explicit ``BEGIN``/``COMMIT`` (issued by the Unit of Work) wraps a
     batch in one durable transaction.
     """
-    conn = sqlite3.connect(db_path, isolation_level=None, check_same_thread=False)
+    conn = sqlite3.connect(
+        db_path,
+        isolation_level=None,
+        check_same_thread=False,
+        factory=_ClosingConnection,
+    )
     conn.execute("PRAGMA journal_mode=WAL")
     conn.executescript(_SCHEMA)
     return conn
@@ -782,4 +796,5 @@ def build_durable_infrastructure(
         policies=DurablePolicyRepository(conn, ser, obs),  # type: ignore[arg-type]
         knowledge=DurableKnowledgeRepository(conn, ser, obs),  # type: ignore[arg-type]
         unit_of_work_factory=uow_factory,
+        _close_callback=conn.close,
     )

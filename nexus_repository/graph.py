@@ -81,7 +81,8 @@ def _owning_package(relpath: str) -> str:
 
 def _imports(path: str) -> set[str]:
     try:
-        tree = ast.parse(open(path, encoding="utf-8").read())  # noqa: SIM115 (read-once parse)
+        with open(path, encoding="utf-8") as handle:
+            tree = ast.parse(handle.read())
     except (OSError, SyntaxError, ValueError):
         return set()
     modules: set[str] = set()

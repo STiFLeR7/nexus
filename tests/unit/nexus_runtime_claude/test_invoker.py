@@ -8,13 +8,13 @@ covered deterministically. The JSONL parser is unit-tested line by line.
 
 from __future__ import annotations
 
-from collections.abc import Iterator
+import io
+import subprocess
 from typing import Any
 
 import pytest
 
 from nexus_execution.adapter import ExecutionControl
-from nexus_runtime_claude import invoker as invoker_module
 from nexus_runtime_claude.invoker import (
     ClaudeCliInvoker,
     RawClaudeEvent,
@@ -127,7 +127,7 @@ def test_assistant_text_handles_non_list_content() -> None:
 
 
 def test_assistant_text_skips_non_text_blocks() -> None:
-    obj = {
+    obj: dict[str, object] = {
         "message": {"content": [{"type": "tool_use", "name": "x"}, {"type": "text", "text": "hi"}]}
     }
     assert _assistant_text(obj) == "hi"
@@ -135,7 +135,9 @@ def test_assistant_text_skips_non_text_blocks() -> None:
 
 def test_assistant_text_skips_text_block_with_non_string_text() -> None:
     # A "text" block whose text is not a str must be skipped, not appended.
-    obj = {"message": {"content": [{"type": "text", "text": 123}, {"type": "text", "text": "ok"}]}}
+    obj: dict[str, object] = {
+        "message": {"content": [{"type": "text", "text": 123}, {"type": "text", "text": "ok"}]}
+    }
     assert _assistant_text(obj) == "ok"
 
 
@@ -148,7 +150,7 @@ class _FakePopen:
     def __init__(
         self, lines: list[str], *, returncode: int = 0, stay_running: bool = False
     ) -> None:
-        self.stdout: Iterator[str] = iter(lines)
+        self.stdout = io.StringIO("".join(lines))
         self.stderr = None
         self.returncode = returncode
         self._stay_running = stay_running
@@ -176,7 +178,7 @@ def _patch_popen(monkeypatch: pytest.MonkeyPatch, popen: _FakePopen) -> None:
     def factory(*_args: Any, **_kwargs: Any) -> _FakePopen:
         return popen
 
-    monkeypatch.setattr(invoker_module.subprocess, "Popen", factory)
+    monkeypatch.setattr(subprocess, "Popen", factory)
 
 
 def test_cli_invoker_streams_and_completes(monkeypatch: pytest.MonkeyPatch) -> None:
@@ -185,10 +187,36 @@ def test_cli_invoker_streams_and_completes(monkeypatch: pytest.MonkeyPatch) -> N
         "   \n",  # blank line → parsed to None → skipped (not yielded)
         '{"type":"result","subtype":"success","is_error":false}\n',
     ]
-    _patch_popen(monkeypatch, _FakePopen(lines, returncode=0))
+    popen = _FakePopen(lines, returncode=0)
+    _patch_popen(monkeypatch, popen)
     events = list(ClaudeCliInvoker().invoke(prompt="p", working_dir="", control=ExecutionControl()))
     assert events[0].kind is RawClaudeKind.TEXT
     assert events[-1].kind is RawClaudeKind.RESULT
+    assert popen.stdout.closed
+    assert popen._waited
+
+
+def test_cli_invoker_uses_robust_utf8_and_does_not_pipe_stderr(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    popen = _FakePopen(
+        ['{"type":"assistant","message":{"content":[{"type":"text","text":"café"}]}}\n']
+    )
+    received: dict[str, Any] = {}
+
+    def factory(*args: Any, **kwargs: Any) -> _FakePopen:
+        received.update(kwargs)
+        return popen
+
+    monkeypatch.setattr(subprocess, "Popen", factory)
+    events = list(
+        ClaudeCliInvoker().invoke(prompt="p", working_dir=".", control=ExecutionControl())
+    )
+
+    assert events[0].text == "café"
+    assert received["encoding"] == "utf-8"
+    assert received["errors"] == "replace"
+    assert received["stderr"] == subprocess.DEVNULL
 
 
 def test_cli_invoker_reports_nonzero_exit(monkeypatch: pytest.MonkeyPatch) -> None:
@@ -209,3 +237,21 @@ def test_cli_invoker_cancels_and_kills(monkeypatch: pytest.MonkeyPatch) -> None:
     assert events == []
     assert popen.terminated is True
     assert popen.killed is True  # finally: poll() is None → kill
+    assert popen.stdout.closed
+    assert popen._waited
+
+
+def test_cli_invoker_reaps_and_closes_on_stream_error(monkeypatch: pytest.MonkeyPatch) -> None:
+    popen = _FakePopen(["malformed-but-text\n"], stay_running=True)
+    _patch_popen(monkeypatch, popen)
+
+    def parse_error(_line: str) -> None:
+        raise RuntimeError("simulated parser error")
+
+    monkeypatch.setattr("nexus_runtime_claude.invoker._parse_cli_line", parse_error)
+    with pytest.raises(RuntimeError, match="simulated parser error"):
+        list(ClaudeCliInvoker().invoke(prompt="p", working_dir=".", control=ExecutionControl()))
+
+    assert popen.stdout.closed
+    assert popen.killed
+    assert popen._waited

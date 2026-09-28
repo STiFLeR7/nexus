@@ -63,10 +63,22 @@ class InfrastructureContext:
     policies: PolicyRepository
     knowledge: KnowledgeRepository
     unit_of_work_factory: UnitOfWorkFactory = InMemoryUnitOfWork
+    _close_callback: Callable[[], None] | None = None
 
     def repositories(self) -> tuple[InMemoryRepository[Any], ...]:
         """All registered repositories (for the unit of work)."""
         return (self.goals, self.plans, self.artifacts, self.policies, self.knowledge)
+
+    def close(self) -> None:
+        """Close any owned durable resources; in-memory contexts have nothing to close."""
+        if self._close_callback is not None:
+            self._close_callback()
+
+    def __enter__(self) -> InfrastructureContext:
+        return self
+
+    def __exit__(self, *_: object) -> None:
+        self.close()
 
     def emit(self, event: Event) -> None:
         """Append ``event`` to the authoritative log, then publish it (EventEmitter)."""

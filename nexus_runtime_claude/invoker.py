@@ -123,8 +123,10 @@ class ClaudeCliInvoker:
             args,
             cwd=working_dir or None,
             stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
+            stderr=subprocess.DEVNULL,
             text=True,
+            encoding="utf-8",
+            errors="replace",
         )
         try:
             assert process.stdout is not None
@@ -144,8 +146,11 @@ class ClaudeCliInvoker:
                     exit_status=process.returncode,
                 )
         finally:
+            if process.stdout is not None:
+                process.stdout.close()
             if process.poll() is None:
                 process.kill()
+            process.wait()
 
 
 def _parse_cli_line(line: str) -> RawClaudeEvent | None:

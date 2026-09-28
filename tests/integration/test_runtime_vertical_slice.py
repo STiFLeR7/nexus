@@ -195,7 +195,7 @@ def test_e2e_real_claude_cli_smoke() -> None:  # pragma: no cover - opt-in, envi
 
     # Only the *shape* is asserted — the model's text is non-deterministic.
     assert result.final_state is RuntimeLifecycleState.DESTROYED
-    assert result.outcome in (TerminalOutcome.COMPLETED, TerminalOutcome.FAILED)
+    assert result.outcome is TerminalOutcome.COMPLETED
     types = _session_event_types(infra, session.identity)
     assert "runtime.started" in types
     assert "runtime.destroyed" in types

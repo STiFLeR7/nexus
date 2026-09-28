@@ -13,6 +13,11 @@ end-to-end event-sourcing guarantees that the substrate exists to provide:
 
 from __future__ import annotations
 
+import gc
+import sqlite3
+
+import pytest
+
 from nexus_core.domain.event import Event
 from nexus_infra import (
     DeterministicIdentifierFactory,
@@ -20,6 +25,7 @@ from nexus_infra import (
     InMemoryObservability,
     InMemoryUnitOfWork,
     ProjectionEngine,
+    build_durable_infrastructure,
     build_infrastructure,
 )
 
@@ -115,6 +121,28 @@ def test_no_global_state_between_contexts() -> None:
     # The two contexts share no component instances.
     assert first.event_store is not second.event_store
     assert first.event_bus is not second.event_bus
+
+
+def test_durable_connection_lives_with_components_and_closes_when_released(tmp_path) -> None:
+    context = build_durable_infrastructure(str(tmp_path / "owned.db"))
+    event_store = context.event_store
+
+    del context
+    gc.collect()
+    assert event_store.global_length() == 0
+
+    del event_store
+    gc.collect()
+
+
+def test_durable_context_close_closes_shared_connection(tmp_path) -> None:
+    context = build_durable_infrastructure(str(tmp_path / "explicit-close.db"))
+    event_store = context.event_store
+
+    context.close()
+
+    with pytest.raises(sqlite3.ProgrammingError, match="closed database"):
+        event_store.global_length()
 
 
 # -- emit (EventEmitter) ----------------------------------------------------- #

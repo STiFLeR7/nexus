@@ -8,7 +8,7 @@ append-only — it omits ``updated_at`` and ``is_archived``.
 from __future__ import annotations
 
 import uuid
-from datetime import datetime
+from datetime import UTC, datetime
 from typing import Any
 
 from sqlalchemy import (
@@ -42,12 +42,8 @@ class TaskRecord(TimestampMixin, Base):
         index=True,
     )
     priority: Mapped[int] = mapped_column(Integer, nullable=False, default=2)
-    runtime_type: Mapped[str | None] = mapped_column(
-        String(50), nullable=True, default="cli"
-    )
-    runtime_id: Mapped[str | None] = mapped_column(
-        String(50), nullable=True, default="gemini"
-    )
+    runtime_type: Mapped[str | None] = mapped_column(String(50), nullable=True, default="cli")
+    runtime_id: Mapped[str | None] = mapped_column(String(50), nullable=True, default="gemini")
     execution_profile: Mapped[str | None] = mapped_column(
         String(50), nullable=True, default="default"
     )
@@ -234,7 +230,7 @@ class ResearchFindingRecord(TimestampMixin, Base):
     discovered_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True),
         nullable=False,
-        default=datetime.utcnow,
+        default=lambda: datetime.now(UTC),
     )
     published_at: Mapped[datetime | None] = mapped_column(
         DateTime(timezone=True),
@@ -256,7 +252,7 @@ class BriefingRecord(TimestampMixin, Base):
     generated_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True),
         nullable=False,
-        default=datetime.utcnow,
+        default=lambda: datetime.now(UTC),
     )
     delivery_channels: Mapped[list | None] = mapped_column(JSON, nullable=True)  # type: ignore[type-arg]
     content_hash: Mapped[str] = mapped_column(String(64), nullable=False)
@@ -480,9 +476,9 @@ class SystemMetricAggregateRecord(TimestampMixin, Base):
     baseline_version: Mapped[str] = mapped_column(String(50), nullable=False)
     release_version: Mapped[str] = mapped_column(String(50), nullable=False)
     measurement_window: Mapped[str] = mapped_column(String(50), nullable=False)  # 'hourly', 'daily'
-    aggregated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False, index=True)
-
-
+    aggregated_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), nullable=False, index=True
+    )
 
 
 # ---------------------------------------------------------------------------
