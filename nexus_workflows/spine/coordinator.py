@@ -47,10 +47,16 @@ from nexus_execution.actuation import (
 )
 from nexus_execution.adapter import RuntimeAdapter
 from nexus_execution.results import ExecutionResult
-from nexus_infra import InfrastructureContext, NullObservability, Observability, content_hash
+from nexus_infra import (
+    DuplicateEventError,
+    InfrastructureContext,
+    NullObservability,
+    Observability,
+    content_hash,
+)
 from nexus_intent.composition import IntentContext
 from nexus_intent.events import INTENT_RESOLVED
-from nexus_intent.model import IntentAnalysis, request_from_text
+from nexus_intent.model import ClarificationRequest, IntentAnalysis, request_from_text
 from nexus_knowledge import KnowledgeCandidate, KnowledgeContextBundle, KnowledgeQuery
 from nexus_planning.grounded import ExecutionPlan, GroundedPlanningContext, PlanningInputs
 from nexus_planning.grounded.assembler import PLANNING_EXECUTION_PLAN_ASSEMBLED
@@ -266,6 +272,8 @@ class _RunCtx:
     strategy_ref: Reference | None = None
     context_ref: Reference | None = None
     plan_ref: Reference | None = None
+    clarifications: tuple[ClarificationRequest, ...] = ()
+    intent_analysis: IntentAnalysis | None = None
 
 
 class ConstitutionalPipeline:
@@ -329,10 +337,11 @@ class ConstitutionalPipeline:
             completed, ref = self._run_stage(stage, ctx, request, control)
             executed.append(stage.value)
             if not completed:  # execution actuation stopped before completing (resumable)
+                reason = "clarification_required" if ctx.clarifications else "actuation_incomplete"
                 self._emit(
                     request,
                     pevents.PIPELINE_PAUSED,
-                    {"stage": stage.value, "reason": "actuation_incomplete"},
+                    {"stage": stage.value, "reason": reason},
                 )
                 status = SpineStatus.PAUSED
                 break
@@ -412,6 +421,20 @@ class ConstitutionalPipeline:
         strategy = _find_own_strategy(events, goal_identity)
         plan = _find_own_plan(events, goal_identity)
         state = _find_own_execution_state(events, goal_identity)
+        for event in events:
+            if event.type == INTENT_RESOLVED and event.payload.get("intent") == request.identity:
+                ctx.intent_analysis = IntentAnalysis.model_validate(event.payload["analysis"])
+                if ctx.intent_analysis.intent.raw_request != request.request_text:
+                    raise ValueError(
+                        f"request identity {request.identity!r} was already used for different text"
+                    )
+                if ctx.intent_analysis.correlation_identifier != request.correlation:
+                    raise ValueError(
+                        f"request identity {request.identity!r} was already used with a different correlation"
+                    )
+                if not ctx.intent_analysis.resolved:
+                    ctx.clarifications = ctx.intent_analysis.clarifications
+                break
         if goal is not None:
             ctx.goal, ctx.goal_ref = goal, Reference(target_type="goal", identifier=goal.identity)
         if strategy is not None:
@@ -477,13 +500,16 @@ class ConstitutionalPipeline:
     def _stage_intent(
         self, ctx: _RunCtx, request: SpineRequest, _control: SpineControl
     ) -> tuple[bool, Reference | None]:
-        analysis = self._intent.engine.resolve(
+        analysis = ctx.intent_analysis or self._intent.engine.resolve(
             request_from_text(
                 request.identity, request.request_text, correlation_identifier=request.correlation
             )
         )
+        ctx.intent_analysis = analysis
         goal = analysis.goal
-        assert goal is not None, "Intent did not resolve a Goal"  # trust boundary — cannot proceed
+        if goal is None:
+            ctx.clarifications = analysis.clarifications
+            return False, None
         ctx.goal = goal
         ctx.goal_ref = Reference(target_type="goal", identifier=goal.identity)
         return True, ctx.goal_ref
@@ -710,6 +736,7 @@ class ConstitutionalPipeline:
             reflection_ref=ctx.reflection.reference() if ctx.reflection is not None else None,
             knowledge_item_ids=ctx.knowledge_item_ids,
             knowledge_grounding=ctx.knowledge_selection,
+            clarification_requests=ctx.clarifications,
             reconstructed_stages=reconstructed,
             executed_stages=executed,
             events=events,
@@ -719,9 +746,15 @@ class ConstitutionalPipeline:
         session = request.pipeline_session_id
         full: Struct = {"session": session, **payload}
         identifier = f"evt-{session}-{event_type.split('.')[-1]}-{content_hash(full)[:16]}"
-        self._infra.emit(
-            pevents.build_event(identifier, event_type, request.correlation, full, self._now())
-        )
+        event = pevents.build_event(identifier, event_type, request.correlation, full, self._now())
+        if self._infra.event_store.contains(identifier):
+            existing = next(
+                item for item in self._infra.event_store.read_all() if item.identifier == identifier
+            )
+            if existing.model_copy(update={"timestamp": event.timestamp}) == event:
+                return
+            raise DuplicateEventError(identifier)
+        self._infra.emit(event)
 
 
 def _idx(stage: SpineStage) -> int:

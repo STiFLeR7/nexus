@@ -17,6 +17,7 @@ from nexus_infra import InfrastructureContext
 from nexus_knowledge.persistence import KnowledgeRepositories
 from nexus_runtime.events import FixedTimestampSource, TimestampSource
 from nexus_workflows.spine import SpinePipelineContext, build_constitutional_pipeline
+from nexus_workflows.spine.coordinator import AdapterFactory
 
 
 @dataclass(frozen=True, slots=True)
@@ -33,10 +34,15 @@ def build_human_interaction(
     infrastructure: InfrastructureContext,
     *,
     timestamps: TimestampSource | None = None,
+    adapter_factory: AdapterFactory | None = None,
     knowledge_repositories: KnowledgeRepositories | None = None,
     learning: bool = True,
 ) -> HumanInteractionContext:
     """Wire the operator façade over the constitutional pipeline (durable-capable, learning-on).
+
+    ``adapter_factory`` is forwarded unchanged to :func:`build_constitutional_pipeline` (the same
+    seam every existing runtime swap already uses — see ``examples/04-runtime-selection``); left
+    ``None``, behavior is exactly as before this parameter existed (the default Claude adapter).
 
     Also wires the P15 Approval Exchange over the *same* pipeline + infrastructure + clock, so the façade
     can surface and coordinate approvals through it (never bypassing it) on one shared durable log.
@@ -45,6 +51,7 @@ def build_human_interaction(
     spine = build_constitutional_pipeline(
         infrastructure,
         timestamps=ts,
+        adapter_factory=adapter_factory,
         knowledge_repositories=knowledge_repositories,
         learning=learning,
     )

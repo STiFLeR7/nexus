@@ -32,7 +32,13 @@ from nexus_core.contracts.base import Struct
 from nexus_core.contracts.enums import ApprovalTaxonomy
 from nexus_core.domain.event import Event
 from nexus_infra import InfrastructureContext, content_hash
-from nexus_workflows.spine import ConstitutionalPipeline, SpineControl, SpineRequest, find_plan
+from nexus_workflows.spine import (
+    ConstitutionalPipeline,
+    SpineControl,
+    SpineRequest,
+    SpineRun,
+    find_plan,
+)
 
 
 class ApprovalExchange:
@@ -94,12 +100,24 @@ class ApprovalExchange:
         reason: str = "",
     ) -> ApprovalDecision:
         """Record an approval and resume: re-drive the pipeline with the now-granted gate (INV-23)."""
+        decision, _ = self.approve_with_run(request, node, decided_by=decided_by, reason=reason)
+        return decision
+
+    def approve_with_run(
+        self,
+        request: SpineRequest,
+        node: str,
+        *,
+        decided_by: str = "operator",
+        reason: str = "",
+    ) -> tuple[ApprovalDecision, SpineRun]:
+        """Resume an approved run and return its outcome to the façade for response recording."""
         session_id = request.pipeline_session_id
         self._decide(session_id, node, aevents.APPROVAL_APPROVED, decided_by, reason)
         self._obs.approved()
         granted = self.session(session_id).granted_gates  # all approvals so far (this one included)
         run = self._pipeline.run(request, control=SpineControl(granted_gates=granted))
-        return ApprovalDecision(
+        decision = ApprovalDecision(
             session_id=session_id,
             node=node,
             state=ApprovalLifecycle.APPROVED,
@@ -108,6 +126,7 @@ class ApprovalExchange:
             resumed=True,
             pipeline_status=run.status.value,
         )
+        return decision, run
 
     def deny(
         self, session_id: str, node: str, *, decided_by: str = "operator", reason: str = ""

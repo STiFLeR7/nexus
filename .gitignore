@@ -59,6 +59,9 @@ coverage/
 nexus.db
 data/
 
+# nexus_runtime_llm answer artifacts (generated at runtime, referenced by the durable event log)
+.nexus_llm_artifacts/
+
 # IDE
 .vscode/
 .idea/

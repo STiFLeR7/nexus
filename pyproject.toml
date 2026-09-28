@@ -65,6 +65,7 @@ packages = [
     "nexus_runtime_claude",
     "nexus_runtime_gemini",
     "nexus_runtime_shell",
+    "nexus_runtime_llm",
     "nexus_runtime_adapters",
     "nexus_policy",
     "nexus_integration",

@@ -20,6 +20,7 @@ from nexus_core.contracts.enums import KnowledgeType
 from nexus_core.domain import Capability
 from nexus_core.domain.event import Event
 from nexus_execution.actuation import ActuationControl, ExecutionState
+from nexus_intent.model import ClarificationRequest
 from nexus_planning import WorkItemSpec
 from nexus_workflows.spine.learning import KnowledgeSelection
 
@@ -140,6 +141,7 @@ class SpineRun:
     reconstructed_stages: tuple[str, ...]  # stages skipped on restart (owner not re-invoked)
     executed_stages: tuple[str, ...]  # stages actually invoked this run
     events: tuple[Event, ...] = field(default_factory=tuple)
+    clarification_requests: tuple[ClarificationRequest, ...] = ()
 
     @property
     def succeeded(self) -> bool:

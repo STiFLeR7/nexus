@@ -19,7 +19,7 @@ from nexus_approval import (
     ApprovalExplanation,
     ApprovalRequest,
 )
-from nexus_core.contracts.base import Struct
+from nexus_core.contracts.base import Reference, Struct
 from nexus_core.contracts.enums import KnowledgeType
 from nexus_core.domain.event import Event
 from nexus_human_interaction import events as ievents
@@ -34,8 +34,17 @@ from nexus_human_interaction.model import (
 )
 from nexus_human_interaction.observability import OperatorObservability
 from nexus_human_interaction.session import reconstruct_interaction_session
-from nexus_infra import InfrastructureContext, content_hash
-from nexus_workflows.spine import ConstitutionalPipeline, SpineControl, SpineRequest, SpineRun
+from nexus_infra import DuplicateEventError, InfrastructureContext, content_hash
+from nexus_workflows.spine import (
+    ConstitutionalPipeline,
+    SpineControl,
+    SpineRequest,
+    SpineRun,
+    find_execution_state,
+    find_goal,
+    find_plan,
+)
+from nexus_workflows.spine.learning import KnowledgeSelection
 
 
 class HumanInteraction:
@@ -86,6 +95,9 @@ class HumanInteraction:
 
     def restart(self, request: OperatorRequest) -> InteractionResponse:
         """Resume a paused/interrupted operator session — the pipeline reconstructs completed stages."""
+        completed = self._completed_response(request)
+        if completed is not None:
+            return completed
         spine = _translate(request)
         run = self._pipeline.run(spine)  # the coordinator seeds from the log and resumes (INV-18)
         self._obs.resumed()
@@ -95,6 +107,90 @@ class HumanInteraction:
             {"reconstructed": list(run.reconstructed_stages)},
         )
         return self._record(request, run, resumed=True)
+
+    def _completed_response(self, request: OperatorRequest) -> InteractionResponse | None:
+        """Return an already recorded terminal response without re-running completed owners."""
+        events = self._pipeline.history()
+        recorded = next(
+            (
+                event
+                for event in reversed(events)
+                if event.type == ievents.INTERACTION_RESPONSE_RECORDED
+                and event.payload.get("session") == request.interaction_session_id
+                and event.payload.get("status") == "completed"
+            ),
+            None,
+        )
+        if recorded is None:
+            return None
+
+        submitted = next(
+            (
+                event
+                for event in events
+                if event.type == ievents.INTERACTION_REQUEST_SUBMITTED
+                and event.payload.get("session") == request.interaction_session_id
+            ),
+            None,
+        )
+        if submitted is not None and submitted.payload.get("request_text") != request.request_text:
+            raise ValueError(
+                f"request identity {request.identity!r} was already used for different text"
+            )
+        if recorded.correlation_identifier != request.correlation:
+            raise ValueError(
+                f"request identity {request.identity!r} was already used with a different correlation"
+            )
+
+        payload = recorded.payload
+        own_events = tuple(
+            event for event in events if event.correlation_identifier == request.correlation
+        )
+        goal = find_goal(own_events)
+        plan = find_plan(own_events)
+        execution = find_execution_state(own_events)
+        grounding_event = next(
+            (
+                event
+                for event in own_events
+                if event.type == "pipeline.knowledge_grounded"
+                and event.payload.get("session") == f"pipe-{request.identity}"
+            ),
+            None,
+        )
+        grounding = (
+            KnowledgeSelection.model_validate(
+                {
+                    key: value
+                    for key, value in grounding_event.payload.items()
+                    if key not in {"session", "count"}
+                }
+            )
+            if grounding_event is not None
+            else None
+        )
+        return InteractionResponse(
+            session_id=request.interaction_session_id,
+            status="completed",
+            pipeline_session=self._pipeline.session(f"pipe-{request.identity}"),
+            goal_ref=Reference(target_type="goal", identifier=goal.identity) if goal else None,
+            plan_ref=Reference(target_type="plan", identifier=plan.plan.identity) if plan else None,
+            execution_status=execution.status.value if execution is not None else None,
+            validation_decisions=tuple(
+                str(event.payload["decision"])
+                for event in events
+                if event.producer == "validation"
+                and event.type in ("validation.completed", "validation.failed")
+                and event.correlation_identifier == request.correlation
+            ),
+            knowledge_item_ids=tuple(str(x) for x in payload.get("knowledge_item_ids", ())),
+            knowledge_grounding=grounding,
+            reconstructed_stages=tuple(str(x) for x in payload.get("reconstructed", ())),
+            executed_stages=tuple(str(x) for x in payload.get("executed", ())),
+            progress=self._pipeline.session(f"pipe-{request.identity}").stages_completed,
+            pending_approvals=self._approval.pending(f"pipe-{request.identity}"),
+            clarification_requests=(),
+        )
 
     # -- approval surface (delegates to the Approval Exchange, never bypassed) - #
 
@@ -106,9 +202,10 @@ class HumanInteraction:
         self, request: OperatorRequest, node: str, *, decided_by: str = "operator", reason: str = ""
     ) -> ApprovalDecision:
         """Authorize a gate — the Approval Exchange records it and resumes the paused pipeline."""
-        decision = self._approval.approve(
+        decision, run = self._approval.approve_with_run(
             _translate(request), node, decided_by=decided_by, reason=reason
         )
+        self._record(request, run, resumed=True)
         self._obs.resumed()
         return decision
 
@@ -231,15 +328,22 @@ class HumanInteraction:
             executed_stages=run.executed_stages,
             progress=run.pipeline_session.stages_completed,
             pending_approvals=pending,
+            clarification_requests=run.clarification_requests,
         )
 
     def _emit(self, request: OperatorRequest, event_type: str, payload: Struct) -> None:
         session = request.interaction_session_id
         full: Struct = {"session": session, **payload}
         identifier = f"evt-{session}-{event_type.split('.')[-1]}-{content_hash(full)[:16]}"
-        self._infra.emit(
-            ievents.build_event(identifier, event_type, request.correlation, full, self._now())
-        )
+        event = ievents.build_event(identifier, event_type, request.correlation, full, self._now())
+        if self._infra.event_store.contains(identifier):
+            existing = next(
+                item for item in self._infra.event_store.read_all() if item.identifier == identifier
+            )
+            if existing.model_copy(update={"timestamp": event.timestamp}) == event:
+                return
+            raise DuplicateEventError(identifier)
+        self._infra.emit(event)
 
 
 def _translate(request: OperatorRequest) -> SpineRequest:

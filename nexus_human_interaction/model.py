@@ -16,6 +16,7 @@ from nexus_context import RawContextFragment
 from nexus_core.contracts.base import Reference, ValueObject
 from nexus_core.contracts.enums import KnowledgeType
 from nexus_core.domain import Capability
+from nexus_intent.model import ClarificationRequest
 from nexus_planning import WorkItemSpec
 from nexus_workflows.spine import PipelineSession
 from nexus_workflows.spine.learning import KnowledgeSelection
@@ -86,6 +87,7 @@ class InteractionResponse:
     executed_stages: tuple[str, ...]
     progress: tuple[str, ...]
     pending_approvals: tuple[ApprovalRequest, ...] = field(default_factory=tuple)
+    clarification_requests: tuple[ClarificationRequest, ...] = ()
 
     @property
     def succeeded(self) -> bool:
