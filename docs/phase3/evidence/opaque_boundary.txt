@@ -1,0 +1,1 @@
+This evidence covers only Nexus-owned actions dispatched through RepositoryActionBoundary. Provider-internal tool or CLI actions remain opaque and are not claimed as governed or inspected. The operator CLI accepts command_id only; executable argv comes from deployment configuration NEXUS_ACTION_COMMANDS_FILE.

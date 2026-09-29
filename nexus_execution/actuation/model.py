@@ -113,6 +113,7 @@ class ActuationInputs:
     work_packages: tuple[WorkPackage, ...]
     context_references: tuple[Reference, ...] = ()
     granted_gates: tuple[str, ...] = field(default_factory=tuple)
+    human_required_gates: tuple[str, ...] = field(default_factory=tuple)
 
 
 class ActuationControl:

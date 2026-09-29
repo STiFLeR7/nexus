@@ -59,26 +59,33 @@ class ApprovalCoordinator:
         *,
         approved: tuple[str, ...] = (),
         rejected: tuple[str, ...] = (),
+        human_required: tuple[str, ...] = (),
     ) -> ApprovalState:
         """Assign each gated node a taxonomy and a deterministic decision state."""
         taxonomy = strategy.approval_policy
         approved_set = set(approved)
         rejected_set = set(rejected)
-        gated = self._gated_nodes(graph)
+        human_required_set = set(human_required)
+        gated = self._gated_nodes(graph, human_required_set)
 
         gates: list[ApprovalGate] = []
         requested: list[str] = []
         granted: list[str] = []
         rejected_nodes: list[str] = []
         for node in gated:
-            status = self._decide(node, taxonomy, approved_set, rejected_set)
+            gate_taxonomy = (
+                ApprovalTaxonomy.HUMAN_REVIEW if node in human_required_set else taxonomy
+            )
+            status = self._decide(
+                node, gate_taxonomy, approved_set, rejected_set, human_required_set
+            )
             if status is ApprovalStatus.GRANTED:
                 granted.append(node)
             elif status is ApprovalStatus.REJECTED:
                 rejected_nodes.append(node)
             else:
                 requested.append(node)
-            gates.append(ApprovalGate(node=node, taxonomy=taxonomy, status=status))
+            gates.append(ApprovalGate(node=node, taxonomy=gate_taxonomy, status=status))
 
         return ApprovalState(
             identity=ids.approval_state_id(session_identity),
@@ -95,9 +102,12 @@ class ApprovalCoordinator:
         taxonomy: ApprovalTaxonomy,
         approved: set[str],
         rejected: set[str],
+        human_required: set[str],
     ) -> ApprovalStatus:
         if node in rejected:
             return ApprovalStatus.REJECTED
+        if node in human_required:
+            return ApprovalStatus.GRANTED if node in approved else ApprovalStatus.REQUESTED
         if taxonomy is ApprovalTaxonomy.AUTOMATIC:
             return ApprovalStatus.GRANTED
         if node in approved:
@@ -105,7 +115,7 @@ class ApprovalCoordinator:
         return ApprovalStatus.REQUESTED
 
     @staticmethod
-    def _gated_nodes(graph: ExecutionGraph) -> tuple[str, ...]:
+    def _gated_nodes(graph: ExecutionGraph, human_required: set[str]) -> tuple[str, ...]:
         node_ids = {node.identifier for node in graph.nodes}
         gated: set[str] = set()
         raw = graph.policies.get("approval_gates", ())
@@ -114,4 +124,4 @@ class ApprovalCoordinator:
         for node in graph.nodes:
             if any(constraint.kind == APPROVAL_CONSTRAINT_KIND for constraint in node.constraints):
                 gated.add(node.identifier)
-        return tuple(sorted(gated & node_ids))
+        return tuple(sorted((gated | human_required) & node_ids))

@@ -24,13 +24,18 @@ log-embedded ExecutionPlan, so it is never persisted as a second copy of another
 from __future__ import annotations
 
 import os
-from collections.abc import Callable
+from collections.abc import Callable, Mapping
 from dataclasses import dataclass, field
 
 from nexus_context import ContextRequest, context_reference
 from nexus_context.grounding import GroundedContextEngineeringContext, GroundingInputs
 from nexus_core.contracts.base import Reference, Struct
-from nexus_core.contracts.enums import ConfidenceLadder, KnowledgeType
+from nexus_core.contracts.enums import (
+    CapabilityCategory,
+    ConfidenceLadder,
+    KnowledgeType,
+)
+from nexus_core.domain.capability import Capability
 from nexus_core.domain.context_package import ContextPackage
 from nexus_core.domain.event import Event
 from nexus_core.domain.execution_graph import ExecutionGraph
@@ -39,6 +44,18 @@ from nexus_core.domain.knowledge import Knowledge
 from nexus_engineering import ENGINEERING_STRATEGIZED, EngineeringContext
 from nexus_engineering.model import EngineeringStrategy
 from nexus_estimation.composition import EstimationContext
+from nexus_execution.actions.boundary import (
+    RepositoryAction,
+    RepositoryActionBoundary,
+    action_is_cancelled,
+    action_is_indeterminate,
+    record_action_cancelled,
+    record_action_denial,
+    record_action_request,
+    record_indeterminate,
+    resolve_action_request,
+)
+from nexus_execution.actions.runtime import RepositoryActionRuntimeAdapter
 from nexus_execution.actuation import (
     EXECUTION_COMPLETED,
     ActuationInputs,
@@ -59,8 +76,10 @@ from nexus_intent.composition import IntentContext
 from nexus_intent.events import INTENT_RESOLVED
 from nexus_intent.model import ClarificationRequest, IntentAnalysis, request_from_text
 from nexus_knowledge import KnowledgeCandidate, KnowledgeContextBundle, KnowledgeQuery
+from nexus_planning import WorkItemSpec
 from nexus_planning.grounded import ExecutionPlan, GroundedPlanningContext, PlanningInputs
 from nexus_planning.grounded.assembler import PLANNING_EXECUTION_PLAN_ASSEMBLED
+from nexus_policy import REPOSITORY_ACTION_CLASS, DecisionRequest, repository_action_baseline
 from nexus_policy.composition import PolicyContext
 from nexus_recovery import RecoveryContextBundle
 from nexus_recovery.plan import RecoveryPlan
@@ -297,6 +316,8 @@ class ConstitutionalPipeline:
         reflection: ReflectionContextBundle,
         knowledge: KnowledgeContextBundle,
         adapter_factory: AdapterFactory,
+        action_command_allowlist: Mapping[str, tuple[str, ...]] | None = None,
+        action_artifact_directory: str | None = None,
         selector: KnowledgeSelector | None = None,
         timestamps: TimestampSource | None = None,
         now: Callable[[], str] | None = None,
@@ -315,6 +336,8 @@ class ConstitutionalPipeline:
         self._reflection = reflection
         self._knowledge = knowledge
         self._adapter_factory = adapter_factory
+        self._action_command_allowlist = dict(action_command_allowlist or {})
+        self._action_artifact_directory = action_artifact_directory
         # The learning integration (P14/A) — optional: absent → no Knowledge grounding (P13 behavior).
         self._selector = selector
         self._timestamps = timestamps or SystemTimestampSource()
@@ -322,6 +345,89 @@ class ConstitutionalPipeline:
         self._obs = observability or PipelineObservability(infrastructure.observability)
 
     # -- public entry point -------------------------------------------------- #
+
+    def prepare_repository_actions(
+        self,
+        *,
+        identity: str,
+        repository_root: str | None,
+        correlation: str,
+        work_items: tuple[WorkItemSpec, ...],
+        capabilities: tuple[Capability, ...],
+        repository_actions: tuple[RepositoryAction, ...],
+    ) -> tuple[tuple[WorkItemSpec, ...], tuple[Capability, ...], tuple[RepositoryAction, ...]]:
+        """Freeze explicit action inputs and their Planning references before pipeline submission."""
+        items = list(work_items)
+        canonical_actions: list[RepositoryAction] = []
+        for action in repository_actions:
+            if action.request_identity != identity:
+                raise ValueError(
+                    "repository action request identity must match the operator request"
+                )
+            if repository_root is None:
+                raise ValueError("repository actions require an explicit operator workspace")
+            updates: dict[str, object] = {
+                "workspace_root": os.path.realpath(action.workspace_root),
+                "correlation_identifier": correlation,
+            }
+            if action.kind == "run_test":
+                updates["resolved_argv"] = self._action_command_allowlist.get(
+                    action.command_id or "", ()
+                )
+            action = action.model_copy(update=updates)
+            canonical_actions.append(action)
+            reference = record_action_request(self._infra, action)
+            matches = [
+                index for index, item in enumerate(items) if item.key == action.work_item_key
+            ]
+            if matches:
+                index = matches[0]
+                item = items[index]
+                items[index] = item.model_copy(
+                    update={
+                        "inputs": (*item.inputs, reference),
+                        "capability_requirements": tuple(
+                            sorted({*item.capability_requirements, "repository_action"})
+                        ),
+                        "requires_approval": action.kind == "write_file" or item.requires_approval,
+                    }
+                )
+            else:
+                items.append(
+                    WorkItemSpec(
+                        key=action.work_item_key,
+                        objective=f"Perform the explicitly requested {action.kind} action",
+                        capability_requirements=("repository_action",),
+                        inputs=(reference,),
+                        requires_approval=action.kind == "write_file",
+                    )
+                )
+        capability_map = {capability.identifier: capability for capability in capabilities}
+        capability_map.setdefault(
+            "repository_action",
+            Capability(
+                identifier="repository_action",
+                name="First-party repository action",
+                version="1",
+                category=CapabilityCategory.DEVELOPMENT,
+                description="Perform one explicit confined repository action.",
+                inputs=(),
+                outputs=(),
+            ),
+        )
+        return tuple(items), tuple(capability_map.values()), tuple(canonical_actions)
+
+    def restore_repository_actions(
+        self, action_ids: tuple[str, ...]
+    ) -> tuple[RepositoryAction, ...]:
+        """Resolve immutable submitted action requests from their durable references."""
+        return tuple(
+            resolve_action_request(
+                self._infra,
+                Reference(target_type="action_request", identifier=action_id),
+            )
+            for action_id in action_ids
+        )
 
     def run(self, request: SpineRequest, *, control: SpineControl | None = None) -> SpineRun:
         """Drive (or resume) the whole Goal→Knowledge pipeline; return the immutable outcome."""
@@ -647,11 +753,106 @@ class ConstitutionalPipeline:
     def _stage_actuation(
         self, ctx: _RunCtx, request: SpineRequest, control: SpineControl
     ) -> tuple[bool, Reference | None]:
-        actuation = build_execution_actuation(
-            self._infra, adapter=self._adapter_factory(request), timestamps=self._timestamps
-        )
         plan = ctx.plan
         assert plan is not None
+        action_bindings = []
+        for package in plan.work_packages:
+            refs = tuple(ref for ref in package.inputs if ref.target_type == "action_request")
+            if not refs:
+                continue
+            if len(refs) != 1:
+                raise ValueError("one repository action reference per work package is supported")
+            action = resolve_action_request(self._infra, refs[0])
+            node = next(
+                node
+                for node in plan.execution_graph.nodes
+                if node.work_package_ref.identifier == package.identifier
+            )
+            action_bindings.append((action, package, node.identifier))
+        human_required: list[str] = []
+        if action_bindings:
+            self._policy.registry.register(repository_action_baseline())
+            for action, _package, node_id in action_bindings:
+                if action_is_cancelled(self._infra, action.identity):
+                    return False, None
+                if action_is_indeterminate(self._infra, action.identity):
+                    record_indeterminate(self._infra, action)
+                    return False, None
+                if control.actuation is not None and control.actuation.cancelled:
+                    record_action_cancelled(self._infra, action, "cancelled before side effect")
+                    return False, None
+                if request.repository_root and os.path.realpath(
+                    action.workspace_root
+                ) != os.path.realpath(request.repository_root):
+                    record_action_denial(
+                        self._infra,
+                        action,
+                        "action workspace differs from the explicit operator workspace",
+                    )
+                    return False, None
+                if action.kind == "write_file":
+                    human_required.append(node_id)
+                attributes = {
+                    "action_id": action.identity,
+                    "input_digest": action.input_digest,
+                    "workspace_root": action.workspace_root,
+                    "plan_identity": plan.plan.identity,
+                    "pipeline_session": request.pipeline_session_id,
+                    "node": node_id,
+                    "actor": action.actor,
+                    "request_identity": action.request_identity,
+                    "work_item_key": action.work_item_key,
+                }
+                previous = next(
+                    (
+                        event
+                        for event in self._infra.event_store.read_all()
+                        if event.type == "policy.evaluated"
+                        and event.producer == "policy"
+                        and event.payload.get("action_class") == REPOSITORY_ACTION_CLASS
+                        and event.payload.get("attributes") == attributes
+                    ),
+                    None,
+                )
+                decision_request = DecisionRequest(
+                    action_class=REPOSITORY_ACTION_CLASS,
+                    correlation_identifier=request.correlation,
+                    attributes=attributes,
+                )
+                current = self._policy.engine.simulate(decision_request)
+                if previous is None or previous.payload.get("decision") != current.decision.value:
+                    evaluation = self._policy.engine.evaluate(decision_request)
+                else:
+                    evaluation = current
+                if evaluation.decision.value != "allow":
+                    record_action_denial(self._infra, action, "Policy DENY or non-ALLOW decision")
+                    return False, None
+        adapter = self._adapter_factory(request)
+        if action_bindings:
+            adapter = RepositoryActionRuntimeAdapter(
+                adapter,
+                self._infra,
+                RepositoryActionBoundary(
+                    self._infra,
+                    command_allowlist=self._action_command_allowlist,
+                    artifact_directory=self._action_artifact_directory,
+                ),
+                action_only=(
+                    len(action_bindings) == len(plan.work_packages)
+                    and all(
+                        {
+                            ref.identifier
+                            for ref in package.skills
+                            if ref.target_type == "capability"
+                        }
+                        <= {"repository_action"}
+                        for _, package, _ in action_bindings
+                    )
+                ),
+            )
+        actuation = build_execution_actuation(
+            self._infra, adapter=adapter, timestamps=self._timestamps
+        )
         state = actuation.actuator.actuate(
             ActuationInputs(
                 plan=plan.plan,
@@ -660,6 +861,7 @@ class ConstitutionalPipeline:
                 work_packages=plan.work_packages,
                 context_references=plan.context_references,
                 granted_gates=control.granted_gates,  # P15: gates the Approval Exchange authorized
+                human_required_gates=tuple(human_required),
             ),
             control=control.actuation,
         )

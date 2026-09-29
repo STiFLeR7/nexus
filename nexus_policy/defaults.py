@@ -26,6 +26,7 @@ from nexus_core.domain.policy import Policy
 EXECUTION_ACTION_CLASS = "execution"
 KNOWLEDGE_GROUNDING_ACTION_CLASS = "knowledge_grounding"
 AUTONOMOUS_EXECUTION_ACTION_CLASS = "autonomous_execution"
+REPOSITORY_ACTION_CLASS = "repository_action"
 
 # --- transcribed from nexus/core/policy_defaults.py (v1), ADR-004 §9 ----------- #
 ALLOWED_RUNTIMES: tuple[str, ...] = ("gemini", "claude", "nexus", "hermes")
@@ -103,6 +104,22 @@ def autonomous_execution_baseline() -> Policy:
         status=PolicyStatus.ENABLED,
         category=PolicyCategory.GOVERNANCE,
         governed_action_class=AUTONOMOUS_EXECUTION_ACTION_CLASS,
+    )
+
+
+def repository_action_baseline() -> Policy:
+    """Allow the explicit first-party action class; individual denials remain overridable."""
+    return Policy(
+        identity="policy.repository_action.allow-baseline",
+        version="1",
+        purpose="Allow only explicitly submitted first-party repository actions unless a specific denial applies.",
+        conditions={"attr": "action_class", "op": "eq", "value": REPOSITORY_ACTION_CLASS},
+        decision=PolicyDecision.ALLOW,
+        priority=0,
+        owner=_GOVERNANCE,
+        status=PolicyStatus.ENABLED,
+        category=PolicyCategory.GOVERNANCE,
+        governed_action_class=REPOSITORY_ACTION_CLASS,
     )
 
 

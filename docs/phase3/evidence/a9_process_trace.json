@@ -1,0 +1,167 @@
+{
+  "plan_process": "[nexus-cli] llm provider: stub (model=stub)\n[nexus-cli] durable log: <db>\n  session: cli-6d76cca7800c\n  action: action-4aedbf7771fe16f4a4716cf3\n  status: paused\n  intended outcome: Write a single approved marker to README\n  uncertainty: none recorded\n  work item node-respond: Perform the explicitly requested write_file action\n  source refs: [('context_package', 'context-goal-cli-6d76cca7800c-v1'), ('repository_profile', 'rp-workspace-c9162e5472238870'), ('file', 'README.md')]\n  assumptions: ()\n  plan paused before actuation; run --resume with this session ID to execute.\n",
+  "first_resume_process": "[nexus-cli] llm provider: stub (model=stub)\n[nexus-cli] durable log: <db>\n  action: action-4aedbf7771fe16f4a4716cf3\n  status: paused\n  [gate] node='node-respond' requires approval before it can run.\n  approve node 'node-respond'? [y/N]   [approval] approved -> pipeline status: completed\n",
+  "second_resume_process": "[nexus-cli] llm provider: stub (model=stub)\n[nexus-cli] durable log: <db>\n  action: action-4aedbf7771fe16f4a4716cf3\n  status: completed\n  executed stages: actuation, validation, recovery, reflection, knowledge\n",
+  "before_sha256": "157f276c894f1e56d4f75776c38213caf1924918c0fd57276d4e46046d1017a0",
+  "after_sha256": "82a3867ffe04855fd09848d2b7ab2a804784a7ec337a4c19c114cb38fb9fe3e6",
+  "before_fixture_sha256": {
+    "workspace/README.md": "157f276c894f1e56d4f75776c38213caf1924918c0fd57276d4e46046d1017a0",
+    "workspace/src/app.py": "7ca5abf65adee67782e5c831d9ee108b323c5a9d9fda11f97a9910b18f6b1bdc",
+    "workspace/tests/test_app.py": "9654f88539bf8cfe4d4568f63a493e0ad5dec7cd86219153e06226f9a3a761ec",
+    "outside/secret.txt": "1227473be270c3e4e2a9170bf46b8509106640cd60fe871aede7d62295224370"
+  },
+  "after_fixture_sha256": {
+    "workspace/README.md": "82a3867ffe04855fd09848d2b7ab2a804784a7ec337a4c19c114cb38fb9fe3e6",
+    "workspace/src/app.py": "7ca5abf65adee67782e5c831d9ee108b323c5a9d9fda11f97a9910b18f6b1bdc",
+    "workspace/tests/test_app.py": "9654f88539bf8cfe4d4568f63a493e0ad5dec7cd86219153e06226f9a3a761ec",
+    "outside/secret.txt": "1227473be270c3e4e2a9170bf46b8509106640cd60fe871aede7d62295224370"
+  },
+  "process_counts": {
+    "started_after_first": 1,
+    "completed_after_first": 1,
+    "started_after_replay": 1,
+    "completed_after_replay": 1
+  },
+  "event_trace": [
+    {
+      "id": "evt-action-4aedbf7771fe16f4a4716cf3-requested",
+      "type": "repository_action.requested",
+      "producer": "repository_action",
+      "correlation": "cor-cli-6d76cca7800c",
+      "payload": {
+        "action_id": "action-4aedbf7771fe16f4a4716cf3",
+        "input_digest": "a3addcf59477381bf5e08f389d12617107ec7bdb4b6b319a57197faf055182be",
+        "action": {
+          "kind": "write_file",
+          "workspace_root": "<workspace>",
+          "path": "README.md",
+          "command_id": null,
+          "resolved_argv": [],
+          "actor": "operator"
+        }
+      }
+    },
+    {
+      "id": "evt-hi-cli-6d76cca7800c-request_submitted-16be674cd986bbe9",
+      "type": "interaction.request_submitted",
+      "producer": "human_interaction",
+      "correlation": "cor-cli-6d76cca7800c",
+      "payload": {}
+    },
+    {
+      "id": "evt-plan-goal-cli-6d76cca7800c-v1-execution-plan-2b74256a9118b10b",
+      "type": "planning.execution_plan_assembled",
+      "producer": "planning",
+      "correlation": "cor-cli-6d76cca7800c",
+      "payload": {
+        "plan": "plan-goal-cli-6d76cca7800c-v1"
+      }
+    },
+    {
+      "id": "evt-cor-cli-6d76cca7800c-pol-534cf901e3f754f1",
+      "type": "policy.evaluated",
+      "producer": "policy",
+      "correlation": "cor-cli-6d76cca7800c",
+      "payload": {
+        "decision": "allow"
+      }
+    },
+    {
+      "id": "evt-pipe-cli-6d76cca7800c-node-respond-requested-98d38b1ac98f3e3d",
+      "type": "approval.requested",
+      "producer": "approval_exchange",
+      "correlation": "cor-cli-6d76cca7800c",
+      "payload": {
+        "node": "node-respond"
+      }
+    },
+    {
+      "id": "evt-pipe-cli-6d76cca7800c-node-respond-pending-a65a660cf36d63c1",
+      "type": "approval.pending",
+      "producer": "approval_exchange",
+      "correlation": "cor-cli-6d76cca7800c",
+      "payload": {
+        "node": "node-respond"
+      }
+    },
+    {
+      "id": "evt-pipe-cli-6d76cca7800c-node-respond-approved-f77741bf18d79445",
+      "type": "approval.approved",
+      "producer": "approval_exchange",
+      "correlation": "cor-cli-6d76cca7800c",
+      "payload": {
+        "node": "node-respond",
+        "reason": ""
+      }
+    },
+    {
+      "id": "evt-action-4aedbf7771fe16f4a4716cf3-started-2146333c1f6e5c54",
+      "type": "repository_action.started",
+      "producer": "repository_action",
+      "correlation": "cor-cli-6d76cca7800c",
+      "payload": {
+        "action_id": "action-4aedbf7771fe16f4a4716cf3",
+        "input_digest": "a3addcf59477381bf5e08f389d12617107ec7bdb4b6b319a57197faf055182be",
+        "kind": "write_file",
+        "actor": "operator",
+        "request_identity": "cli-6d76cca7800c",
+        "work_item_key": "respond",
+        "workspace_root": "<workspace>",
+        "path": "README.md",
+        "command_id": null,
+        "argv": [],
+        "plan": "plan-goal-cli-6d76cca7800c-v1",
+        "pipeline_session": "pipe-cli-6d76cca7800c",
+        "node": "node-respond",
+        "policy_event": "evt-cor-cli-6d76cca7800c-pol-534cf901e3f754f1",
+        "approval_event": "evt-pipe-cli-6d76cca7800c-node-respond-approved-f77741bf18d79445"
+      }
+    },
+    {
+      "id": "evt-action-4aedbf7771fe16f4a4716cf3-artifact-diff-5035d1bd1e108725",
+      "type": "repository_action.artifact",
+      "producer": "repository_action",
+      "correlation": "cor-cli-6d76cca7800c",
+      "payload": {
+        "action_id": "action-4aedbf7771fe16f4a4716cf3",
+        "artifact_id": "action-4aedbf7771fe16f4a4716cf3-diff",
+        "kind": "unified_diff",
+        "path": "<artifact>/diff-c1421b5949e99adc338234453dc02bbbc54d243c75760408fe368d70c83d4a63.txt",
+        "sha256": "c1421b5949e99adc338234453dc02bbbc54d243c75760408fe368d70c83d4a63"
+      }
+    },
+    {
+      "id": "evt-action-4aedbf7771fe16f4a4716cf3-completed-d2800369a2ede0fa",
+      "type": "repository_action.completed",
+      "producer": "repository_action",
+      "correlation": "cor-cli-6d76cca7800c",
+      "payload": {
+        "action_id": "action-4aedbf7771fe16f4a4716cf3",
+        "plan": "plan-goal-cli-6d76cca7800c-v1",
+        "pipeline_session": "pipe-cli-6d76cca7800c",
+        "node": "node-respond",
+        "policy_event": "evt-cor-cli-6d76cca7800c-pol-534cf901e3f754f1",
+        "approval_event": "evt-pipe-cli-6d76cca7800c-node-respond-approved-f77741bf18d79445",
+        "outcome": {
+          "action_id": "action-4aedbf7771fe16f4a4716cf3",
+          "kind": "write_file",
+          "status": "completed",
+          "input_digest": "a3addcf59477381bf5e08f389d12617107ec7bdb4b6b319a57197faf055182be",
+          "actor": "operator",
+          "workspace_root": "<workspace>",
+          "path": "README.md",
+          "before_sha256": "157f276c894f1e56d4f75776c38213caf1924918c0fd57276d4e46046d1017a0",
+          "after_sha256": "82a3867ffe04855fd09848d2b7ab2a804784a7ec337a4c19c114cb38fb9fe3e6",
+          "diff_ref": "evt-action-4aedbf7771fe16f4a4716cf3-artifact-diff-5035d1bd1e108725",
+          "output_ref": null,
+          "command_id": null,
+          "argv": [],
+          "exit_status": null,
+          "event_refs": [
+            "evt-action-4aedbf7771fe16f4a4716cf3-artifact-diff-5035d1bd1e108725"
+          ]
+        }
+      }
+    }
+  ]
+}

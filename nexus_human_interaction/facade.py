@@ -12,6 +12,7 @@ facts so an operator session replays exactly and a restart resumes without repla
 from __future__ import annotations
 
 from collections.abc import Callable, Sequence
+from dataclasses import replace
 from typing import Any
 
 from nexus_approval import (
@@ -75,6 +76,21 @@ class HumanInteraction:
         self, request: OperatorRequest, *, control: SpineControl | None = None
     ) -> InteractionResponse:
         """Translate the operator request, drive the whole pipeline, record + format the response."""
+        if request.repository_actions:
+            work_items, capabilities, actions = self._pipeline.prepare_repository_actions(
+                identity=request.identity,
+                repository_root=request.repository_root,
+                correlation=request.correlation,
+                work_items=request.work_items,
+                capabilities=request.capabilities,
+                repository_actions=request.repository_actions,
+            )
+            request = replace(
+                request,
+                work_items=work_items,
+                repository_actions=actions,
+                capabilities=capabilities,
+            )
         spine = _translate(request)
         self._emit(
             request,
@@ -90,6 +106,7 @@ class HumanInteraction:
                 "scope": request.scope,
                 "work_items": [item.key for item in request.work_items],
                 "repository_root": request.repository_root,
+                "action_ids": [action.identity for action in request.repository_actions],
             },
         )
         run = self._pipeline.run(spine, control=control)
@@ -98,6 +115,7 @@ class HumanInteraction:
 
     def restart(self, request: OperatorRequest) -> InteractionResponse:
         """Resume a paused/interrupted operator session — the pipeline reconstructs completed stages."""
+        request = self._restore_action_inputs(request)
         completed = self._completed_response(request)
         if completed is not None:
             return completed
@@ -110,6 +128,42 @@ class HumanInteraction:
             {"reconstructed": list(run.reconstructed_stages)},
         )
         return self._record(request, run, resumed=True)
+
+    def _restore_action_inputs(self, request: OperatorRequest) -> OperatorRequest:
+        submitted = next(
+            (
+                event
+                for event in self._pipeline.history()
+                if event.type == ievents.INTERACTION_REQUEST_SUBMITTED
+                and event.payload.get("session") == request.interaction_session_id
+            ),
+            None,
+        )
+        if submitted is None:
+            return request
+        ids = list(submitted.payload.get("action_ids", ()))
+        if not ids:
+            if request.repository_actions:
+                raise ValueError(
+                    "restart action inputs differ from the immutable submitted request"
+                )
+            return request
+        if submitted.payload.get("request_text") != request.request_text:
+            raise ValueError("restart request text differs from the immutable submitted request")
+        if submitted.payload.get("repository_root") != request.repository_root:
+            raise ValueError("restart workspace differs from the immutable submitted request")
+        if submitted.correlation_identifier != request.correlation:
+            raise ValueError("restart correlation differs from the immutable submitted request")
+        if request.repository_actions:
+            if [action.identity for action in request.repository_actions] != ids:
+                raise ValueError(
+                    "restart action inputs differ from the immutable submitted request"
+                )
+            return request
+        actions = self._pipeline.restore_repository_actions(
+            tuple(str(action_id) for action_id in ids)
+        )
+        return replace(request, repository_actions=actions)
 
     def _completed_response(self, request: OperatorRequest) -> InteractionResponse | None:
         """Return an already recorded terminal response without re-running completed owners."""
@@ -146,6 +200,11 @@ class HumanInteraction:
         ):
             raise ValueError(
                 f"request identity {request.identity!r} was already used with a different repository root"
+            )
+        stored_action_ids = list(submitted.payload.get("action_ids", ())) if submitted else []
+        if stored_action_ids != [action.identity for action in request.repository_actions]:
+            raise ValueError(
+                "request identity was already used with different repository action inputs"
             )
         if recorded.correlation_identifier != request.correlation:
             raise ValueError(
@@ -262,12 +321,33 @@ class HumanInteraction:
     def history(self, identity: str) -> tuple[Event, ...]:
         """The correlated event history for the session's run (the audit trail)."""
         pipe = _pipeline_session_id(identity)
-        return tuple(
+        events = tuple(
             event
             for event in self._pipeline.history()
             if event.identifier.startswith(f"evt-{pipe}-")
             or event.identifier.startswith(f"evt-{_interaction_session_id(identity)}-")
         )
+        submitted = next(
+            (
+                event
+                for event in self._pipeline.history()
+                if event.type == ievents.INTERACTION_REQUEST_SUBMITTED
+                and event.payload.get("session") == _interaction_session_id(identity)
+            ),
+            None,
+        )
+        action_ids = (
+            {str(value) for value in submitted.payload.get("action_ids", ())}
+            if submitted
+            else set()
+        )
+        action_events = tuple(
+            event
+            for event in self._pipeline.history()
+            if event.type.startswith("repository_action.")
+            and event.payload.get("action_id") in action_ids
+        )
+        return tuple(sorted((*events, *action_events), key=lambda event: event.timestamp))
 
     def execution_graph(self, _identity: str) -> ExecutionGraphView:
         """The frozen Execution Graph topology for the run (reconstructed; never re-planned)."""
@@ -315,7 +395,10 @@ class HumanInteraction:
         # If the run paused at an approval boundary, surface the request through the Approval Exchange
         # (it publishes idempotently; a run with no waiting gate is a no-op) — presentation, not logic.
         waiting = run.execution_state.waiting_nodes if run.execution_state is not None else ()
-        pending = self._approval.publish(_pipeline_session_id(request.identity), waiting)
+        action_nodes = _human_action_nodes(own_events, request)
+        pending = self._approval.publish(
+            _pipeline_session_id(request.identity), waiting, human_required=action_nodes
+        )
         self._emit(
             request,
             ievents.INTERACTION_RESPONSE_RECORDED,
@@ -384,6 +467,28 @@ def _translate(request: OperatorRequest) -> SpineRequest:
         correlation_identifier=request.correlation_identifier,
         repository_root=request.repository_root,
         planning_step_template=request.planning_step_template,
+    )
+
+
+def _human_action_nodes(events: Sequence[Event], request: OperatorRequest) -> tuple[str, ...]:
+    plan = find_plan(tuple(events))
+    if plan is None:
+        return ()
+    action_ids = {
+        action.identity for action in request.repository_actions if action.kind == "write_file"
+    }
+    packages = {
+        package.identifier
+        for package in plan.work_packages
+        if any(
+            ref.target_type == "action_request" and ref.identifier in action_ids
+            for ref in package.inputs
+        )
+    }
+    return tuple(
+        node.identifier
+        for node in plan.execution_graph.nodes
+        if node.work_package_ref.identifier in packages
     )
 
 

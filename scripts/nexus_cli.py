@@ -28,6 +28,7 @@ same fail-closed default every other runtime adapter in this platform already us
 from __future__ import annotations
 
 import argparse
+import json
 import os
 import sys
 import uuid
@@ -37,6 +38,7 @@ from nexus_context import ContextCategory, ContextSource, RawContextFragment
 from nexus_core.contracts.base import Reference
 from nexus_core.contracts.enums import CapabilityCategory, KnowledgeType
 from nexus_core.domain import Capability
+from nexus_execution.actions import RepositoryAction
 from nexus_human_interaction import HumanInteractionContext, build_human_interaction
 from nexus_human_interaction.facade import HumanInteraction
 from nexus_human_interaction.model import InteractionResponse, OperatorRequest
@@ -80,6 +82,7 @@ def build_operator_request(
     identity: str,
     repository_root: str | None = None,
     include_work_item: bool = True,
+    repository_actions: tuple[RepositoryAction, ...] = (),
 ) -> OperatorRequest:
     """Build the deterministic operator request for execution or plan-first inspection.
 
@@ -110,6 +113,7 @@ def build_operator_request(
         correlation_identifier=f"cor-{identity}",
         repository_root=repository_root,
         planning_step_template=work_item if not include_work_item else None,
+        repository_actions=repository_actions,
     )
 
 
@@ -218,6 +222,61 @@ def _saved_repository_root(infra: InfrastructureContext, identity: str) -> str |
     raise ValueError(f"no saved request for session {identity!r}")
 
 
+def _saved_action_ids(infra: InfrastructureContext, identity: str) -> tuple[str, ...]:
+    session = f"hi-{identity}"
+    for event in infra.event_store.read_all():
+        if (
+            event.type == "interaction.request_submitted"
+            and event.payload.get("session") == session
+        ):
+            return tuple(str(value) for value in event.payload.get("action_ids", ()))
+    return ()
+
+
+def _command_allowlist(path: str | None) -> dict[str, tuple[str, ...]]:
+    if path is None:
+        return {}
+    with open(path, encoding="utf-8") as handle:
+        payload = json.load(handle)
+    if not isinstance(payload, dict) or any(
+        not isinstance(key, str)
+        or not isinstance(argv, list)
+        or not argv
+        or any(not isinstance(part, str) or not part for part in argv)
+        for key, argv in payload.items()
+    ):
+        raise ValueError("command allow-list must map command IDs to non-empty argv arrays")
+    return {key: tuple(argv) for key, argv in payload.items()}
+
+
+def _action_from_args(args: argparse.Namespace, identity: str) -> tuple[RepositoryAction, ...]:
+    if args.action is None:
+        return ()
+    if not args.repository_root:
+        raise ValueError("--action requires --repository-root")
+    common = {
+        "workspace_root": args.repository_root,
+        "actor": args.actor,
+        "request_identity": identity,
+        "correlation": f"cor-{identity}",
+    }
+    if args.action == "read_file":
+        if not args.action_path:
+            raise ValueError("read_file requires --action-path")
+        action = RepositoryAction.read(path=args.action_path, **common)
+    elif args.action == "write_file":
+        if not args.action_path or args.action_content is None:
+            raise ValueError("write_file requires --action-path and --action-content")
+        action = RepositoryAction.write(
+            path=args.action_path, content=args.action_content, **common
+        )
+    else:
+        if not args.command_id:
+            raise ValueError("run_test requires --command-id")
+        action = RepositoryAction.run_test(command_id=args.command_id, **common)
+    return (action,)
+
+
 def _print_plan(response: InteractionResponse) -> None:
     print(f"  status: {response.status}")
     if response.intent_analysis:
@@ -264,11 +323,28 @@ def _print_pending(context: HumanInteractionContext, infra: InfrastructureContex
             print(f"{identity}: " + ", ".join(item.node for item in pending))
 
 
-def run_one(hi: HumanInteraction, ops: OperationsContext, request_text: str) -> None:
-    identity = f"cli-{uuid.uuid4().hex[:12]}"
+def run_one(
+    hi: HumanInteraction,
+    ops: OperationsContext,
+    request_text: str,
+    *,
+    repository_root: str | None = None,
+    repository_actions: tuple[RepositoryAction, ...] = (),
+    identity: str | None = None,
+) -> None:
+    identity = identity or f"cli-{uuid.uuid4().hex[:12]}"
     print(f"  session: {identity}")
-    request = build_operator_request(request_text, identity=identity)
+    request = build_operator_request(
+        request_text,
+        identity=identity,
+        repository_root=repository_root,
+        repository_actions=repository_actions,
+    )
     response = hi.submit(request)
+    for event in hi.history(identity):
+        if event.type == "interaction.request_submitted":
+            for action_id in event.payload.get("action_ids", ()):
+                print(f"  action: {action_id}")
     _print_response(ops, request, response)
     if response.awaiting_approval:
         _handle_approvals(hi, ops, request, response)
@@ -298,7 +374,20 @@ def main(argv: list[str] | None = None) -> None:
     parser.add_argument(
         "--repository-root", default=None, help="explicit workspace root to profile for --plan"
     )
+    parser.add_argument("--action", choices=("read_file", "write_file", "run_test"))
+    parser.add_argument("--action-path", default=None)
+    parser.add_argument("--action-content", default=None)
+    parser.add_argument("--command-id", default=None, help="named command in configured allow-list")
+    parser.add_argument("--actor", default="operator")
     args = parser.parse_args(argv)
+    if args.action is not None and args.once is None and args.plan is None:
+        parser.error("--action requires --once or --plan")
+    if args.command_id is not None and args.action != "run_test":
+        parser.error("--command-id is valid only with --action run_test")
+    if args.action_path is not None and args.action not in {"read_file", "write_file"}:
+        parser.error("--action-path is valid only with read_file or write_file")
+    if args.action_content is not None and args.action != "write_file":
+        parser.error("--action-content is valid only with write_file")
 
     infra = _build_infrastructure(args.db)
     config = load_llm_provider_config()
@@ -310,7 +399,13 @@ def main(argv: list[str] | None = None) -> None:
         return LLMRuntimeAdapter(invoker=build_llm_invoker(config), working_dir=ARTIFACTS_DIR)
 
     context = build_human_interaction(
-        infra, timestamps=SystemTimestampSource(), adapter_factory=adapter_factory
+        infra,
+        timestamps=SystemTimestampSource(),
+        adapter_factory=adapter_factory,
+        action_command_allowlist=_command_allowlist(os.environ.get("NEXUS_ACTION_COMMANDS_FILE")),
+        action_artifact_directory=(
+            os.path.abspath(f"{args.db}.action_artifacts") if args.db is not None else None
+        ),
     )
     ops = build_operations(context.spine.coordinator, context.approval, infra)
 
@@ -326,13 +421,24 @@ def main(argv: list[str] | None = None) -> None:
             include_work_item=repository_root is None,
         )
         response = context.facade.restart(request)
+        for action_id in _saved_action_ids(infra, args.resume):
+            print(f"  action: {action_id}")
         _print_response(ops, request, response)
         if response.awaiting_approval:
             _handle_approvals(context.facade, ops, request, response)
         return
 
     if args.once is not None:
-        run_one(context.facade, ops, args.once)
+        identity = f"cli-{uuid.uuid4().hex[:12]}"
+        actions = _action_from_args(args, identity) if args.action else ()
+        run_one(
+            context.facade,
+            ops,
+            args.once,
+            repository_root=args.repository_root,
+            repository_actions=actions,
+            identity=identity,
+        )
         return
 
     if args.plan is not None:
@@ -349,10 +455,13 @@ def main(argv: list[str] | None = None) -> None:
             identity=identity,
             repository_root=args.repository_root,
             include_work_item=False,
+            repository_actions=_action_from_args(args, identity),
         )
         response = context.facade.submit(
             request, control=SpineControl(stop_after_stage=SpineStage.PLANNING)
         )
+        for action_id in _saved_action_ids(infra, identity):
+            print(f"  action: {action_id}")
         _print_plan(response)
         for clarification in response.clarification_requests:
             print(f"  nexus needs clarification: {clarification.question}")

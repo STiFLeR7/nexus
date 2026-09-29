@@ -12,10 +12,29 @@ from pathlib import Path
 
 from nexus_core.contracts.base import Struct
 from nexus_core.contracts.enums import KnowledgeType
+from nexus_engineering.model import EngineeringStrategy, ReasoningInputs
+from nexus_engineering.reasoner import DeterministicReasoner
+from nexus_execution.actions import RepositoryAction
 from nexus_human_interaction import build_human_interaction, reference_operator_request
 from nexus_human_interaction.model import OperatorRequest
 from nexus_infra import build_durable_infrastructure, build_infrastructure
 from nexus_workflows.spine import SpineControl, SpineStage
+
+
+class _AutomaticEngineeringReasoner:
+    """Test EI posture that produces the automatic approval hint from frozen inputs."""
+
+    version = "test-automatic"
+
+    def reason(self, inputs: ReasoningInputs, *, now: str) -> EngineeringStrategy:
+        strategy = DeterministicReasoner().reason(inputs, now=now)
+        return strategy.model_copy(
+            update={
+                "autonomy_level": strategy.autonomy_level.model_copy(
+                    update={"selection": ("autonomous",)}
+                )
+            }
+        )
 
 
 def test_operator_submits_and_reaches_knowledge() -> None:
@@ -27,6 +46,67 @@ def test_operator_submits_and_reaches_knowledge() -> None:
     assert facade.status("op-arch-r1").is_complete
     assert facade.execution_graph("op-arch-r1").nodes == ("node-draft", "node-review")
     assert facade.knowledge(kind=KnowledgeType.LESSON).items
+
+
+def test_repository_write_waits_for_human_approval_even_with_automatic_strategy(
+    tmp_path: Path,
+) -> None:
+    workspace = tmp_path / "repo"
+    workspace.mkdir()
+    target = workspace / "README.md"
+    target.write_text("before\n", encoding="utf-8")
+    request = OperatorRequest(
+        identity="repo-write-approval",
+        request_text="In a local sandbox, investigate a small fixture and reversibly update the requested file.",
+        work_items=(),
+        knowledge_subject="repository write",
+        scope="repository write",
+        repository_root=str(workspace),
+        repository_actions=(
+            RepositoryAction.write(
+                workspace_root=str(workspace),
+                path="README.md",
+                content="approved write\n",
+                actor="operator",
+                request_identity="repo-write-approval",
+            ),
+        ),
+    )
+    context = build_human_interaction(
+        build_infrastructure(), engineering_reasoner=_AutomaticEngineeringReasoner()
+    )
+    facade = context.facade
+    paused = facade.submit(request)
+
+    assert paused.awaiting_approval
+    assert paused.execution_plan is not None
+    assert paused.goal_ref is not None
+    assert paused.execution_plan.execution_strategy.approval_policy.value == "automatic"
+    autonomy_event = next(
+        event
+        for event in context.infrastructure.event_store.read_all()
+        if event.type == "engineering.strategized"
+        and event.payload.get("subject") == paused.goal_ref.identifier
+    )
+    assert autonomy_event.payload["autonomy"] == "autonomous"
+    assert target.read_text(encoding="utf-8") == "before\n"
+    assert not any(
+        event.type == "repository_action.started" for event in facade.history(request.identity)
+    )
+    assert paused.pending_approvals[0].taxonomy == "human_review"
+
+    facade.approve(request, paused.pending_approvals[0].node, decided_by="operator")
+
+    assert target.read_text(encoding="utf-8") == "approved write\n"
+    action_events = facade.history(request.identity)
+    assert sum(event.type == "repository_action.started" for event in action_events) == 1
+    completed = next(
+        event for event in action_events if event.type == "repository_action.completed"
+    )
+    outcome = completed.payload["outcome"]
+    assert outcome["before_sha256"] is not None and outcome["after_sha256"] is not None
+    assert outcome["diff_ref"] is not None
+    assert "before\n" not in str(completed.payload)
 
 
 def test_operator_flow_is_deterministic() -> None:

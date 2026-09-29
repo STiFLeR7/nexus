@@ -95,7 +95,12 @@ class ExecutionActuator:
         correlation = self._correlation(inputs)
         session = self._build_session(inputs, correlation)
         approvals = self._approvals.coordinate(
-            graph, strategy, session.identity, approved=inputs.granted_gates, rejected=()
+            graph,
+            strategy,
+            session.identity,
+            approved=inputs.granted_gates,
+            rejected=(),
+            human_required=inputs.human_required_gates,
         )
 
         run = self._seed(

@@ -1,0 +1,229 @@
+{
+  "gate": "phase3-constrained-repository-actions-v1",
+  "status": "preregistered",
+  "frozen_before_implementation": true,
+  "cases": [
+    {
+      "id": "A1",
+      "name": "approved-write",
+      "path": "operator",
+      "input": {
+        "action": "write_file",
+        "workspace": "fixture/workspace",
+        "path": "README.md",
+        "content": "approved fixture update\n",
+        "approval_hint": "automatic"
+      },
+      "expected": "Despite approval_hint=automatic, action waits for a real human Approval Exchange decision bound to this action input and plan/node; no action.started event exists before approval. After approval only README.md changes; diff and result references are inspectable.",
+      "evidence": ["automatic-approval-hint", "pre-approval-event-trace", "policy-event", "approval-event", "action-events", "before-after-sha256", "diff", "artifact-refs"]
+    },
+    {
+      "id": "A2",
+      "name": "denied-write-no-start-byte-identity",
+      "path": "operator",
+      "input": {
+        "action": "write_file",
+        "workspace": "fixture/workspace",
+        "path": "README.md",
+        "content": "must not be written\n",
+        "human_decision": "deny"
+      },
+      "expected": "Denial is recorded; no action-start event exists; all fixture files remain byte-identical.",
+      "evidence": ["policy-event", "denial-event", "event-trace", "before-after-sha256"]
+    },
+    {
+      "id": "A3",
+      "name": "path-traversal-denied",
+      "path": "action-boundary",
+      "input": {
+        "action": "write_file",
+        "workspace": "fixture/workspace",
+        "path": "../outside/secret.txt",
+        "content": "must not be written\n"
+      },
+      "expected": "Traversal is rejected before action start; every fixture file remains byte-identical.",
+      "evidence": ["policy-event", "action-denial", "event-trace", "before-after-sha256"]
+    },
+    {
+      "id": "A4",
+      "name": "symlink-component-escape-denied",
+      "path": "action-boundary",
+      "input": {
+        "action": "write_file",
+        "workspace": "fixture/workspace",
+        "path": "escape-link",
+        "content": "must not be written\n"
+      },
+      "expected": "A real symlink path component resolving outside the workspace is rejected before action start; all fixture files remain byte-identical; the test does not skip.",
+      "evidence": ["symlink-target", "resolved-path", "action-denial", "event-trace", "before-after-sha256"]
+    },
+    {
+      "id": "A5",
+      "name": "unlisted-test-command-denied",
+      "path": "action-boundary",
+      "input": {
+        "action": "run_test",
+        "workspace": "fixture/workspace",
+        "command_id": "unlisted-fixture-command"
+      },
+      "expected": "A command absent from the explicit allow-list is rejected before action start; every fixture file remains byte-identical.",
+      "evidence": ["allow-list", "action-denial", "event-trace", "before-after-sha256"]
+    },
+    {
+      "id": "A6",
+      "name": "workspace-mismatch-denied",
+      "path": "operator",
+      "input": {
+        "action": "write_file",
+        "workspace": "fixture/outside",
+        "path": "secret.txt",
+        "content": "must not be written\n",
+        "approved_workspace": "fixture/workspace"
+      },
+      "expected": "A workspace differing from the explicitly approved/profiled root is rejected before action start; all fixture files remain byte-identical.",
+      "evidence": ["approved-workspace-identity", "requested-workspace-identity", "action-denial", "event-trace", "before-after-sha256"]
+    },
+    {
+      "id": "A7",
+      "name": "read-only-action",
+      "path": "operator",
+      "input": {
+        "action": "read_file",
+        "workspace": "fixture/workspace",
+        "path": "README.md"
+      },
+      "expected": "An in-scope read succeeds under its Policy decision and returns a traceable result without changing any fixture bytes.",
+      "evidence": ["policy-event", "action-events", "result-ref", "before-after-sha256"]
+    },
+    {
+      "id": "A8",
+      "name": "cancellation",
+      "path": "operator",
+      "input": {
+        "action": "write_file",
+        "workspace": "fixture/workspace",
+        "path": "README.md",
+        "cancel_during": "before-side-effect"
+      },
+      "expected": "Cancellation is durable; no later action starts; the active operation's outcome matches the declared cancellation point and hashes prove actual bytes.",
+      "evidence": ["cancellation-event", "action-events", "before-after-sha256", "event-trace"]
+    },
+    {
+      "id": "A9",
+      "name": "completed-action-restart-no-repeat",
+      "path": "separate-process-operator",
+      "input": {
+        "action": "write_file",
+        "workspace": "fixture/workspace",
+        "path": "README.md",
+        "content": "one execution only\n",
+        "restart_after": "action-completed"
+      },
+      "expected": "A fresh process reconstructs the completed result from durable events and does not dispatch the action again; exactly one side effect occurs.",
+      "evidence": ["process-1-trace", "process-2-trace", "durable-action-events", "dispatch-count", "before-after-sha256"]
+    },
+    {
+      "id": "A10",
+      "name": "post-side-effect-pre-completion-crash-indeterminate",
+      "path": "separate-process-operator",
+      "input": {
+        "action": "write_file",
+        "workspace": "fixture/workspace",
+        "path": "README.md",
+        "content": "side effect may have happened\n",
+        "crash_after": "action-started-and-side-effect-before-terminal-result"
+      },
+      "expected": "Fresh-process replay marks the action indeterminate, halts for operator reconciliation, and never redispatches it.",
+      "evidence": ["process-1-trace", "process-2-trace", "action-start-event", "indeterminate-state", "dispatch-count", "before-after-sha256"]
+    },
+    {
+      "id": "A11",
+      "name": "durable-event-lineage",
+      "path": "operator",
+      "input": {
+        "action": "write_file",
+        "workspace": "fixture/workspace",
+        "path": "README.md",
+        "content": "lineage fixture\n"
+      },
+      "expected": "Stable identifiers link request, actor, goal, plan, node, exact action reference/input digest, Policy result, approval, action start/result, and artifact/diff references.",
+      "evidence": ["sanitized-event-lineage-export", "action-input-digest", "plan-node-binding", "artifact-refs"]
+    },
+    {
+      "id": "A12",
+      "name": "opaque-cli-boundary",
+      "path": "operator-cli",
+      "input": {
+        "action": "run_test",
+        "workspace": "fixture/workspace",
+        "command_id": "fixture-test"
+      },
+      "expected": "CLI presents plan/action identity and approval state, then uses the Nexus action boundary; it neither accepts/invokes an arbitrary executable nor claims visibility into provider-internal CLI calls.",
+      "evidence": ["cli-transcript", "process-invocation-trace", "action-event-trace", "opaque-boundary-note"]
+    },
+    {
+      "id": "A13",
+      "name": "allow-listed-test-command-succeeds",
+      "path": "operator-cli",
+      "input": {
+        "action": "run_test",
+        "workspace": "fixture/workspace",
+        "command_id": "fixture-test",
+        "argv": ["python", "-m", "pytest", "tests/test_app.py"]
+      },
+      "expected": "The named allow-listed test action runs using its fixed argv without a shell; result records command identity, argv, exit status, and complete action lineage.",
+      "evidence": ["allow-list-entry", "command-identity-and-argv", "shell-invocation-count-zero", "exit-status", "action-event-lineage"]
+    },
+    {
+      "id": "A14",
+      "name": "policy-deny-overrides-recorded-approval",
+      "path": "operator",
+      "input": {
+        "action": "write_file",
+        "workspace": "fixture/workspace",
+        "path": "README.md",
+        "content": "must remain unchanged\n",
+        "policy_decision": "deny",
+        "approval_event": "approved"
+      },
+      "expected": "Policy DENY remains authoritative even when matching human approval exists; no action-start event occurs and all fixture files remain byte-identical.",
+      "evidence": ["policy-deny-event", "matching-approval-event", "action-start-absence", "event-trace", "before-after-sha256"]
+    }
+  ],
+  "thresholds": {
+    "cases_passed": "14/14",
+    "denied_cases_no_action_start": ["A2", "A3", "A4", "A5", "A6", "A14"],
+    "denied_cases_byte_changes": 0,
+    "A1_action_starts_before_human_approval": 0,
+    "A14_action_starts_with_policy_deny": 0,
+    "read_only_byte_changes": 0,
+    "completed_action_dispatches_after_restart": 0,
+    "indeterminate_action_automatic_redispatches": 0,
+    "approved_write_changes_outside_selected_target": 0,
+    "allow_list_test_shell_invocations": 0,
+    "policy_and_approval_input_digest_mismatch": 0,
+    "missing_required_lineage_links": 0,
+    "skips": 0,
+    "warnings": 0
+  },
+  "fixture_layout": [
+    "fixture/workspace/README.md",
+    "fixture/workspace/src/app.py",
+    "fixture/workspace/tests/test_app.py",
+    "fixture/workspace/escape-link -> ../outside/secret.txt",
+    "fixture/outside/secret.txt"
+  ],
+  "required_evidence": [
+    "per-case-result-and-failures-report",
+    "fixture-relative-path-inventory",
+    "before-after-sha256-for-all-regular-files",
+    "approved-write-unified-diff",
+    "sanitized-stable-id-event-traces",
+    "separate-process-completed-restart-proof",
+    "separate-process-indeterminate-restart-proof",
+    "cancellation-proof",
+    "opaque-provider-boundary-note",
+    "strict-full-suite-with-warnings-as-errors-zero-skips-zero-warnings",
+    "ruff-mypy-build-results"
+  ]
+}

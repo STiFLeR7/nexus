@@ -1,0 +1,62 @@
+{
+  "A1": {
+    "workspace/README.md": "157f276c894f1e56d4f75776c38213caf1924918c0fd57276d4e46046d1017a0",
+    "workspace/src/app.py": "7ca5abf65adee67782e5c831d9ee108b323c5a9d9fda11f97a9910b18f6b1bdc",
+    "workspace/tests/test_app.py": "9654f88539bf8cfe4d4568f63a493e0ad5dec7cd86219153e06226f9a3a761ec",
+    "outside/secret.txt": "1227473be270c3e4e2a9170bf46b8509106640cd60fe871aede7d62295224370"
+  },
+  "A2": {
+    "workspace/README.md": "157f276c894f1e56d4f75776c38213caf1924918c0fd57276d4e46046d1017a0",
+    "workspace/src/app.py": "7ca5abf65adee67782e5c831d9ee108b323c5a9d9fda11f97a9910b18f6b1bdc",
+    "workspace/tests/test_app.py": "9654f88539bf8cfe4d4568f63a493e0ad5dec7cd86219153e06226f9a3a761ec",
+    "outside/secret.txt": "1227473be270c3e4e2a9170bf46b8509106640cd60fe871aede7d62295224370"
+  },
+  "A6": {
+    "workspace/README.md": "157f276c894f1e56d4f75776c38213caf1924918c0fd57276d4e46046d1017a0",
+    "workspace/src/app.py": "7ca5abf65adee67782e5c831d9ee108b323c5a9d9fda11f97a9910b18f6b1bdc",
+    "workspace/tests/test_app.py": "9654f88539bf8cfe4d4568f63a493e0ad5dec7cd86219153e06226f9a3a761ec",
+    "outside/secret.txt": "1227473be270c3e4e2a9170bf46b8509106640cd60fe871aede7d62295224370"
+  },
+  "A7": {
+    "workspace/README.md": "157f276c894f1e56d4f75776c38213caf1924918c0fd57276d4e46046d1017a0",
+    "workspace/src/app.py": "7ca5abf65adee67782e5c831d9ee108b323c5a9d9fda11f97a9910b18f6b1bdc",
+    "workspace/tests/test_app.py": "9654f88539bf8cfe4d4568f63a493e0ad5dec7cd86219153e06226f9a3a761ec",
+    "outside/secret.txt": "1227473be270c3e4e2a9170bf46b8509106640cd60fe871aede7d62295224370"
+  },
+  "A8": {
+    "workspace/README.md": "157f276c894f1e56d4f75776c38213caf1924918c0fd57276d4e46046d1017a0",
+    "workspace/src/app.py": "7ca5abf65adee67782e5c831d9ee108b323c5a9d9fda11f97a9910b18f6b1bdc",
+    "workspace/tests/test_app.py": "9654f88539bf8cfe4d4568f63a493e0ad5dec7cd86219153e06226f9a3a761ec",
+    "outside/secret.txt": "1227473be270c3e4e2a9170bf46b8509106640cd60fe871aede7d62295224370"
+  },
+  "A3": {
+    "workspace/README.md": "157f276c894f1e56d4f75776c38213caf1924918c0fd57276d4e46046d1017a0",
+    "workspace/src/app.py": "7ca5abf65adee67782e5c831d9ee108b323c5a9d9fda11f97a9910b18f6b1bdc",
+    "workspace/tests/test_app.py": "9654f88539bf8cfe4d4568f63a493e0ad5dec7cd86219153e06226f9a3a761ec",
+    "outside/secret.txt": "1227473be270c3e4e2a9170bf46b8509106640cd60fe871aede7d62295224370"
+  },
+  "A4": {
+    "workspace/README.md": "157f276c894f1e56d4f75776c38213caf1924918c0fd57276d4e46046d1017a0",
+    "workspace/src/app.py": "7ca5abf65adee67782e5c831d9ee108b323c5a9d9fda11f97a9910b18f6b1bdc",
+    "workspace/tests/test_app.py": "9654f88539bf8cfe4d4568f63a493e0ad5dec7cd86219153e06226f9a3a761ec",
+    "outside/secret.txt": "1227473be270c3e4e2a9170bf46b8509106640cd60fe871aede7d62295224370"
+  },
+  "A5": {
+    "workspace/README.md": "157f276c894f1e56d4f75776c38213caf1924918c0fd57276d4e46046d1017a0",
+    "workspace/src/app.py": "7ca5abf65adee67782e5c831d9ee108b323c5a9d9fda11f97a9910b18f6b1bdc",
+    "workspace/tests/test_app.py": "9654f88539bf8cfe4d4568f63a493e0ad5dec7cd86219153e06226f9a3a761ec",
+    "outside/secret.txt": "1227473be270c3e4e2a9170bf46b8509106640cd60fe871aede7d62295224370"
+  },
+  "CLI": {
+    "workspace/README.md": "157f276c894f1e56d4f75776c38213caf1924918c0fd57276d4e46046d1017a0",
+    "workspace/src/app.py": "7ca5abf65adee67782e5c831d9ee108b323c5a9d9fda11f97a9910b18f6b1bdc",
+    "workspace/tests/test_app.py": "9654f88539bf8cfe4d4568f63a493e0ad5dec7cd86219153e06226f9a3a761ec",
+    "outside/secret.txt": "1227473be270c3e4e2a9170bf46b8509106640cd60fe871aede7d62295224370"
+  },
+  "A14": {
+    "workspace/README.md": "157f276c894f1e56d4f75776c38213caf1924918c0fd57276d4e46046d1017a0",
+    "workspace/src/app.py": "7ca5abf65adee67782e5c831d9ee108b323c5a9d9fda11f97a9910b18f6b1bdc",
+    "workspace/tests/test_app.py": "9654f88539bf8cfe4d4568f63a493e0ad5dec7cd86219153e06226f9a3a761ec",
+    "outside/secret.txt": "1227473be270c3e4e2a9170bf46b8509106640cd60fe871aede7d62295224370"
+  }
+}

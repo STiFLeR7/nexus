@@ -1,0 +1,1005 @@
+{
+  "A1": [
+    {
+      "id": "evt-action-60b56685a531eaae31e04ddd-requested",
+      "type": "repository_action.requested",
+      "producer": "repository_action",
+      "correlation": "cor-phase3-a1",
+      "payload": {
+        "action_id": "action-60b56685a531eaae31e04ddd",
+        "input_digest": "dd7cb3f351ff1b4857842d06550bc6288dc9e70fc2e6fc599a675f95914e3d18",
+        "action": {
+          "kind": "write_file",
+          "workspace_root": "<workspace>",
+          "path": "README.md",
+          "command_id": null,
+          "resolved_argv": [],
+          "actor": "phase3-evaluator"
+        }
+      }
+    },
+    {
+      "id": "evt-hi-phase3-a1-request_submitted-c75f7ea0b620425b",
+      "type": "interaction.request_submitted",
+      "producer": "human_interaction",
+      "correlation": "cor-phase3-a1",
+      "payload": {}
+    },
+    {
+      "id": "evt-plan-goal-phase3-a1-v1-execution-plan-5ee6b53ba5c84713",
+      "type": "planning.execution_plan_assembled",
+      "producer": "planning",
+      "correlation": "cor-phase3-a1",
+      "payload": {
+        "plan": "plan-goal-phase3-a1-v1"
+      }
+    },
+    {
+      "id": "evt-cor-phase3-a1-pol-c926c6fd1fa25aab",
+      "type": "policy.evaluated",
+      "producer": "policy",
+      "correlation": "cor-phase3-a1",
+      "payload": {
+        "decision": "allow"
+      }
+    },
+    {
+      "id": "evt-pipe-phase3-a1-node-respond-requested-20b990bf3278f980",
+      "type": "approval.requested",
+      "producer": "approval_exchange",
+      "correlation": "cor-phase3-a1",
+      "payload": {
+        "node": "node-respond"
+      }
+    },
+    {
+      "id": "evt-pipe-phase3-a1-node-respond-pending-641c122f3d8714fc",
+      "type": "approval.pending",
+      "producer": "approval_exchange",
+      "correlation": "cor-phase3-a1",
+      "payload": {
+        "node": "node-respond"
+      }
+    },
+    {
+      "id": "evt-pipe-phase3-a1-node-respond-approved-8288583aa4d3e916",
+      "type": "approval.approved",
+      "producer": "approval_exchange",
+      "correlation": "cor-phase3-a1",
+      "payload": {
+        "node": "node-respond",
+        "reason": ""
+      }
+    },
+    {
+      "id": "evt-action-60b56685a531eaae31e04ddd-started-1e4f323d824ca0b6",
+      "type": "repository_action.started",
+      "producer": "repository_action",
+      "correlation": "cor-phase3-a1",
+      "payload": {
+        "action_id": "action-60b56685a531eaae31e04ddd",
+        "input_digest": "dd7cb3f351ff1b4857842d06550bc6288dc9e70fc2e6fc599a675f95914e3d18",
+        "kind": "write_file",
+        "actor": "phase3-evaluator",
+        "request_identity": "phase3-a1",
+        "work_item_key": "respond",
+        "workspace_root": "<workspace>",
+        "path": "README.md",
+        "command_id": null,
+        "argv": [],
+        "plan": "plan-goal-phase3-a1-v1",
+        "pipeline_session": "pipe-phase3-a1",
+        "node": "node-respond",
+        "policy_event": "evt-cor-phase3-a1-pol-c926c6fd1fa25aab",
+        "approval_event": "evt-pipe-phase3-a1-node-respond-approved-8288583aa4d3e916"
+      }
+    },
+    {
+      "id": "evt-action-60b56685a531eaae31e04ddd-artifact-diff-00124904b2fe9096",
+      "type": "repository_action.artifact",
+      "producer": "repository_action",
+      "correlation": "cor-phase3-a1",
+      "payload": {
+        "action_id": "action-60b56685a531eaae31e04ddd",
+        "artifact_id": "action-60b56685a531eaae31e04ddd-diff",
+        "kind": "unified_diff",
+        "path": "<artifact>/diff-4118a490aa77945cfa07caebdc8e0a3360efb2066904b3dc3b7418f54a977e63.txt",
+        "sha256": "4118a490aa77945cfa07caebdc8e0a3360efb2066904b3dc3b7418f54a977e63"
+      }
+    },
+    {
+      "id": "evt-action-60b56685a531eaae31e04ddd-completed-5dde1b40c3c09ed6",
+      "type": "repository_action.completed",
+      "producer": "repository_action",
+      "correlation": "cor-phase3-a1",
+      "payload": {
+        "action_id": "action-60b56685a531eaae31e04ddd",
+        "plan": "plan-goal-phase3-a1-v1",
+        "pipeline_session": "pipe-phase3-a1",
+        "node": "node-respond",
+        "policy_event": "evt-cor-phase3-a1-pol-c926c6fd1fa25aab",
+        "approval_event": "evt-pipe-phase3-a1-node-respond-approved-8288583aa4d3e916",
+        "outcome": {
+          "action_id": "action-60b56685a531eaae31e04ddd",
+          "kind": "write_file",
+          "status": "completed",
+          "input_digest": "dd7cb3f351ff1b4857842d06550bc6288dc9e70fc2e6fc599a675f95914e3d18",
+          "actor": "phase3-evaluator",
+          "workspace_root": "<workspace>",
+          "path": "README.md",
+          "before_sha256": "157f276c894f1e56d4f75776c38213caf1924918c0fd57276d4e46046d1017a0",
+          "after_sha256": "a63682629e202cf0044193f6dac9a906406f515852b98a4777b60b1c688f3a8a",
+          "diff_ref": "evt-action-60b56685a531eaae31e04ddd-artifact-diff-00124904b2fe9096",
+          "output_ref": null,
+          "command_id": null,
+          "argv": [],
+          "exit_status": null,
+          "event_refs": [
+            "evt-action-60b56685a531eaae31e04ddd-artifact-diff-00124904b2fe9096"
+          ]
+        }
+      }
+    }
+  ],
+  "A2": [
+    {
+      "id": "evt-action-135a80a2f8e16444c9586e07-requested",
+      "type": "repository_action.requested",
+      "producer": "repository_action",
+      "correlation": "cor-phase3-a2",
+      "payload": {
+        "action_id": "action-135a80a2f8e16444c9586e07",
+        "input_digest": "dd1f1fe79b378d797fcacf910387adb3d2dc584ddbe03daef0a1ff387b725f77",
+        "action": {
+          "kind": "write_file",
+          "workspace_root": "<workspace>",
+          "path": "README.md",
+          "command_id": null,
+          "resolved_argv": [],
+          "actor": "phase3-evaluator"
+        }
+      }
+    },
+    {
+      "id": "evt-hi-phase3-a2-request_submitted-fd713cd429a78cd6",
+      "type": "interaction.request_submitted",
+      "producer": "human_interaction",
+      "correlation": "cor-phase3-a2",
+      "payload": {}
+    },
+    {
+      "id": "evt-plan-goal-phase3-a2-v1-execution-plan-df697b0afc0196d0",
+      "type": "planning.execution_plan_assembled",
+      "producer": "planning",
+      "correlation": "cor-phase3-a2",
+      "payload": {
+        "plan": "plan-goal-phase3-a2-v1"
+      }
+    },
+    {
+      "id": "evt-cor-phase3-a2-pol-45c20ea0bff61b33",
+      "type": "policy.evaluated",
+      "producer": "policy",
+      "correlation": "cor-phase3-a2",
+      "payload": {
+        "decision": "allow"
+      }
+    },
+    {
+      "id": "evt-pipe-phase3-a2-node-respond-requested-fca36df87bb515e6",
+      "type": "approval.requested",
+      "producer": "approval_exchange",
+      "correlation": "cor-phase3-a2",
+      "payload": {
+        "node": "node-respond"
+      }
+    },
+    {
+      "id": "evt-pipe-phase3-a2-node-respond-pending-09d8306ee9ab9bfd",
+      "type": "approval.pending",
+      "producer": "approval_exchange",
+      "correlation": "cor-phase3-a2",
+      "payload": {
+        "node": "node-respond"
+      }
+    },
+    {
+      "id": "evt-pipe-phase3-a2-node-respond-denied-2a50beb0b939e240",
+      "type": "approval.denied",
+      "producer": "approval_exchange",
+      "correlation": "cor-phase3-a2",
+      "payload": {
+        "node": "node-respond",
+        "reason": "frozen A2 denial"
+      }
+    }
+  ],
+  "A6": [
+    {
+      "id": "evt-action-b457387bf75f710cbfab99a8-requested",
+      "type": "repository_action.requested",
+      "producer": "repository_action",
+      "correlation": "cor-phase3-a6",
+      "payload": {
+        "action_id": "action-b457387bf75f710cbfab99a8",
+        "input_digest": "798486b81becf823515eecb4afd22db7e949635c696f9a63f599b8991f15fed6",
+        "action": {
+          "kind": "write_file",
+          "workspace_root": "<workspace>",
+          "path": "secret.txt",
+          "command_id": null,
+          "resolved_argv": [],
+          "actor": "phase3-evaluator"
+        }
+      }
+    },
+    {
+      "id": "evt-hi-phase3-a6-request_submitted-cb7184a76e7697c7",
+      "type": "interaction.request_submitted",
+      "producer": "human_interaction",
+      "correlation": "cor-phase3-a6",
+      "payload": {}
+    },
+    {
+      "id": "evt-plan-goal-phase3-a6-v1-execution-plan-1199b2ce93a901fd",
+      "type": "planning.execution_plan_assembled",
+      "producer": "planning",
+      "correlation": "cor-phase3-a6",
+      "payload": {
+        "plan": "plan-goal-phase3-a6-v1"
+      }
+    },
+    {
+      "id": "evt-action-b457387bf75f710cbfab99a8-denied-c561d3ff664c",
+      "type": "repository_action.denied",
+      "producer": "repository_action",
+      "correlation": "cor-phase3-a6",
+      "payload": {
+        "action_id": "action-b457387bf75f710cbfab99a8",
+        "input_digest": "798486b81becf823515eecb4afd22db7e949635c696f9a63f599b8991f15fed6",
+        "reason": "action workspace differs from the explicit operator workspace"
+      }
+    }
+  ],
+  "A7": [
+    {
+      "id": "evt-action-8b7b503337398afab8058f49-requested",
+      "type": "repository_action.requested",
+      "producer": "repository_action",
+      "correlation": "cor-phase3-a7",
+      "payload": {
+        "action_id": "action-8b7b503337398afab8058f49",
+        "input_digest": "64048e71e5654740c7c134c70ff33c29775d35ff3fe877eb83420f0c5ab80a75",
+        "action": {
+          "kind": "read_file",
+          "workspace_root": "<workspace>",
+          "path": "README.md",
+          "command_id": null,
+          "resolved_argv": [],
+          "actor": "phase3-evaluator"
+        }
+      }
+    },
+    {
+      "id": "evt-hi-phase3-a7-request_submitted-e7cd6e1f4d1825a2",
+      "type": "interaction.request_submitted",
+      "producer": "human_interaction",
+      "correlation": "cor-phase3-a7",
+      "payload": {}
+    },
+    {
+      "id": "evt-plan-goal-phase3-a7-v1-execution-plan-9081a4a0c145682e",
+      "type": "planning.execution_plan_assembled",
+      "producer": "planning",
+      "correlation": "cor-phase3-a7",
+      "payload": {
+        "plan": "plan-goal-phase3-a7-v1"
+      }
+    },
+    {
+      "id": "evt-cor-phase3-a7-pol-a76500335aacdfb9",
+      "type": "policy.evaluated",
+      "producer": "policy",
+      "correlation": "cor-phase3-a7",
+      "payload": {
+        "decision": "allow"
+      }
+    },
+    {
+      "id": "evt-action-8b7b503337398afab8058f49-started-ba53647d8d4fadb2",
+      "type": "repository_action.started",
+      "producer": "repository_action",
+      "correlation": "cor-phase3-a7",
+      "payload": {
+        "action_id": "action-8b7b503337398afab8058f49",
+        "input_digest": "64048e71e5654740c7c134c70ff33c29775d35ff3fe877eb83420f0c5ab80a75",
+        "kind": "read_file",
+        "actor": "phase3-evaluator",
+        "request_identity": "phase3-a7",
+        "work_item_key": "respond",
+        "workspace_root": "<workspace>",
+        "path": "README.md",
+        "command_id": null,
+        "argv": [],
+        "plan": "plan-goal-phase3-a7-v1",
+        "pipeline_session": "pipe-phase3-a7",
+        "node": "node-respond",
+        "policy_event": "evt-cor-phase3-a7-pol-a76500335aacdfb9",
+        "approval_event": null
+      }
+    },
+    {
+      "id": "evt-action-8b7b503337398afab8058f49-artifact-output-e1302ca2893fa6aa",
+      "type": "repository_action.artifact",
+      "producer": "repository_action",
+      "correlation": "cor-phase3-a7",
+      "payload": {
+        "action_id": "action-8b7b503337398afab8058f49",
+        "artifact_id": "action-8b7b503337398afab8058f49-output",
+        "kind": "action_output",
+        "path": "<artifact>/output-157f276c894f1e56d4f75776c38213caf1924918c0fd57276d4e46046d1017a0.txt",
+        "sha256": "157f276c894f1e56d4f75776c38213caf1924918c0fd57276d4e46046d1017a0"
+      }
+    },
+    {
+      "id": "evt-action-8b7b503337398afab8058f49-completed-4ba1e4bdc1c92597",
+      "type": "repository_action.completed",
+      "producer": "repository_action",
+      "correlation": "cor-phase3-a7",
+      "payload": {
+        "action_id": "action-8b7b503337398afab8058f49",
+        "plan": "plan-goal-phase3-a7-v1",
+        "pipeline_session": "pipe-phase3-a7",
+        "node": "node-respond",
+        "policy_event": "evt-cor-phase3-a7-pol-a76500335aacdfb9",
+        "approval_event": null,
+        "outcome": {
+          "action_id": "action-8b7b503337398afab8058f49",
+          "kind": "read_file",
+          "status": "completed",
+          "input_digest": "64048e71e5654740c7c134c70ff33c29775d35ff3fe877eb83420f0c5ab80a75",
+          "actor": "phase3-evaluator",
+          "workspace_root": "<workspace>",
+          "path": "README.md",
+          "before_sha256": "157f276c894f1e56d4f75776c38213caf1924918c0fd57276d4e46046d1017a0",
+          "after_sha256": "157f276c894f1e56d4f75776c38213caf1924918c0fd57276d4e46046d1017a0",
+          "diff_ref": null,
+          "output_ref": "evt-action-8b7b503337398afab8058f49-artifact-output-e1302ca2893fa6aa",
+          "command_id": null,
+          "argv": [],
+          "exit_status": null,
+          "event_refs": [
+            "evt-action-8b7b503337398afab8058f49-artifact-output-e1302ca2893fa6aa"
+          ]
+        }
+      }
+    }
+  ],
+  "A8": [
+    {
+      "id": "evt-action-13ee97dce3863ffe526fd2a1-requested",
+      "type": "repository_action.requested",
+      "producer": "repository_action",
+      "correlation": "cor-phase3-a8",
+      "payload": {
+        "action_id": "action-13ee97dce3863ffe526fd2a1",
+        "input_digest": "6097b5bf77dbcccdf304c8732f59b30a99b4f20dd9cc905cd33c6a77eace11a0",
+        "action": {
+          "kind": "write_file",
+          "workspace_root": "<workspace>",
+          "path": "README.md",
+          "command_id": null,
+          "resolved_argv": [],
+          "actor": "phase3-evaluator"
+        }
+      }
+    },
+    {
+      "id": "evt-hi-phase3-a8-request_submitted-9a8f072134704932",
+      "type": "interaction.request_submitted",
+      "producer": "human_interaction",
+      "correlation": "cor-phase3-a8",
+      "payload": {}
+    },
+    {
+      "id": "evt-plan-goal-phase3-a8-v1-execution-plan-ef5b21c39a119817",
+      "type": "planning.execution_plan_assembled",
+      "producer": "planning",
+      "correlation": "cor-phase3-a8",
+      "payload": {
+        "plan": "plan-goal-phase3-a8-v1"
+      }
+    },
+    {
+      "id": "evt-action-13ee97dce3863ffe526fd2a1-cancelled",
+      "type": "repository_action.cancelled",
+      "producer": "repository_action",
+      "correlation": "cor-phase3-a8",
+      "payload": {
+        "action_id": "action-13ee97dce3863ffe526fd2a1",
+        "input_digest": "6097b5bf77dbcccdf304c8732f59b30a99b4f20dd9cc905cd33c6a77eace11a0",
+        "reason": "cancelled before side effect"
+      }
+    }
+  ],
+  "A3": [
+    {
+      "id": "evt-action-b63f6a61f1023e472878e59c-requested",
+      "type": "repository_action.requested",
+      "producer": "repository_action",
+      "correlation": "cor-action-test-request",
+      "payload": {
+        "action_id": "action-b63f6a61f1023e472878e59c",
+        "input_digest": "2c5454616d613647d21666bba93dd87295f449a53f871973cfbcee939c909a75",
+        "action": {
+          "kind": "write_file",
+          "workspace_root": "<workspace>",
+          "path": "../outside/secret.txt",
+          "command_id": null,
+          "resolved_argv": [],
+          "actor": "operator"
+        }
+      }
+    },
+    {
+      "id": "evt-plan-goal-action-test-request-v1-execution-plan-0760d09b94ff299d",
+      "type": "planning.execution_plan_assembled",
+      "producer": "planning",
+      "correlation": "cor-1",
+      "payload": {
+        "plan": "plan-goal-action-test-request-v1"
+      }
+    },
+    {
+      "id": "evt-cor-action-test-request-pol-99bd699920d6c464",
+      "type": "policy.evaluated",
+      "producer": "policy",
+      "correlation": "cor-action-test-request",
+      "payload": {
+        "decision": "allow"
+      }
+    },
+    {
+      "id": "evt-pipe-action-test-request-node-action-approved-test",
+      "type": "approval.approved",
+      "producer": "approval_exchange",
+      "correlation": "cor-action-test-request",
+      "payload": {
+        "node": "node-action",
+        "reason": "approved"
+      }
+    },
+    {
+      "id": "evt-action-b63f6a61f1023e472878e59c-denied-a5b51a1c5ce5-39524ebbe8e0e28d",
+      "type": "repository_action.denied",
+      "producer": "repository_action",
+      "correlation": "cor-action-test-request",
+      "payload": {
+        "action_id": "action-b63f6a61f1023e472878e59c",
+        "input_digest": "2c5454616d613647d21666bba93dd87295f449a53f871973cfbcee939c909a75",
+        "reason": "path traversal is not allowed"
+      }
+    }
+  ],
+  "A4": [
+    {
+      "id": "evt-action-c96567f76c98434e7587a2b1-requested",
+      "type": "repository_action.requested",
+      "producer": "repository_action",
+      "correlation": "cor-action-test-request",
+      "payload": {
+        "action_id": "action-c96567f76c98434e7587a2b1",
+        "input_digest": "6bdd53943f60120414f7d1d2dd943328e143a496b27642f4529b5399e68c10dc",
+        "action": {
+          "kind": "write_file",
+          "workspace_root": "<workspace>",
+          "path": "escape-link",
+          "command_id": null,
+          "resolved_argv": [],
+          "actor": "operator"
+        }
+      }
+    },
+    {
+      "id": "evt-plan-goal-action-test-request-v1-execution-plan-e4a99512fc9ed7f4",
+      "type": "planning.execution_plan_assembled",
+      "producer": "planning",
+      "correlation": "cor-1",
+      "payload": {
+        "plan": "plan-goal-action-test-request-v1"
+      }
+    },
+    {
+      "id": "evt-cor-action-test-request-pol-86d40fce5d7c235a",
+      "type": "policy.evaluated",
+      "producer": "policy",
+      "correlation": "cor-action-test-request",
+      "payload": {
+        "decision": "allow"
+      }
+    },
+    {
+      "id": "evt-pipe-action-test-request-node-action-approved-test",
+      "type": "approval.approved",
+      "producer": "approval_exchange",
+      "correlation": "cor-action-test-request",
+      "payload": {
+        "node": "node-action",
+        "reason": "approved"
+      }
+    },
+    {
+      "id": "evt-action-c96567f76c98434e7587a2b1-denied-cf6f69fb46bc-f9d4e28bc8abc0b7",
+      "type": "repository_action.denied",
+      "producer": "repository_action",
+      "correlation": "cor-action-test-request",
+      "payload": {
+        "action_id": "action-c96567f76c98434e7587a2b1",
+        "input_digest": "6bdd53943f60120414f7d1d2dd943328e143a496b27642f4529b5399e68c10dc",
+        "reason": "symlink path components are not allowed"
+      }
+    }
+  ],
+  "A5": [
+    {
+      "id": "evt-action-a56c6a2bf59c893d70dcf323-requested",
+      "type": "repository_action.requested",
+      "producer": "repository_action",
+      "correlation": "cor-action-test-request",
+      "payload": {
+        "action_id": "action-a56c6a2bf59c893d70dcf323",
+        "input_digest": "83a719cb10a5f0fd3993bfa4ccd2f9405005ca50149f489cbe63fbd9c7d5f51d",
+        "action": {
+          "kind": "run_test",
+          "workspace_root": "<workspace>",
+          "path": null,
+          "command_id": "unlisted-fixture-command",
+          "resolved_argv": [],
+          "actor": "operator"
+        }
+      }
+    },
+    {
+      "id": "evt-plan-goal-action-test-request-v1-execution-plan-edae57aacb331255",
+      "type": "planning.execution_plan_assembled",
+      "producer": "planning",
+      "correlation": "cor-1",
+      "payload": {
+        "plan": "plan-goal-action-test-request-v1"
+      }
+    },
+    {
+      "id": "evt-cor-action-test-request-pol-ea28fca673695721",
+      "type": "policy.evaluated",
+      "producer": "policy",
+      "correlation": "cor-action-test-request",
+      "payload": {
+        "decision": "allow"
+      }
+    },
+    {
+      "id": "evt-pipe-action-test-request-node-action-approved-test",
+      "type": "approval.approved",
+      "producer": "approval_exchange",
+      "correlation": "cor-action-test-request",
+      "payload": {
+        "node": "node-action",
+        "reason": "approved"
+      }
+    },
+    {
+      "id": "evt-action-a56c6a2bf59c893d70dcf323-denied-2f989daa6c55-05b21913b64401fb",
+      "type": "repository_action.denied",
+      "producer": "repository_action",
+      "correlation": "cor-action-test-request",
+      "payload": {
+        "action_id": "action-a56c6a2bf59c893d70dcf323",
+        "input_digest": "83a719cb10a5f0fd3993bfa4ccd2f9405005ca50149f489cbe63fbd9c7d5f51d",
+        "reason": "test command is not allow-listed"
+      }
+    }
+  ],
+  "A10": [
+    {
+      "id": "evt-action-17b41bc469eda68c9d1cf1a4-requested",
+      "type": "repository_action.requested",
+      "payload": {
+        "action": {
+          "kind": "write_file",
+          "path": "marker.txt",
+          "actor": "phase3-evaluator",
+          "request_identity": "phase3-a10-worker"
+        },
+        "action_id": "action-17b41bc469eda68c9d1cf1a4",
+        "input_digest": "5fa5f4226ee6fdaca81a4d3340097c42abd2eb40e1c95208b1c22e3cc810560e"
+      }
+    },
+    {
+      "id": "evt-action-17b41bc469eda68c9d1cf1a4-started-ecbd1dd50ba8d90d",
+      "type": "repository_action.started",
+      "payload": {
+        "action_id": "action-17b41bc469eda68c9d1cf1a4",
+        "actor": "phase3-evaluator",
+        "approval_event": "evt-pipe-phase3-a10-worker-node-respond-approved-b223469291cc8a84",
+        "argv": [],
+        "command_id": null,
+        "input_digest": "5fa5f4226ee6fdaca81a4d3340097c42abd2eb40e1c95208b1c22e3cc810560e",
+        "kind": "write_file",
+        "node": "node-respond",
+        "path": "marker.txt",
+        "pipeline_session": "pipe-phase3-a10-worker",
+        "plan": "plan-goal-phase3-a10-worker-v1",
+        "policy_event": "evt-cor-phase3-a10-worker-pol-43344d6e77f78c93",
+        "request_identity": "phase3-a10-worker",
+        "work_item_key": "respond",
+        "workspace_root": "<workspace>"
+      }
+    },
+    {
+      "id": "evt-action-17b41bc469eda68c9d1cf1a4-indeterminate",
+      "type": "repository_action.indeterminate",
+      "payload": {
+        "action_id": "action-17b41bc469eda68c9d1cf1a4",
+        "input_digest": "5fa5f4226ee6fdaca81a4d3340097c42abd2eb40e1c95208b1c22e3cc810560e",
+        "status": "indeterminate"
+      }
+    }
+  ],
+  "A12": [
+    {
+      "id": "evt-action-9988fa0cf09d1d8bec34d8b1-requested",
+      "type": "repository_action.requested",
+      "producer": "repository_action",
+      "correlation": "cor-cli-ea454b246cf6",
+      "payload": {
+        "action_id": "action-9988fa0cf09d1d8bec34d8b1",
+        "input_digest": "dc714d17da5e0e6c4da8f0eadd01faa72c49d9e562d8bac758df38ef7377b0b9",
+        "action": {
+          "kind": "run_test",
+          "workspace_root": "<workspace>",
+          "path": null,
+          "command_id": "fixture-test",
+          "resolved_argv": [
+            "<python>",
+            "-m",
+            "pytest",
+            "tests/test_app.py",
+            "-q"
+          ],
+          "actor": "operator"
+        }
+      }
+    },
+    {
+      "id": "evt-hi-cli-ea454b246cf6-request_submitted-e1aa04d410136880",
+      "type": "interaction.request_submitted",
+      "producer": "human_interaction",
+      "correlation": "cor-cli-ea454b246cf6",
+      "payload": {}
+    },
+    {
+      "id": "evt-plan-goal-cli-ea454b246cf6-v1-execution-plan-aae937428556da17",
+      "type": "planning.execution_plan_assembled",
+      "producer": "planning",
+      "correlation": "cor-cli-ea454b246cf6",
+      "payload": {
+        "plan": "plan-goal-cli-ea454b246cf6-v1"
+      }
+    },
+    {
+      "id": "evt-cor-cli-ea454b246cf6-pol-9cd0a5a8f0632318",
+      "type": "policy.evaluated",
+      "producer": "policy",
+      "correlation": "cor-cli-ea454b246cf6",
+      "payload": {
+        "decision": "allow"
+      }
+    },
+    {
+      "id": "evt-action-9988fa0cf09d1d8bec34d8b1-started-fbe3d39118c9abcc",
+      "type": "repository_action.started",
+      "producer": "repository_action",
+      "correlation": "cor-cli-ea454b246cf6",
+      "payload": {
+        "action_id": "action-9988fa0cf09d1d8bec34d8b1",
+        "input_digest": "dc714d17da5e0e6c4da8f0eadd01faa72c49d9e562d8bac758df38ef7377b0b9",
+        "kind": "run_test",
+        "actor": "operator",
+        "request_identity": "cli-ea454b246cf6",
+        "work_item_key": "respond",
+        "workspace_root": "<workspace>",
+        "path": null,
+        "command_id": "fixture-test",
+        "argv": [
+          "<python>",
+          "-m",
+          "pytest",
+          "tests/test_app.py",
+          "-q"
+        ],
+        "plan": "plan-goal-cli-ea454b246cf6-v1",
+        "pipeline_session": "pipe-cli-ea454b246cf6",
+        "node": "node-respond",
+        "policy_event": "evt-cor-cli-ea454b246cf6-pol-9cd0a5a8f0632318",
+        "approval_event": null
+      }
+    },
+    {
+      "id": "evt-action-9988fa0cf09d1d8bec34d8b1-artifact-output-7bbe6a6c30b5ab33",
+      "type": "repository_action.artifact",
+      "producer": "repository_action",
+      "correlation": "cor-cli-ea454b246cf6",
+      "payload": {
+        "action_id": "action-9988fa0cf09d1d8bec34d8b1",
+        "artifact_id": "action-9988fa0cf09d1d8bec34d8b1-output",
+        "kind": "action_output",
+        "path": "<artifact>/output-3605abb09038ce24e90d81df8f7c0d87bb6f647a5e016bf461d8a8fcb408f6e9.txt",
+        "sha256": "3605abb09038ce24e90d81df8f7c0d87bb6f647a5e016bf461d8a8fcb408f6e9"
+      }
+    },
+    {
+      "id": "evt-action-9988fa0cf09d1d8bec34d8b1-completed-cf17221b899763a8",
+      "type": "repository_action.completed",
+      "producer": "repository_action",
+      "correlation": "cor-cli-ea454b246cf6",
+      "payload": {
+        "action_id": "action-9988fa0cf09d1d8bec34d8b1",
+        "plan": "plan-goal-cli-ea454b246cf6-v1",
+        "pipeline_session": "pipe-cli-ea454b246cf6",
+        "node": "node-respond",
+        "policy_event": "evt-cor-cli-ea454b246cf6-pol-9cd0a5a8f0632318",
+        "approval_event": null,
+        "outcome": {
+          "action_id": "action-9988fa0cf09d1d8bec34d8b1",
+          "kind": "run_test",
+          "status": "completed",
+          "input_digest": "dc714d17da5e0e6c4da8f0eadd01faa72c49d9e562d8bac758df38ef7377b0b9",
+          "actor": "operator",
+          "workspace_root": "<workspace>",
+          "path": null,
+          "before_sha256": null,
+          "after_sha256": null,
+          "diff_ref": null,
+          "output_ref": "evt-action-9988fa0cf09d1d8bec34d8b1-artifact-output-7bbe6a6c30b5ab33",
+          "command_id": "fixture-test",
+          "argv": [
+            "<python>",
+            "-m",
+            "pytest",
+            "tests/test_app.py",
+            "-q"
+          ],
+          "exit_status": 0,
+          "event_refs": [
+            "evt-action-9988fa0cf09d1d8bec34d8b1-artifact-output-7bbe6a6c30b5ab33"
+          ]
+        }
+      }
+    }
+  ],
+  "A13": [
+    {
+      "id": "evt-action-6c011208a0f9d66f5da420f3-requested",
+      "type": "repository_action.requested",
+      "producer": "repository_action",
+      "correlation": "cor-cli-8f09dbfaadbf",
+      "payload": {
+        "action_id": "action-6c011208a0f9d66f5da420f3",
+        "input_digest": "c76fe74569af3a52bfcb2bc66734dfa655572bca1b2a77f65cb1ff565e11f5a9",
+        "action": {
+          "kind": "run_test",
+          "workspace_root": "<workspace>",
+          "path": null,
+          "command_id": "fixture-test",
+          "resolved_argv": [
+            "<python>",
+            "-m",
+            "pytest",
+            "tests/test_app.py",
+            "-q"
+          ],
+          "actor": "operator"
+        }
+      }
+    },
+    {
+      "id": "evt-hi-cli-8f09dbfaadbf-request_submitted-566ef1196d1f7db1",
+      "type": "interaction.request_submitted",
+      "producer": "human_interaction",
+      "correlation": "cor-cli-8f09dbfaadbf",
+      "payload": {}
+    },
+    {
+      "id": "evt-plan-goal-cli-8f09dbfaadbf-v1-execution-plan-6545e62bdcd1e5b3",
+      "type": "planning.execution_plan_assembled",
+      "producer": "planning",
+      "correlation": "cor-cli-8f09dbfaadbf",
+      "payload": {
+        "plan": "plan-goal-cli-8f09dbfaadbf-v1"
+      }
+    },
+    {
+      "id": "evt-cor-cli-8f09dbfaadbf-pol-e0f84187a17a5750",
+      "type": "policy.evaluated",
+      "producer": "policy",
+      "correlation": "cor-cli-8f09dbfaadbf",
+      "payload": {
+        "decision": "allow"
+      }
+    },
+    {
+      "id": "evt-action-6c011208a0f9d66f5da420f3-started-454b18aea27f91b3",
+      "type": "repository_action.started",
+      "producer": "repository_action",
+      "correlation": "cor-cli-8f09dbfaadbf",
+      "payload": {
+        "action_id": "action-6c011208a0f9d66f5da420f3",
+        "input_digest": "c76fe74569af3a52bfcb2bc66734dfa655572bca1b2a77f65cb1ff565e11f5a9",
+        "kind": "run_test",
+        "actor": "operator",
+        "request_identity": "cli-8f09dbfaadbf",
+        "work_item_key": "respond",
+        "workspace_root": "<workspace>",
+        "path": null,
+        "command_id": "fixture-test",
+        "argv": [
+          "<python>",
+          "-m",
+          "pytest",
+          "tests/test_app.py",
+          "-q"
+        ],
+        "plan": "plan-goal-cli-8f09dbfaadbf-v1",
+        "pipeline_session": "pipe-cli-8f09dbfaadbf",
+        "node": "node-respond",
+        "policy_event": "evt-cor-cli-8f09dbfaadbf-pol-e0f84187a17a5750",
+        "approval_event": null
+      }
+    },
+    {
+      "id": "evt-action-6c011208a0f9d66f5da420f3-artifact-output-3a49cf8b481dd0e7",
+      "type": "repository_action.artifact",
+      "producer": "repository_action",
+      "correlation": "cor-cli-8f09dbfaadbf",
+      "payload": {
+        "action_id": "action-6c011208a0f9d66f5da420f3",
+        "artifact_id": "action-6c011208a0f9d66f5da420f3-output",
+        "kind": "action_output",
+        "path": "<artifact>/output-5b19689a97d618d5cdfce632de67285a8efa3c57100a80350a5bb7ca9e05ae34.txt",
+        "sha256": "5b19689a97d618d5cdfce632de67285a8efa3c57100a80350a5bb7ca9e05ae34"
+      }
+    },
+    {
+      "id": "evt-action-6c011208a0f9d66f5da420f3-completed-af0a069afb92deb6",
+      "type": "repository_action.completed",
+      "producer": "repository_action",
+      "correlation": "cor-cli-8f09dbfaadbf",
+      "payload": {
+        "action_id": "action-6c011208a0f9d66f5da420f3",
+        "plan": "plan-goal-cli-8f09dbfaadbf-v1",
+        "pipeline_session": "pipe-cli-8f09dbfaadbf",
+        "node": "node-respond",
+        "policy_event": "evt-cor-cli-8f09dbfaadbf-pol-e0f84187a17a5750",
+        "approval_event": null,
+        "outcome": {
+          "action_id": "action-6c011208a0f9d66f5da420f3",
+          "kind": "run_test",
+          "status": "completed",
+          "input_digest": "c76fe74569af3a52bfcb2bc66734dfa655572bca1b2a77f65cb1ff565e11f5a9",
+          "actor": "operator",
+          "workspace_root": "<workspace>",
+          "path": null,
+          "before_sha256": null,
+          "after_sha256": null,
+          "diff_ref": null,
+          "output_ref": "evt-action-6c011208a0f9d66f5da420f3-artifact-output-3a49cf8b481dd0e7",
+          "command_id": "fixture-test",
+          "argv": [
+            "<python>",
+            "-m",
+            "pytest",
+            "tests/test_app.py",
+            "-q"
+          ],
+          "exit_status": 0,
+          "event_refs": [
+            "evt-action-6c011208a0f9d66f5da420f3-artifact-output-3a49cf8b481dd0e7"
+          ]
+        }
+      }
+    }
+  ],
+  "A14": [
+    {
+      "id": "evt-action-b09da397f940368de60231ab-requested",
+      "type": "repository_action.requested",
+      "producer": "repository_action",
+      "correlation": "cor-phase3-a14",
+      "payload": {
+        "action_id": "action-b09da397f940368de60231ab",
+        "input_digest": "d42d6bd5430198c8970cb11b70a9bc3aa76534c0ccf2c92c04ebb0b448ef859b",
+        "action": {
+          "kind": "write_file",
+          "workspace_root": "<workspace>",
+          "path": "README.md",
+          "command_id": null,
+          "resolved_argv": [],
+          "actor": "phase3-evaluator"
+        }
+      }
+    },
+    {
+      "id": "evt-hi-phase3-a14-request_submitted-aabfd3474520f1a2",
+      "type": "interaction.request_submitted",
+      "producer": "human_interaction",
+      "correlation": "cor-phase3-a14",
+      "payload": {}
+    },
+    {
+      "id": "evt-plan-goal-phase3-a14-v1-execution-plan-23a11af7e466cc31",
+      "type": "planning.execution_plan_assembled",
+      "producer": "planning",
+      "correlation": "cor-phase3-a14",
+      "payload": {
+        "plan": "plan-goal-phase3-a14-v1"
+      }
+    },
+    {
+      "id": "evt-cor-phase3-a14-pol-0023d6a4f3a319b2",
+      "type": "policy.evaluated",
+      "producer": "policy",
+      "correlation": "cor-phase3-a14",
+      "payload": {
+        "decision": "allow"
+      }
+    },
+    {
+      "id": "evt-pipe-phase3-a14-node-respond-requested-675a75fa6adbb7a1",
+      "type": "approval.requested",
+      "producer": "approval_exchange",
+      "correlation": "cor-phase3-a14",
+      "payload": {
+        "node": "node-respond"
+      }
+    },
+    {
+      "id": "evt-pipe-phase3-a14-node-respond-pending-c7a6a9c346cc9fb3",
+      "type": "approval.pending",
+      "producer": "approval_exchange",
+      "correlation": "cor-phase3-a14",
+      "payload": {
+        "node": "node-respond"
+      }
+    },
+    {
+      "id": "evt-pipe-phase3-a14-node-respond-approved-e3990f00f04b452a",
+      "type": "approval.approved",
+      "producer": "approval_exchange",
+      "correlation": "cor-phase3-a14",
+      "payload": {
+        "node": "node-respond",
+        "reason": ""
+      }
+    },
+    {
+      "id": "evt-cor-phase3-a14-pol-ab22b5aadd4788d2",
+      "type": "policy.evaluated",
+      "producer": "policy",
+      "correlation": "cor-phase3-a14",
+      "payload": {
+        "decision": "deny"
+      }
+    },
+    {
+      "id": "evt-action-b09da397f940368de60231ab-denied-b743d1abfd40",
+      "type": "repository_action.denied",
+      "producer": "repository_action",
+      "correlation": "cor-phase3-a14",
+      "payload": {
+        "action_id": "action-b09da397f940368de60231ab",
+        "input_digest": "d42d6bd5430198c8970cb11b70a9bc3aa76534c0ccf2c92c04ebb0b448ef859b",
+        "reason": "Policy DENY or non-ALLOW decision"
+      }
+    }
+  ]
+}

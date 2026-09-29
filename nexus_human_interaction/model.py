@@ -17,6 +17,7 @@ from nexus_core.contracts.base import Reference, ValueObject
 from nexus_core.contracts.enums import KnowledgeType
 from nexus_core.domain import Capability
 from nexus_core.domain.context_package import ContextPackage
+from nexus_execution.actions import RepositoryAction
 from nexus_intent.model import ClarificationRequest
 from nexus_planning import WorkItemSpec
 from nexus_planning.grounded.model import ExecutionPlan
@@ -45,6 +46,7 @@ class OperatorRequest:
     correlation_identifier: str = ""
     repository_root: str | None = None
     planning_step_template: WorkItemSpec | None = None
+    repository_actions: tuple[RepositoryAction, ...] = ()
 
     @property
     def interaction_session_id(self) -> str:

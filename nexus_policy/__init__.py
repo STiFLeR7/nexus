@@ -26,9 +26,11 @@ from nexus_policy.defaults import (
     EXECUTION_ACTION_CLASS,
     GLOBAL_COMMAND_BLACKLIST,
     KNOWLEDGE_GROUNDING_ACTION_CLASS,
+    REPOSITORY_ACTION_CLASS,
     REQUIRED_RUNTIME_POLICY,
     autonomous_execution_baseline,
     knowledge_grounding_baseline,
+    repository_action_baseline,
     v1_seed_policies,
 )
 from nexus_policy.engine import PolicyEngine
@@ -49,6 +51,7 @@ __all__ = [
     "KNOWLEDGE_GROUNDING_ACTION_CLASS",
     "POLICY_EVALUATED",
     "POLICY_REGISTERED",
+    "REPOSITORY_ACTION_CLASS",
     "REQUIRED_RUNTIME_POLICY",
     "DecisionRequest",
     "InMemoryPolicyRegistry",
@@ -63,6 +66,7 @@ __all__ = [
     "build_policy",
     "knowledge_grounding_baseline",
     "matches",
+    "repository_action_baseline",
     "resolve",
     "specificity",
     "v1_seed_policies",

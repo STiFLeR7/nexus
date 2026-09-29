@@ -8,9 +8,11 @@ introduces no engine and modifies no owner.
 
 from __future__ import annotations
 
+from collections.abc import Mapping
 from dataclasses import dataclass
 
 from nexus_approval import ApprovalExchange, build_approval_exchange
+from nexus_engineering.reasoner import Reasoner
 from nexus_human_interaction.facade import HumanInteraction
 from nexus_human_interaction.observability import OperatorObservability
 from nexus_infra import InfrastructureContext
@@ -37,6 +39,9 @@ def build_human_interaction(
     adapter_factory: AdapterFactory | None = None,
     knowledge_repositories: KnowledgeRepositories | None = None,
     learning: bool = True,
+    action_command_allowlist: Mapping[str, tuple[str, ...]] | None = None,
+    action_artifact_directory: str | None = None,
+    engineering_reasoner: Reasoner | None = None,
 ) -> HumanInteractionContext:
     """Wire the operator façade over the constitutional pipeline (durable-capable, learning-on).
 
@@ -54,6 +59,9 @@ def build_human_interaction(
         adapter_factory=adapter_factory,
         knowledge_repositories=knowledge_repositories,
         learning=learning,
+        action_command_allowlist=action_command_allowlist,
+        action_artifact_directory=action_artifact_directory,
+        engineering_reasoner=engineering_reasoner,
     )
     approval = build_approval_exchange(spine.coordinator, infrastructure, now=ts.now)
     facade = HumanInteraction(

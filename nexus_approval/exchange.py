@@ -60,7 +60,12 @@ class ApprovalExchange:
     # -- publish (derive requests from the Actuation approval boundary) ------- #
 
     def publish(
-        self, session_id: str, waiting: tuple[str, ...], *, expires_at: str | None = None
+        self,
+        session_id: str,
+        waiting: tuple[str, ...],
+        *,
+        expires_at: str | None = None,
+        human_required: tuple[str, ...] = (),
     ) -> tuple[ApprovalRequest, ...]:
         """Publish an approval request for each waiting gate not yet published; return the pending queue.
 
@@ -81,7 +86,11 @@ class ApprovalExchange:
                 f"{node}-requested",
                 aevents.APPROVAL_REQUESTED,
                 correlation,
-                {"node": node, "taxonomy": taxonomy, "expires_at": expires_at},
+                {
+                    "node": node,
+                    "taxonomy": "human_review" if node in human_required else taxonomy,
+                    "expires_at": expires_at,
+                },
             )
             self._emit(
                 session_id, f"{node}-pending", aevents.APPROVAL_PENDING, correlation, {"node": node}

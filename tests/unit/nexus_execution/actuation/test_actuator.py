@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from dataclasses import replace
+
 from nexus_execution.actuation import (
     EXECUTION_COMPLETED,
     ActuationControl,
@@ -104,6 +106,35 @@ def test_a_granted_approval_gate_lets_the_node_proceed() -> None:
     assert state.status is ActuationStatus.COMPLETED
     assert state.approval_received == ("node-b",)
     assert "execution.approval_received" in execution_event_types(infra)
+
+
+def test_action_write_gate_waits_even_when_strategy_is_automatic() -> None:
+    plan = make_plan((item("write", requires_approval=True),))
+    infra, ctx = wired()
+    inputs = replace(to_inputs(plan), human_required_gates=("node-write",))
+
+    state = ctx.actuator.actuate(inputs)
+
+    assert "node-write" in state.waiting_nodes
+    assert "node-write" not in state.completed_nodes
+    assert not any(
+        event.type == "runtime.started" and event.payload.get("work_package") == "wp-g1-write"
+        for event in infra.event_store.read_all()
+    )
+
+
+def test_explicitly_human_approved_action_gate_proceeds_under_automatic_strategy() -> None:
+    plan = make_plan((item("write", requires_approval=True),))
+    infra, ctx = wired()
+    inputs = replace(
+        to_inputs(plan, granted_gates=("node-write",)),
+        human_required_gates=("node-write",),
+    )
+
+    state = ctx.actuator.actuate(inputs)
+
+    assert state.status is ActuationStatus.COMPLETED
+    assert state.approval_received == ("node-write",)
 
 
 def test_graceful_shutdown_pauses_with_ready_work_remaining() -> None:

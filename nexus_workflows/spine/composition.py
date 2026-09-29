@@ -16,6 +16,7 @@ It redesigns nothing and modifies no owner: it is DI wiring only.
 
 from __future__ import annotations
 
+from collections.abc import Mapping
 from dataclasses import dataclass
 
 from nexus_context.grounding import (
@@ -23,6 +24,7 @@ from nexus_context.grounding import (
     build_grounded_context_engineering,
 )
 from nexus_engineering import EngineeringContext, build_engineering
+from nexus_engineering.reasoner import Reasoner
 from nexus_estimation import build_estimation
 from nexus_execution.adapter import RuntimeAdapter
 from nexus_infra import InfrastructureContext
@@ -67,6 +69,9 @@ def build_constitutional_pipeline(
     adapter_factory: AdapterFactory | None = None,
     knowledge_repositories: KnowledgeRepositories | None = None,
     learning: bool = True,
+    action_command_allowlist: Mapping[str, tuple[str, ...]] | None = None,
+    action_artifact_directory: str | None = None,
+    engineering_reasoner: Reasoner | None = None,
 ) -> SpinePipelineContext:
     """Wire the single Goal→Knowledge pipeline over one infrastructure context (durable-capable).
 
@@ -85,7 +90,7 @@ def build_constitutional_pipeline(
     ).build()
 
     intent = build_intent(infrastructure, now=now)
-    engineering = build_engineering(infrastructure, now=now)
+    engineering = build_engineering(infrastructure, reasoner=engineering_reasoner, now=now)
     estimation = build_estimation(infrastructure, now=now)
     policy = build_policy(infrastructure, now=now)
     # Context becomes grounding-aware (P9 path) so Knowledge can flow into it (INV-06, read-only).
@@ -112,6 +117,8 @@ def build_constitutional_pipeline(
         reflection=pipeline.reflection,
         knowledge=pipeline.knowledge,
         adapter_factory=adapter_factory or _default_adapter_factory,
+        action_command_allowlist=action_command_allowlist,
+        action_artifact_directory=action_artifact_directory,
         selector=selector,
         timestamps=ts,
         now=now,
