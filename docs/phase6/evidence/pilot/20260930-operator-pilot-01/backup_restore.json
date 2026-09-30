@@ -1,0 +1,23 @@
+{
+  "sqlite_online_backup": true,
+  "sidecar_backup": true,
+  "restored_to_same_paths": true,
+  "artifact_count": 9,
+  "artifact_hashes_valid": true,
+  "artifact_validation": [
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true
+  ],
+  "replay_new_event_types": [],
+  "rollback_pair_preserved": true,
+  "relocation_supported": false,
+  "frozen_cases_sha256": "e915585b1cc5c541827e59445bf738739084b614f217a74e97331a89e96d502c",
+  "frozen_gate_sha256": "73b72c772ff86269263c03fcb8f4664f265cd71c1f7e6435c9c90f49dd7194f5"
+}

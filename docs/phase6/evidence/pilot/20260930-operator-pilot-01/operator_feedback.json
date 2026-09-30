@@ -1,0 +1,7 @@
+{
+  "run_id": "20260930-operator-pilot-01",
+  "actor": "user-operator",
+  "false_denials": 0,
+  "source": "Operator reply in the current Nexus Phase 6 chat",
+  "operator_statement": "P1 useful; P2 useful; P3 useful; P4 not useful; P5 not useful; false denials: no"
+}

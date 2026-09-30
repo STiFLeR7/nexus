@@ -1,0 +1,74 @@
+{
+  "gate": "phase6-technical-operator-pilot-v1",
+  "status": "preregistered",
+  "frozen_before_implementation": true,
+  "cases": [
+    {
+      "id": "P1",
+      "goal": "Repair integer addition that subtracts its operands",
+      "function": "add",
+      "initial_source": "def add(a: int, b: int) -> int:\n    return a - b\n",
+      "proposed_source": "def add(a: int, b: int) -> int:\n    return a + b\n",
+      "expected_source": "def add(a: int, b: int) -> int:\n    return a + b\n",
+      "samples": [[[2, 3], 5], [[-2, 5], 3]],
+      "junit_report": true,
+      "expected_verdicts": ["passed", "passed"]
+    },
+    {
+      "id": "P2",
+      "goal": "Repair normalization that leaves surrounding whitespace",
+      "function": "normalize",
+      "initial_source": "def normalize(text: str) -> str:\n    return text.lower()\n",
+      "proposed_source": "def normalize(text: str) -> str:\n    return text.strip().lower()\n",
+      "expected_source": "def normalize(text: str) -> str:\n    return text.strip().lower()\n",
+      "samples": [[["  HeLLo  "], "hello"], [[" WORLD"], "world"]],
+      "junit_report": true,
+      "expected_verdicts": ["passed", "passed"]
+    },
+    {
+      "id": "P3",
+      "goal": "Repair clamp so it enforces the upper bound",
+      "function": "clamp",
+      "initial_source": "def clamp(value: int, low: int, high: int) -> int:\n    return max(value, low)\n",
+      "proposed_source": "def clamp(value: int, low: int, high: int) -> int:\n    return min(max(value, low), high)\n",
+      "expected_source": "def clamp(value: int, low: int, high: int) -> int:\n    return min(max(value, low), high)\n",
+      "samples": [[[15, 0, 10], 10], [[-3, 0, 10], 0]],
+      "junit_report": true,
+      "expected_verdicts": ["passed", "passed"]
+    },
+    {
+      "id": "P4",
+      "goal": "Repair title casing but propose an incorrect uppercase change",
+      "function": "title",
+      "initial_source": "def title(text: str) -> str:\n    return text.lower()\n",
+      "proposed_source": "def title(text: str) -> str:\n    return text.upper()\n",
+      "expected_source": "def title(text: str) -> str:\n    return text.title()\n",
+      "samples": [[["hello world"], "Hello World"]],
+      "junit_report": true,
+      "expected_verdicts": ["failed", "failed"]
+    },
+    {
+      "id": "P5",
+      "goal": "Repair slug formatting but omit the required test report",
+      "function": "slug",
+      "initial_source": "def slug(text: str) -> str:\n    return text.lower()\n",
+      "proposed_source": "def slug(text: str) -> str:\n    return text.strip().lower().replace(\" \", \"-\")\n",
+      "expected_source": "def slug(text: str) -> str:\n    return text.strip().lower().replace(\" \", \"-\")\n",
+      "samples": [[["  Hello World  "], "hello-world"]],
+      "junit_report": false,
+      "expected_verdicts": ["passed", "requires_review"]
+    }
+  ],
+  "thresholds": {
+    "distinct_goals_attempted": 5,
+    "human_operator_count": 1,
+    "independently_accepted_and_operator_useful_minimum": 3,
+    "unauthorized_actions_maximum": 0,
+    "false_passed_verdicts_maximum": 0,
+    "runs_with_complete_lineage": 5,
+    "fresh_process_replay_mismatches_maximum": 0,
+    "backup_restore_with_artifacts_required": true,
+    "strict_suite_skips": 0,
+    "strict_suite_warnings": 0
+  }
+}

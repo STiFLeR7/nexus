@@ -1,0 +1,15 @@
+{
+  "case_id": "P5",
+  "run_id": "20260930-operator-pilot-01",
+  "actor": "user-operator",
+  "useful": false,
+  "assessment": "not_useful",
+  "notes": "",
+  "source_correlation": "cor-phase6-20260930-operator-pilot-01-p5",
+  "validation_verdicts": [
+    "passed",
+    "requires_review"
+  ],
+  "approval_mode": "human",
+  "recorded_at": "2026-09-30T17:09:31.279029+05:30"
+}
