@@ -149,6 +149,12 @@ def _print_response(
     ops: OperationsContext, request: OperatorRequest, response: InteractionResponse
 ) -> None:
     print(f"  status: {response.status}")
+    print(f"  runtime completed: {'yes' if response.runtime_completed else 'no'}")
+    accepted = response.outcome_accepted
+    acceptance = "unknown" if accepted is None else ("accepted" if accepted else "not accepted")
+    if response.validation_decisions:
+        print(f"  validation verdicts: {', '.join(response.validation_decisions)}")
+    print(f"  outcome acceptance: {acceptance}")
     if response.awaiting_approval:
         for pending in response.pending_approvals:
             print(f"  [gate] node={pending.node!r} requires approval before it can run.")

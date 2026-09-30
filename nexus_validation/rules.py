@@ -15,6 +15,7 @@ from dataclasses import dataclass, field
 from typing import Protocol, runtime_checkable
 
 from nexus_core.contracts.base import Reference
+from nexus_core.domain.event import Event
 from nexus_core.domain.work_package import WorkPackage
 from nexus_execution.results import ExecutionResult
 from nexus_execution.signals import TerminalOutcome
@@ -41,6 +42,8 @@ class ValidationPolicy:
 
     require_artifact_corroboration: bool = True
     required_evidence_sources: tuple[EvidenceSource, ...] = ()
+    require_explicit_conditions: bool = False
+    action_artifact_directory: str | None = None
 
 
 @dataclass(frozen=True, slots=True)
@@ -51,6 +54,8 @@ class RuleContext:
     work_package: WorkPackage
     evidence: tuple[Evidence, ...]
     policy: ValidationPolicy = field(default_factory=ValidationPolicy)
+    events: tuple[Event, ...] = ()
+    precomputed_outcome_condition: RuleResult | None = None
 
     def of_source(self, source: EvidenceSource) -> tuple[Evidence, ...]:
         """Evidence collected from a given source (deterministic order)."""
@@ -154,6 +159,12 @@ class CompletionCriteriaRule:
 
     def evaluate(self, context: RuleContext) -> RuleResult:
         criteria = context.work_package.completion_criteria
+        if "outcome_conditions" in criteria:
+            return _result(
+                self.rule_id,
+                RuleOutcome.NOT_APPLICABLE,
+                "finite outcome conditions are evaluated independently",
+            )
         if not criteria:
             return _result(
                 self.rule_id, RuleOutcome.NOT_APPLICABLE, "no explicit completion criteria", ()
@@ -200,10 +211,25 @@ class CompletionCriteriaRule:
         )
 
 
+class OutcomeConditionsRule:
+    """Assess the finite file/JUnit acceptance conditions independently of runtime claims."""
+
+    rule_id = "outcome_conditions"
+
+    def evaluate(self, context: RuleContext) -> RuleResult:
+        if context.precomputed_outcome_condition is not None:
+            return context.precomputed_outcome_condition
+        from nexus_validation.outcome_evidence import OutcomeConditionEvaluator
+
+        result, _evidence = OutcomeConditionEvaluator().evaluate(context)
+        return result
+
+
 DEFAULT_RULES: tuple[ValidationRule, ...] = (
     ProcessOutcomeRule(),
     ExitStatusRule(),
     ErrorAbsenceRule(),
     CompletionCriteriaRule(),
+    OutcomeConditionsRule(),
     ArtifactCorroborationRule(),
 )

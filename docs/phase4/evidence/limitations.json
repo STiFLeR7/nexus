@@ -1,0 +1,5 @@
+{
+  "file_sha256": "Verifies exact bytes at a workspace-relative path; it does not establish semantic correctness.",
+  "junit_xml": "Counts testcase failure/error nodes from a named allow-listed action report; it does not establish test-suite completeness or test quality.",
+  "runtime": "Exit status and process completion are recorded separately and cannot override JUnit evidence."
+}

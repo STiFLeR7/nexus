@@ -2,10 +2,12 @@
 
 from __future__ import annotations
 
+from nexus_core.domain.event import Event
 from nexus_execution.signals import TerminalOutcome
 from nexus_infra import InMemoryObservability, build_infrastructure
+from nexus_infra.composition import InfrastructureContext
 from nexus_runtime import FixedTimestampSource
-from nexus_validation import ValidationEngine, build_validation
+from nexus_validation import ValidationEngine, ValidationPolicy, build_validation
 from nexus_validation.vocabulary import ValidationDecision, ValidationStage
 from tests.unit.nexus_validation.helpers import (
     artifact_events,
@@ -14,11 +16,11 @@ from tests.unit.nexus_validation.helpers import (
 )
 
 
-def _infra():  # type: ignore[no-untyped-def]
+def _infra() -> InfrastructureContext:
     return build_infrastructure(observability=InMemoryObservability())
 
 
-def _validation_events(infra):  # type: ignore[no-untyped-def]
+def _validation_events(infra: InfrastructureContext) -> list[Event]:
     return [e for e in infra.event_store.read_all() if e.type.startswith("validation.")]
 
 
@@ -77,7 +79,7 @@ def test_emits_full_validation_event_sequence() -> None:
     types = [e.type for e in _validation_events(infra)]
     assert types[0] == "validation.started"
     assert types[1] == "validation.evidence_collected"
-    assert types.count("validation.rule_evaluated") == 5
+    assert types.count("validation.rule_evaluated") == 6
     assert types[-1] == "validation.completed"
 
 
@@ -138,3 +140,37 @@ def test_report_references_evidence_and_does_not_duplicate() -> None:
     # The report carries Evidence references, not Evidence objects.
     assert all(ref.target_type == "evidence" for ref in report.evidence_refs)
     assert report.correlation_identifier != ""
+
+
+def test_operator_policy_requires_explicit_conditions_and_replays_durable_report() -> None:
+    infra = _infra()
+    ctx = build_validation(infra, timestamps=FixedTimestampSource())
+    result = execution_result()
+    report = ctx.engine.validate(
+        result,
+        val_work_package(),
+        events=artifact_events(("a.py",)),
+        policy=ValidationPolicy(require_explicit_conditions=True),
+    )
+    assert report.decision is ValidationDecision.REQUIRES_REVIEW
+    before = tuple(infra.event_store.read_all())
+    replayed = ctx.engine.replay(before, result)
+    assert replayed == report
+    assert tuple(infra.event_store.read_all()) == before
+
+
+def test_terminal_event_carries_full_report_and_evidence_bundle() -> None:
+    infra = _infra()
+    ctx = build_validation(infra, timestamps=FixedTimestampSource())
+    result = execution_result()
+    report = ctx.engine.validate(result, val_work_package(), events=artifact_events(("a.py",)))
+    terminal = next(
+        event for event in _validation_events(infra) if event.type == "validation.completed"
+    )
+    collected = next(
+        event
+        for event in _validation_events(infra)
+        if event.type == "validation.evidence_collected"
+    )
+    assert terminal.payload["report"] == report.model_dump(mode="json")
+    assert collected.payload["evidence"]

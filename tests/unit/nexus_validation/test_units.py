@@ -32,8 +32,8 @@ def test_decision_vocabulary_is_doc14_canon() -> None:
 
 
 def test_evidence_sources_present() -> None:
-    assert EvidenceSource.ARTIFACT == "artifact"
-    assert EvidenceSource.EXECUTION_METRIC == "execution_metric"
+    assert EvidenceSource.ARTIFACT.value == "artifact"
+    assert EvidenceSource.EXECUTION_METRIC.value == "execution_metric"
 
 
 def test_rule_outcomes_present() -> None:
@@ -41,6 +41,7 @@ def test_rule_outcomes_present() -> None:
         "satisfied",
         "violated",
         "insufficient_evidence",
+        "partial",
         "not_applicable",
     }
 

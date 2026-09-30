@@ -24,8 +24,10 @@ log-embedded ExecutionPlan, so it is never persisted as a second copy of another
 from __future__ import annotations
 
 import os
+import tempfile
 from collections.abc import Callable, Mapping
 from dataclasses import dataclass, field
+from pathlib import Path
 
 from nexus_context import ContextRequest, context_reference
 from nexus_context.grounding import GroundedContextEngineeringContext, GroundingInputs
@@ -87,7 +89,7 @@ from nexus_reflection import ReflectionContextBundle
 from nexus_reflection.report import ReflectionReport
 from nexus_repository import RepositoryProfile, build_repository
 from nexus_runtime.events import SystemTimestampSource, TimestampSource
-from nexus_validation import ValidationContext
+from nexus_validation import ValidationContext, ValidationPolicy
 from nexus_validation.report import ValidationReport
 from nexus_workflows.executor import ReplayTimeline, reconstruct
 from nexus_workflows.spine import events as pevents
@@ -884,12 +886,30 @@ class ConstitutionalPipeline:
         results = execution_results(ctx.execution_state, events)  # the F-3 seam
         ctx.execution_results = results
         wp_by_ref = {wp.identifier: wp for wp in ctx.plan.work_packages}
-        reports = [
-            self._validation.engine.validate(
-                result, wp_by_ref[result.work_package_ref.identifier], events=events
+        reports = []
+        for result in results:
+            work_package = wp_by_ref[result.work_package_ref.identifier]
+            existing = self._validation.engine.replay(events, result, work_package)
+            action_bound = any(
+                reference.target_type == "action_request" for reference in work_package.inputs
             )
-            for result in results
-        ]
+            reports.append(
+                existing
+                or self._validation.engine.validate(
+                    result,
+                    work_package,
+                    events=events,
+                    policy=ValidationPolicy(
+                        require_explicit_conditions=action_bound,
+                        action_artifact_directory=(
+                            self._action_artifact_directory
+                            or str(Path(tempfile.gettempdir()) / "nexus-action-artifacts")
+                        )
+                        if action_bound
+                        else None,
+                    ),
+                )
+            )
         ctx.validation_reports = reports
         ref = (
             Reference(target_type=_VALIDATION_TARGET_TYPE, identifier=reports[0].identity)

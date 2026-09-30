@@ -29,6 +29,7 @@ from nexus_validation.collector import EvidenceCollector
 from nexus_validation.evaluator import Decision, DecisionEvaluator
 from nexus_validation.evidence import Evidence
 from nexus_validation.observability import ValidationObservability
+from nexus_validation.outcome_evidence import OutcomeConditionEvaluator
 from nexus_validation.persistence import ValidationRepositories
 from nexus_validation.report import RuleResult, ValidationReport
 from nexus_validation.rules import DEFAULT_RULES, RuleContext, ValidationPolicy, ValidationRule
@@ -65,6 +66,7 @@ class ValidationEngine:
         self._rules = rules
         self._collector = EvidenceCollector()
         self._evaluator = DecisionEvaluator()
+        self._condition_evaluator = OutcomeConditionEvaluator()
 
     def validate(
         self,
@@ -93,6 +95,15 @@ class ValidationEngine:
         self._obs.started()
 
         evidence = self._collector.collect(result, event_log)
+        base_context = RuleContext(
+            result=result,
+            work_package=work_package,
+            evidence=evidence,
+            policy=policy or ValidationPolicy(),
+            events=event_log,
+        )
+        condition_result, condition_evidence = self._condition_evaluator.evaluate(base_context)
+        evidence = (*evidence, *condition_evidence)
         seq = self._emit(
             emitted,
             scope,
@@ -100,7 +111,11 @@ class ValidationEngine:
             "evidence",
             seq,
             correlation,
-            {"count": len(evidence), "sources": sorted({e.source.value for e in evidence})},
+            {
+                "count": len(evidence),
+                "sources": sorted({e.source.value for e in evidence}),
+                "evidence": [item.model_dump(mode="json") for item in evidence],
+            },
         )
         self._obs.evidence_collected(len(evidence))
 
@@ -109,6 +124,8 @@ class ValidationEngine:
             work_package=work_package,
             evidence=evidence,
             policy=policy or ValidationPolicy(),
+            events=event_log,
+            precomputed_outcome_condition=condition_result,
         )
         rule_results: list[RuleResult] = []
         for rule in self._rules:
@@ -205,7 +222,37 @@ class ValidationEngine:
             "confidence": report.confidence,
             "satisfied": list(report.satisfied_requirements),
             "failed": list(report.failed_requirements),
+            "report": report.model_dump(mode="json"),
         }
+
+    def replay(
+        self,
+        events: tuple[Event, ...],
+        result: ExecutionResult,
+        work_package: WorkPackage | None = None,
+    ) -> ValidationReport | None:
+        """Rebuild an existing report from durable validation facts without collecting evidence."""
+        result_id = result.session_ref.identifier
+        terminal = next(
+            (
+                event
+                for event in reversed(events)
+                if event.type in {vevents.VALIDATION_COMPLETED, vevents.VALIDATION_FAILED}
+                and isinstance(event.payload.get("report"), dict)
+                and event.payload["report"].get("execution_result_ref", {}).get("identifier")
+                == result_id
+            ),
+            None,
+        )
+        if terminal is None:
+            return None
+        report = ValidationReport.model_validate(terminal.payload["report"])
+        if (
+            work_package is not None
+            and report.work_package_ref.identifier != work_package.identifier
+        ):
+            return None
+        return report
 
     # -- persistence + events ------------------------------------------------ #
 

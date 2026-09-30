@@ -39,7 +39,11 @@ class DecisionEvaluator:
     def evaluate(self, rule_results: tuple[RuleResult, ...]) -> Decision:
         by_id = {r.rule_id: r for r in rule_results}
         satisfied = tuple(r.rule_id for r in rule_results if r.outcome is RuleOutcome.SATISFIED)
-        failed = tuple(r.rule_id for r in rule_results if r.outcome is RuleOutcome.VIOLATED)
+        failed = tuple(
+            r.rule_id
+            for r in rule_results
+            if r.outcome in {RuleOutcome.VIOLATED, RuleOutcome.PARTIAL}
+        )
         missing = tuple(
             r.rationale for r in rule_results if r.outcome is RuleOutcome.INSUFFICIENT_EVIDENCE
         )
@@ -62,6 +66,14 @@ class DecisionEvaluator:
         process = by_id.get("process_outcome")
         if process is not None and process.outcome is RuleOutcome.INSUFFICIENT_EVIDENCE:
             return ValidationDecision.REQUIRES_REVIEW
+        outcome_conditions = by_id.get("outcome_conditions")
+        if outcome_conditions is not None:
+            if outcome_conditions.outcome is RuleOutcome.INSUFFICIENT_EVIDENCE:
+                return ValidationDecision.REQUIRES_REVIEW
+            if outcome_conditions.outcome is RuleOutcome.VIOLATED:
+                return ValidationDecision.FAILED
+            if outcome_conditions.outcome is RuleOutcome.PARTIAL:
+                return ValidationDecision.PARTIAL
         criteria = by_id.get("completion_criteria")
         if criteria is not None and criteria.outcome is RuleOutcome.VIOLATED:
             return ValidationDecision.PARTIAL
@@ -90,6 +102,12 @@ class DecisionEvaluator:
                 for r in _HARD_RULES
                 if r in by_id and by_id[r].outcome is RuleOutcome.VIOLATED
             ]
+            outcome_conditions = by_id.get("outcome_conditions")
+            if (
+                outcome_conditions is not None
+                and outcome_conditions.outcome is RuleOutcome.VIOLATED
+            ):
+                reasons.append(outcome_conditions.rationale)
             return tuple(f"resolve failure: {reason}" for reason in reasons)
         if decision is ValidationDecision.PARTIAL:
             return (

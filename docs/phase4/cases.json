@@ -1,0 +1,23 @@
+{
+  "gate": "phase4-independent-outcome-evidence-v1",
+  "status": "preregistered",
+  "frozen_before_implementation": true,
+  "cases": [
+    {"id": "E1", "name": "pass", "conditions": ["README.md sha256 equals registered digest", "named test JUnit XML has zero failures and errors"], "expected_verdict": "passed"},
+    {"id": "E2", "name": "failing-test-exit-zero", "conditions": ["named test JUnit XML has zero failures and errors"], "fixture": "JUnit XML contains one assertion failure; test wrapper and runtime exit zero", "expected_verdict": "failed"},
+    {"id": "E3", "name": "missing-evidence", "conditions": ["named test JUnit XML has zero failures and errors"], "fixture": "required report absent or referenced digest invalid", "expected_verdict": "requires_review"},
+    {"id": "E4", "name": "partial-outcome", "conditions": ["README.md sha256 equals registered digest", "named test JUnit XML has zero failures and errors"], "fixture": "file digest matches; JUnit XML contains one failed required test", "expected_verdict": "partial"},
+    {"id": "E5", "name": "contradictory-evidence", "conditions": ["named test JUnit XML has zero failures and errors"], "fixture": "two valid separately referenced reports for the same condition disagree", "expected_verdict": "requires_review"}
+  ],
+  "thresholds": {
+    "expected_verdicts": "5/5",
+    "false_passes": 0,
+    "passes_without_all_condition_evidence": 0,
+    "unverified_external_digests_or_workspace_paths": 0,
+    "replay_runtime_dispatches": 0,
+    "replay_external_evidence_reads": 0,
+    "replay_duplicate_validation_decisions": 0,
+    "strict_suite_skips": 0,
+    "strict_suite_warnings": 0
+  }
+}

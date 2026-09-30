@@ -1,0 +1,393 @@
+{
+  "case_count": 5,
+  "failures": [],
+  "false_passes": 0,
+  "gate": "phase4-independent-outcome-evidence-v1",
+  "passed_cases": 5,
+  "registered_cases_sha256": "87d3450c28ce71de6c5559c2ac9e6d57e1829488d0f666ef3a68b3c53ca03076",
+  "results": [
+    {
+      "action_digest": "dace1dab3e6a8f725b35c6b1a79aff30baeecd552ce29c495455b9c634860244",
+      "action_exit_status": 0,
+      "action_id": "action-9f503c42c50dfc61f3e38916",
+      "action_output_artifact_ref": "evt-action-9f503c42c50dfc61f3e38916-artifact-output-9b55cb54d9143f58",
+      "action_output_sha256": "2093b7dca9bdc35fa16be7984640c3d30fe4cf770a54b3dd1ded3afd49655dd7",
+      "actual": "passed",
+      "condition_digest": "2593a86e2c3f7844c312cbc833129972541b668f81ce7c1f984a7233329c7ebc",
+      "conditions": [
+        {
+          "expected_sha256": "7717eed456417eaf5d1a8261ec9b6eefd8650cd2980653fd2e85e842522f1260",
+          "id": "readme",
+          "path": "README.md",
+          "type": "file_sha256"
+        },
+        {
+          "command_id": "fixture-test",
+          "id": "junit",
+          "paths": [
+            "reports/junit.xml"
+          ],
+          "type": "junit_xml"
+        }
+      ],
+      "declared_report_inventory": {
+        "reports/junit.xml": true
+      },
+      "evidence_refs": [
+        "ev-rts-actuation-pkg-session-goal-phase4-e1-v1-node-respond-01-artifact-0000",
+        "ev-rts-actuation-pkg-session-goal-phase4-e1-v1-node-respond-01-metadata-0000",
+        "ev-rts-actuation-pkg-session-goal-phase4-e1-v1-node-respond-01-metric-0000",
+        "ev-rts-actuation-pkg-session-goal-phase4-e1-v1-node-respond-01-outcome-file_sha256-0000",
+        "ev-rts-actuation-pkg-session-goal-phase4-e1-v1-node-respond-01-outcome-junit_xml-0008"
+      ],
+      "expected": "passed",
+      "id": "E1",
+      "outcome_accepted": true,
+      "replay": {
+        "action_starts_after": 1,
+        "action_starts_before": 1,
+        "decision": "passed",
+        "evidence_count": 5,
+        "evidence_refs": [
+          "ev-rts-actuation-pkg-session-goal-phase4-e1-v1-node-respond-01-artifact-0000",
+          "ev-rts-actuation-pkg-session-goal-phase4-e1-v1-node-respond-01-metadata-0000",
+          "ev-rts-actuation-pkg-session-goal-phase4-e1-v1-node-respond-01-metric-0000",
+          "ev-rts-actuation-pkg-session-goal-phase4-e1-v1-node-respond-01-outcome-file_sha256-0000",
+          "ev-rts-actuation-pkg-session-goal-phase4-e1-v1-node-respond-01-outcome-junit_xml-0008"
+        ],
+        "interaction_responses_before": 1,
+        "operator_restart_action_starts_after": 1,
+        "operator_restart_action_starts_before": 1,
+        "operator_restart_decision": "passed",
+        "operator_restart_pipeline_entered": true,
+        "operator_restart_responses_after": 1,
+        "operator_restart_runtime_completed": true,
+        "operator_restart_validation_terminals_after": 1,
+        "operator_restart_validation_terminals_before": 1,
+        "report_id": "vr-rts-actuation-pkg-session-goal-phase4-e1-v1-node-respond-01",
+        "same_report": true,
+        "same_store_restart_action_starts_after": 1,
+        "same_store_restart_action_starts_before": 1,
+        "same_store_restart_decision": "passed",
+        "same_store_restart_responses_after": 1,
+        "same_store_restart_responses_before": 1,
+        "same_store_restart_validation_terminals_after": 1,
+        "same_store_restart_validation_terminals_before": 1,
+        "validation_terminals_after": 1,
+        "validation_terminals_before": 1
+      },
+      "runtime_completed": true,
+      "runtime_exit_status": 0,
+      "runtime_terminal_exit_status": 0,
+      "source_hashes": {
+        "README.md": "7717eed456417eaf5d1a8261ec9b6eefd8650cd2980653fd2e85e842522f1260",
+        "reports/junit.xml": "2093b7dca9bdc35fa16be7984640c3d30fe4cf770a54b3dd1ded3afd49655dd7"
+      }
+    },
+    {
+      "action_digest": "5aab8c4202d12f4260d7460c1c24b0eb10b6389d33e0a44cc3ae076bd81416d6",
+      "action_exit_status": 0,
+      "action_id": "action-98cdb62c76975fc6e7ba9f52",
+      "action_output_artifact_ref": "evt-action-98cdb62c76975fc6e7ba9f52-artifact-output-62b5e027292fede4",
+      "action_output_sha256": "5e713c54b408d7f163350ffb2d779a8a4b2c31f404b2aae4489b3431549bb70c",
+      "actual": "failed",
+      "condition_digest": "83b4a0e0338c9b4aeb971f65cbe6b9ac9b8c84b70d82d762d1fe191e82e76994",
+      "conditions": [
+        {
+          "command_id": "fixture-test",
+          "id": "junit",
+          "paths": [
+            "reports/junit.xml"
+          ],
+          "type": "junit_xml"
+        }
+      ],
+      "declared_report_inventory": {
+        "reports/junit.xml": true
+      },
+      "evidence_refs": [
+        "ev-rts-actuation-pkg-session-goal-phase4-e2-v1-node-respond-01-artifact-0000",
+        "ev-rts-actuation-pkg-session-goal-phase4-e2-v1-node-respond-01-metadata-0000",
+        "ev-rts-actuation-pkg-session-goal-phase4-e2-v1-node-respond-01-metric-0000",
+        "ev-rts-actuation-pkg-session-goal-phase4-e2-v1-node-respond-01-outcome-junit_xml-0000"
+      ],
+      "expected": "failed",
+      "id": "E2",
+      "outcome_accepted": false,
+      "replay": {
+        "action_starts_after": 1,
+        "action_starts_before": 1,
+        "decision": "failed",
+        "evidence_count": 4,
+        "evidence_refs": [
+          "ev-rts-actuation-pkg-session-goal-phase4-e2-v1-node-respond-01-artifact-0000",
+          "ev-rts-actuation-pkg-session-goal-phase4-e2-v1-node-respond-01-metadata-0000",
+          "ev-rts-actuation-pkg-session-goal-phase4-e2-v1-node-respond-01-metric-0000",
+          "ev-rts-actuation-pkg-session-goal-phase4-e2-v1-node-respond-01-outcome-junit_xml-0000"
+        ],
+        "interaction_responses_before": 1,
+        "operator_restart_action_starts_after": 1,
+        "operator_restart_action_starts_before": 1,
+        "operator_restart_decision": "failed",
+        "operator_restart_pipeline_entered": true,
+        "operator_restart_responses_after": 1,
+        "operator_restart_runtime_completed": true,
+        "operator_restart_validation_terminals_after": 1,
+        "operator_restart_validation_terminals_before": 1,
+        "report_id": "vr-rts-actuation-pkg-session-goal-phase4-e2-v1-node-respond-01",
+        "same_report": true,
+        "same_store_restart_action_starts_after": 1,
+        "same_store_restart_action_starts_before": 1,
+        "same_store_restart_decision": "failed",
+        "same_store_restart_responses_after": 1,
+        "same_store_restart_responses_before": 1,
+        "same_store_restart_validation_terminals_after": 1,
+        "same_store_restart_validation_terminals_before": 1,
+        "validation_terminals_after": 1,
+        "validation_terminals_before": 1
+      },
+      "runtime_completed": true,
+      "runtime_exit_status": 0,
+      "runtime_terminal_exit_status": 0,
+      "source_hashes": {
+        "README.md": "7717eed456417eaf5d1a8261ec9b6eefd8650cd2980653fd2e85e842522f1260",
+        "reports/junit.xml": "5e713c54b408d7f163350ffb2d779a8a4b2c31f404b2aae4489b3431549bb70c"
+      }
+    },
+    {
+      "action_digest": "c53021fabab57c46b8218cd69d9a31bc0878c02d23c767352cfc389f81e271f6",
+      "action_exit_status": 0,
+      "action_id": "action-2f4e762cf9342512e3f2d75e",
+      "action_output_artifact_ref": "evt-action-2f4e762cf9342512e3f2d75e-artifact-output-0c6b6fe320975ba9",
+      "action_output_sha256": "2093b7dca9bdc35fa16be7984640c3d30fe4cf770a54b3dd1ded3afd49655dd7",
+      "actual": "requires_review",
+      "condition_digest": "28bda7b9128e6f7fcace8ea8011476bf3401e42d7f4ce58b3dc1618b4b4387e9",
+      "conditions": [
+        {
+          "command_id": "fixture-test",
+          "id": "junit",
+          "paths": [
+            "reports/missing.xml"
+          ],
+          "type": "junit_xml"
+        }
+      ],
+      "declared_report_inventory": {
+        "reports/missing.xml": false
+      },
+      "evidence_refs": [
+        "ev-rts-actuation-pkg-session-goal-phase4-e3-v1-node-respond-01-artifact-0000",
+        "ev-rts-actuation-pkg-session-goal-phase4-e3-v1-node-respond-01-metadata-0000",
+        "ev-rts-actuation-pkg-session-goal-phase4-e3-v1-node-respond-01-metric-0000"
+      ],
+      "expected": "requires_review",
+      "id": "E3",
+      "outcome_accepted": false,
+      "replay": {
+        "action_starts_after": 1,
+        "action_starts_before": 1,
+        "decision": "requires_review",
+        "evidence_count": 3,
+        "evidence_refs": [
+          "ev-rts-actuation-pkg-session-goal-phase4-e3-v1-node-respond-01-artifact-0000",
+          "ev-rts-actuation-pkg-session-goal-phase4-e3-v1-node-respond-01-metadata-0000",
+          "ev-rts-actuation-pkg-session-goal-phase4-e3-v1-node-respond-01-metric-0000"
+        ],
+        "interaction_responses_before": 1,
+        "operator_restart_action_starts_after": 1,
+        "operator_restart_action_starts_before": 1,
+        "operator_restart_decision": "requires_review",
+        "operator_restart_pipeline_entered": true,
+        "operator_restart_responses_after": 1,
+        "operator_restart_runtime_completed": true,
+        "operator_restart_validation_terminals_after": 1,
+        "operator_restart_validation_terminals_before": 1,
+        "report_id": "vr-rts-actuation-pkg-session-goal-phase4-e3-v1-node-respond-01",
+        "same_report": true,
+        "same_store_restart_action_starts_after": 1,
+        "same_store_restart_action_starts_before": 1,
+        "same_store_restart_decision": "requires_review",
+        "same_store_restart_responses_after": 1,
+        "same_store_restart_responses_before": 1,
+        "same_store_restart_validation_terminals_after": 1,
+        "same_store_restart_validation_terminals_before": 1,
+        "validation_terminals_after": 1,
+        "validation_terminals_before": 1
+      },
+      "runtime_completed": true,
+      "runtime_exit_status": 0,
+      "runtime_terminal_exit_status": 0,
+      "source_hashes": {
+        "README.md": "7717eed456417eaf5d1a8261ec9b6eefd8650cd2980653fd2e85e842522f1260"
+      }
+    },
+    {
+      "action_digest": "2f8d7f78ee9bb8a655d29268bf07d705a10bde2cb1cf33ff3e7e0c876f390241",
+      "action_exit_status": 0,
+      "action_id": "action-c5a2d7302628e91f09540d33",
+      "action_output_artifact_ref": "evt-action-c5a2d7302628e91f09540d33-artifact-output-7890a399561975b7",
+      "action_output_sha256": "5e713c54b408d7f163350ffb2d779a8a4b2c31f404b2aae4489b3431549bb70c",
+      "actual": "partial",
+      "condition_digest": "2593a86e2c3f7844c312cbc833129972541b668f81ce7c1f984a7233329c7ebc",
+      "conditions": [
+        {
+          "expected_sha256": "7717eed456417eaf5d1a8261ec9b6eefd8650cd2980653fd2e85e842522f1260",
+          "id": "readme",
+          "path": "README.md",
+          "type": "file_sha256"
+        },
+        {
+          "command_id": "fixture-test",
+          "id": "junit",
+          "paths": [
+            "reports/junit.xml"
+          ],
+          "type": "junit_xml"
+        }
+      ],
+      "declared_report_inventory": {
+        "reports/junit.xml": true
+      },
+      "evidence_refs": [
+        "ev-rts-actuation-pkg-session-goal-phase4-e4-v1-node-respond-01-artifact-0000",
+        "ev-rts-actuation-pkg-session-goal-phase4-e4-v1-node-respond-01-metadata-0000",
+        "ev-rts-actuation-pkg-session-goal-phase4-e4-v1-node-respond-01-metric-0000",
+        "ev-rts-actuation-pkg-session-goal-phase4-e4-v1-node-respond-01-outcome-file_sha256-0000",
+        "ev-rts-actuation-pkg-session-goal-phase4-e4-v1-node-respond-01-outcome-junit_xml-0008"
+      ],
+      "expected": "partial",
+      "id": "E4",
+      "outcome_accepted": false,
+      "replay": {
+        "action_starts_after": 1,
+        "action_starts_before": 1,
+        "decision": "partial",
+        "evidence_count": 5,
+        "evidence_refs": [
+          "ev-rts-actuation-pkg-session-goal-phase4-e4-v1-node-respond-01-artifact-0000",
+          "ev-rts-actuation-pkg-session-goal-phase4-e4-v1-node-respond-01-metadata-0000",
+          "ev-rts-actuation-pkg-session-goal-phase4-e4-v1-node-respond-01-metric-0000",
+          "ev-rts-actuation-pkg-session-goal-phase4-e4-v1-node-respond-01-outcome-file_sha256-0000",
+          "ev-rts-actuation-pkg-session-goal-phase4-e4-v1-node-respond-01-outcome-junit_xml-0008"
+        ],
+        "interaction_responses_before": 1,
+        "operator_restart_action_starts_after": 1,
+        "operator_restart_action_starts_before": 1,
+        "operator_restart_decision": "partial",
+        "operator_restart_pipeline_entered": true,
+        "operator_restart_responses_after": 1,
+        "operator_restart_runtime_completed": true,
+        "operator_restart_validation_terminals_after": 1,
+        "operator_restart_validation_terminals_before": 1,
+        "report_id": "vr-rts-actuation-pkg-session-goal-phase4-e4-v1-node-respond-01",
+        "same_report": true,
+        "same_store_restart_action_starts_after": 1,
+        "same_store_restart_action_starts_before": 1,
+        "same_store_restart_decision": "partial",
+        "same_store_restart_responses_after": 1,
+        "same_store_restart_responses_before": 1,
+        "same_store_restart_validation_terminals_after": 1,
+        "same_store_restart_validation_terminals_before": 1,
+        "validation_terminals_after": 1,
+        "validation_terminals_before": 1
+      },
+      "runtime_completed": true,
+      "runtime_exit_status": 0,
+      "runtime_terminal_exit_status": 0,
+      "source_hashes": {
+        "README.md": "7717eed456417eaf5d1a8261ec9b6eefd8650cd2980653fd2e85e842522f1260",
+        "reports/junit.xml": "5e713c54b408d7f163350ffb2d779a8a4b2c31f404b2aae4489b3431549bb70c"
+      }
+    },
+    {
+      "action_digest": "8a5021711aba4f296d84b1343eb4797c4f7cc7458993775a1c2ebbb00b3cc317",
+      "action_exit_status": 0,
+      "action_id": "action-0fbb8e285acaa91e06690b02",
+      "action_output_artifact_ref": "evt-action-0fbb8e285acaa91e06690b02-artifact-output-8ea593272d379b69",
+      "action_output_sha256": "2093b7dca9bdc35fa16be7984640c3d30fe4cf770a54b3dd1ded3afd49655dd7",
+      "actual": "requires_review",
+      "condition_digest": "2a6215c921f4a109752508d056feabe812de65d101a011ce59aa9017db326a20",
+      "conditions": [
+        {
+          "command_id": "fixture-test",
+          "id": "junit",
+          "paths": [
+            "reports/one.xml",
+            "reports/two.xml"
+          ],
+          "type": "junit_xml"
+        }
+      ],
+      "declared_report_inventory": {
+        "reports/one.xml": true,
+        "reports/two.xml": true
+      },
+      "evidence_refs": [
+        "ev-rts-actuation-pkg-session-goal-phase4-e5-v1-node-respond-01-artifact-0000",
+        "ev-rts-actuation-pkg-session-goal-phase4-e5-v1-node-respond-01-metadata-0000",
+        "ev-rts-actuation-pkg-session-goal-phase4-e5-v1-node-respond-01-metric-0000",
+        "ev-rts-actuation-pkg-session-goal-phase4-e5-v1-node-respond-01-outcome-junit_xml-0000",
+        "ev-rts-actuation-pkg-session-goal-phase4-e5-v1-node-respond-01-outcome-junit_xml-0001"
+      ],
+      "expected": "requires_review",
+      "id": "E5",
+      "outcome_accepted": false,
+      "replay": {
+        "action_starts_after": 1,
+        "action_starts_before": 1,
+        "decision": "requires_review",
+        "evidence_count": 5,
+        "evidence_refs": [
+          "ev-rts-actuation-pkg-session-goal-phase4-e5-v1-node-respond-01-artifact-0000",
+          "ev-rts-actuation-pkg-session-goal-phase4-e5-v1-node-respond-01-metadata-0000",
+          "ev-rts-actuation-pkg-session-goal-phase4-e5-v1-node-respond-01-metric-0000",
+          "ev-rts-actuation-pkg-session-goal-phase4-e5-v1-node-respond-01-outcome-junit_xml-0000",
+          "ev-rts-actuation-pkg-session-goal-phase4-e5-v1-node-respond-01-outcome-junit_xml-0001"
+        ],
+        "interaction_responses_before": 1,
+        "operator_restart_action_starts_after": 1,
+        "operator_restart_action_starts_before": 1,
+        "operator_restart_decision": "requires_review",
+        "operator_restart_pipeline_entered": true,
+        "operator_restart_responses_after": 1,
+        "operator_restart_runtime_completed": true,
+        "operator_restart_validation_terminals_after": 1,
+        "operator_restart_validation_terminals_before": 1,
+        "report_id": "vr-rts-actuation-pkg-session-goal-phase4-e5-v1-node-respond-01",
+        "same_report": true,
+        "same_store_restart_action_starts_after": 1,
+        "same_store_restart_action_starts_before": 1,
+        "same_store_restart_decision": "requires_review",
+        "same_store_restart_responses_after": 1,
+        "same_store_restart_responses_before": 1,
+        "same_store_restart_validation_terminals_after": 1,
+        "same_store_restart_validation_terminals_before": 1,
+        "validation_terminals_after": 1,
+        "validation_terminals_before": 1
+      },
+      "runtime_completed": true,
+      "runtime_exit_status": 0,
+      "runtime_terminal_exit_status": 0,
+      "source_hashes": {
+        "README.md": "7717eed456417eaf5d1a8261ec9b6eefd8650cd2980653fd2e85e842522f1260",
+        "reports/one.xml": "2093b7dca9bdc35fa16be7984640c3d30fe4cf770a54b3dd1ded3afd49655dd7",
+        "reports/two.xml": "5e713c54b408d7f163350ffb2d779a8a4b2c31f404b2aae4489b3431549bb70c"
+      }
+    }
+  ],
+  "thresholds": {
+    "action_exit_status_zero": "5/5",
+    "expected_verdicts": "5/5",
+    "false_passes": 0,
+    "operator_restart_duplicate_action_starts": 0,
+    "operator_restart_duplicate_verdict_events": 0,
+    "operator_restart_pipeline_entry": "5/5",
+    "operator_restart_verdict_matches": "5/5",
+    "replay_duplicate_validation_decisions": 0,
+    "replay_external_evidence_reads": 0,
+    "replay_runtime_dispatches": 0,
+    "runtime_exit_status_zero_on_failed_assertion_cases": "2/2",
+    "same_store_operator_restart_verdict_matches": "5/5",
+    "same_store_restart_duplicate_side_effects": 0
+  }
+}

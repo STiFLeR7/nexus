@@ -106,6 +106,18 @@ class InteractionResponse:
         return self.status == "completed" and bool(self.knowledge_item_ids)
 
     @property
+    def runtime_completed(self) -> bool:
+        """Whether execution completed, independently of outcome validation."""
+        return self.execution_status == "completed"
+
+    @property
+    def outcome_accepted(self) -> bool | None:
+        """Whether every returned validation verdict passed; None means no verdict is available."""
+        if not self.validation_decisions:
+            return None
+        return all(decision == "passed" for decision in self.validation_decisions)
+
+    @property
     def awaiting_approval(self) -> bool:
         """Whether the run paused with a gate awaiting an operator decision (P15)."""
         return bool(self.pending_approvals)

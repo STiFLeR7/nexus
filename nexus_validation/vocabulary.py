@@ -56,6 +56,7 @@ class RuleOutcome(StrEnum):
     SATISFIED = "satisfied"
     VIOLATED = "violated"
     INSUFFICIENT_EVIDENCE = "insufficient_evidence"
+    PARTIAL = "partial"
     NOT_APPLICABLE = "not_applicable"
 
 

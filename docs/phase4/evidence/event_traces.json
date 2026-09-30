@@ -1,0 +1,1392 @@
+{
+  "E1": [
+    {
+      "correlation": "cor-phase4-e1",
+      "id": "evt-action-9f503c42c50dfc61f3e38916-requested",
+      "payload": {
+        "action_id": "action-9f503c42c50dfc61f3e38916",
+        "action_kind": "run_test",
+        "command_id": "fixture-test",
+        "input_digest": "dace1dab3e6a8f725b35c6b1a79aff30baeecd552ce29c495455b9c634860244"
+      },
+      "producer": "repository_action",
+      "type": "repository_action.requested"
+    },
+    {
+      "correlation": "cor-phase4-e1",
+      "id": "evt-plan-goal-phase4-e1-v1-execution-plan-62c37af51035eb64",
+      "payload": {
+        "plan": "plan-goal-phase4-e1-v1"
+      },
+      "producer": "planning",
+      "type": "planning.execution_plan_assembled"
+    },
+    {
+      "correlation": "cor-phase4-e1",
+      "id": "evt-action-9f503c42c50dfc61f3e38916-started-d0fb847dcf9b070e",
+      "payload": {
+        "action_id": "action-9f503c42c50dfc61f3e38916",
+        "command_id": "fixture-test",
+        "input_digest": "dace1dab3e6a8f725b35c6b1a79aff30baeecd552ce29c495455b9c634860244",
+        "kind": "run_test",
+        "node": "node-respond",
+        "path": null,
+        "pipeline_session": "pipe-phase4-e1",
+        "plan": "plan-goal-phase4-e1-v1"
+      },
+      "producer": "repository_action",
+      "type": "repository_action.started"
+    },
+    {
+      "correlation": "cor-phase4-e1",
+      "id": "evt-action-9f503c42c50dfc61f3e38916-artifact-output-9b55cb54d9143f58",
+      "payload": {
+        "action_id": "action-9f503c42c50dfc61f3e38916",
+        "artifact_id": "action-9f503c42c50dfc61f3e38916-output",
+        "kind": "action_output",
+        "path": "<artifact>/output-2093b7dca9bdc35fa16be7984640c3d30fe4cf770a54b3dd1ded3afd49655dd7.txt",
+        "sha256": "2093b7dca9bdc35fa16be7984640c3d30fe4cf770a54b3dd1ded3afd49655dd7"
+      },
+      "producer": "repository_action",
+      "type": "repository_action.artifact"
+    },
+    {
+      "correlation": "cor-phase4-e1",
+      "id": "evt-action-9f503c42c50dfc61f3e38916-completed-4b3955786de5811e",
+      "payload": {
+        "action_id": "action-9f503c42c50dfc61f3e38916",
+        "action_outcome": {
+          "action_id": "action-9f503c42c50dfc61f3e38916",
+          "command_id": "fixture-test",
+          "exit_status": 0,
+          "input_digest": "dace1dab3e6a8f725b35c6b1a79aff30baeecd552ce29c495455b9c634860244",
+          "kind": "run_test",
+          "output_ref": "evt-action-9f503c42c50dfc61f3e38916-artifact-output-9b55cb54d9143f58"
+        },
+        "node": "node-respond",
+        "pipeline_session": "pipe-phase4-e1",
+        "plan": "plan-goal-phase4-e1-v1"
+      },
+      "producer": "repository_action",
+      "type": "repository_action.completed"
+    },
+    {
+      "correlation": "cor-phase4-e1",
+      "id": "evt-rts-actuation-pkg-session-goal-phase4-e1-v1-node-respond-01-val-evidence-0001",
+      "payload": {
+        "count": 5,
+        "evidence": [
+          {
+            "derived_from": [
+              {
+                "identifier": "evt-rts-actuation-pkg-session-goal-phase4-e1-v1-node-respond-01-artifact-0001",
+                "target_type": "event"
+              }
+            ],
+            "identity": "ev-rts-actuation-pkg-session-goal-phase4-e1-v1-node-respond-01-artifact-0000",
+            "kind": "action_output",
+            "observed": {
+              "artifact": "evt-action-9f503c42c50dfc61f3e38916-artifact-output-9b55cb54d9143f58",
+              "kind": "action_output"
+            },
+            "source": "artifact"
+          },
+          {
+            "derived_from": [
+              {
+                "identifier": "rts-actuation-pkg-session-goal-phase4-e1-v1-node-respond-01",
+                "target_type": "runtime_session"
+              }
+            ],
+            "identity": "ev-rts-actuation-pkg-session-goal-phase4-e1-v1-node-respond-01-metadata-0000",
+            "kind": "runtime_metadata",
+            "observed": {
+              "exit_status": 0,
+              "outcome": "completed"
+            },
+            "source": "runtime_metadata"
+          },
+          {
+            "derived_from": [
+              {
+                "identifier": "rts-actuation-pkg-session-goal-phase4-e1-v1-node-respond-01",
+                "target_type": "runtime_session"
+              }
+            ],
+            "identity": "ev-rts-actuation-pkg-session-goal-phase4-e1-v1-node-respond-01-metric-0000",
+            "kind": "execution_metrics",
+            "observed": {},
+            "source": "execution_metric"
+          },
+          {
+            "derived_from": [
+              {
+                "identifier": "evt-action-9f503c42c50dfc61f3e38916-requested",
+                "target_type": "event"
+              }
+            ],
+            "identity": "ev-rts-actuation-pkg-session-goal-phase4-e1-v1-node-respond-01-outcome-file_sha256-0000",
+            "kind": "file_sha256",
+            "observed": {
+              "action_digest": "dace1dab3e6a8f725b35c6b1a79aff30baeecd552ce29c495455b9c634860244",
+              "action_id": "action-9f503c42c50dfc61f3e38916",
+              "condition_digest": "2593a86e2c3f7844c312cbc833129972541b668f81ce7c1f984a7233329c7ebc",
+              "condition_id": "readme",
+              "expected_sha256": "7717eed456417eaf5d1a8261ec9b6eefd8650cd2980653fd2e85e842522f1260",
+              "passed": true,
+              "path": "README.md",
+              "sha256": "7717eed456417eaf5d1a8261ec9b6eefd8650cd2980653fd2e85e842522f1260"
+            },
+            "source": "artifact"
+          },
+          {
+            "derived_from": [
+              {
+                "identifier": "evt-action-9f503c42c50dfc61f3e38916-completed-4b3955786de5811e",
+                "target_type": "event"
+              },
+              {
+                "identifier": "evt-action-9f503c42c50dfc61f3e38916-artifact-output-9b55cb54d9143f58",
+                "target_type": "event"
+              },
+              {
+                "identifier": "evt-action-9f503c42c50dfc61f3e38916-started-d0fb847dcf9b070e",
+                "target_type": "event"
+              }
+            ],
+            "identity": "ev-rts-actuation-pkg-session-goal-phase4-e1-v1-node-respond-01-outcome-junit_xml-0008",
+            "kind": "junit_xml",
+            "observed": {
+              "action_digest": "dace1dab3e6a8f725b35c6b1a79aff30baeecd552ce29c495455b9c634860244",
+              "action_id": "action-9f503c42c50dfc61f3e38916",
+              "artifact_ref": "evt-action-9f503c42c50dfc61f3e38916-artifact-output-9b55cb54d9143f58",
+              "condition_digest": "2593a86e2c3f7844c312cbc833129972541b668f81ce7c1f984a7233329c7ebc",
+              "condition_id": "junit",
+              "errors": 0,
+              "failures": 0,
+              "node": "node-respond",
+              "passed": true,
+              "path": "reports/junit.xml",
+              "pipeline_session": "pipe-phase4-e1",
+              "plan": "plan-goal-phase4-e1-v1",
+              "sha256": "2093b7dca9bdc35fa16be7984640c3d30fe4cf770a54b3dd1ded3afd49655dd7",
+              "skipped": 0,
+              "testcases": 1
+            },
+            "source": "artifact"
+          }
+        ],
+        "sources": [
+          "artifact",
+          "execution_metric",
+          "runtime_metadata"
+        ]
+      },
+      "producer": "validation",
+      "type": "validation.evidence_collected"
+    },
+    {
+      "correlation": "cor-phase4-e1",
+      "id": "evt-rts-actuation-pkg-session-goal-phase4-e1-v1-node-respond-01-val-rule-0002",
+      "payload": {
+        "rule": "process_outcome"
+      },
+      "producer": "validation",
+      "type": "validation.rule_evaluated"
+    },
+    {
+      "correlation": "cor-phase4-e1",
+      "id": "evt-rts-actuation-pkg-session-goal-phase4-e1-v1-node-respond-01-val-rule-0003",
+      "payload": {
+        "rule": "exit_status"
+      },
+      "producer": "validation",
+      "type": "validation.rule_evaluated"
+    },
+    {
+      "correlation": "cor-phase4-e1",
+      "id": "evt-rts-actuation-pkg-session-goal-phase4-e1-v1-node-respond-01-val-rule-0004",
+      "payload": {
+        "rule": "error_absence"
+      },
+      "producer": "validation",
+      "type": "validation.rule_evaluated"
+    },
+    {
+      "correlation": "cor-phase4-e1",
+      "id": "evt-rts-actuation-pkg-session-goal-phase4-e1-v1-node-respond-01-val-rule-0005",
+      "payload": {
+        "rule": "completion_criteria"
+      },
+      "producer": "validation",
+      "type": "validation.rule_evaluated"
+    },
+    {
+      "correlation": "cor-phase4-e1",
+      "id": "evt-rts-actuation-pkg-session-goal-phase4-e1-v1-node-respond-01-val-rule-0006",
+      "payload": {
+        "rule": "outcome_conditions"
+      },
+      "producer": "validation",
+      "type": "validation.rule_evaluated"
+    },
+    {
+      "correlation": "cor-phase4-e1",
+      "id": "evt-rts-actuation-pkg-session-goal-phase4-e1-v1-node-respond-01-val-rule-0007",
+      "payload": {
+        "rule": "artifact_corroboration"
+      },
+      "producer": "validation",
+      "type": "validation.rule_evaluated"
+    },
+    {
+      "correlation": "cor-phase4-e1",
+      "id": "evt-rts-actuation-pkg-session-goal-phase4-e1-v1-node-respond-01-val-completed-0008",
+      "payload": {
+        "confidence": 1.0,
+        "decision": "passed",
+        "failed": [],
+        "report": {
+          "decision": "passed",
+          "evidence_refs": [
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-phase4-e1-v1-node-respond-01-artifact-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-phase4-e1-v1-node-respond-01-metadata-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-phase4-e1-v1-node-respond-01-metric-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-phase4-e1-v1-node-respond-01-outcome-file_sha256-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-phase4-e1-v1-node-respond-01-outcome-junit_xml-0008",
+              "target_type": "evidence"
+            }
+          ],
+          "identity": "vr-rts-actuation-pkg-session-goal-phase4-e1-v1-node-respond-01",
+          "reasoning_trace": [
+            "process_outcome: satisfied \u2014 process ended normally",
+            "exit_status: satisfied \u2014 exit status 0",
+            "error_absence: satisfied \u2014 no execution error",
+            "completion_criteria: not_applicable \u2014 finite outcome conditions are evaluated independently",
+            "outcome_conditions: satisfied \u2014 all frozen outcome conditions were independently satisfied; outcomes: readme=satisfied, junit=satisfied (conditions sha256 2593a86e2c3f7844c312cbc833129972541b668f81ce7c1f984a7233329c7ebc)",
+            "artifact_corroboration: satisfied \u2014 3 independent artifact(s) corroborate the outcome"
+          ]
+        },
+        "satisfied": [
+          "process_outcome",
+          "exit_status",
+          "error_absence",
+          "outcome_conditions",
+          "artifact_corroboration"
+        ]
+      },
+      "producer": "validation",
+      "type": "validation.completed"
+    }
+  ],
+  "E2": [
+    {
+      "correlation": "cor-phase4-e2",
+      "id": "evt-action-98cdb62c76975fc6e7ba9f52-requested",
+      "payload": {
+        "action_id": "action-98cdb62c76975fc6e7ba9f52",
+        "action_kind": "run_test",
+        "command_id": "fixture-test",
+        "input_digest": "5aab8c4202d12f4260d7460c1c24b0eb10b6389d33e0a44cc3ae076bd81416d6"
+      },
+      "producer": "repository_action",
+      "type": "repository_action.requested"
+    },
+    {
+      "correlation": "cor-phase4-e2",
+      "id": "evt-plan-goal-phase4-e2-v1-execution-plan-3412e8f2c199d5cb",
+      "payload": {
+        "plan": "plan-goal-phase4-e2-v1"
+      },
+      "producer": "planning",
+      "type": "planning.execution_plan_assembled"
+    },
+    {
+      "correlation": "cor-phase4-e2",
+      "id": "evt-action-98cdb62c76975fc6e7ba9f52-started-e4af128fc1bc567e",
+      "payload": {
+        "action_id": "action-98cdb62c76975fc6e7ba9f52",
+        "command_id": "fixture-test",
+        "input_digest": "5aab8c4202d12f4260d7460c1c24b0eb10b6389d33e0a44cc3ae076bd81416d6",
+        "kind": "run_test",
+        "node": "node-respond",
+        "path": null,
+        "pipeline_session": "pipe-phase4-e2",
+        "plan": "plan-goal-phase4-e2-v1"
+      },
+      "producer": "repository_action",
+      "type": "repository_action.started"
+    },
+    {
+      "correlation": "cor-phase4-e2",
+      "id": "evt-action-98cdb62c76975fc6e7ba9f52-artifact-output-62b5e027292fede4",
+      "payload": {
+        "action_id": "action-98cdb62c76975fc6e7ba9f52",
+        "artifact_id": "action-98cdb62c76975fc6e7ba9f52-output",
+        "kind": "action_output",
+        "path": "<artifact>/output-5e713c54b408d7f163350ffb2d779a8a4b2c31f404b2aae4489b3431549bb70c.txt",
+        "sha256": "5e713c54b408d7f163350ffb2d779a8a4b2c31f404b2aae4489b3431549bb70c"
+      },
+      "producer": "repository_action",
+      "type": "repository_action.artifact"
+    },
+    {
+      "correlation": "cor-phase4-e2",
+      "id": "evt-action-98cdb62c76975fc6e7ba9f52-completed-2ae7037cc7562499",
+      "payload": {
+        "action_id": "action-98cdb62c76975fc6e7ba9f52",
+        "action_outcome": {
+          "action_id": "action-98cdb62c76975fc6e7ba9f52",
+          "command_id": "fixture-test",
+          "exit_status": 0,
+          "input_digest": "5aab8c4202d12f4260d7460c1c24b0eb10b6389d33e0a44cc3ae076bd81416d6",
+          "kind": "run_test",
+          "output_ref": "evt-action-98cdb62c76975fc6e7ba9f52-artifact-output-62b5e027292fede4"
+        },
+        "node": "node-respond",
+        "pipeline_session": "pipe-phase4-e2",
+        "plan": "plan-goal-phase4-e2-v1"
+      },
+      "producer": "repository_action",
+      "type": "repository_action.completed"
+    },
+    {
+      "correlation": "cor-phase4-e2",
+      "id": "evt-rts-actuation-pkg-session-goal-phase4-e2-v1-node-respond-01-val-evidence-0001",
+      "payload": {
+        "count": 4,
+        "evidence": [
+          {
+            "derived_from": [
+              {
+                "identifier": "evt-rts-actuation-pkg-session-goal-phase4-e2-v1-node-respond-01-artifact-0001",
+                "target_type": "event"
+              }
+            ],
+            "identity": "ev-rts-actuation-pkg-session-goal-phase4-e2-v1-node-respond-01-artifact-0000",
+            "kind": "action_output",
+            "observed": {
+              "artifact": "evt-action-98cdb62c76975fc6e7ba9f52-artifact-output-62b5e027292fede4",
+              "kind": "action_output"
+            },
+            "source": "artifact"
+          },
+          {
+            "derived_from": [
+              {
+                "identifier": "rts-actuation-pkg-session-goal-phase4-e2-v1-node-respond-01",
+                "target_type": "runtime_session"
+              }
+            ],
+            "identity": "ev-rts-actuation-pkg-session-goal-phase4-e2-v1-node-respond-01-metadata-0000",
+            "kind": "runtime_metadata",
+            "observed": {
+              "exit_status": 0,
+              "outcome": "completed"
+            },
+            "source": "runtime_metadata"
+          },
+          {
+            "derived_from": [
+              {
+                "identifier": "rts-actuation-pkg-session-goal-phase4-e2-v1-node-respond-01",
+                "target_type": "runtime_session"
+              }
+            ],
+            "identity": "ev-rts-actuation-pkg-session-goal-phase4-e2-v1-node-respond-01-metric-0000",
+            "kind": "execution_metrics",
+            "observed": {},
+            "source": "execution_metric"
+          },
+          {
+            "derived_from": [
+              {
+                "identifier": "evt-action-98cdb62c76975fc6e7ba9f52-completed-2ae7037cc7562499",
+                "target_type": "event"
+              },
+              {
+                "identifier": "evt-action-98cdb62c76975fc6e7ba9f52-artifact-output-62b5e027292fede4",
+                "target_type": "event"
+              },
+              {
+                "identifier": "evt-action-98cdb62c76975fc6e7ba9f52-started-e4af128fc1bc567e",
+                "target_type": "event"
+              }
+            ],
+            "identity": "ev-rts-actuation-pkg-session-goal-phase4-e2-v1-node-respond-01-outcome-junit_xml-0000",
+            "kind": "junit_xml",
+            "observed": {
+              "action_digest": "5aab8c4202d12f4260d7460c1c24b0eb10b6389d33e0a44cc3ae076bd81416d6",
+              "action_id": "action-98cdb62c76975fc6e7ba9f52",
+              "artifact_ref": "evt-action-98cdb62c76975fc6e7ba9f52-artifact-output-62b5e027292fede4",
+              "condition_digest": "83b4a0e0338c9b4aeb971f65cbe6b9ac9b8c84b70d82d762d1fe191e82e76994",
+              "condition_id": "junit",
+              "errors": 0,
+              "failures": 1,
+              "node": "node-respond",
+              "passed": false,
+              "path": "reports/junit.xml",
+              "pipeline_session": "pipe-phase4-e2",
+              "plan": "plan-goal-phase4-e2-v1",
+              "sha256": "5e713c54b408d7f163350ffb2d779a8a4b2c31f404b2aae4489b3431549bb70c",
+              "skipped": 0,
+              "testcases": 1
+            },
+            "source": "artifact"
+          }
+        ],
+        "sources": [
+          "artifact",
+          "execution_metric",
+          "runtime_metadata"
+        ]
+      },
+      "producer": "validation",
+      "type": "validation.evidence_collected"
+    },
+    {
+      "correlation": "cor-phase4-e2",
+      "id": "evt-rts-actuation-pkg-session-goal-phase4-e2-v1-node-respond-01-val-rule-0002",
+      "payload": {
+        "rule": "process_outcome"
+      },
+      "producer": "validation",
+      "type": "validation.rule_evaluated"
+    },
+    {
+      "correlation": "cor-phase4-e2",
+      "id": "evt-rts-actuation-pkg-session-goal-phase4-e2-v1-node-respond-01-val-rule-0003",
+      "payload": {
+        "rule": "exit_status"
+      },
+      "producer": "validation",
+      "type": "validation.rule_evaluated"
+    },
+    {
+      "correlation": "cor-phase4-e2",
+      "id": "evt-rts-actuation-pkg-session-goal-phase4-e2-v1-node-respond-01-val-rule-0004",
+      "payload": {
+        "rule": "error_absence"
+      },
+      "producer": "validation",
+      "type": "validation.rule_evaluated"
+    },
+    {
+      "correlation": "cor-phase4-e2",
+      "id": "evt-rts-actuation-pkg-session-goal-phase4-e2-v1-node-respond-01-val-rule-0005",
+      "payload": {
+        "rule": "completion_criteria"
+      },
+      "producer": "validation",
+      "type": "validation.rule_evaluated"
+    },
+    {
+      "correlation": "cor-phase4-e2",
+      "id": "evt-rts-actuation-pkg-session-goal-phase4-e2-v1-node-respond-01-val-rule-0006",
+      "payload": {
+        "rule": "outcome_conditions"
+      },
+      "producer": "validation",
+      "type": "validation.rule_evaluated"
+    },
+    {
+      "correlation": "cor-phase4-e2",
+      "id": "evt-rts-actuation-pkg-session-goal-phase4-e2-v1-node-respond-01-val-rule-0007",
+      "payload": {
+        "rule": "artifact_corroboration"
+      },
+      "producer": "validation",
+      "type": "validation.rule_evaluated"
+    },
+    {
+      "correlation": "cor-phase4-e2",
+      "id": "evt-rts-actuation-pkg-session-goal-phase4-e2-v1-node-respond-01-val-failed-0008",
+      "payload": {
+        "confidence": 0.8,
+        "decision": "failed",
+        "failed": [
+          "outcome_conditions"
+        ],
+        "report": {
+          "decision": "failed",
+          "evidence_refs": [
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-phase4-e2-v1-node-respond-01-artifact-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-phase4-e2-v1-node-respond-01-metadata-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-phase4-e2-v1-node-respond-01-metric-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-phase4-e2-v1-node-respond-01-outcome-junit_xml-0000",
+              "target_type": "evidence"
+            }
+          ],
+          "identity": "vr-rts-actuation-pkg-session-goal-phase4-e2-v1-node-respond-01",
+          "reasoning_trace": [
+            "process_outcome: satisfied \u2014 process ended normally",
+            "exit_status: satisfied \u2014 exit status 0",
+            "error_absence: satisfied \u2014 no execution error",
+            "completion_criteria: not_applicable \u2014 finite outcome conditions are evaluated independently",
+            "outcome_conditions: violated \u2014 all evaluated frozen outcome conditions were violated; outcomes: junit=violated (conditions sha256 83b4a0e0338c9b4aeb971f65cbe6b9ac9b8c84b70d82d762d1fe191e82e76994)",
+            "artifact_corroboration: satisfied \u2014 2 independent artifact(s) corroborate the outcome"
+          ]
+        },
+        "satisfied": [
+          "process_outcome",
+          "exit_status",
+          "error_absence",
+          "artifact_corroboration"
+        ]
+      },
+      "producer": "validation",
+      "type": "validation.failed"
+    }
+  ],
+  "E3": [
+    {
+      "correlation": "cor-phase4-e3",
+      "id": "evt-action-2f4e762cf9342512e3f2d75e-requested",
+      "payload": {
+        "action_id": "action-2f4e762cf9342512e3f2d75e",
+        "action_kind": "run_test",
+        "command_id": "fixture-test",
+        "input_digest": "c53021fabab57c46b8218cd69d9a31bc0878c02d23c767352cfc389f81e271f6"
+      },
+      "producer": "repository_action",
+      "type": "repository_action.requested"
+    },
+    {
+      "correlation": "cor-phase4-e3",
+      "id": "evt-plan-goal-phase4-e3-v1-execution-plan-4e6c806d3256a18e",
+      "payload": {
+        "plan": "plan-goal-phase4-e3-v1"
+      },
+      "producer": "planning",
+      "type": "planning.execution_plan_assembled"
+    },
+    {
+      "correlation": "cor-phase4-e3",
+      "id": "evt-action-2f4e762cf9342512e3f2d75e-started-09aeefc9f9647b10",
+      "payload": {
+        "action_id": "action-2f4e762cf9342512e3f2d75e",
+        "command_id": "fixture-test",
+        "input_digest": "c53021fabab57c46b8218cd69d9a31bc0878c02d23c767352cfc389f81e271f6",
+        "kind": "run_test",
+        "node": "node-respond",
+        "path": null,
+        "pipeline_session": "pipe-phase4-e3",
+        "plan": "plan-goal-phase4-e3-v1"
+      },
+      "producer": "repository_action",
+      "type": "repository_action.started"
+    },
+    {
+      "correlation": "cor-phase4-e3",
+      "id": "evt-action-2f4e762cf9342512e3f2d75e-artifact-output-0c6b6fe320975ba9",
+      "payload": {
+        "action_id": "action-2f4e762cf9342512e3f2d75e",
+        "artifact_id": "action-2f4e762cf9342512e3f2d75e-output",
+        "kind": "action_output",
+        "path": "<artifact>/output-2093b7dca9bdc35fa16be7984640c3d30fe4cf770a54b3dd1ded3afd49655dd7.txt",
+        "sha256": "2093b7dca9bdc35fa16be7984640c3d30fe4cf770a54b3dd1ded3afd49655dd7"
+      },
+      "producer": "repository_action",
+      "type": "repository_action.artifact"
+    },
+    {
+      "correlation": "cor-phase4-e3",
+      "id": "evt-action-2f4e762cf9342512e3f2d75e-completed-377ff4e137aacf3d",
+      "payload": {
+        "action_id": "action-2f4e762cf9342512e3f2d75e",
+        "action_outcome": {
+          "action_id": "action-2f4e762cf9342512e3f2d75e",
+          "command_id": "fixture-test",
+          "exit_status": 0,
+          "input_digest": "c53021fabab57c46b8218cd69d9a31bc0878c02d23c767352cfc389f81e271f6",
+          "kind": "run_test",
+          "output_ref": "evt-action-2f4e762cf9342512e3f2d75e-artifact-output-0c6b6fe320975ba9"
+        },
+        "node": "node-respond",
+        "pipeline_session": "pipe-phase4-e3",
+        "plan": "plan-goal-phase4-e3-v1"
+      },
+      "producer": "repository_action",
+      "type": "repository_action.completed"
+    },
+    {
+      "correlation": "cor-phase4-e3",
+      "id": "evt-rts-actuation-pkg-session-goal-phase4-e3-v1-node-respond-01-val-evidence-0001",
+      "payload": {
+        "count": 3,
+        "evidence": [
+          {
+            "derived_from": [
+              {
+                "identifier": "evt-rts-actuation-pkg-session-goal-phase4-e3-v1-node-respond-01-artifact-0001",
+                "target_type": "event"
+              }
+            ],
+            "identity": "ev-rts-actuation-pkg-session-goal-phase4-e3-v1-node-respond-01-artifact-0000",
+            "kind": "action_output",
+            "observed": {
+              "artifact": "evt-action-2f4e762cf9342512e3f2d75e-artifact-output-0c6b6fe320975ba9",
+              "kind": "action_output"
+            },
+            "source": "artifact"
+          },
+          {
+            "derived_from": [
+              {
+                "identifier": "rts-actuation-pkg-session-goal-phase4-e3-v1-node-respond-01",
+                "target_type": "runtime_session"
+              }
+            ],
+            "identity": "ev-rts-actuation-pkg-session-goal-phase4-e3-v1-node-respond-01-metadata-0000",
+            "kind": "runtime_metadata",
+            "observed": {
+              "exit_status": 0,
+              "outcome": "completed"
+            },
+            "source": "runtime_metadata"
+          },
+          {
+            "derived_from": [
+              {
+                "identifier": "rts-actuation-pkg-session-goal-phase4-e3-v1-node-respond-01",
+                "target_type": "runtime_session"
+              }
+            ],
+            "identity": "ev-rts-actuation-pkg-session-goal-phase4-e3-v1-node-respond-01-metric-0000",
+            "kind": "execution_metrics",
+            "observed": {},
+            "source": "execution_metric"
+          }
+        ],
+        "sources": [
+          "artifact",
+          "execution_metric",
+          "runtime_metadata"
+        ]
+      },
+      "producer": "validation",
+      "type": "validation.evidence_collected"
+    },
+    {
+      "correlation": "cor-phase4-e3",
+      "id": "evt-rts-actuation-pkg-session-goal-phase4-e3-v1-node-respond-01-val-rule-0002",
+      "payload": {
+        "rule": "process_outcome"
+      },
+      "producer": "validation",
+      "type": "validation.rule_evaluated"
+    },
+    {
+      "correlation": "cor-phase4-e3",
+      "id": "evt-rts-actuation-pkg-session-goal-phase4-e3-v1-node-respond-01-val-rule-0003",
+      "payload": {
+        "rule": "exit_status"
+      },
+      "producer": "validation",
+      "type": "validation.rule_evaluated"
+    },
+    {
+      "correlation": "cor-phase4-e3",
+      "id": "evt-rts-actuation-pkg-session-goal-phase4-e3-v1-node-respond-01-val-rule-0004",
+      "payload": {
+        "rule": "error_absence"
+      },
+      "producer": "validation",
+      "type": "validation.rule_evaluated"
+    },
+    {
+      "correlation": "cor-phase4-e3",
+      "id": "evt-rts-actuation-pkg-session-goal-phase4-e3-v1-node-respond-01-val-rule-0005",
+      "payload": {
+        "rule": "completion_criteria"
+      },
+      "producer": "validation",
+      "type": "validation.rule_evaluated"
+    },
+    {
+      "correlation": "cor-phase4-e3",
+      "id": "evt-rts-actuation-pkg-session-goal-phase4-e3-v1-node-respond-01-val-rule-0006",
+      "payload": {
+        "rule": "outcome_conditions"
+      },
+      "producer": "validation",
+      "type": "validation.rule_evaluated"
+    },
+    {
+      "correlation": "cor-phase4-e3",
+      "id": "evt-rts-actuation-pkg-session-goal-phase4-e3-v1-node-respond-01-val-rule-0007",
+      "payload": {
+        "rule": "artifact_corroboration"
+      },
+      "producer": "validation",
+      "type": "validation.rule_evaluated"
+    },
+    {
+      "correlation": "cor-phase4-e3",
+      "id": "evt-rts-actuation-pkg-session-goal-phase4-e3-v1-node-respond-01-val-completed-0008",
+      "payload": {
+        "confidence": 0.8,
+        "decision": "requires_review",
+        "failed": [],
+        "report": {
+          "decision": "requires_review",
+          "evidence_refs": [
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-phase4-e3-v1-node-respond-01-artifact-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-phase4-e3-v1-node-respond-01-metadata-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-phase4-e3-v1-node-respond-01-metric-0000",
+              "target_type": "evidence"
+            }
+          ],
+          "identity": "vr-rts-actuation-pkg-session-goal-phase4-e3-v1-node-respond-01",
+          "reasoning_trace": [
+            "process_outcome: satisfied \u2014 process ended normally",
+            "exit_status: satisfied \u2014 exit status 0",
+            "error_absence: satisfied \u2014 no execution error",
+            "completion_criteria: not_applicable \u2014 finite outcome conditions are evaluated independently",
+            "outcome_conditions: insufficient_evidence \u2014 junit: a JUnit path is missing, unsafe, or oversized (conditions sha256 28bda7b9128e6f7fcace8ea8011476bf3401e42d7f4ce58b3dc1618b4b4387e9)",
+            "artifact_corroboration: satisfied \u2014 1 independent artifact(s) corroborate the outcome"
+          ]
+        },
+        "satisfied": [
+          "process_outcome",
+          "exit_status",
+          "error_absence",
+          "artifact_corroboration"
+        ]
+      },
+      "producer": "validation",
+      "type": "validation.completed"
+    }
+  ],
+  "E4": [
+    {
+      "correlation": "cor-phase4-e4",
+      "id": "evt-action-c5a2d7302628e91f09540d33-requested",
+      "payload": {
+        "action_id": "action-c5a2d7302628e91f09540d33",
+        "action_kind": "run_test",
+        "command_id": "fixture-test",
+        "input_digest": "2f8d7f78ee9bb8a655d29268bf07d705a10bde2cb1cf33ff3e7e0c876f390241"
+      },
+      "producer": "repository_action",
+      "type": "repository_action.requested"
+    },
+    {
+      "correlation": "cor-phase4-e4",
+      "id": "evt-plan-goal-phase4-e4-v1-execution-plan-a3a31b0cdd4bd1e7",
+      "payload": {
+        "plan": "plan-goal-phase4-e4-v1"
+      },
+      "producer": "planning",
+      "type": "planning.execution_plan_assembled"
+    },
+    {
+      "correlation": "cor-phase4-e4",
+      "id": "evt-action-c5a2d7302628e91f09540d33-started-395afe8eafc35b93",
+      "payload": {
+        "action_id": "action-c5a2d7302628e91f09540d33",
+        "command_id": "fixture-test",
+        "input_digest": "2f8d7f78ee9bb8a655d29268bf07d705a10bde2cb1cf33ff3e7e0c876f390241",
+        "kind": "run_test",
+        "node": "node-respond",
+        "path": null,
+        "pipeline_session": "pipe-phase4-e4",
+        "plan": "plan-goal-phase4-e4-v1"
+      },
+      "producer": "repository_action",
+      "type": "repository_action.started"
+    },
+    {
+      "correlation": "cor-phase4-e4",
+      "id": "evt-action-c5a2d7302628e91f09540d33-artifact-output-7890a399561975b7",
+      "payload": {
+        "action_id": "action-c5a2d7302628e91f09540d33",
+        "artifact_id": "action-c5a2d7302628e91f09540d33-output",
+        "kind": "action_output",
+        "path": "<artifact>/output-5e713c54b408d7f163350ffb2d779a8a4b2c31f404b2aae4489b3431549bb70c.txt",
+        "sha256": "5e713c54b408d7f163350ffb2d779a8a4b2c31f404b2aae4489b3431549bb70c"
+      },
+      "producer": "repository_action",
+      "type": "repository_action.artifact"
+    },
+    {
+      "correlation": "cor-phase4-e4",
+      "id": "evt-action-c5a2d7302628e91f09540d33-completed-b87b269b72e6bdb6",
+      "payload": {
+        "action_id": "action-c5a2d7302628e91f09540d33",
+        "action_outcome": {
+          "action_id": "action-c5a2d7302628e91f09540d33",
+          "command_id": "fixture-test",
+          "exit_status": 0,
+          "input_digest": "2f8d7f78ee9bb8a655d29268bf07d705a10bde2cb1cf33ff3e7e0c876f390241",
+          "kind": "run_test",
+          "output_ref": "evt-action-c5a2d7302628e91f09540d33-artifact-output-7890a399561975b7"
+        },
+        "node": "node-respond",
+        "pipeline_session": "pipe-phase4-e4",
+        "plan": "plan-goal-phase4-e4-v1"
+      },
+      "producer": "repository_action",
+      "type": "repository_action.completed"
+    },
+    {
+      "correlation": "cor-phase4-e4",
+      "id": "evt-rts-actuation-pkg-session-goal-phase4-e4-v1-node-respond-01-val-evidence-0001",
+      "payload": {
+        "count": 5,
+        "evidence": [
+          {
+            "derived_from": [
+              {
+                "identifier": "evt-rts-actuation-pkg-session-goal-phase4-e4-v1-node-respond-01-artifact-0001",
+                "target_type": "event"
+              }
+            ],
+            "identity": "ev-rts-actuation-pkg-session-goal-phase4-e4-v1-node-respond-01-artifact-0000",
+            "kind": "action_output",
+            "observed": {
+              "artifact": "evt-action-c5a2d7302628e91f09540d33-artifact-output-7890a399561975b7",
+              "kind": "action_output"
+            },
+            "source": "artifact"
+          },
+          {
+            "derived_from": [
+              {
+                "identifier": "rts-actuation-pkg-session-goal-phase4-e4-v1-node-respond-01",
+                "target_type": "runtime_session"
+              }
+            ],
+            "identity": "ev-rts-actuation-pkg-session-goal-phase4-e4-v1-node-respond-01-metadata-0000",
+            "kind": "runtime_metadata",
+            "observed": {
+              "exit_status": 0,
+              "outcome": "completed"
+            },
+            "source": "runtime_metadata"
+          },
+          {
+            "derived_from": [
+              {
+                "identifier": "rts-actuation-pkg-session-goal-phase4-e4-v1-node-respond-01",
+                "target_type": "runtime_session"
+              }
+            ],
+            "identity": "ev-rts-actuation-pkg-session-goal-phase4-e4-v1-node-respond-01-metric-0000",
+            "kind": "execution_metrics",
+            "observed": {},
+            "source": "execution_metric"
+          },
+          {
+            "derived_from": [
+              {
+                "identifier": "evt-action-c5a2d7302628e91f09540d33-requested",
+                "target_type": "event"
+              }
+            ],
+            "identity": "ev-rts-actuation-pkg-session-goal-phase4-e4-v1-node-respond-01-outcome-file_sha256-0000",
+            "kind": "file_sha256",
+            "observed": {
+              "action_digest": "2f8d7f78ee9bb8a655d29268bf07d705a10bde2cb1cf33ff3e7e0c876f390241",
+              "action_id": "action-c5a2d7302628e91f09540d33",
+              "condition_digest": "2593a86e2c3f7844c312cbc833129972541b668f81ce7c1f984a7233329c7ebc",
+              "condition_id": "readme",
+              "expected_sha256": "7717eed456417eaf5d1a8261ec9b6eefd8650cd2980653fd2e85e842522f1260",
+              "passed": true,
+              "path": "README.md",
+              "sha256": "7717eed456417eaf5d1a8261ec9b6eefd8650cd2980653fd2e85e842522f1260"
+            },
+            "source": "artifact"
+          },
+          {
+            "derived_from": [
+              {
+                "identifier": "evt-action-c5a2d7302628e91f09540d33-completed-b87b269b72e6bdb6",
+                "target_type": "event"
+              },
+              {
+                "identifier": "evt-action-c5a2d7302628e91f09540d33-artifact-output-7890a399561975b7",
+                "target_type": "event"
+              },
+              {
+                "identifier": "evt-action-c5a2d7302628e91f09540d33-started-395afe8eafc35b93",
+                "target_type": "event"
+              }
+            ],
+            "identity": "ev-rts-actuation-pkg-session-goal-phase4-e4-v1-node-respond-01-outcome-junit_xml-0008",
+            "kind": "junit_xml",
+            "observed": {
+              "action_digest": "2f8d7f78ee9bb8a655d29268bf07d705a10bde2cb1cf33ff3e7e0c876f390241",
+              "action_id": "action-c5a2d7302628e91f09540d33",
+              "artifact_ref": "evt-action-c5a2d7302628e91f09540d33-artifact-output-7890a399561975b7",
+              "condition_digest": "2593a86e2c3f7844c312cbc833129972541b668f81ce7c1f984a7233329c7ebc",
+              "condition_id": "junit",
+              "errors": 0,
+              "failures": 1,
+              "node": "node-respond",
+              "passed": false,
+              "path": "reports/junit.xml",
+              "pipeline_session": "pipe-phase4-e4",
+              "plan": "plan-goal-phase4-e4-v1",
+              "sha256": "5e713c54b408d7f163350ffb2d779a8a4b2c31f404b2aae4489b3431549bb70c",
+              "skipped": 0,
+              "testcases": 1
+            },
+            "source": "artifact"
+          }
+        ],
+        "sources": [
+          "artifact",
+          "execution_metric",
+          "runtime_metadata"
+        ]
+      },
+      "producer": "validation",
+      "type": "validation.evidence_collected"
+    },
+    {
+      "correlation": "cor-phase4-e4",
+      "id": "evt-rts-actuation-pkg-session-goal-phase4-e4-v1-node-respond-01-val-rule-0002",
+      "payload": {
+        "rule": "process_outcome"
+      },
+      "producer": "validation",
+      "type": "validation.rule_evaluated"
+    },
+    {
+      "correlation": "cor-phase4-e4",
+      "id": "evt-rts-actuation-pkg-session-goal-phase4-e4-v1-node-respond-01-val-rule-0003",
+      "payload": {
+        "rule": "exit_status"
+      },
+      "producer": "validation",
+      "type": "validation.rule_evaluated"
+    },
+    {
+      "correlation": "cor-phase4-e4",
+      "id": "evt-rts-actuation-pkg-session-goal-phase4-e4-v1-node-respond-01-val-rule-0004",
+      "payload": {
+        "rule": "error_absence"
+      },
+      "producer": "validation",
+      "type": "validation.rule_evaluated"
+    },
+    {
+      "correlation": "cor-phase4-e4",
+      "id": "evt-rts-actuation-pkg-session-goal-phase4-e4-v1-node-respond-01-val-rule-0005",
+      "payload": {
+        "rule": "completion_criteria"
+      },
+      "producer": "validation",
+      "type": "validation.rule_evaluated"
+    },
+    {
+      "correlation": "cor-phase4-e4",
+      "id": "evt-rts-actuation-pkg-session-goal-phase4-e4-v1-node-respond-01-val-rule-0006",
+      "payload": {
+        "rule": "outcome_conditions"
+      },
+      "producer": "validation",
+      "type": "validation.rule_evaluated"
+    },
+    {
+      "correlation": "cor-phase4-e4",
+      "id": "evt-rts-actuation-pkg-session-goal-phase4-e4-v1-node-respond-01-val-rule-0007",
+      "payload": {
+        "rule": "artifact_corroboration"
+      },
+      "producer": "validation",
+      "type": "validation.rule_evaluated"
+    },
+    {
+      "correlation": "cor-phase4-e4",
+      "id": "evt-rts-actuation-pkg-session-goal-phase4-e4-v1-node-respond-01-val-completed-0008",
+      "payload": {
+        "confidence": 0.8,
+        "decision": "partial",
+        "failed": [
+          "outcome_conditions"
+        ],
+        "report": {
+          "decision": "partial",
+          "evidence_refs": [
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-phase4-e4-v1-node-respond-01-artifact-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-phase4-e4-v1-node-respond-01-metadata-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-phase4-e4-v1-node-respond-01-metric-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-phase4-e4-v1-node-respond-01-outcome-file_sha256-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-phase4-e4-v1-node-respond-01-outcome-junit_xml-0008",
+              "target_type": "evidence"
+            }
+          ],
+          "identity": "vr-rts-actuation-pkg-session-goal-phase4-e4-v1-node-respond-01",
+          "reasoning_trace": [
+            "process_outcome: satisfied \u2014 process ended normally",
+            "exit_status: satisfied \u2014 exit status 0",
+            "error_absence: satisfied \u2014 no execution error",
+            "completion_criteria: not_applicable \u2014 finite outcome conditions are evaluated independently",
+            "outcome_conditions: partial \u2014 some frozen outcome conditions passed and others failed; outcomes: readme=satisfied, junit=violated (conditions sha256 2593a86e2c3f7844c312cbc833129972541b668f81ce7c1f984a7233329c7ebc)",
+            "artifact_corroboration: satisfied \u2014 3 independent artifact(s) corroborate the outcome"
+          ]
+        },
+        "satisfied": [
+          "process_outcome",
+          "exit_status",
+          "error_absence",
+          "artifact_corroboration"
+        ]
+      },
+      "producer": "validation",
+      "type": "validation.completed"
+    }
+  ],
+  "E5": [
+    {
+      "correlation": "cor-phase4-e5",
+      "id": "evt-action-0fbb8e285acaa91e06690b02-requested",
+      "payload": {
+        "action_id": "action-0fbb8e285acaa91e06690b02",
+        "action_kind": "run_test",
+        "command_id": "fixture-test",
+        "input_digest": "8a5021711aba4f296d84b1343eb4797c4f7cc7458993775a1c2ebbb00b3cc317"
+      },
+      "producer": "repository_action",
+      "type": "repository_action.requested"
+    },
+    {
+      "correlation": "cor-phase4-e5",
+      "id": "evt-plan-goal-phase4-e5-v1-execution-plan-29fe6f981020825c",
+      "payload": {
+        "plan": "plan-goal-phase4-e5-v1"
+      },
+      "producer": "planning",
+      "type": "planning.execution_plan_assembled"
+    },
+    {
+      "correlation": "cor-phase4-e5",
+      "id": "evt-action-0fbb8e285acaa91e06690b02-started-fc1ac81b6738137c",
+      "payload": {
+        "action_id": "action-0fbb8e285acaa91e06690b02",
+        "command_id": "fixture-test",
+        "input_digest": "8a5021711aba4f296d84b1343eb4797c4f7cc7458993775a1c2ebbb00b3cc317",
+        "kind": "run_test",
+        "node": "node-respond",
+        "path": null,
+        "pipeline_session": "pipe-phase4-e5",
+        "plan": "plan-goal-phase4-e5-v1"
+      },
+      "producer": "repository_action",
+      "type": "repository_action.started"
+    },
+    {
+      "correlation": "cor-phase4-e5",
+      "id": "evt-action-0fbb8e285acaa91e06690b02-artifact-output-8ea593272d379b69",
+      "payload": {
+        "action_id": "action-0fbb8e285acaa91e06690b02",
+        "artifact_id": "action-0fbb8e285acaa91e06690b02-output",
+        "kind": "action_output",
+        "path": "<artifact>/output-2093b7dca9bdc35fa16be7984640c3d30fe4cf770a54b3dd1ded3afd49655dd7.txt",
+        "sha256": "2093b7dca9bdc35fa16be7984640c3d30fe4cf770a54b3dd1ded3afd49655dd7"
+      },
+      "producer": "repository_action",
+      "type": "repository_action.artifact"
+    },
+    {
+      "correlation": "cor-phase4-e5",
+      "id": "evt-action-0fbb8e285acaa91e06690b02-completed-673e129ab2bb489c",
+      "payload": {
+        "action_id": "action-0fbb8e285acaa91e06690b02",
+        "action_outcome": {
+          "action_id": "action-0fbb8e285acaa91e06690b02",
+          "command_id": "fixture-test",
+          "exit_status": 0,
+          "input_digest": "8a5021711aba4f296d84b1343eb4797c4f7cc7458993775a1c2ebbb00b3cc317",
+          "kind": "run_test",
+          "output_ref": "evt-action-0fbb8e285acaa91e06690b02-artifact-output-8ea593272d379b69"
+        },
+        "node": "node-respond",
+        "pipeline_session": "pipe-phase4-e5",
+        "plan": "plan-goal-phase4-e5-v1"
+      },
+      "producer": "repository_action",
+      "type": "repository_action.completed"
+    },
+    {
+      "correlation": "cor-phase4-e5",
+      "id": "evt-rts-actuation-pkg-session-goal-phase4-e5-v1-node-respond-01-val-evidence-0001",
+      "payload": {
+        "count": 5,
+        "evidence": [
+          {
+            "derived_from": [
+              {
+                "identifier": "evt-rts-actuation-pkg-session-goal-phase4-e5-v1-node-respond-01-artifact-0001",
+                "target_type": "event"
+              }
+            ],
+            "identity": "ev-rts-actuation-pkg-session-goal-phase4-e5-v1-node-respond-01-artifact-0000",
+            "kind": "action_output",
+            "observed": {
+              "artifact": "evt-action-0fbb8e285acaa91e06690b02-artifact-output-8ea593272d379b69",
+              "kind": "action_output"
+            },
+            "source": "artifact"
+          },
+          {
+            "derived_from": [
+              {
+                "identifier": "rts-actuation-pkg-session-goal-phase4-e5-v1-node-respond-01",
+                "target_type": "runtime_session"
+              }
+            ],
+            "identity": "ev-rts-actuation-pkg-session-goal-phase4-e5-v1-node-respond-01-metadata-0000",
+            "kind": "runtime_metadata",
+            "observed": {
+              "exit_status": 0,
+              "outcome": "completed"
+            },
+            "source": "runtime_metadata"
+          },
+          {
+            "derived_from": [
+              {
+                "identifier": "rts-actuation-pkg-session-goal-phase4-e5-v1-node-respond-01",
+                "target_type": "runtime_session"
+              }
+            ],
+            "identity": "ev-rts-actuation-pkg-session-goal-phase4-e5-v1-node-respond-01-metric-0000",
+            "kind": "execution_metrics",
+            "observed": {},
+            "source": "execution_metric"
+          },
+          {
+            "derived_from": [
+              {
+                "identifier": "evt-action-0fbb8e285acaa91e06690b02-completed-673e129ab2bb489c",
+                "target_type": "event"
+              },
+              {
+                "identifier": "evt-action-0fbb8e285acaa91e06690b02-artifact-output-8ea593272d379b69",
+                "target_type": "event"
+              },
+              {
+                "identifier": "evt-action-0fbb8e285acaa91e06690b02-started-fc1ac81b6738137c",
+                "target_type": "event"
+              }
+            ],
+            "identity": "ev-rts-actuation-pkg-session-goal-phase4-e5-v1-node-respond-01-outcome-junit_xml-0000",
+            "kind": "junit_xml",
+            "observed": {
+              "action_digest": "8a5021711aba4f296d84b1343eb4797c4f7cc7458993775a1c2ebbb00b3cc317",
+              "action_id": "action-0fbb8e285acaa91e06690b02",
+              "artifact_ref": "evt-action-0fbb8e285acaa91e06690b02-artifact-output-8ea593272d379b69",
+              "condition_digest": "2a6215c921f4a109752508d056feabe812de65d101a011ce59aa9017db326a20",
+              "condition_id": "junit",
+              "errors": 0,
+              "failures": 0,
+              "node": "node-respond",
+              "passed": true,
+              "path": "reports/one.xml",
+              "pipeline_session": "pipe-phase4-e5",
+              "plan": "plan-goal-phase4-e5-v1",
+              "sha256": "2093b7dca9bdc35fa16be7984640c3d30fe4cf770a54b3dd1ded3afd49655dd7",
+              "skipped": 0,
+              "testcases": 1
+            },
+            "source": "artifact"
+          },
+          {
+            "derived_from": [
+              {
+                "identifier": "evt-action-0fbb8e285acaa91e06690b02-completed-673e129ab2bb489c",
+                "target_type": "event"
+              },
+              {
+                "identifier": "evt-action-0fbb8e285acaa91e06690b02-artifact-output-8ea593272d379b69",
+                "target_type": "event"
+              },
+              {
+                "identifier": "evt-action-0fbb8e285acaa91e06690b02-started-fc1ac81b6738137c",
+                "target_type": "event"
+              }
+            ],
+            "identity": "ev-rts-actuation-pkg-session-goal-phase4-e5-v1-node-respond-01-outcome-junit_xml-0001",
+            "kind": "junit_xml",
+            "observed": {
+              "action_digest": "8a5021711aba4f296d84b1343eb4797c4f7cc7458993775a1c2ebbb00b3cc317",
+              "action_id": "action-0fbb8e285acaa91e06690b02",
+              "artifact_ref": "evt-action-0fbb8e285acaa91e06690b02-artifact-output-8ea593272d379b69",
+              "condition_digest": "2a6215c921f4a109752508d056feabe812de65d101a011ce59aa9017db326a20",
+              "condition_id": "junit",
+              "errors": 0,
+              "failures": 1,
+              "node": "node-respond",
+              "passed": false,
+              "path": "reports/two.xml",
+              "pipeline_session": "pipe-phase4-e5",
+              "plan": "plan-goal-phase4-e5-v1",
+              "sha256": "5e713c54b408d7f163350ffb2d779a8a4b2c31f404b2aae4489b3431549bb70c",
+              "skipped": 0,
+              "testcases": 1
+            },
+            "source": "artifact"
+          }
+        ],
+        "sources": [
+          "artifact",
+          "execution_metric",
+          "runtime_metadata"
+        ]
+      },
+      "producer": "validation",
+      "type": "validation.evidence_collected"
+    },
+    {
+      "correlation": "cor-phase4-e5",
+      "id": "evt-rts-actuation-pkg-session-goal-phase4-e5-v1-node-respond-01-val-rule-0002",
+      "payload": {
+        "rule": "process_outcome"
+      },
+      "producer": "validation",
+      "type": "validation.rule_evaluated"
+    },
+    {
+      "correlation": "cor-phase4-e5",
+      "id": "evt-rts-actuation-pkg-session-goal-phase4-e5-v1-node-respond-01-val-rule-0003",
+      "payload": {
+        "rule": "exit_status"
+      },
+      "producer": "validation",
+      "type": "validation.rule_evaluated"
+    },
+    {
+      "correlation": "cor-phase4-e5",
+      "id": "evt-rts-actuation-pkg-session-goal-phase4-e5-v1-node-respond-01-val-rule-0004",
+      "payload": {
+        "rule": "error_absence"
+      },
+      "producer": "validation",
+      "type": "validation.rule_evaluated"
+    },
+    {
+      "correlation": "cor-phase4-e5",
+      "id": "evt-rts-actuation-pkg-session-goal-phase4-e5-v1-node-respond-01-val-rule-0005",
+      "payload": {
+        "rule": "completion_criteria"
+      },
+      "producer": "validation",
+      "type": "validation.rule_evaluated"
+    },
+    {
+      "correlation": "cor-phase4-e5",
+      "id": "evt-rts-actuation-pkg-session-goal-phase4-e5-v1-node-respond-01-val-rule-0006",
+      "payload": {
+        "rule": "outcome_conditions"
+      },
+      "producer": "validation",
+      "type": "validation.rule_evaluated"
+    },
+    {
+      "correlation": "cor-phase4-e5",
+      "id": "evt-rts-actuation-pkg-session-goal-phase4-e5-v1-node-respond-01-val-rule-0007",
+      "payload": {
+        "rule": "artifact_corroboration"
+      },
+      "producer": "validation",
+      "type": "validation.rule_evaluated"
+    },
+    {
+      "correlation": "cor-phase4-e5",
+      "id": "evt-rts-actuation-pkg-session-goal-phase4-e5-v1-node-respond-01-val-completed-0008",
+      "payload": {
+        "confidence": 0.8,
+        "decision": "requires_review",
+        "failed": [],
+        "report": {
+          "decision": "requires_review",
+          "evidence_refs": [
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-phase4-e5-v1-node-respond-01-artifact-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-phase4-e5-v1-node-respond-01-metadata-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-phase4-e5-v1-node-respond-01-metric-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-phase4-e5-v1-node-respond-01-outcome-junit_xml-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-phase4-e5-v1-node-respond-01-outcome-junit_xml-0001",
+              "target_type": "evidence"
+            }
+          ],
+          "identity": "vr-rts-actuation-pkg-session-goal-phase4-e5-v1-node-respond-01",
+          "reasoning_trace": [
+            "process_outcome: satisfied \u2014 process ended normally",
+            "exit_status: satisfied \u2014 exit status 0",
+            "error_absence: satisfied \u2014 no execution error",
+            "completion_criteria: not_applicable \u2014 finite outcome conditions are evaluated independently",
+            "outcome_conditions: insufficient_evidence \u2014 junit: valid JUnit reports conflict (conditions sha256 2a6215c921f4a109752508d056feabe812de65d101a011ce59aa9017db326a20)",
+            "artifact_corroboration: satisfied \u2014 3 independent artifact(s) corroborate the outcome"
+          ]
+        },
+        "satisfied": [
+          "process_outcome",
+          "exit_status",
+          "error_absence",
+          "artifact_corroboration"
+        ]
+      },
+      "producer": "validation",
+      "type": "validation.completed"
+    }
+  ]
+}

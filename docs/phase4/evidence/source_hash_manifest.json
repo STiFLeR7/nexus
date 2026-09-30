@@ -1,0 +1,22 @@
+{
+  "E1": {
+    "README.md": "7717eed456417eaf5d1a8261ec9b6eefd8650cd2980653fd2e85e842522f1260",
+    "reports/junit.xml": "2093b7dca9bdc35fa16be7984640c3d30fe4cf770a54b3dd1ded3afd49655dd7"
+  },
+  "E2": {
+    "README.md": "7717eed456417eaf5d1a8261ec9b6eefd8650cd2980653fd2e85e842522f1260",
+    "reports/junit.xml": "5e713c54b408d7f163350ffb2d779a8a4b2c31f404b2aae4489b3431549bb70c"
+  },
+  "E3": {
+    "README.md": "7717eed456417eaf5d1a8261ec9b6eefd8650cd2980653fd2e85e842522f1260"
+  },
+  "E4": {
+    "README.md": "7717eed456417eaf5d1a8261ec9b6eefd8650cd2980653fd2e85e842522f1260",
+    "reports/junit.xml": "5e713c54b408d7f163350ffb2d779a8a4b2c31f404b2aae4489b3431549bb70c"
+  },
+  "E5": {
+    "README.md": "7717eed456417eaf5d1a8261ec9b6eefd8650cd2980653fd2e85e842522f1260",
+    "reports/one.xml": "2093b7dca9bdc35fa16be7984640c3d30fe4cf770a54b3dd1ded3afd49655dd7",
+    "reports/two.xml": "5e713c54b408d7f163350ffb2d779a8a4b2c31f404b2aae4489b3431549bb70c"
+  }
+}

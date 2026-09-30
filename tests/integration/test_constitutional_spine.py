@@ -58,6 +58,14 @@ def test_pipeline_runs_the_whole_spine_to_knowledge() -> None:
 
     assert run.status is SpineStatus.COMPLETED and run.succeeded
     assert run.executed_stages == _ALL_STAGES  # every owner invoked once, in dependency order
+    plan_event = next(
+        event for event in run.events if event.type == "planning.execution_plan_assembled"
+    )
+    packages = plan_event.payload["execution_plan"]["work_packages"]
+    assert all(
+        not any(reference["target_type"] == "action_request" for reference in package["inputs"])
+        for package in packages
+    )
     assert all(d == "passed" for d in run.validation_decisions)  # F-3 clean handoff → corroborated
     assert run.knowledge_item_ids  # evidence-backed Knowledge reached (INV-24)
 
