@@ -10,6 +10,52 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ---
 
+## [2.5.0] — 2026-09-30 — "Accountable Goal Execution"
+
+### Added — Phases 1–6
+
+- **Operator-facing end-to-end path (Phase 1).** A technical operator can submit a goal through the
+  existing constitutional spine and inspect/request continuation at explicit boundaries.
+- **Grounded understanding and plans (Phase 2).** Plans retain repository source references, work-item
+  objectives, dependencies, assumptions, and unresolved clarification needs before actuation.
+- **Constrained first-party actions (Phase 3).** Repository writes and named allow-listed test commands
+  are bound to a frozen action request, workspace, Policy decision, and explicit Approval Exchange event.
+  The CLI does not accept arbitrary executable argv as a governed test command.
+- **Independent outcome validation (Phase 4).** Declared file-hash and JUnit conditions determine the
+  outcome verdict; runtime completion is reported separately and cannot establish acceptance.
+- **Evidence-bound Knowledge (Phase 5).** Only independently accepted results can be promoted as proven
+  guidance; failed, partial, unknown, and out-of-scope evidence is excluded or kept reviewable.
+- **Technical operator pilot (Phase 6).** Five disposable repair fixtures exercise approval, evidence
+  validation, Knowledge disposition, replay, and SQLite plus artifact-sidecar backup/restore.
+
+### Validated pilot outcomes
+
+- P1 addition, P2 normalization, and P3 clamp passed independent edit and test validation; the one
+  operator rated all three useful, and Knowledge accepted their evidence.
+- P4's intentionally incorrect title-case repair failed both declared conditions and was rejected by
+  Knowledge.
+- P5's source repair passed its file-hash condition but its deliberately missing JUnit report produced
+  `requires_review`; it was not promoted as proven Knowledge.
+- The operator reported zero false denials. All five runs retained complete event lineage; no unauthorized
+  action, false `PASSED` verdict, or completed-run replay duplication was observed.
+- The live-Claude strict suite passed 3,261 tests with `-W error`, zero skips, and zero warnings. Ruff
+  check, Phase 6 Ruff format/type checks, and `uv build` passed. Whole-repository Ruff format check still
+  reports 55 pre-existing findings outside Phase 6; they are disclosed in
+  [`docs/phase6/RELEASE_REVIEW.md`](docs/phase6/RELEASE_REVIEW.md).
+
+### Scope and migration notes
+
+- Pilot evidence comes from synthetic, disposable fixture repositories. It does not establish reliability
+  for arbitrary real repositories, sustained operation, or autonomous repair. The deterministic Intent
+  route required a recorded software-domain prefix for all five pilot requests; this is an input
+  intervention, not proof that unmodified request text resolved.
+- v1 (`nexus/`) and v2 (`nexus_*`) remain independent codebases with no shared schema, process, or
+  execution path. This v2 release version does not change v1 behavior or migrate v1 data.
+- Phases 1–6 introduced no durable schema migration. This statement does not add schema versioning or an
+  upgrade mechanism to the existing v2 store.
+- The controlled pilot is limited evidence and does not authorize broader reliability claims. See
+  [`docs/releases/V2_5_RELEASE_REPORT.md`](docs/releases/V2_5_RELEASE_REPORT.md) for release evidence and CI record.
+
 ## [2.0.0] — 2026-07-23 — "Constitutional Spine"
 
 > First stable release of the **v2 constitutional platform** — a from-scratch, event-sourced

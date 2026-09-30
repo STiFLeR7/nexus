@@ -34,10 +34,10 @@ That is the entire onboarding. `uv sync` provisions the interpreter and the exac
 locked dependency set; `pre-commit install` wires the local quality gate so it
 runs automatically on every commit.
 
-## 3. Repository layout (all 31 v2 packages, current as of `v2.0.0`)
+## 3. Repository layout (all 32 v2 packages, current for `v2.5.0`)
 
 The six packages below (`nexus_core` through `nexus_harness`) were the original Phase 1–6 foundation and
-remain the engineering baseline everything else builds on. The platform has since shipped 25 more packages
+remain the engineering baseline everything else builds on. The platform has since shipped 26 more packages
 across the remaining phases — this table is the full, current inventory, grouped by the four architectural
 planes `README.md`'s own "Core Capabilities" table names, not just the earliest layer:
 
@@ -59,6 +59,7 @@ nexus_harness/         Harness — compiles Harness Requests into runtime-ready 
 # Execution
 nexus_runtime/         Runtime Manager — allocation, selection, the Harness/Runtime registry (ADR-002).
 nexus_runtime_adapters/ Generic runtime adapter registry/discovery layer.
+nexus_runtime_llm/    LLM runtime adapter and provider configuration used by the operator CLI.
 nexus_runtime_claude/  RuntimeAdapter implementation driving Claude Code.
 nexus_runtime_gemini/  RuntimeAdapter implementation driving Gemini CLI.
 nexus_runtime_shell/   RuntimeAdapter implementation driving a local shell process.
@@ -158,13 +159,14 @@ identical package scope; know the difference before trusting a local green run:*
 | Types | `mypy $(PACKAGES)` | `--strict` + `pydantic.mypy` plugin. No `Any` leaks. |
 | Tests + coverage | `pytest --cov-fail-under=95` | Branch coverage, ≥95% floor. |
 
-`$(PACKAGES)` in the `Makefile` currently lists 20 of the 31 v2 packages (`nexus_core` through
-`nexus_operator`, in dependency order — see §3). **`core-ci.yml` lints and type-checks all 31** — the 11
+`$(PACKAGES)` in the `Makefile` currently lists 20 of the 32 v2 packages (`nexus_core` through
+`nexus_operator`, in dependency order — see §3). **`core-ci.yml` lints and type-checks all 32** — the 12
 packages the Makefile doesn't cover (`nexus_policy`, `nexus_intent`, `nexus_engineering`,
 `nexus_estimation`, `nexus_repository`, `nexus_integration`, `nexus_history`, `nexus_human_interaction`,
-`nexus_approval`, `nexus_operations`, `nexus_scheduler`) are still gated — just by CI directly, not by
-`make check`. This is a real, currently-existing gap between the local dev loop and the actual CI gate, not
-a documentation error: `make check` passing is necessary but not sufficient evidence for those 11 packages.
+`nexus_approval`, `nexus_operations`, `nexus_scheduler`, `nexus_runtime_llm`) are still gated — just by CI
+directly, not by `make check`. This is a real, currently-existing gap between the local dev loop and the
+actual CI gate, not a documentation error: `make check` passing is necessary but not sufficient evidence
+for those 12 packages.
 See §8 for the full command CI actually runs, and `docs/development/CONTRIBUTING.md` §4 for the same
 disclosure from the contributor's-eye view.
 
@@ -200,7 +202,7 @@ uv run mypy $(cat Makefile | grep '^PACKAGES' | cut -d= -f2)
 (or just read the `Makefile`'s `PACKAGES`/`TESTS` variables directly and paste them — they're plain
 space-separated package/directory names.)
 
-**To run the same scope Core CI actually gates (all 31 packages)**, use the exact command
+**To run the same scope Core CI actually gates (all 32 packages)**, use the exact command
 `.github/workflows/core-ci.yml` runs — copy it directly from that file rather than from this document, so
 this guide can never drift out of sync with the real gate again the way it once did (§6's own disclosed
 gap is exactly this kind of drift, now flagged instead of silently repeated here).
@@ -277,7 +279,7 @@ When your change affects anything a reader outside your own head needs to know:
 Release governance (versioning, cadence, the actual commit/tag/merge process, deprecation and support
 posture) is documented in full at `docs/releases/README.md` — this section only points you there rather
 than duplicating it. In short: there is one `pyproject.toml` version describing the one distributable wheel
-(both `nexus` v1 and all 31 `nexus_*` v2 packages ship together); every v2 package's own `__version__`
+(both `nexus` v1 and all 32 `nexus_*` v2 packages ship together); every v2 package's own `__version__`
 tracks it; and every past release (`docs/v2/RC1_PRODUCTIZATION_REPORT.md`,
 `docs/v2/RC2_EXECUTION_IDENTITY_REPORT.md`, `docs/v2/V1_RELEASE_READINESS_REPORT.md`,
 `docs/v2/V2_RELEASE_EXECUTION_REPORT.md`) documents exactly what was done, in what order, with what

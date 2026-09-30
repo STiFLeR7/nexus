@@ -65,7 +65,7 @@ from nexus_harness.validators import (
 )
 from nexus_harness.vocabulary import ManifestStatus, PackageStatus
 
-__version__ = "2.0.0"
+__version__ = "2.5.0"
 
 __all__ = [
     "ArtifactResolver",

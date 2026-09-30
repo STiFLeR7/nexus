@@ -1034,7 +1034,7 @@ wheels = [
 
 [[package]]
 name = "nexus"
-version = "2.0.0"
+version = "2.5.0"
 source = { editable = "." }
 dependencies = [
     { name = "aiosmtplib" },

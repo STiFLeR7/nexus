@@ -50,7 +50,7 @@ from nexus_execution.signals import (
     TerminalSignal,
 )
 
-__version__ = "2.0.0"
+__version__ = "2.5.0"
 
 __all__ = [
     "AdapterConfig",

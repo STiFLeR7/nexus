@@ -6,8 +6,9 @@ process):
 
 - **v1** (`nexus/`) — released as `v1.0.0` ("Operational Intelligence"), currently in the `v1.0.1`
   "Alignment" line. A Discord-fronted AI orchestration control plane.
-- **v2** (`nexus_*`, 31 packages) — released as `v2.0.0` ("Constitutional Spine"). An event-sourced
-  constitutional reasoning spine, architecturally and operationally independent of v1.
+- **v2** (`nexus_*`, 32 packages) — `v2.5.0` ("Accountable Goal Execution") is the stable minor release.
+  It extends the event-sourced constitutional reasoning spine and remains architecturally and operationally
+  independent of v1.
 
 Most documentation confusion in this repository comes from not knowing which of the two a given file
 describes. This page exists to answer that in one lookup.
@@ -23,7 +24,7 @@ full map — read on if the README's links didn't already answer your question.
 | Contribute: [CONTRIBUTING.md](../CONTRIBUTING.md) (root) | Contribute: [docs/development/CONTRIBUTING.md](development/CONTRIBUTING.md) |
 | Set up locally: [DEVELOPMENT.md](../DEVELOPMENT.md) (root) | Set up locally: [docs/development/DEVELOPMENT.md](development/DEVELOPMENT.md) |
 | Design docs: [docs/v1/](v1/) (`00_BRIEF.md` onward) | Design docs: [docs/v2/](v2/) (start at [docs/v2/README.md](v2/README.md)) |
-| Current status: [blueprint/STATUS.md](../blueprint/STATUS.md), [blueprint/ROADMAP.md](../blueprint/ROADMAP.md) | Release status: [docs/v2/V2_RELEASE_EXECUTION_REPORT.md](v2/V2_RELEASE_EXECUTION_REPORT.md) |
+| Current status: [blueprint/STATUS.md](../blueprint/STATUS.md), [blueprint/ROADMAP.md](../blueprint/ROADMAP.md) | Release record: [v2.5.0 report](releases/V2_5_RELEASE_REPORT.md), [Phase 6 pilot review](phase6/RELEASE_REVIEW.md) |
 | Decision records: [blueprint/DECISIONS/](../blueprint/DECISIONS/) | Decision records: [adr/README.md](../adr/README.md) (`ADR-001`–`004`, `007`–`009`) |
 | — | Full architecture portal (every subsystem, one page): [docs/architecture/README.md](architecture/README.md) |
 | — | As-built engineering notes per subsystem: [docs/runtime/README.md](runtime/README.md) |
@@ -63,6 +64,7 @@ full map — read on if the README's links didn't already answer your question.
 
 ## Reports and release history
 
+- v2.5.0 release evidence and Phase 1–6 scope: [docs/releases/V2_5_RELEASE_REPORT.md](releases/V2_5_RELEASE_REPORT.md).
 - v2's release evidence: `docs/v2/RC1_PRODUCTIZATION_REPORT.md`, `docs/v2/RC2_EXECUTION_IDENTITY_REPORT.md`,
   `docs/v2/V1_RELEASE_READINESS_REPORT.md`, `docs/v2/V2_RELEASE_EXECUTION_REPORT.md`.
 - v1's release/audit history: `blueprint/onboarding/` (the accepted v1.0.0 onboarding audit),

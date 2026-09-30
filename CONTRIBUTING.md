@@ -1,9 +1,10 @@
 # Contributing to Nexus
 
 > **This file covers Nexus v1** (`nexus/`, the Discord-fronted control plane). Contributing to the
-> released v2 platform (`nexus_*` packages)? See
-> [docs/development/CONTRIBUTING.md](docs/development/CONTRIBUTING.md) instead — its rules (frozen
-> architecture, `make check` gate) are different from v1's. See [docs/README.md](docs/README.md) if
+> v2.5.0 (`nexus_*`, 32 packages, “Accountable Goal Execution”)? See the
+> [v2 release report](docs/releases/V2_5_RELEASE_REPORT.md) for its scope and evidence, and
+> [v2 contribution guide](docs/development/CONTRIBUTING.md) for the frozen architecture and `make check`
+> gate. This file's rules below remain specific to Nexus v1. See [docs/README.md](docs/README.md) if
 > you're not sure which codebase you're working in.
 
 > Read [docs/RULES.md](docs/v1/RULES.md) before contributing. These rules are non-negotiable.

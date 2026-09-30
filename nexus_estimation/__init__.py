@@ -54,7 +54,7 @@ from nexus_estimation.vocabulary import (
     ResourceClass,
 )
 
-__version__ = "2.0.0"
+__version__ = "2.5.0"
 
 __all__ = [
     "DEFAULT_MODEL",

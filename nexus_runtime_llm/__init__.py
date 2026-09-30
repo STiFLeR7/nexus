@@ -30,7 +30,7 @@ from nexus_runtime_llm.invoker import (
     StubLLMInvoker,
 )
 
-__version__ = "2.0.0"
+__version__ = "2.5.0"
 
 __all__ = [
     "LLM_CAPABILITIES",

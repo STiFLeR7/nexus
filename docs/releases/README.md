@@ -7,7 +7,7 @@ rather than inventing one.
 ## Versioning
 
 **One `pyproject.toml` version field describes the one distributable wheel** — both Nexus v1 (`nexus/`)
-and all 31 Nexus v2 (`nexus_*`) packages ship together in a single artifact, and share that one version
+and all 32 Nexus v2 (`nexus_*`) packages ship together in a single artifact, and share that one version
 string. This is a real, slightly unusual constraint (most projects with two independent codebases would
 version them separately) — documented explicitly in `docs/v2/V1_RELEASE_READINESS_REPORT.md` because it
 was flagged as a four-way disagreement (`pyproject.toml`, 24-of-31 packages, 7 unversioned packages, and
@@ -33,9 +33,19 @@ history and `CHANGELOG.md`'s Keep a Changelog format:
 **No fixed release cadence exists, and none is claimed here.** Releases have happened when a milestone's
 own evidence gate was fully green (full test suite, `mypy --strict`, `ruff`, wheel build, and — for v2.0.0
 specifically — a full architectural-correctness audit chain: `P17_PRODUCTION_READINESS_REPORT.md` → RC1 →
-RC2 → Release Readiness → Release Execution), not on a calendar schedule. `v1.0.0` → `v1.0.1` → `v1.1.0` →
-`v2.0.0` is the full release history to date; drawing a cadence from four data points across two products
-would be a fabricated pattern, not a real one.
+RC2 → Release Readiness → Release Execution), not on a calendar schedule. The documented release sequence
+is `v1.0.0` → `v1.0.1` → `v1.1.0` → `v2.0.0` → `v2.5.0`. No fixed cadence is inferred from this small
+history across two products.
+
+## v2.5.0 release record
+
+The stable minor release is titled **Nexus v2.5.0 — Accountable Goal Execution**. Its evidence
+and release record are collected in [the release report](V2_5_RELEASE_REPORT.md); the controlled
+five-case technical pilot is detailed in [the Phase 6 review](../phase6/RELEASE_REVIEW.md). The pilot
+supports only the bounded claims in those reports: three useful accepted repairs, one detected failure,
+one `requires_review` outcome, and no reported false denials. It does not establish arbitrary real-repository
+reliability or autonomous repair. The report distinguishes recorded pilot checks from CI verification on the
+pushed release commit.
 
 ## The actual release process (as practiced for `v2.0.0`)
 
@@ -102,7 +112,8 @@ Also not formally defined today. What can be said honestly, grounded in what's a
 
 ## Where release evidence actually lives
 
-`CHANGELOG.md` (the durable, versioned summary) and, per release, the full audit chain under `docs/v2/`
+`CHANGELOG.md` (the durable, versioned summary), the [v2.5.0 release report](V2_5_RELEASE_REPORT.md),
+and, per release, the full audit chain under `docs/v2/`
 (`P17_PRODUCTION_READINESS_REPORT.md`, `RC1_PRODUCTIZATION_REPORT.md`, `RC2_EXECUTION_IDENTITY_REPORT.md`,
 `V1_RELEASE_READINESS_REPORT.md`, `V2_RELEASE_EXECUTION_REPORT.md`) — this page is an index and summary of
 that evidence, not a replacement for it.

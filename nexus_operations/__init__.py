@@ -29,7 +29,7 @@ from nexus_operations.model import (
 )
 from nexus_operations.service import OperationsService
 
-__version__ = "2.0.0"
+__version__ = "2.5.0"
 
 __all__ = [
     "OPERATIONS_PRODUCER",

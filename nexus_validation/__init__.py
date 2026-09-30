@@ -48,7 +48,7 @@ from nexus_validation.vocabulary import (
     ValidationStage,
 )
 
-__version__ = "2.0.0"
+__version__ = "2.5.0"
 
 __all__ = [
     "DEFAULT_RULES",

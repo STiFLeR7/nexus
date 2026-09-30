@@ -2,8 +2,7 @@
 
 > **A governed, deterministic control plane for AI-driven execution.**
 
-[![Version](https://img.shields.io/badge/release-v2.0.0-blue)](CHANGELOG.md)
-[![Status](https://img.shields.io/badge/status-released-brightgreen)](docs/v2/V2_RELEASE_EXECUTION_REPORT.md)
+[![Version](https://img.shields.io/badge/release-v2.5.0-blue)](CHANGELOG.md)
 [![Python](https://img.shields.io/badge/python-3.12%2B-blue)](https://python.org)
 [![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 [![Core CI](https://img.shields.io/github/actions/workflow/status/STiFLeR7/nexus/core-ci.yml?branch=master&label=core%20CI)](https://github.com/STiFLeR7/nexus/actions/workflows/core-ci.yml)
@@ -24,10 +23,42 @@ It is **not** a chatbot, an agent-wrapper, or a prompt library. Decisions about 
 component in a much larger governed pipeline, not the thing making the decisions.
 
 > **Two systems live in this repository.** The platform described in this README is **Nexus v2**
-> (`nexus_*`, 31 packages) — an independent, from-scratch rebuild released as `v2.0.0`. An earlier,
+> (`nexus_*`, 32 packages) — an independent, from-scratch rebuild. v2.5.0 is its current stable minor
+> release; v2.0.0 was the previous release. An earlier,
 > separately-released system, **Nexus v1** (`nexus/`, `v1.0.0`/`v1.0.1`), also lives here — a
 > Discord-fronted orchestration console. The two share no code, schema, or process in either direction.
 > If you're looking for v1: [ONBOARDING.md](ONBOARDING.md). Not sure which you need? [docs/README.md](docs/README.md).
+
+## v2.5.0 — Accountable Goal Execution
+
+This minor release adds an operator-supervised path from a goal to a reviewable plan, an explicitly
+approved constrained repository action, independent evidence validation, and scoped Knowledge updates.
+Phases 1–6 established:
+
+1. An operator-facing end-to-end entry path over the existing constitutional spine.
+2. Repository-grounded plans with explicit source references, visible assumptions, and bounded
+   clarification when the goal cannot be resolved.
+3. First-party repository writes and allow-listed test commands bound to a specific plan, workspace,
+   Policy decision, and recorded human approval.
+4. Independent Validation of declared file hashes and JUnit evidence; runtime completion alone is not
+   an accepted outcome.
+5. Knowledge promotion and retrieval grounded in accepted reports, with failed, partial, or unknown
+   outcomes excluded from proven guidance.
+6. A controlled five-case technical operator pilot, with durable event lineage, replay checks, and
+   SQLite/artifact backup-and-restore evidence.
+
+The pilot recorded three accepted repairs rated useful, the intentionally incorrect P4 repair failed,
+and P5 required review because its JUnit report was absent. The operator reported zero false denials.
+The live-Claude strict suite passed 3,261 tests with `-W error`, zero skips, and zero warnings. Ruff,
+focused Phase 6 formatting/type checks, and the wheel build passed; the release review discloses the
+remaining whole-repository formatter findings. See the [Phase 6 release review](docs/phase6/RELEASE_REVIEW.md)
+and [v2.5.0 release report](docs/releases/V2_5_RELEASE_REPORT.md).
+
+The pilot used synthetic, disposable fixture repositories. It does not establish reliability on arbitrary
+real repositories, sustained operation, or autonomous repair. The deterministic Intent route required a
+recorded software-domain prefix in all five pilot requests. v1 and v2 remain independent codebases; this
+v2 version update does not migrate v1 data or change v1 behavior. Phases 1–6 introduce no database schema
+migration.
 
 ## Why Nexus Exists
 
@@ -149,6 +180,23 @@ python -m nexus_scheduler --db nexus_v2.db --once --log-level INFO
 python -m nexus_scheduler --db nexus_v2.db
 ```
 
+The scheduler dispatches goals registered by callers; it does not author an operator goal from terminal
+input. For the operator-facing request path, use the CLI and stop at the plan for inspection:
+
+```bash
+uv run python scripts/nexus_cli.py --db nexus_operator.db --plan "Summarize this repository" --repository-root .
+uv run python scripts/nexus_cli.py --db nexus_operator.db --pending
+# After reviewing, resume using the printed session ID:
+uv run python scripts/nexus_cli.py --db nexus_operator.db --resume cli-<session-id>
+```
+
+The CLI and `nexus-v2` scheduler entry point are separate surfaces. The controlled Phase 6 pilot protocol
+is narrower and uses synthetic disposable repositories only.
+
+For the bounded, approval-first Phase 6 fixture workflow, see the
+[operator protocol](docs/phase6/PILOT_OPERATOR_PROTOCOL.md). It is a technical pilot path for disposable
+fixtures, not a general-purpose real-repository autopilot.
+
 Registering work is a caller concern via the same composition-root API the entrypoint itself uses
 (`Scheduler.schedule_goal` / `schedule_operation`) — the entrypoint boots the platform, it doesn't author
 Goals for you. See [docs/internals/WALKTHROUGH-v2.md](docs/internals/WALKTHROUGH-v2.md) for the full
@@ -167,6 +215,7 @@ composition-root pattern and a worked example of how one Goal's identity flows t
 | [docs/v2/OPERATOR_GUIDE.md](docs/v2/OPERATOR_GUIDE.md) | Running and operating the platform |
 | [docs/development/CONTRIBUTING.md](docs/development/CONTRIBUTING.md) | Contributing to v2 |
 | [docs/releases/README.md](docs/releases/README.md) | How versioning, releases, and long-term maintenance actually work |
+| [docs/releases/V2_5_RELEASE_REPORT.md](docs/releases/V2_5_RELEASE_REPORT.md) | v2.5.0 evidence and release record |
 
 ## Examples
 
@@ -194,10 +243,10 @@ Three runtime adapters ship today, each implementing the same `RuntimeAdapter` p
 
 ## Roadmap
 
-No dedicated v2 roadmap document exists yet. The most current forward-looking source is
-`CHANGELOG.md`'s `[2.0.0]` entry's own "Known Limitations" section (no v1→v2 data migration tool, an
-unversioned durable schema, ADR-009 filed but unratified, two subsystems built but not yet wired to an
-entrypoint). Nexus v1's roadmap is tracked separately in `blueprint/ROADMAP.md`.
+Phases 1–6 are documented in the v2.5.0 release report. Remaining scope includes arbitrary-repository
+validation, long-running field reliability, generalized Intent coverage, and any durable schema evolution;
+the five-case pilot does not certify these. Nexus v1's roadmap is tracked separately in
+`blueprint/ROADMAP.md`.
 
 ## Contributing
 

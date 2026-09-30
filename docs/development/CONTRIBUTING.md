@@ -72,14 +72,14 @@ This must be green:
 |-------|-------------|
 | Ruff lint | `ruff check` clean (rules in `ruff.toml`) |
 | Ruff format | `ruff format --check` clean |
-| MyPy | `mypy --strict` clean (20 packages via `make check`; all 31 via CI — see the scope note below) |
+| MyPy | `mypy --strict` clean (20 packages via `make check`; all 32 via CI — see the scope note below) |
 | Tests | all pass |
 | Coverage | branch coverage ≥ 95% (no artificial inflation) |
 | Build | `uv build` succeeds |
 
 **`make check`'s scope and CI's scope are not identical today — know the gap.**
-`make check` only lints/type-checks 20 of the 31 v2 packages; Core CI covers all
-31. **`DEVELOPMENT.md` §6 is the single source of truth for exactly which 11
+`make check` only lints/type-checks 20 of the 32 v2 packages; Core CI covers all
+32. **`DEVELOPMENT.md` §6 is the single source of truth for exactly which 12
 packages that gap covers and why** — read it there rather than trusting a
 second, independently-maintained list here. The short version: if your change
 touches a package outside the Makefile's list, `make check` passing locally is
@@ -104,8 +104,8 @@ PR, and is the actual required check. A PR cannot merge with a red gate.
 
 ## 6. Package inventory (current, not Phase-1-foundation-only)
 
-v2 is released as 31 packages, not the 6-package foundation this document once
-described. `DEVELOPMENT.md` §3 has the full, current layout table (all 31,
+v2 is currently composed of 32 packages, not the 6-package foundation this document once
+described. `DEVELOPMENT.md` §3 has the full, current layout table (all 32,
 grouped by the four architectural planes) — read it before assuming a package
 you're touching doesn't exist yet or is out of scope. **There is no longer a
 "later phases, do not implement yet" boundary** — every capability the

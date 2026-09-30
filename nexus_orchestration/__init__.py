@@ -62,7 +62,7 @@ from nexus_orchestration.vocabulary import (
     SessionStatus,
 )
 
-__version__ = "2.0.0"
+__version__ = "2.5.0"
 
 __all__ = [
     "ApprovalCoordinator",

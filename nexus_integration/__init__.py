@@ -47,7 +47,7 @@ from nexus_integration.model import (
 from nexus_integration.observability import MigrationObservability
 from nexus_integration.recorder import DecisionRecorder
 
-__version__ = "2.0.0"
+__version__ = "2.5.0"
 
 __all__ = [
     "EMPTY_COHORT",

@@ -16,4 +16,6 @@ The [actual pilot backup and restore record](evidence/pilot/20260930-operator-pi
 
 The live-Claude strict suite passed 3,261 tests with `-W error`, zero skips and zero warnings. Ruff check, Ruff format check on Phase 6 files, mypy on Phase 6 Python files, and `uv build` passed. A whole-repository Ruff format check reports 55 previously existing files outside Phase 6; those files were not changed for this pilot.
 
-**Technical pilot gate: passed.** All five operator ratings are present, all frozen scorecard checks pass, and the three independently passed repairs are rated useful. Sol recommends proceeding to a **limited v2.5 release candidate review**, while holding any general reliability or autonomous-repair claim. These five disposable fixtures do not test arbitrary real repositories or sustained operation, and the Intent prefix is a measured intervention. The operator retains the release decision; no release is recorded here.
+**Technical pilot gate: passed.** All five operator ratings are present, all frozen scorecard checks pass, and the three independently passed repairs are rated useful. Sol recommended a limited v2.5 release review, and the operator subsequently requested the v2.5.0 stable release with the scope limits recorded here. These five disposable fixtures do not test arbitrary real repositories or sustained operation, and the Intent prefix is a measured intervention.
+
+For the consolidated release scope, see the [v2.5.0 release report](../releases/V2_5_RELEASE_REPORT.md).
