@@ -93,6 +93,7 @@ class SpineRequest:
     correlation_identifier: str = ""
     repository_root: str | None = None
     planning_step_template: WorkItemSpec | None = None
+    knowledge_supersedes_subject: str | None = None
 
     @property
     def pipeline_session_id(self) -> str:

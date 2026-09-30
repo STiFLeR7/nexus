@@ -30,6 +30,7 @@ from nexus_execution.adapter import RuntimeAdapter
 from nexus_infra import InfrastructureContext
 from nexus_intent import build_intent
 from nexus_knowledge.persistence import KnowledgeRepositories
+from nexus_knowledge.policy import DEFAULT_PERSISTENCE_POLICY, PersistencePolicy
 from nexus_planning.grounded import GroundedPlanningContext, build_grounded_planning
 from nexus_policy import PolicyContext, build_policy
 from nexus_runtime.events import FixedTimestampSource, TimestampSource
@@ -68,6 +69,7 @@ def build_constitutional_pipeline(
     timestamps: TimestampSource | None = None,
     adapter_factory: AdapterFactory | None = None,
     knowledge_repositories: KnowledgeRepositories | None = None,
+    knowledge_policy: PersistencePolicy = DEFAULT_PERSISTENCE_POLICY,
     learning: bool = True,
     action_command_allowlist: Mapping[str, tuple[str, ...]] | None = None,
     action_artifact_directory: str | None = None,
@@ -86,6 +88,7 @@ def build_constitutional_pipeline(
     pipeline = PipelineBuilder(
         timestamps=ts,
         knowledge_repositories=knowledge_repositories,
+        knowledge_policy=knowledge_policy,
         infrastructure=infrastructure,
     ).build()
 

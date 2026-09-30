@@ -173,9 +173,10 @@ def test_pipeline_restarts_after_a_mid_execution_interruption(tmp_path) -> None:
 # --------------------------------------------------------------------------- #
 
 
-def test_failure_propagates_to_recovery_and_still_records_knowledge() -> None:
+def test_failure_propagates_to_recovery_without_promoting_failed_knowledge() -> None:
     infra = build_infrastructure()
-    run = _pipeline(infra).run(spine_reference_request(run="r1", fail=True))
+    request = spine_reference_request(run="r1", fail=True)
+    run = _pipeline(infra).run(request)
     assert run.status is SpineStatus.COMPLETED  # the pipeline still reaches Knowledge
     assert not run.succeeded
     assert all(o == "failed" for o in run.execution_outcomes)
@@ -183,7 +184,12 @@ def test_failure_propagates_to_recovery_and_still_records_knowledge() -> None:
     assert all(
         d == "retry" for d in run.recovery_decisions
     )  # Recovery decides continuation, bounded
-    assert run.knowledge_item_ids  # the lesson is recorded
+    assert not run.knowledge_item_ids  # failed outcomes cannot become served guidance (Phase 5)
+    assert not any(
+        event.type == "knowledge.candidate_accepted"
+        and event.correlation_identifier == request.correlation
+        for event in infra.event_store.read_all()
+    )
 
 
 def test_pipeline_events_have_one_producer_and_the_session_reconstructs() -> None:

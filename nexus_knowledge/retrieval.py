@@ -15,8 +15,8 @@ Item projections; it never changes Knowledge state.
 
 from __future__ import annotations
 
-from nexus_core.contracts.base import ValueObject
-from nexus_core.contracts.enums import ConfidenceLadder, KnowledgeType
+from nexus_core.contracts.base import Struct, ValueObject
+from nexus_core.contracts.enums import ConfidenceLadder, Domain, KnowledgeType
 from nexus_core.domain.knowledge import Knowledge
 from nexus_core.persistence.interfaces import Repository
 from nexus_knowledge import ids
@@ -34,6 +34,8 @@ class KnowledgeQuery(ValueObject):
     confidence_floor: ConfidenceLadder | None = None
     include_historical: bool = False
     limit: int | None = None
+    domain: Domain | None = None
+    applicability: Struct | None = None
 
 
 class KnowledgeRetrieval:
@@ -64,6 +66,15 @@ class KnowledgeRetrieval:
         if query.subject_key is not None and item.identity != query.subject_key:
             return False
         if query.kind is not None and item.type is not query.kind:
+            return False
+        if query.domain is not None and item.domain is not query.domain:
+            return False
+        if query.applicability is not None and (
+            item.applicability is None
+            or any(
+                item.applicability.get(key) != value for key, value in query.applicability.items()
+            )
+        ):
             return False
         if query.subject is not None and ids.subject_key(item.type, query.subject) != item.identity:
             return False

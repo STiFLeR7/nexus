@@ -14,6 +14,7 @@ clear policy (INV-24), never on the recommendation alone.
 
 from __future__ import annotations
 
+from collections.abc import Callable
 from dataclasses import dataclass
 
 from nexus_core.contracts.base import Reference, ValueObject
@@ -75,6 +76,8 @@ class AcceptanceEngine:
         state: SubjectState,
         policy: PersistencePolicy,
         subject_key: str,
+        *,
+        source_verifier: Callable[[KnowledgeCandidate], bool] | None = None,
     ) -> AcceptanceDecision:
         """Return the single governed outcome for a candidate, with a rationale trace."""
         trace: list[str] = []
@@ -89,7 +92,9 @@ class AcceptanceEngine:
             return self._reject(
                 candidate, subject_key, policy, trace, REASON_INSUFFICIENT_EVIDENCE, "too little"
             )
-        if policy.require_validated_provenance and not self._provenance_validated(candidate):
+        if policy.require_validated_provenance and not self._provenance_validated(
+            candidate, source_verifier
+        ):
             return self._reject(
                 candidate,
                 subject_key,
@@ -119,6 +124,21 @@ class AcceptanceEngine:
         cumulative = len(
             state.recorded_evidence_ids | {ref.identifier for ref in candidate.evidence_refs}
         )
+        if candidate.validation_report_refs:
+            cumulative = len(
+                {
+                    ref.identifier
+                    for ref in (
+                        *(
+                            state.latest_version.validation_report_refs
+                            if state.latest_version is not None
+                            else ()
+                        ),
+                        *candidate.validation_report_refs,
+                    )
+                    if ref.target_type == "validation_report"
+                }
+            )
 
         # 3. subject-key resolution.
         if state.item is None or state.latest_version is None:
@@ -194,10 +214,25 @@ class AcceptanceEngine:
 
     # -- helpers ------------------------------------------------------------- #
 
-    def _provenance_validated(self, candidate: KnowledgeCandidate) -> bool:
-        """Every supporting reference must resolve to a validated origin (doc 05)."""
-        return all(
+    def _provenance_validated(
+        self,
+        candidate: KnowledgeCandidate,
+        source_verifier: Callable[[KnowledgeCandidate], bool] | None,
+    ) -> bool:
+        """Every supporting reference resolves; Phase 5 sources require durable verification."""
+        types_valid = all(
             ref.target_type in VALIDATED_PROVENANCE_TARGET_TYPES for ref in candidate.evidence_refs
+        )
+        if not types_valid:
+            return False
+        if source_verifier is None:
+            # Keep the pure engine's legacy type-contract tests independent of infrastructure.
+            return candidate.source_goal_ref is None and not candidate.source_run_refs
+        return bool(
+            candidate.source_goal_ref is not None
+            and candidate.source_run_refs
+            and candidate.validation_report_refs
+            and source_verifier(candidate)
         )
 
     def _stronger(self, a: ConfidenceLadder, b: ConfidenceLadder) -> ConfidenceLadder:

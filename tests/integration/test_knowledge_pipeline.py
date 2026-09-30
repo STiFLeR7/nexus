@@ -9,8 +9,7 @@ Completes the intelligence pipeline:
 The upstream stages (Execution..Reflection) are exercised end-to-end by
 ``test_reflection_pipeline``; here a real :class:`ReflectionEngine` reflects a *confirmed* failing
 history (two correlated episodes -> a repeated-failure pattern -> a Knowledge Candidate), and the
-Knowledge Engine turns that advisory candidate into durable, evidence-backed Knowledge that a
-Planning-style consumer then reads.
+Knowledge Engine rejects type-correct but unresolved references before a consumer can serve them.
 
 Proves the persistence layer's central rule (candidates become Knowledge only under policy, on
 their own evidence); that a consumer reaches learning **only** through a read-only Knowledge query;
@@ -97,24 +96,23 @@ def _knowledge(infra, ts):  # type: ignore[no-untyped-def]
 # --- the loop pays off ------------------------------------------------------ #
 
 
-def test_reflection_candidate_becomes_durable_knowledge() -> None:
+def test_unresolved_report_reference_is_rejected() -> None:
     infra, ts, report = _reflect()
     assert report.knowledge_candidates  # Reflection proposed at least one candidate
     ctx = _knowledge(infra, ts)
     outcome = ctx.engine.ingest(_to_candidate(report))
-    assert outcome.accepted
-    item = outcome.item
-    assert item is not None and item.evidence_refs  # evidence-backed (INV-24)
+    assert not outcome.accepted
+    assert outcome.item is None
+    assert outcome.decision.failed_requirement == "provenance_not_validated"
 
 
-def test_planning_style_consumer_reads_only_through_knowledge() -> None:
+def test_planning_style_consumer_cannot_serve_unresolved_report_refs() -> None:
     infra, ts, report = _reflect()
     ctx = _knowledge(infra, ts)
     ctx.engine.ingest(_to_candidate(report))
     # A consumer (Planning) obtains learning solely via a read-only Knowledge query.
     served = ctx.engine.serve(KnowledgeQuery(kind=KnowledgeType.LESSON))
-    assert served
-    assert all(item.evidence_refs for item in served)
+    assert not served
 
 
 def test_knowledge_only_appends_to_the_log() -> None:

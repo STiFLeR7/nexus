@@ -1,0 +1,2900 @@
+{
+  "R1": [
+    {
+      "correlation": "cor-spine-arch-R1-source",
+      "facts": {
+        "decision": "allow"
+      },
+      "identifier": "evt-pipe-spine-arch-R1-source-knowledge_grounded-245b9f9361fe24ba",
+      "producer": "pipeline",
+      "type": "pipeline.knowledge_grounded"
+    },
+    {
+      "correlation": "cor-spine-arch-R1-source",
+      "facts": {},
+      "identifier": "evt-cor-spine-arch-R1-source-eng-c16adc2aa22fae05",
+      "producer": "engineering",
+      "type": "engineering.strategized"
+    },
+    {
+      "correlation": "cor-spine-arch-R1-source",
+      "facts": {},
+      "identifier": "evt-context-goal-spine-arch-R1-source-v1-grounding-selected-2cb10441fe7d2e14",
+      "producer": "context_engineering",
+      "type": "context.grounding.selected"
+    },
+    {
+      "correlation": "cor-spine-arch-R1-source",
+      "facts": {},
+      "identifier": "evt-plan-goal-spine-arch-R1-source-v1-plan-0003",
+      "producer": "planning",
+      "type": "plan.created"
+    },
+    {
+      "correlation": "cor-spine-arch-R1-source",
+      "facts": {},
+      "identifier": "evt-plan-goal-spine-arch-R1-source-v1-completed-0004",
+      "producer": "planning",
+      "type": "planning.completed"
+    },
+    {
+      "correlation": "cor-spine-arch-R1-source",
+      "facts": {},
+      "identifier": "evt-plan-goal-spine-arch-R1-source-v1-execution-plan-a75a81f8c53899d8",
+      "producer": "planning",
+      "type": "planning.execution_plan_assembled"
+    },
+    {
+      "correlation": "cor-spine-arch-R1-source",
+      "facts": {},
+      "identifier": "evt-rts-actuation-pkg-session-goal-spine-arch-R1-source-v1-node-draft-01-val-evidence-0001",
+      "producer": "validation",
+      "type": "validation.evidence_collected"
+    },
+    {
+      "correlation": "cor-spine-arch-R1-source",
+      "facts": {
+        "decision": "passed"
+      },
+      "identifier": "evt-rts-actuation-pkg-session-goal-spine-arch-R1-source-v1-node-draft-01-val-completed-0008",
+      "producer": "validation",
+      "type": "validation.completed"
+    },
+    {
+      "correlation": "cor-spine-arch-R1-source",
+      "facts": {},
+      "identifier": "evt-rts-actuation-pkg-session-goal-spine-arch-R1-source-v1-node-review-01-val-evidence-0001",
+      "producer": "validation",
+      "type": "validation.evidence_collected"
+    },
+    {
+      "correlation": "cor-spine-arch-R1-source",
+      "facts": {
+        "decision": "passed"
+      },
+      "identifier": "evt-rts-actuation-pkg-session-goal-spine-arch-R1-source-v1-node-review-01-val-completed-0008",
+      "producer": "validation",
+      "type": "validation.completed"
+    },
+    {
+      "correlation": "cor-spine-arch-R1-source",
+      "facts": {
+        "candidate": "kc-spine-spine-arch-R1-source-0000",
+        "subject_key": "ki-lesson-architecture-generation-summary"
+      },
+      "identifier": "evt-kc-spine-spine-arch-R1-source-0000-know-received-0000",
+      "producer": "knowledge",
+      "type": "knowledge.candidate_received"
+    },
+    {
+      "correlation": "cor-spine-arch-R1-source",
+      "facts": {
+        "candidate": "kc-spine-spine-arch-R1-source-0000",
+        "outcome": "accept_create",
+        "subject_key": "ki-lesson-architecture-generation-summary"
+      },
+      "identifier": "evt-kc-spine-spine-arch-R1-source-0000-know-accepted-0001",
+      "producer": "knowledge",
+      "type": "knowledge.candidate_accepted"
+    },
+    {
+      "correlation": "cor-spine-arch-R1-source",
+      "facts": {
+        "subject_key": "ki-lesson-architecture-generation-summary",
+        "version": 1
+      },
+      "identifier": "evt-kc-spine-spine-arch-R1-source-0000-know-created-0002",
+      "producer": "knowledge",
+      "type": "knowledge.item_created"
+    },
+    {
+      "correlation": "cor-spine-arch-R1-second",
+      "facts": {
+        "decision": "allow"
+      },
+      "identifier": "evt-pipe-spine-arch-R1-second-knowledge_grounded-92f83676ac82efce",
+      "producer": "pipeline",
+      "type": "pipeline.knowledge_grounded"
+    },
+    {
+      "correlation": "cor-spine-arch-R1-second",
+      "facts": {},
+      "identifier": "evt-cor-spine-arch-R1-second-eng-234c2adb25827bae",
+      "producer": "engineering",
+      "type": "engineering.strategized"
+    },
+    {
+      "correlation": "cor-spine-arch-R1-second",
+      "facts": {},
+      "identifier": "evt-context-goal-spine-arch-R1-second-v1-grounding-selected-85d79241cd61b0c6",
+      "producer": "context_engineering",
+      "type": "context.grounding.selected"
+    },
+    {
+      "correlation": "cor-spine-arch-R1-second",
+      "facts": {},
+      "identifier": "evt-plan-goal-spine-arch-R1-second-v1-plan-0003",
+      "producer": "planning",
+      "type": "plan.created"
+    },
+    {
+      "correlation": "cor-spine-arch-R1-second",
+      "facts": {},
+      "identifier": "evt-plan-goal-spine-arch-R1-second-v1-completed-0004",
+      "producer": "planning",
+      "type": "planning.completed"
+    },
+    {
+      "correlation": "cor-spine-arch-R1-second",
+      "facts": {},
+      "identifier": "evt-plan-goal-spine-arch-R1-second-v1-execution-plan-515b3d54b2e722a1",
+      "producer": "planning",
+      "type": "planning.execution_plan_assembled"
+    },
+    {
+      "correlation": "cor-spine-arch-R1-second",
+      "facts": {},
+      "identifier": "evt-rts-actuation-pkg-session-goal-spine-arch-R1-second-v1-node-draft-01-val-evidence-0001",
+      "producer": "validation",
+      "type": "validation.evidence_collected"
+    },
+    {
+      "correlation": "cor-spine-arch-R1-second",
+      "facts": {
+        "decision": "passed"
+      },
+      "identifier": "evt-rts-actuation-pkg-session-goal-spine-arch-R1-second-v1-node-draft-01-val-completed-0008",
+      "producer": "validation",
+      "type": "validation.completed"
+    },
+    {
+      "correlation": "cor-spine-arch-R1-second",
+      "facts": {},
+      "identifier": "evt-rts-actuation-pkg-session-goal-spine-arch-R1-second-v1-node-review-01-val-evidence-0001",
+      "producer": "validation",
+      "type": "validation.evidence_collected"
+    },
+    {
+      "correlation": "cor-spine-arch-R1-second",
+      "facts": {
+        "decision": "passed"
+      },
+      "identifier": "evt-rts-actuation-pkg-session-goal-spine-arch-R1-second-v1-node-review-01-val-completed-0008",
+      "producer": "validation",
+      "type": "validation.completed"
+    },
+    {
+      "correlation": "cor-spine-arch-R1-second",
+      "facts": {
+        "candidate": "kc-spine-spine-arch-R1-second-0000",
+        "subject_key": "ki-lesson-architecture-generation-summary"
+      },
+      "identifier": "evt-kc-spine-spine-arch-R1-second-0000-know-received-0000",
+      "producer": "knowledge",
+      "type": "knowledge.candidate_received"
+    },
+    {
+      "correlation": "cor-spine-arch-R1-second",
+      "facts": {
+        "candidate": "kc-spine-spine-arch-R1-second-0000",
+        "outcome": "merge",
+        "subject_key": "ki-lesson-architecture-generation-summary"
+      },
+      "identifier": "evt-kc-spine-spine-arch-R1-second-0000-know-accepted-0001",
+      "producer": "knowledge",
+      "type": "knowledge.candidate_accepted"
+    },
+    {
+      "correlation": "cor-spine-arch-R1-second",
+      "facts": {
+        "subject_key": "ki-lesson-architecture-generation-summary",
+        "version": 2
+      },
+      "identifier": "evt-kc-spine-spine-arch-R1-second-0000-know-evolved-0002",
+      "producer": "knowledge",
+      "type": "knowledge.item_evolved"
+    }
+  ],
+  "R2": [
+    {
+      "correlation": "cor-spine-arch-R2-source",
+      "facts": {
+        "decision": "allow"
+      },
+      "identifier": "evt-pipe-spine-arch-R2-source-knowledge_grounded-e712a61f4b0b7d37",
+      "producer": "pipeline",
+      "type": "pipeline.knowledge_grounded"
+    },
+    {
+      "correlation": "cor-spine-arch-R2-source",
+      "facts": {},
+      "identifier": "evt-cor-spine-arch-R2-source-eng-a8aa19ebe91d810f",
+      "producer": "engineering",
+      "type": "engineering.strategized"
+    },
+    {
+      "correlation": "cor-spine-arch-R2-source",
+      "facts": {},
+      "identifier": "evt-context-goal-spine-arch-R2-source-v1-grounding-selected-2cb10441fe7d2e14",
+      "producer": "context_engineering",
+      "type": "context.grounding.selected"
+    },
+    {
+      "correlation": "cor-spine-arch-R2-source",
+      "facts": {},
+      "identifier": "evt-plan-goal-spine-arch-R2-source-v1-plan-0003",
+      "producer": "planning",
+      "type": "plan.created"
+    },
+    {
+      "correlation": "cor-spine-arch-R2-source",
+      "facts": {},
+      "identifier": "evt-plan-goal-spine-arch-R2-source-v1-completed-0004",
+      "producer": "planning",
+      "type": "planning.completed"
+    },
+    {
+      "correlation": "cor-spine-arch-R2-source",
+      "facts": {},
+      "identifier": "evt-plan-goal-spine-arch-R2-source-v1-execution-plan-805cbb7e3ce5302c",
+      "producer": "planning",
+      "type": "planning.execution_plan_assembled"
+    },
+    {
+      "correlation": "cor-spine-arch-R2-source",
+      "facts": {},
+      "identifier": "evt-rts-actuation-pkg-session-goal-spine-arch-R2-source-v1-node-draft-01-val-evidence-0001",
+      "producer": "validation",
+      "type": "validation.evidence_collected"
+    },
+    {
+      "correlation": "cor-spine-arch-R2-source",
+      "facts": {
+        "decision": "passed"
+      },
+      "identifier": "evt-rts-actuation-pkg-session-goal-spine-arch-R2-source-v1-node-draft-01-val-completed-0008",
+      "producer": "validation",
+      "type": "validation.completed"
+    },
+    {
+      "correlation": "cor-spine-arch-R2-source",
+      "facts": {},
+      "identifier": "evt-rts-actuation-pkg-session-goal-spine-arch-R2-source-v1-node-review-01-val-evidence-0001",
+      "producer": "validation",
+      "type": "validation.evidence_collected"
+    },
+    {
+      "correlation": "cor-spine-arch-R2-source",
+      "facts": {
+        "decision": "passed"
+      },
+      "identifier": "evt-rts-actuation-pkg-session-goal-spine-arch-R2-source-v1-node-review-01-val-completed-0008",
+      "producer": "validation",
+      "type": "validation.completed"
+    },
+    {
+      "correlation": "cor-spine-arch-R2-source",
+      "facts": {
+        "candidate": "kc-spine-spine-arch-R2-source-0000",
+        "subject_key": "ki-lesson-architecture-generation-summary"
+      },
+      "identifier": "evt-kc-spine-spine-arch-R2-source-0000-know-received-0000",
+      "producer": "knowledge",
+      "type": "knowledge.candidate_received"
+    },
+    {
+      "correlation": "cor-spine-arch-R2-source",
+      "facts": {
+        "candidate": "kc-spine-spine-arch-R2-source-0000",
+        "outcome": "accept_create",
+        "subject_key": "ki-lesson-architecture-generation-summary"
+      },
+      "identifier": "evt-kc-spine-spine-arch-R2-source-0000-know-accepted-0001",
+      "producer": "knowledge",
+      "type": "knowledge.candidate_accepted"
+    },
+    {
+      "correlation": "cor-spine-arch-R2-source",
+      "facts": {
+        "subject_key": "ki-lesson-architecture-generation-summary",
+        "version": 1
+      },
+      "identifier": "evt-kc-spine-spine-arch-R2-source-0000-know-created-0002",
+      "producer": "knowledge",
+      "type": "knowledge.item_created"
+    },
+    {
+      "correlation": "cor-spine-arch-R2-second",
+      "facts": {
+        "decision": "allow"
+      },
+      "identifier": "evt-pipe-spine-arch-R2-second-knowledge_grounded-247e0873c545a2a8",
+      "producer": "pipeline",
+      "type": "pipeline.knowledge_grounded"
+    },
+    {
+      "correlation": "cor-spine-arch-R2-second",
+      "facts": {},
+      "identifier": "evt-cor-spine-arch-R2-second-eng-4b9e04acc1900291",
+      "producer": "engineering",
+      "type": "engineering.strategized"
+    },
+    {
+      "correlation": "cor-spine-arch-R2-second",
+      "facts": {},
+      "identifier": "evt-context-goal-spine-arch-R2-second-v1-grounding-selected-85d79241cd61b0c6",
+      "producer": "context_engineering",
+      "type": "context.grounding.selected"
+    },
+    {
+      "correlation": "cor-spine-arch-R2-second",
+      "facts": {},
+      "identifier": "evt-plan-goal-spine-arch-R2-second-v1-plan-0003",
+      "producer": "planning",
+      "type": "plan.created"
+    },
+    {
+      "correlation": "cor-spine-arch-R2-second",
+      "facts": {},
+      "identifier": "evt-plan-goal-spine-arch-R2-second-v1-completed-0004",
+      "producer": "planning",
+      "type": "planning.completed"
+    },
+    {
+      "correlation": "cor-spine-arch-R2-second",
+      "facts": {},
+      "identifier": "evt-plan-goal-spine-arch-R2-second-v1-execution-plan-6bfd9061af328812",
+      "producer": "planning",
+      "type": "planning.execution_plan_assembled"
+    },
+    {
+      "correlation": "cor-spine-arch-R2-second",
+      "facts": {},
+      "identifier": "evt-rts-actuation-pkg-session-goal-spine-arch-R2-second-v1-node-draft-01-val-evidence-0001",
+      "producer": "validation",
+      "type": "validation.evidence_collected"
+    },
+    {
+      "correlation": "cor-spine-arch-R2-second",
+      "facts": {
+        "decision": "passed"
+      },
+      "identifier": "evt-rts-actuation-pkg-session-goal-spine-arch-R2-second-v1-node-draft-01-val-completed-0008",
+      "producer": "validation",
+      "type": "validation.completed"
+    },
+    {
+      "correlation": "cor-spine-arch-R2-second",
+      "facts": {},
+      "identifier": "evt-rts-actuation-pkg-session-goal-spine-arch-R2-second-v1-node-review-01-val-evidence-0001",
+      "producer": "validation",
+      "type": "validation.evidence_collected"
+    },
+    {
+      "correlation": "cor-spine-arch-R2-second",
+      "facts": {
+        "decision": "passed"
+      },
+      "identifier": "evt-rts-actuation-pkg-session-goal-spine-arch-R2-second-v1-node-review-01-val-completed-0008",
+      "producer": "validation",
+      "type": "validation.completed"
+    },
+    {
+      "correlation": "cor-spine-arch-R2-second",
+      "facts": {
+        "candidate": "kc-spine-spine-arch-R2-second-0000",
+        "subject_key": "ki-lesson-architecture-generation-summary"
+      },
+      "identifier": "evt-kc-spine-spine-arch-R2-second-0000-know-received-0000",
+      "producer": "knowledge",
+      "type": "knowledge.candidate_received"
+    },
+    {
+      "correlation": "cor-spine-arch-R2-second",
+      "facts": {
+        "candidate": "kc-spine-spine-arch-R2-second-0000",
+        "outcome": "merge",
+        "subject_key": "ki-lesson-architecture-generation-summary"
+      },
+      "identifier": "evt-kc-spine-spine-arch-R2-second-0000-know-accepted-0001",
+      "producer": "knowledge",
+      "type": "knowledge.candidate_accepted"
+    },
+    {
+      "correlation": "cor-spine-arch-R2-second",
+      "facts": {
+        "subject_key": "ki-lesson-architecture-generation-summary",
+        "version": 2
+      },
+      "identifier": "evt-kc-spine-spine-arch-R2-second-0000-know-evolved-0002",
+      "producer": "knowledge",
+      "type": "knowledge.item_evolved"
+    }
+  ],
+  "R3": [
+    {
+      "correlation": "cor-spine-arch-R3-source",
+      "facts": {
+        "decision": "allow"
+      },
+      "identifier": "evt-pipe-spine-arch-R3-source-knowledge_grounded-bdf2cec930cfed91",
+      "producer": "pipeline",
+      "type": "pipeline.knowledge_grounded"
+    },
+    {
+      "correlation": "cor-spine-arch-R3-source",
+      "facts": {},
+      "identifier": "evt-cor-spine-arch-R3-source-eng-a252002db8d63880",
+      "producer": "engineering",
+      "type": "engineering.strategized"
+    },
+    {
+      "correlation": "cor-spine-arch-R3-source",
+      "facts": {},
+      "identifier": "evt-context-goal-spine-arch-R3-source-v1-grounding-selected-2cb10441fe7d2e14",
+      "producer": "context_engineering",
+      "type": "context.grounding.selected"
+    },
+    {
+      "correlation": "cor-spine-arch-R3-source",
+      "facts": {},
+      "identifier": "evt-plan-goal-spine-arch-R3-source-v1-plan-0003",
+      "producer": "planning",
+      "type": "plan.created"
+    },
+    {
+      "correlation": "cor-spine-arch-R3-source",
+      "facts": {},
+      "identifier": "evt-plan-goal-spine-arch-R3-source-v1-completed-0004",
+      "producer": "planning",
+      "type": "planning.completed"
+    },
+    {
+      "correlation": "cor-spine-arch-R3-source",
+      "facts": {},
+      "identifier": "evt-plan-goal-spine-arch-R3-source-v1-execution-plan-4880dac9b72cc9d0",
+      "producer": "planning",
+      "type": "planning.execution_plan_assembled"
+    },
+    {
+      "correlation": "cor-spine-arch-R3-source",
+      "facts": {},
+      "identifier": "evt-rts-actuation-pkg-session-goal-spine-arch-R3-source-v1-node-draft-01-val-evidence-0001",
+      "producer": "validation",
+      "type": "validation.evidence_collected"
+    },
+    {
+      "correlation": "cor-spine-arch-R3-source",
+      "facts": {
+        "decision": "passed"
+      },
+      "identifier": "evt-rts-actuation-pkg-session-goal-spine-arch-R3-source-v1-node-draft-01-val-completed-0008",
+      "producer": "validation",
+      "type": "validation.completed"
+    },
+    {
+      "correlation": "cor-spine-arch-R3-source",
+      "facts": {},
+      "identifier": "evt-rts-actuation-pkg-session-goal-spine-arch-R3-source-v1-node-review-01-val-evidence-0001",
+      "producer": "validation",
+      "type": "validation.evidence_collected"
+    },
+    {
+      "correlation": "cor-spine-arch-R3-source",
+      "facts": {
+        "decision": "passed"
+      },
+      "identifier": "evt-rts-actuation-pkg-session-goal-spine-arch-R3-source-v1-node-review-01-val-completed-0008",
+      "producer": "validation",
+      "type": "validation.completed"
+    },
+    {
+      "correlation": "cor-spine-arch-R3-source",
+      "facts": {
+        "candidate": "kc-spine-spine-arch-R3-source-0000",
+        "subject_key": "ki-lesson-architecture-generation-summary"
+      },
+      "identifier": "evt-kc-spine-spine-arch-R3-source-0000-know-received-0000",
+      "producer": "knowledge",
+      "type": "knowledge.candidate_received"
+    },
+    {
+      "correlation": "cor-spine-arch-R3-source",
+      "facts": {
+        "candidate": "kc-spine-spine-arch-R3-source-0000",
+        "outcome": "accept_create",
+        "subject_key": "ki-lesson-architecture-generation-summary"
+      },
+      "identifier": "evt-kc-spine-spine-arch-R3-source-0000-know-accepted-0001",
+      "producer": "knowledge",
+      "type": "knowledge.candidate_accepted"
+    },
+    {
+      "correlation": "cor-spine-arch-R3-source",
+      "facts": {
+        "subject_key": "ki-lesson-architecture-generation-summary",
+        "version": 1
+      },
+      "identifier": "evt-kc-spine-spine-arch-R3-source-0000-know-created-0002",
+      "producer": "knowledge",
+      "type": "knowledge.item_created"
+    },
+    {
+      "correlation": "cor-spine-arch-R3-source2",
+      "facts": {
+        "decision": "allow"
+      },
+      "identifier": "evt-pipe-spine-arch-R3-source2-knowledge_grounded-43e18adbf4ed3b9e",
+      "producer": "pipeline",
+      "type": "pipeline.knowledge_grounded"
+    },
+    {
+      "correlation": "cor-spine-arch-R3-source2",
+      "facts": {},
+      "identifier": "evt-cor-spine-arch-R3-source2-eng-be6c172d15913346",
+      "producer": "engineering",
+      "type": "engineering.strategized"
+    },
+    {
+      "correlation": "cor-spine-arch-R3-source2",
+      "facts": {},
+      "identifier": "evt-context-goal-spine-arch-R3-source2-v1-grounding-selected-85d79241cd61b0c6",
+      "producer": "context_engineering",
+      "type": "context.grounding.selected"
+    },
+    {
+      "correlation": "cor-spine-arch-R3-source2",
+      "facts": {},
+      "identifier": "evt-plan-goal-spine-arch-R3-source2-v1-plan-0003",
+      "producer": "planning",
+      "type": "plan.created"
+    },
+    {
+      "correlation": "cor-spine-arch-R3-source2",
+      "facts": {},
+      "identifier": "evt-plan-goal-spine-arch-R3-source2-v1-completed-0004",
+      "producer": "planning",
+      "type": "planning.completed"
+    },
+    {
+      "correlation": "cor-spine-arch-R3-source2",
+      "facts": {},
+      "identifier": "evt-plan-goal-spine-arch-R3-source2-v1-execution-plan-1adce15b5b61c1cf",
+      "producer": "planning",
+      "type": "planning.execution_plan_assembled"
+    },
+    {
+      "correlation": "cor-spine-arch-R3-source2",
+      "facts": {},
+      "identifier": "evt-rts-actuation-pkg-session-goal-spine-arch-R3-source2-v1-node-draft-01-val-evidence-0001",
+      "producer": "validation",
+      "type": "validation.evidence_collected"
+    },
+    {
+      "correlation": "cor-spine-arch-R3-source2",
+      "facts": {
+        "decision": "passed"
+      },
+      "identifier": "evt-rts-actuation-pkg-session-goal-spine-arch-R3-source2-v1-node-draft-01-val-completed-0008",
+      "producer": "validation",
+      "type": "validation.completed"
+    },
+    {
+      "correlation": "cor-spine-arch-R3-source2",
+      "facts": {},
+      "identifier": "evt-rts-actuation-pkg-session-goal-spine-arch-R3-source2-v1-node-review-01-val-evidence-0001",
+      "producer": "validation",
+      "type": "validation.evidence_collected"
+    },
+    {
+      "correlation": "cor-spine-arch-R3-source2",
+      "facts": {
+        "decision": "passed"
+      },
+      "identifier": "evt-rts-actuation-pkg-session-goal-spine-arch-R3-source2-v1-node-review-01-val-completed-0008",
+      "producer": "validation",
+      "type": "validation.completed"
+    },
+    {
+      "correlation": "cor-spine-arch-R3-source2",
+      "facts": {
+        "candidate": "kc-spine-spine-arch-R3-source2-0000",
+        "subject_key": "ki-lesson-architecture-generation-summary"
+      },
+      "identifier": "evt-kc-spine-spine-arch-R3-source2-0000-know-received-0000",
+      "producer": "knowledge",
+      "type": "knowledge.candidate_received"
+    },
+    {
+      "correlation": "cor-spine-arch-R3-source2",
+      "facts": {
+        "candidate": "kc-spine-spine-arch-R3-source2-0000",
+        "outcome": "merge",
+        "subject_key": "ki-lesson-architecture-generation-summary"
+      },
+      "identifier": "evt-kc-spine-spine-arch-R3-source2-0000-know-accepted-0001",
+      "producer": "knowledge",
+      "type": "knowledge.candidate_accepted"
+    },
+    {
+      "correlation": "cor-spine-arch-R3-source2",
+      "facts": {
+        "subject_key": "ki-lesson-architecture-generation-summary",
+        "version": 2
+      },
+      "identifier": "evt-kc-spine-spine-arch-R3-source2-0000-know-evolved-0002",
+      "producer": "knowledge",
+      "type": "knowledge.item_evolved"
+    },
+    {
+      "correlation": "cor-spine-arch-R3-second",
+      "facts": {
+        "decision": "allow"
+      },
+      "identifier": "evt-pipe-spine-arch-R3-second-knowledge_grounded-2ca41a42b5ce8196",
+      "producer": "pipeline",
+      "type": "pipeline.knowledge_grounded"
+    },
+    {
+      "correlation": "cor-spine-arch-R3-second",
+      "facts": {},
+      "identifier": "evt-cor-spine-arch-R3-second-eng-9fab6274c20bd292",
+      "producer": "engineering",
+      "type": "engineering.strategized"
+    },
+    {
+      "correlation": "cor-spine-arch-R3-second",
+      "facts": {},
+      "identifier": "evt-context-goal-spine-arch-R3-second-v1-grounding-selected-85d79241cd61b0c6",
+      "producer": "context_engineering",
+      "type": "context.grounding.selected"
+    },
+    {
+      "correlation": "cor-spine-arch-R3-second",
+      "facts": {},
+      "identifier": "evt-plan-goal-spine-arch-R3-second-v1-plan-0003",
+      "producer": "planning",
+      "type": "plan.created"
+    },
+    {
+      "correlation": "cor-spine-arch-R3-second",
+      "facts": {},
+      "identifier": "evt-plan-goal-spine-arch-R3-second-v1-completed-0004",
+      "producer": "planning",
+      "type": "planning.completed"
+    },
+    {
+      "correlation": "cor-spine-arch-R3-second",
+      "facts": {},
+      "identifier": "evt-plan-goal-spine-arch-R3-second-v1-execution-plan-b4344ee23579d86f",
+      "producer": "planning",
+      "type": "planning.execution_plan_assembled"
+    },
+    {
+      "correlation": "cor-spine-arch-R3-second",
+      "facts": {},
+      "identifier": "evt-rts-actuation-pkg-session-goal-spine-arch-R3-second-v1-node-draft-01-val-evidence-0001",
+      "producer": "validation",
+      "type": "validation.evidence_collected"
+    },
+    {
+      "correlation": "cor-spine-arch-R3-second",
+      "facts": {
+        "decision": "passed"
+      },
+      "identifier": "evt-rts-actuation-pkg-session-goal-spine-arch-R3-second-v1-node-draft-01-val-completed-0008",
+      "producer": "validation",
+      "type": "validation.completed"
+    },
+    {
+      "correlation": "cor-spine-arch-R3-second",
+      "facts": {},
+      "identifier": "evt-rts-actuation-pkg-session-goal-spine-arch-R3-second-v1-node-review-01-val-evidence-0001",
+      "producer": "validation",
+      "type": "validation.evidence_collected"
+    },
+    {
+      "correlation": "cor-spine-arch-R3-second",
+      "facts": {
+        "decision": "passed"
+      },
+      "identifier": "evt-rts-actuation-pkg-session-goal-spine-arch-R3-second-v1-node-review-01-val-completed-0008",
+      "producer": "validation",
+      "type": "validation.completed"
+    },
+    {
+      "correlation": "cor-spine-arch-R3-second",
+      "facts": {
+        "candidate": "kc-spine-spine-arch-R3-second-0000",
+        "subject_key": "ki-lesson-architecture-generation-summary"
+      },
+      "identifier": "evt-kc-spine-spine-arch-R3-second-0000-know-received-0000",
+      "producer": "knowledge",
+      "type": "knowledge.candidate_received"
+    },
+    {
+      "correlation": "cor-spine-arch-R3-second",
+      "facts": {
+        "candidate": "kc-spine-spine-arch-R3-second-0000",
+        "outcome": "merge",
+        "subject_key": "ki-lesson-architecture-generation-summary"
+      },
+      "identifier": "evt-kc-spine-spine-arch-R3-second-0000-know-accepted-0001",
+      "producer": "knowledge",
+      "type": "knowledge.candidate_accepted"
+    },
+    {
+      "correlation": "cor-spine-arch-R3-second",
+      "facts": {
+        "subject_key": "ki-lesson-architecture-generation-summary",
+        "version": 3
+      },
+      "identifier": "evt-kc-spine-spine-arch-R3-second-0000-know-evolved-0002",
+      "producer": "knowledge",
+      "type": "knowledge.item_evolved"
+    }
+  ],
+  "R4": [
+    {
+      "correlation": "cor-spine-arch-R4-old",
+      "facts": {
+        "decision": "allow"
+      },
+      "identifier": "evt-pipe-spine-arch-R4-old-knowledge_grounded-ceaa462f3a786fa7",
+      "producer": "pipeline",
+      "type": "pipeline.knowledge_grounded"
+    },
+    {
+      "correlation": "cor-spine-arch-R4-old",
+      "facts": {},
+      "identifier": "evt-cor-spine-arch-R4-old-eng-2b990d765c9c29cd",
+      "producer": "engineering",
+      "type": "engineering.strategized"
+    },
+    {
+      "correlation": "cor-spine-arch-R4-old",
+      "facts": {},
+      "identifier": "evt-context-goal-spine-arch-R4-old-v1-grounding-selected-2cb10441fe7d2e14",
+      "producer": "context_engineering",
+      "type": "context.grounding.selected"
+    },
+    {
+      "correlation": "cor-spine-arch-R4-old",
+      "facts": {},
+      "identifier": "evt-plan-goal-spine-arch-R4-old-v1-plan-0003",
+      "producer": "planning",
+      "type": "plan.created"
+    },
+    {
+      "correlation": "cor-spine-arch-R4-old",
+      "facts": {},
+      "identifier": "evt-plan-goal-spine-arch-R4-old-v1-completed-0004",
+      "producer": "planning",
+      "type": "planning.completed"
+    },
+    {
+      "correlation": "cor-spine-arch-R4-old",
+      "facts": {},
+      "identifier": "evt-plan-goal-spine-arch-R4-old-v1-execution-plan-50dc115470b11b27",
+      "producer": "planning",
+      "type": "planning.execution_plan_assembled"
+    },
+    {
+      "correlation": "cor-spine-arch-R4-old",
+      "facts": {},
+      "identifier": "evt-rts-actuation-pkg-session-goal-spine-arch-R4-old-v1-node-draft-01-val-evidence-0001",
+      "producer": "validation",
+      "type": "validation.evidence_collected"
+    },
+    {
+      "correlation": "cor-spine-arch-R4-old",
+      "facts": {
+        "decision": "passed"
+      },
+      "identifier": "evt-rts-actuation-pkg-session-goal-spine-arch-R4-old-v1-node-draft-01-val-completed-0008",
+      "producer": "validation",
+      "type": "validation.completed"
+    },
+    {
+      "correlation": "cor-spine-arch-R4-old",
+      "facts": {},
+      "identifier": "evt-rts-actuation-pkg-session-goal-spine-arch-R4-old-v1-node-review-01-val-evidence-0001",
+      "producer": "validation",
+      "type": "validation.evidence_collected"
+    },
+    {
+      "correlation": "cor-spine-arch-R4-old",
+      "facts": {
+        "decision": "passed"
+      },
+      "identifier": "evt-rts-actuation-pkg-session-goal-spine-arch-R4-old-v1-node-review-01-val-completed-0008",
+      "producer": "validation",
+      "type": "validation.completed"
+    },
+    {
+      "correlation": "cor-spine-arch-R4-old",
+      "facts": {
+        "candidate": "kc-spine-spine-arch-R4-old-0000",
+        "subject_key": "ki-lesson-phase5-previous-subject"
+      },
+      "identifier": "evt-kc-spine-spine-arch-R4-old-0000-know-received-0000",
+      "producer": "knowledge",
+      "type": "knowledge.candidate_received"
+    },
+    {
+      "correlation": "cor-spine-arch-R4-old",
+      "facts": {
+        "candidate": "kc-spine-spine-arch-R4-old-0000",
+        "outcome": "accept_create",
+        "subject_key": "ki-lesson-phase5-previous-subject"
+      },
+      "identifier": "evt-kc-spine-spine-arch-R4-old-0000-know-accepted-0001",
+      "producer": "knowledge",
+      "type": "knowledge.candidate_accepted"
+    },
+    {
+      "correlation": "cor-spine-arch-R4-old",
+      "facts": {
+        "subject_key": "ki-lesson-phase5-previous-subject",
+        "version": 1
+      },
+      "identifier": "evt-kc-spine-spine-arch-R4-old-0000-know-created-0002",
+      "producer": "knowledge",
+      "type": "knowledge.item_created"
+    },
+    {
+      "correlation": "cor-spine-arch-R4-replacement",
+      "facts": {
+        "decision": "allow"
+      },
+      "identifier": "evt-pipe-spine-arch-R4-replacement-knowledge_grounded-40968cdd289e21bc",
+      "producer": "pipeline",
+      "type": "pipeline.knowledge_grounded"
+    },
+    {
+      "correlation": "cor-spine-arch-R4-replacement",
+      "facts": {},
+      "identifier": "evt-cor-spine-arch-R4-replacement-eng-d5f2110510e7cf3e",
+      "producer": "engineering",
+      "type": "engineering.strategized"
+    },
+    {
+      "correlation": "cor-spine-arch-R4-replacement",
+      "facts": {},
+      "identifier": "evt-context-goal-spine-arch-R4-replacement-v1-grounding-selected-2cb10441fe7d2e14",
+      "producer": "context_engineering",
+      "type": "context.grounding.selected"
+    },
+    {
+      "correlation": "cor-spine-arch-R4-replacement",
+      "facts": {},
+      "identifier": "evt-plan-goal-spine-arch-R4-replacement-v1-plan-0003",
+      "producer": "planning",
+      "type": "plan.created"
+    },
+    {
+      "correlation": "cor-spine-arch-R4-replacement",
+      "facts": {},
+      "identifier": "evt-plan-goal-spine-arch-R4-replacement-v1-completed-0004",
+      "producer": "planning",
+      "type": "planning.completed"
+    },
+    {
+      "correlation": "cor-spine-arch-R4-replacement",
+      "facts": {},
+      "identifier": "evt-plan-goal-spine-arch-R4-replacement-v1-execution-plan-fb04017eecb1a9a7",
+      "producer": "planning",
+      "type": "planning.execution_plan_assembled"
+    },
+    {
+      "correlation": "cor-spine-arch-R4-replacement",
+      "facts": {},
+      "identifier": "evt-rts-actuation-pkg-session-goal-spine-arch-R4-replacement-v1-node-draft-01-val-evidence-0001",
+      "producer": "validation",
+      "type": "validation.evidence_collected"
+    },
+    {
+      "correlation": "cor-spine-arch-R4-replacement",
+      "facts": {
+        "decision": "passed"
+      },
+      "identifier": "evt-rts-actuation-pkg-session-goal-spine-arch-R4-replacement-v1-node-draft-01-val-completed-0008",
+      "producer": "validation",
+      "type": "validation.completed"
+    },
+    {
+      "correlation": "cor-spine-arch-R4-replacement",
+      "facts": {},
+      "identifier": "evt-rts-actuation-pkg-session-goal-spine-arch-R4-replacement-v1-node-review-01-val-evidence-0001",
+      "producer": "validation",
+      "type": "validation.evidence_collected"
+    },
+    {
+      "correlation": "cor-spine-arch-R4-replacement",
+      "facts": {
+        "decision": "passed"
+      },
+      "identifier": "evt-rts-actuation-pkg-session-goal-spine-arch-R4-replacement-v1-node-review-01-val-completed-0008",
+      "producer": "validation",
+      "type": "validation.completed"
+    },
+    {
+      "correlation": "cor-spine-arch-R4-replacement",
+      "facts": {
+        "candidate": "kc-spine-spine-arch-R4-replacement-0000",
+        "subject_key": "ki-lesson-phase5-replacement-subject"
+      },
+      "identifier": "evt-kc-spine-spine-arch-R4-replacement-0000-know-received-0000",
+      "producer": "knowledge",
+      "type": "knowledge.candidate_received"
+    },
+    {
+      "correlation": "cor-spine-arch-R4-replacement",
+      "facts": {
+        "candidate": "kc-spine-spine-arch-R4-replacement-0000",
+        "outcome": "accept_create",
+        "subject_key": "ki-lesson-phase5-replacement-subject"
+      },
+      "identifier": "evt-kc-spine-spine-arch-R4-replacement-0000-know-accepted-0001",
+      "producer": "knowledge",
+      "type": "knowledge.candidate_accepted"
+    },
+    {
+      "correlation": "cor-spine-arch-R4-replacement",
+      "facts": {
+        "subject_key": "ki-lesson-phase5-replacement-subject",
+        "version": 1
+      },
+      "identifier": "evt-kc-spine-spine-arch-R4-replacement-0000-know-created-0002",
+      "producer": "knowledge",
+      "type": "knowledge.item_created"
+    },
+    {
+      "correlation": "cor-spine-arch-R4-replacement",
+      "facts": {
+        "subject_key": "ki-lesson-phase5-replacement-subject",
+        "superseded": "ki-lesson-phase5-previous-subject"
+      },
+      "identifier": "evt-kc-spine-spine-arch-R4-replacement-0000-know-superseded-0003",
+      "producer": "knowledge",
+      "type": "knowledge.item_superseded"
+    },
+    {
+      "correlation": "cor-spine-arch-R4-second",
+      "facts": {
+        "decision": "allow"
+      },
+      "identifier": "evt-pipe-spine-arch-R4-second-knowledge_grounded-304a78cd07a43f22",
+      "producer": "pipeline",
+      "type": "pipeline.knowledge_grounded"
+    },
+    {
+      "correlation": "cor-spine-arch-R4-second",
+      "facts": {},
+      "identifier": "evt-cor-spine-arch-R4-second-eng-795ff47abd7eba58",
+      "producer": "engineering",
+      "type": "engineering.strategized"
+    },
+    {
+      "correlation": "cor-spine-arch-R4-second",
+      "facts": {},
+      "identifier": "evt-context-goal-spine-arch-R4-second-v1-grounding-selected-74ea3e17a44488b6",
+      "producer": "context_engineering",
+      "type": "context.grounding.selected"
+    },
+    {
+      "correlation": "cor-spine-arch-R4-second",
+      "facts": {},
+      "identifier": "evt-plan-goal-spine-arch-R4-second-v1-plan-0003",
+      "producer": "planning",
+      "type": "plan.created"
+    },
+    {
+      "correlation": "cor-spine-arch-R4-second",
+      "facts": {},
+      "identifier": "evt-plan-goal-spine-arch-R4-second-v1-completed-0004",
+      "producer": "planning",
+      "type": "planning.completed"
+    },
+    {
+      "correlation": "cor-spine-arch-R4-second",
+      "facts": {},
+      "identifier": "evt-plan-goal-spine-arch-R4-second-v1-execution-plan-106bdcb0546749d8",
+      "producer": "planning",
+      "type": "planning.execution_plan_assembled"
+    },
+    {
+      "correlation": "cor-spine-arch-R4-second",
+      "facts": {},
+      "identifier": "evt-rts-actuation-pkg-session-goal-spine-arch-R4-second-v1-node-draft-01-val-evidence-0001",
+      "producer": "validation",
+      "type": "validation.evidence_collected"
+    },
+    {
+      "correlation": "cor-spine-arch-R4-second",
+      "facts": {
+        "decision": "passed"
+      },
+      "identifier": "evt-rts-actuation-pkg-session-goal-spine-arch-R4-second-v1-node-draft-01-val-completed-0008",
+      "producer": "validation",
+      "type": "validation.completed"
+    },
+    {
+      "correlation": "cor-spine-arch-R4-second",
+      "facts": {},
+      "identifier": "evt-rts-actuation-pkg-session-goal-spine-arch-R4-second-v1-node-review-01-val-evidence-0001",
+      "producer": "validation",
+      "type": "validation.evidence_collected"
+    },
+    {
+      "correlation": "cor-spine-arch-R4-second",
+      "facts": {
+        "decision": "passed"
+      },
+      "identifier": "evt-rts-actuation-pkg-session-goal-spine-arch-R4-second-v1-node-review-01-val-completed-0008",
+      "producer": "validation",
+      "type": "validation.completed"
+    },
+    {
+      "correlation": "cor-spine-arch-R4-second",
+      "facts": {
+        "candidate": "kc-spine-spine-arch-R4-second-0000",
+        "subject_key": "ki-lesson-phase5-replacement-subject"
+      },
+      "identifier": "evt-kc-spine-spine-arch-R4-second-0000-know-received-0000",
+      "producer": "knowledge",
+      "type": "knowledge.candidate_received"
+    },
+    {
+      "correlation": "cor-spine-arch-R4-second",
+      "facts": {
+        "candidate": "kc-spine-spine-arch-R4-second-0000",
+        "outcome": "merge",
+        "subject_key": "ki-lesson-phase5-replacement-subject"
+      },
+      "identifier": "evt-kc-spine-spine-arch-R4-second-0000-know-accepted-0001",
+      "producer": "knowledge",
+      "type": "knowledge.candidate_accepted"
+    },
+    {
+      "correlation": "cor-spine-arch-R4-second",
+      "facts": {
+        "subject_key": "ki-lesson-phase5-replacement-subject",
+        "version": 2
+      },
+      "identifier": "evt-kc-spine-spine-arch-R4-second-0000-know-evolved-0002",
+      "producer": "knowledge",
+      "type": "knowledge.item_evolved"
+    }
+  ],
+  "R5": [
+    {
+      "correlation": "cor-spine-arch-R5-source",
+      "facts": {
+        "decision": "allow"
+      },
+      "identifier": "evt-pipe-spine-arch-R5-source-knowledge_grounded-c6661945b9f986ca",
+      "producer": "pipeline",
+      "type": "pipeline.knowledge_grounded"
+    },
+    {
+      "correlation": "cor-spine-arch-R5-source",
+      "facts": {},
+      "identifier": "evt-cor-spine-arch-R5-source-eng-18eac76062fd11d3",
+      "producer": "engineering",
+      "type": "engineering.strategized"
+    },
+    {
+      "correlation": "cor-spine-arch-R5-source",
+      "facts": {},
+      "identifier": "evt-context-goal-spine-arch-R5-source-v1-grounding-selected-2cb10441fe7d2e14",
+      "producer": "context_engineering",
+      "type": "context.grounding.selected"
+    },
+    {
+      "correlation": "cor-spine-arch-R5-source",
+      "facts": {},
+      "identifier": "evt-plan-goal-spine-arch-R5-source-v1-plan-0003",
+      "producer": "planning",
+      "type": "plan.created"
+    },
+    {
+      "correlation": "cor-spine-arch-R5-source",
+      "facts": {},
+      "identifier": "evt-plan-goal-spine-arch-R5-source-v1-completed-0004",
+      "producer": "planning",
+      "type": "planning.completed"
+    },
+    {
+      "correlation": "cor-spine-arch-R5-source",
+      "facts": {},
+      "identifier": "evt-plan-goal-spine-arch-R5-source-v1-execution-plan-804586802b846caa",
+      "producer": "planning",
+      "type": "planning.execution_plan_assembled"
+    },
+    {
+      "correlation": "cor-spine-arch-R5-source",
+      "facts": {},
+      "identifier": "evt-rts-actuation-pkg-session-goal-spine-arch-R5-source-v1-node-draft-01-val-evidence-0001",
+      "producer": "validation",
+      "type": "validation.evidence_collected"
+    },
+    {
+      "correlation": "cor-spine-arch-R5-source",
+      "facts": {
+        "decision": "passed"
+      },
+      "identifier": "evt-rts-actuation-pkg-session-goal-spine-arch-R5-source-v1-node-draft-01-val-completed-0008",
+      "producer": "validation",
+      "type": "validation.completed"
+    },
+    {
+      "correlation": "cor-spine-arch-R5-source",
+      "facts": {},
+      "identifier": "evt-rts-actuation-pkg-session-goal-spine-arch-R5-source-v1-node-review-01-val-evidence-0001",
+      "producer": "validation",
+      "type": "validation.evidence_collected"
+    },
+    {
+      "correlation": "cor-spine-arch-R5-source",
+      "facts": {
+        "decision": "passed"
+      },
+      "identifier": "evt-rts-actuation-pkg-session-goal-spine-arch-R5-source-v1-node-review-01-val-completed-0008",
+      "producer": "validation",
+      "type": "validation.completed"
+    },
+    {
+      "correlation": "cor-spine-arch-R5-source",
+      "facts": {
+        "candidate": "kc-spine-spine-arch-R5-source-0000",
+        "subject_key": "ki-lesson-architecture-generation-summary"
+      },
+      "identifier": "evt-kc-spine-spine-arch-R5-source-0000-know-received-0000",
+      "producer": "knowledge",
+      "type": "knowledge.candidate_received"
+    },
+    {
+      "correlation": "cor-spine-arch-R5-source",
+      "facts": {
+        "candidate": "kc-spine-spine-arch-R5-source-0000",
+        "outcome": "accept_create",
+        "subject_key": "ki-lesson-architecture-generation-summary"
+      },
+      "identifier": "evt-kc-spine-spine-arch-R5-source-0000-know-accepted-0001",
+      "producer": "knowledge",
+      "type": "knowledge.candidate_accepted"
+    },
+    {
+      "correlation": "cor-spine-arch-R5-source",
+      "facts": {
+        "subject_key": "ki-lesson-architecture-generation-summary",
+        "version": 1
+      },
+      "identifier": "evt-kc-spine-spine-arch-R5-source-0000-know-created-0002",
+      "producer": "knowledge",
+      "type": "knowledge.item_created"
+    },
+    {
+      "correlation": "cor-spine-arch-R5-second",
+      "facts": {
+        "decision": "allow"
+      },
+      "identifier": "evt-pipe-spine-arch-R5-second-knowledge_grounded-916bcf086473d4ea",
+      "producer": "pipeline",
+      "type": "pipeline.knowledge_grounded"
+    },
+    {
+      "correlation": "cor-spine-arch-R5-second",
+      "facts": {},
+      "identifier": "evt-cor-spine-arch-R5-second-eng-1a38f5a2d397255e",
+      "producer": "engineering",
+      "type": "engineering.strategized"
+    },
+    {
+      "correlation": "cor-spine-arch-R5-second",
+      "facts": {},
+      "identifier": "evt-context-goal-spine-arch-R5-second-v1-grounding-selected-85d79241cd61b0c6",
+      "producer": "context_engineering",
+      "type": "context.grounding.selected"
+    },
+    {
+      "correlation": "cor-spine-arch-R5-second",
+      "facts": {},
+      "identifier": "evt-plan-goal-spine-arch-R5-second-v1-plan-0003",
+      "producer": "planning",
+      "type": "plan.created"
+    },
+    {
+      "correlation": "cor-spine-arch-R5-second",
+      "facts": {},
+      "identifier": "evt-plan-goal-spine-arch-R5-second-v1-completed-0004",
+      "producer": "planning",
+      "type": "planning.completed"
+    },
+    {
+      "correlation": "cor-spine-arch-R5-second",
+      "facts": {},
+      "identifier": "evt-plan-goal-spine-arch-R5-second-v1-execution-plan-527114f669e0a285",
+      "producer": "planning",
+      "type": "planning.execution_plan_assembled"
+    },
+    {
+      "correlation": "cor-spine-arch-R5-second",
+      "facts": {},
+      "identifier": "evt-rts-actuation-pkg-session-goal-spine-arch-R5-second-v1-node-draft-01-val-evidence-0001",
+      "producer": "validation",
+      "type": "validation.evidence_collected"
+    },
+    {
+      "correlation": "cor-spine-arch-R5-second",
+      "facts": {
+        "decision": "passed"
+      },
+      "identifier": "evt-rts-actuation-pkg-session-goal-spine-arch-R5-second-v1-node-draft-01-val-completed-0008",
+      "producer": "validation",
+      "type": "validation.completed"
+    },
+    {
+      "correlation": "cor-spine-arch-R5-second",
+      "facts": {},
+      "identifier": "evt-rts-actuation-pkg-session-goal-spine-arch-R5-second-v1-node-review-01-val-evidence-0001",
+      "producer": "validation",
+      "type": "validation.evidence_collected"
+    },
+    {
+      "correlation": "cor-spine-arch-R5-second",
+      "facts": {
+        "decision": "passed"
+      },
+      "identifier": "evt-rts-actuation-pkg-session-goal-spine-arch-R5-second-v1-node-review-01-val-completed-0008",
+      "producer": "validation",
+      "type": "validation.completed"
+    },
+    {
+      "correlation": "cor-spine-arch-R5-second",
+      "facts": {
+        "candidate": "kc-spine-spine-arch-R5-second-0000",
+        "subject_key": "ki-lesson-architecture-generation-summary"
+      },
+      "identifier": "evt-kc-spine-spine-arch-R5-second-0000-know-received-0000",
+      "producer": "knowledge",
+      "type": "knowledge.candidate_received"
+    },
+    {
+      "correlation": "cor-spine-arch-R5-second",
+      "facts": {
+        "candidate": "kc-spine-spine-arch-R5-second-0000",
+        "outcome": "merge",
+        "subject_key": "ki-lesson-architecture-generation-summary"
+      },
+      "identifier": "evt-kc-spine-spine-arch-R5-second-0000-know-accepted-0001",
+      "producer": "knowledge",
+      "type": "knowledge.candidate_accepted"
+    },
+    {
+      "correlation": "cor-spine-arch-R5-second",
+      "facts": {
+        "subject_key": "ki-lesson-architecture-generation-summary",
+        "version": 2
+      },
+      "identifier": "evt-kc-spine-spine-arch-R5-second-0000-know-evolved-0002",
+      "producer": "knowledge",
+      "type": "knowledge.item_evolved"
+    }
+  ],
+  "R6": [
+    {
+      "correlation": "cor-spine-arch-R6-source",
+      "facts": {
+        "decision": "allow"
+      },
+      "identifier": "evt-pipe-spine-arch-R6-source-knowledge_grounded-6be625fcd33b1b99",
+      "producer": "pipeline",
+      "type": "pipeline.knowledge_grounded"
+    },
+    {
+      "correlation": "cor-spine-arch-R6-source",
+      "facts": {},
+      "identifier": "evt-cor-spine-arch-R6-source-eng-0873108bd84e56c7",
+      "producer": "engineering",
+      "type": "engineering.strategized"
+    },
+    {
+      "correlation": "cor-spine-arch-R6-source",
+      "facts": {},
+      "identifier": "evt-context-goal-spine-arch-R6-source-v1-grounding-selected-2cb10441fe7d2e14",
+      "producer": "context_engineering",
+      "type": "context.grounding.selected"
+    },
+    {
+      "correlation": "cor-spine-arch-R6-source",
+      "facts": {},
+      "identifier": "evt-plan-goal-spine-arch-R6-source-v1-plan-0003",
+      "producer": "planning",
+      "type": "plan.created"
+    },
+    {
+      "correlation": "cor-spine-arch-R6-source",
+      "facts": {},
+      "identifier": "evt-plan-goal-spine-arch-R6-source-v1-completed-0004",
+      "producer": "planning",
+      "type": "planning.completed"
+    },
+    {
+      "correlation": "cor-spine-arch-R6-source",
+      "facts": {},
+      "identifier": "evt-plan-goal-spine-arch-R6-source-v1-execution-plan-70fa77aad5087ce7",
+      "producer": "planning",
+      "type": "planning.execution_plan_assembled"
+    },
+    {
+      "correlation": "cor-spine-arch-R6-source",
+      "facts": {},
+      "identifier": "evt-rts-actuation-pkg-session-goal-spine-arch-R6-source-v1-node-draft-01-val-evidence-0001",
+      "producer": "validation",
+      "type": "validation.evidence_collected"
+    },
+    {
+      "correlation": "cor-spine-arch-R6-source",
+      "facts": {
+        "decision": "passed"
+      },
+      "identifier": "evt-rts-actuation-pkg-session-goal-spine-arch-R6-source-v1-node-draft-01-val-completed-0008",
+      "producer": "validation",
+      "type": "validation.completed"
+    },
+    {
+      "correlation": "cor-spine-arch-R6-source",
+      "facts": {},
+      "identifier": "evt-rts-actuation-pkg-session-goal-spine-arch-R6-source-v1-node-review-01-val-evidence-0001",
+      "producer": "validation",
+      "type": "validation.evidence_collected"
+    },
+    {
+      "correlation": "cor-spine-arch-R6-source",
+      "facts": {
+        "decision": "passed"
+      },
+      "identifier": "evt-rts-actuation-pkg-session-goal-spine-arch-R6-source-v1-node-review-01-val-completed-0008",
+      "producer": "validation",
+      "type": "validation.completed"
+    },
+    {
+      "correlation": "cor-spine-arch-R6-source",
+      "facts": {
+        "candidate": "kc-spine-spine-arch-R6-source-0000",
+        "subject_key": "ki-lesson-architecture-generation-summary"
+      },
+      "identifier": "evt-kc-spine-spine-arch-R6-source-0000-know-received-0000",
+      "producer": "knowledge",
+      "type": "knowledge.candidate_received"
+    },
+    {
+      "correlation": "cor-spine-arch-R6-source",
+      "facts": {
+        "candidate": "kc-spine-spine-arch-R6-source-0000",
+        "outcome": "accept_create",
+        "subject_key": "ki-lesson-architecture-generation-summary"
+      },
+      "identifier": "evt-kc-spine-spine-arch-R6-source-0000-know-accepted-0001",
+      "producer": "knowledge",
+      "type": "knowledge.candidate_accepted"
+    },
+    {
+      "correlation": "cor-spine-arch-R6-source",
+      "facts": {
+        "subject_key": "ki-lesson-architecture-generation-summary",
+        "version": 1
+      },
+      "identifier": "evt-kc-spine-spine-arch-R6-source-0000-know-created-0002",
+      "producer": "knowledge",
+      "type": "knowledge.item_created"
+    },
+    {
+      "correlation": "cor-spine-arch-R6-second",
+      "facts": {
+        "decision": "allow"
+      },
+      "identifier": "evt-pipe-spine-arch-R6-second-knowledge_grounded-4ce277aceec0a443",
+      "producer": "pipeline",
+      "type": "pipeline.knowledge_grounded"
+    },
+    {
+      "correlation": "cor-spine-arch-R6-second",
+      "facts": {},
+      "identifier": "evt-cor-spine-arch-R6-second-eng-f13ba3a510c891fa",
+      "producer": "engineering",
+      "type": "engineering.strategized"
+    },
+    {
+      "correlation": "cor-spine-arch-R6-second",
+      "facts": {},
+      "identifier": "evt-context-goal-spine-arch-R6-second-v1-grounding-selected-85d79241cd61b0c6",
+      "producer": "context_engineering",
+      "type": "context.grounding.selected"
+    },
+    {
+      "correlation": "cor-spine-arch-R6-second",
+      "facts": {},
+      "identifier": "evt-plan-goal-spine-arch-R6-second-v1-plan-0003",
+      "producer": "planning",
+      "type": "plan.created"
+    },
+    {
+      "correlation": "cor-spine-arch-R6-second",
+      "facts": {},
+      "identifier": "evt-plan-goal-spine-arch-R6-second-v1-completed-0004",
+      "producer": "planning",
+      "type": "planning.completed"
+    },
+    {
+      "correlation": "cor-spine-arch-R6-second",
+      "facts": {},
+      "identifier": "evt-plan-goal-spine-arch-R6-second-v1-execution-plan-04e595bbd07be5fe",
+      "producer": "planning",
+      "type": "planning.execution_plan_assembled"
+    },
+    {
+      "correlation": "cor-spine-arch-R6-second",
+      "facts": {},
+      "identifier": "evt-rts-actuation-pkg-session-goal-spine-arch-R6-second-v1-node-draft-01-val-evidence-0001",
+      "producer": "validation",
+      "type": "validation.evidence_collected"
+    },
+    {
+      "correlation": "cor-spine-arch-R6-second",
+      "facts": {
+        "decision": "passed"
+      },
+      "identifier": "evt-rts-actuation-pkg-session-goal-spine-arch-R6-second-v1-node-draft-01-val-completed-0008",
+      "producer": "validation",
+      "type": "validation.completed"
+    },
+    {
+      "correlation": "cor-spine-arch-R6-second",
+      "facts": {},
+      "identifier": "evt-rts-actuation-pkg-session-goal-spine-arch-R6-second-v1-node-review-01-val-evidence-0001",
+      "producer": "validation",
+      "type": "validation.evidence_collected"
+    },
+    {
+      "correlation": "cor-spine-arch-R6-second",
+      "facts": {
+        "decision": "passed"
+      },
+      "identifier": "evt-rts-actuation-pkg-session-goal-spine-arch-R6-second-v1-node-review-01-val-completed-0008",
+      "producer": "validation",
+      "type": "validation.completed"
+    },
+    {
+      "correlation": "cor-spine-arch-R6-second",
+      "facts": {
+        "candidate": "kc-spine-spine-arch-R6-second-0000",
+        "subject_key": "ki-lesson-architecture-generation-summary"
+      },
+      "identifier": "evt-kc-spine-spine-arch-R6-second-0000-know-received-0000",
+      "producer": "knowledge",
+      "type": "knowledge.candidate_received"
+    },
+    {
+      "correlation": "cor-spine-arch-R6-second",
+      "facts": {
+        "candidate": "kc-spine-spine-arch-R6-second-0000",
+        "outcome": "merge",
+        "subject_key": "ki-lesson-architecture-generation-summary"
+      },
+      "identifier": "evt-kc-spine-spine-arch-R6-second-0000-know-accepted-0001",
+      "producer": "knowledge",
+      "type": "knowledge.candidate_accepted"
+    },
+    {
+      "correlation": "cor-spine-arch-R6-second",
+      "facts": {
+        "subject_key": "ki-lesson-architecture-generation-summary",
+        "version": 2
+      },
+      "identifier": "evt-kc-spine-spine-arch-R6-second-0000-know-evolved-0002",
+      "producer": "knowledge",
+      "type": "knowledge.item_evolved"
+    }
+  ],
+  "X1": [
+    {
+      "correlation": "policy.execution.allow-baseline",
+      "facts": {
+        "version": "1"
+      },
+      "identifier": "evt-policy-registered-policy.execution.allow-baseline-1",
+      "producer": "policy",
+      "type": "policy.registered"
+    },
+    {
+      "correlation": "policy.execution.deny-unapproved-runtime",
+      "facts": {
+        "version": "1"
+      },
+      "identifier": "evt-policy-registered-policy.execution.deny-unapproved-runtime-1",
+      "producer": "policy",
+      "type": "policy.registered"
+    },
+    {
+      "correlation": "policy.execution.deny-blacklisted-command",
+      "facts": {
+        "version": "1"
+      },
+      "identifier": "evt-policy-registered-policy.execution.deny-blacklisted-command-1",
+      "producer": "policy",
+      "type": "policy.registered"
+    },
+    {
+      "correlation": "policy.execution.deny-unapproved-runtime-policy",
+      "facts": {
+        "version": "1"
+      },
+      "identifier": "evt-policy-registered-policy.execution.deny-unapproved-runtime-policy-1",
+      "producer": "policy",
+      "type": "policy.registered"
+    },
+    {
+      "correlation": "policy.knowledge.allow-grounding-baseline",
+      "facts": {
+        "version": "1"
+      },
+      "identifier": "evt-policy-registered-policy.knowledge.allow-grounding-baseline-1",
+      "producer": "policy",
+      "type": "policy.registered"
+    },
+    {
+      "correlation": "cor-spine-arch-X1-failed",
+      "facts": {
+        "decision": "allow"
+      },
+      "identifier": "evt-pipe-spine-arch-X1-failed-knowledge_grounded-864960bb57b32c0c",
+      "producer": "pipeline",
+      "type": "pipeline.knowledge_grounded"
+    },
+    {
+      "correlation": "cor-spine-arch-X1-failed",
+      "facts": {},
+      "identifier": "evt-cor-spine-arch-X1-failed-eng-0bf748490eb020e4",
+      "producer": "engineering",
+      "type": "engineering.strategized"
+    },
+    {
+      "correlation": "cor-spine-arch-X1-failed",
+      "facts": {},
+      "identifier": "evt-context-goal-spine-arch-X1-failed-v1-grounding-selected-2cb10441fe7d2e14",
+      "producer": "context_engineering",
+      "type": "context.grounding.selected"
+    },
+    {
+      "correlation": "cor-spine-arch-X1-failed",
+      "facts": {},
+      "identifier": "evt-plan-goal-spine-arch-X1-failed-v1-plan-0003",
+      "producer": "planning",
+      "type": "plan.created"
+    },
+    {
+      "correlation": "cor-spine-arch-X1-failed",
+      "facts": {},
+      "identifier": "evt-plan-goal-spine-arch-X1-failed-v1-completed-0004",
+      "producer": "planning",
+      "type": "planning.completed"
+    },
+    {
+      "correlation": "cor-spine-arch-X1-failed",
+      "facts": {},
+      "identifier": "evt-plan-goal-spine-arch-X1-failed-v1-execution-plan-1da22c3f307dc912",
+      "producer": "planning",
+      "type": "planning.execution_plan_assembled"
+    },
+    {
+      "correlation": "cor-spine-arch-X1-failed",
+      "facts": {},
+      "identifier": "evt-rts-actuation-pkg-session-goal-spine-arch-X1-failed-v1-node-draft-01-val-evidence-0001",
+      "producer": "validation",
+      "type": "validation.evidence_collected"
+    },
+    {
+      "correlation": "cor-spine-arch-X1-failed",
+      "facts": {
+        "decision": "failed"
+      },
+      "identifier": "evt-rts-actuation-pkg-session-goal-spine-arch-X1-failed-v1-node-draft-01-val-failed-0008",
+      "producer": "validation",
+      "type": "validation.failed"
+    },
+    {
+      "correlation": "cor-spine-arch-X1-failed",
+      "facts": {},
+      "identifier": "evt-rts-actuation-pkg-session-goal-spine-arch-X1-failed-v1-node-review-01-val-evidence-0001",
+      "producer": "validation",
+      "type": "validation.evidence_collected"
+    },
+    {
+      "correlation": "cor-spine-arch-X1-failed",
+      "facts": {
+        "decision": "failed"
+      },
+      "identifier": "evt-rts-actuation-pkg-session-goal-spine-arch-X1-failed-v1-node-review-01-val-failed-0008",
+      "producer": "validation",
+      "type": "validation.failed"
+    },
+    {
+      "correlation": "cor-spine-arch-X1-failed",
+      "facts": {
+        "candidate": "kc-spine-spine-arch-X1-failed-0000",
+        "subject_key": "ki-lesson-architecture-generation-summary"
+      },
+      "identifier": "evt-kc-spine-spine-arch-X1-failed-0000-know-received-0000",
+      "producer": "knowledge",
+      "type": "knowledge.candidate_received"
+    },
+    {
+      "correlation": "cor-spine-arch-X1-failed",
+      "facts": {
+        "candidate": "kc-spine-spine-arch-X1-failed-0000",
+        "failed_requirement": "provenance_not_validated",
+        "subject_key": "ki-lesson-architecture-generation-summary"
+      },
+      "identifier": "evt-kc-spine-spine-arch-X1-failed-0000-know-rejected-0001",
+      "producer": "knowledge",
+      "type": "knowledge.candidate_rejected"
+    },
+    {
+      "correlation": "cor-spine-arch-X1-failed",
+      "facts": {
+        "candidate": "kc-spine-spine-arch-X1-failed-0001",
+        "subject_key": "ki-lesson-architecture-generation-summary"
+      },
+      "identifier": "evt-kc-spine-spine-arch-X1-failed-0001-know-received-0000",
+      "producer": "knowledge",
+      "type": "knowledge.candidate_received"
+    },
+    {
+      "correlation": "cor-spine-arch-X1-failed",
+      "facts": {
+        "candidate": "kc-spine-spine-arch-X1-failed-0001",
+        "failed_requirement": "provenance_not_validated",
+        "subject_key": "ki-lesson-architecture-generation-summary"
+      },
+      "identifier": "evt-kc-spine-spine-arch-X1-failed-0001-know-rejected-0001",
+      "producer": "knowledge",
+      "type": "knowledge.candidate_rejected"
+    },
+    {
+      "correlation": "cor-spine-arch-X1-failed",
+      "facts": {
+        "candidate": "kc-spine-spine-arch-X1-failed-0002",
+        "subject_key": "ki-lesson-architecture-generation-summary"
+      },
+      "identifier": "evt-kc-spine-spine-arch-X1-failed-0002-know-received-0000",
+      "producer": "knowledge",
+      "type": "knowledge.candidate_received"
+    },
+    {
+      "correlation": "cor-spine-arch-X1-failed",
+      "facts": {
+        "candidate": "kc-spine-spine-arch-X1-failed-0002",
+        "failed_requirement": "provenance_not_validated",
+        "subject_key": "ki-lesson-architecture-generation-summary"
+      },
+      "identifier": "evt-kc-spine-spine-arch-X1-failed-0002-know-rejected-0001",
+      "producer": "knowledge",
+      "type": "knowledge.candidate_rejected"
+    },
+    {
+      "correlation": "cor-spine-arch-X1-query",
+      "facts": {
+        "decision": "allow"
+      },
+      "identifier": "evt-pipe-spine-arch-X1-query-knowledge_grounded-a865859ade5de52e",
+      "producer": "pipeline",
+      "type": "pipeline.knowledge_grounded"
+    },
+    {
+      "correlation": "cor-spine-arch-X1-query",
+      "facts": {},
+      "identifier": "evt-cor-spine-arch-X1-query-eng-1457b3a979412893",
+      "producer": "engineering",
+      "type": "engineering.strategized"
+    },
+    {
+      "correlation": "cor-spine-arch-X1-query",
+      "facts": {},
+      "identifier": "evt-context-goal-spine-arch-X1-query-v1-grounding-selected-2cb10441fe7d2e14",
+      "producer": "context_engineering",
+      "type": "context.grounding.selected"
+    },
+    {
+      "correlation": "cor-spine-arch-X1-query",
+      "facts": {},
+      "identifier": "evt-plan-goal-spine-arch-X1-query-v1-plan-0003",
+      "producer": "planning",
+      "type": "plan.created"
+    },
+    {
+      "correlation": "cor-spine-arch-X1-query",
+      "facts": {},
+      "identifier": "evt-plan-goal-spine-arch-X1-query-v1-completed-0004",
+      "producer": "planning",
+      "type": "planning.completed"
+    },
+    {
+      "correlation": "cor-spine-arch-X1-query",
+      "facts": {},
+      "identifier": "evt-plan-goal-spine-arch-X1-query-v1-execution-plan-5f0010c948b0b965",
+      "producer": "planning",
+      "type": "planning.execution_plan_assembled"
+    }
+  ],
+  "X2": [
+    {
+      "correlation": "policy.execution.allow-baseline",
+      "facts": {
+        "version": "1"
+      },
+      "identifier": "evt-policy-registered-policy.execution.allow-baseline-1",
+      "producer": "policy",
+      "type": "policy.registered"
+    },
+    {
+      "correlation": "policy.execution.deny-unapproved-runtime",
+      "facts": {
+        "version": "1"
+      },
+      "identifier": "evt-policy-registered-policy.execution.deny-unapproved-runtime-1",
+      "producer": "policy",
+      "type": "policy.registered"
+    },
+    {
+      "correlation": "policy.execution.deny-blacklisted-command",
+      "facts": {
+        "version": "1"
+      },
+      "identifier": "evt-policy-registered-policy.execution.deny-blacklisted-command-1",
+      "producer": "policy",
+      "type": "policy.registered"
+    },
+    {
+      "correlation": "policy.execution.deny-unapproved-runtime-policy",
+      "facts": {
+        "version": "1"
+      },
+      "identifier": "evt-policy-registered-policy.execution.deny-unapproved-runtime-policy-1",
+      "producer": "policy",
+      "type": "policy.registered"
+    },
+    {
+      "correlation": "policy.knowledge.allow-grounding-baseline",
+      "facts": {
+        "version": "1"
+      },
+      "identifier": "evt-policy-registered-policy.knowledge.allow-grounding-baseline-1",
+      "producer": "policy",
+      "type": "policy.registered"
+    },
+    {
+      "correlation": "cor-spine-arch-X2-source",
+      "facts": {
+        "decision": "allow"
+      },
+      "identifier": "evt-pipe-spine-arch-X2-source-knowledge_grounded-45364612554a42a3",
+      "producer": "pipeline",
+      "type": "pipeline.knowledge_grounded"
+    },
+    {
+      "correlation": "cor-spine-arch-X2-source",
+      "facts": {},
+      "identifier": "evt-cor-spine-arch-X2-source-eng-43ffdb9d1e113835",
+      "producer": "engineering",
+      "type": "engineering.strategized"
+    },
+    {
+      "correlation": "cor-spine-arch-X2-source",
+      "facts": {},
+      "identifier": "evt-context-goal-spine-arch-X2-source-v1-grounding-selected-2cb10441fe7d2e14",
+      "producer": "context_engineering",
+      "type": "context.grounding.selected"
+    },
+    {
+      "correlation": "cor-spine-arch-X2-source",
+      "facts": {},
+      "identifier": "evt-plan-goal-spine-arch-X2-source-v1-plan-0003",
+      "producer": "planning",
+      "type": "plan.created"
+    },
+    {
+      "correlation": "cor-spine-arch-X2-source",
+      "facts": {},
+      "identifier": "evt-plan-goal-spine-arch-X2-source-v1-completed-0004",
+      "producer": "planning",
+      "type": "planning.completed"
+    },
+    {
+      "correlation": "cor-spine-arch-X2-source",
+      "facts": {},
+      "identifier": "evt-plan-goal-spine-arch-X2-source-v1-execution-plan-6bf31b51e483c786",
+      "producer": "planning",
+      "type": "planning.execution_plan_assembled"
+    },
+    {
+      "correlation": "cor-spine-arch-X2-source",
+      "facts": {},
+      "identifier": "evt-rts-actuation-pkg-session-goal-spine-arch-X2-source-v1-node-draft-01-val-evidence-0001",
+      "producer": "validation",
+      "type": "validation.evidence_collected"
+    },
+    {
+      "correlation": "cor-spine-arch-X2-source",
+      "facts": {
+        "decision": "passed"
+      },
+      "identifier": "evt-rts-actuation-pkg-session-goal-spine-arch-X2-source-v1-node-draft-01-val-completed-0008",
+      "producer": "validation",
+      "type": "validation.completed"
+    },
+    {
+      "correlation": "cor-spine-arch-X2-source",
+      "facts": {},
+      "identifier": "evt-rts-actuation-pkg-session-goal-spine-arch-X2-source-v1-node-review-01-val-evidence-0001",
+      "producer": "validation",
+      "type": "validation.evidence_collected"
+    },
+    {
+      "correlation": "cor-spine-arch-X2-source",
+      "facts": {
+        "decision": "passed"
+      },
+      "identifier": "evt-rts-actuation-pkg-session-goal-spine-arch-X2-source-v1-node-review-01-val-completed-0008",
+      "producer": "validation",
+      "type": "validation.completed"
+    },
+    {
+      "correlation": "cor-spine-arch-X2-source",
+      "facts": {
+        "candidate": "kc-spine-spine-arch-X2-source-0000",
+        "subject_key": "ki-lesson-architecture-generation-summary"
+      },
+      "identifier": "evt-kc-spine-spine-arch-X2-source-0000-know-received-0000",
+      "producer": "knowledge",
+      "type": "knowledge.candidate_received"
+    },
+    {
+      "correlation": "cor-spine-arch-X2-source",
+      "facts": {
+        "candidate": "kc-spine-spine-arch-X2-source-0000",
+        "outcome": "accept_create",
+        "subject_key": "ki-lesson-architecture-generation-summary"
+      },
+      "identifier": "evt-kc-spine-spine-arch-X2-source-0000-know-accepted-0001",
+      "producer": "knowledge",
+      "type": "knowledge.candidate_accepted"
+    },
+    {
+      "correlation": "cor-spine-arch-X2-source",
+      "facts": {
+        "subject_key": "ki-lesson-architecture-generation-summary",
+        "version": 1
+      },
+      "identifier": "evt-kc-spine-spine-arch-X2-source-0000-know-created-0002",
+      "producer": "knowledge",
+      "type": "knowledge.item_created"
+    },
+    {
+      "correlation": "cor-spine-arch-X2-source",
+      "facts": {
+        "state": "expired",
+        "subject_key": "ki-lesson-architecture-generation-summary"
+      },
+      "identifier": "evt-ki-lesson-architecture-generation-summary-expired-know-expired-0000",
+      "producer": "knowledge",
+      "type": "knowledge.item_expired"
+    },
+    {
+      "correlation": "cor-spine-arch-X2-query",
+      "facts": {
+        "decision": "allow"
+      },
+      "identifier": "evt-pipe-spine-arch-X2-query-knowledge_grounded-142e5237d2313c99",
+      "producer": "pipeline",
+      "type": "pipeline.knowledge_grounded"
+    },
+    {
+      "correlation": "cor-spine-arch-X2-query",
+      "facts": {},
+      "identifier": "evt-cor-spine-arch-X2-query-eng-03d5c8ac30839a81",
+      "producer": "engineering",
+      "type": "engineering.strategized"
+    },
+    {
+      "correlation": "cor-spine-arch-X2-query",
+      "facts": {},
+      "identifier": "evt-context-goal-spine-arch-X2-query-v1-grounding-selected-2cb10441fe7d2e14",
+      "producer": "context_engineering",
+      "type": "context.grounding.selected"
+    },
+    {
+      "correlation": "cor-spine-arch-X2-query",
+      "facts": {},
+      "identifier": "evt-plan-goal-spine-arch-X2-query-v1-plan-0003",
+      "producer": "planning",
+      "type": "plan.created"
+    },
+    {
+      "correlation": "cor-spine-arch-X2-query",
+      "facts": {},
+      "identifier": "evt-plan-goal-spine-arch-X2-query-v1-completed-0004",
+      "producer": "planning",
+      "type": "planning.completed"
+    },
+    {
+      "correlation": "cor-spine-arch-X2-query",
+      "facts": {},
+      "identifier": "evt-plan-goal-spine-arch-X2-query-v1-execution-plan-2efd3aba47f9840a",
+      "producer": "planning",
+      "type": "planning.execution_plan_assembled"
+    }
+  ],
+  "X3": [
+    {
+      "correlation": "policy.execution.allow-baseline",
+      "facts": {
+        "version": "1"
+      },
+      "identifier": "evt-policy-registered-policy.execution.allow-baseline-1",
+      "producer": "policy",
+      "type": "policy.registered"
+    },
+    {
+      "correlation": "policy.execution.deny-unapproved-runtime",
+      "facts": {
+        "version": "1"
+      },
+      "identifier": "evt-policy-registered-policy.execution.deny-unapproved-runtime-1",
+      "producer": "policy",
+      "type": "policy.registered"
+    },
+    {
+      "correlation": "policy.execution.deny-blacklisted-command",
+      "facts": {
+        "version": "1"
+      },
+      "identifier": "evt-policy-registered-policy.execution.deny-blacklisted-command-1",
+      "producer": "policy",
+      "type": "policy.registered"
+    },
+    {
+      "correlation": "policy.execution.deny-unapproved-runtime-policy",
+      "facts": {
+        "version": "1"
+      },
+      "identifier": "evt-policy-registered-policy.execution.deny-unapproved-runtime-policy-1",
+      "producer": "policy",
+      "type": "policy.registered"
+    },
+    {
+      "correlation": "policy.knowledge.allow-grounding-baseline",
+      "facts": {
+        "version": "1"
+      },
+      "identifier": "evt-policy-registered-policy.knowledge.allow-grounding-baseline-1",
+      "producer": "policy",
+      "type": "policy.registered"
+    },
+    {
+      "correlation": "cor-spine-arch-X3-source",
+      "facts": {
+        "decision": "allow"
+      },
+      "identifier": "evt-pipe-spine-arch-X3-source-knowledge_grounded-08c9fd7d58999784",
+      "producer": "pipeline",
+      "type": "pipeline.knowledge_grounded"
+    },
+    {
+      "correlation": "cor-spine-arch-X3-source",
+      "facts": {},
+      "identifier": "evt-cor-spine-arch-X3-source-eng-200dfe38513c3c14",
+      "producer": "engineering",
+      "type": "engineering.strategized"
+    },
+    {
+      "correlation": "cor-spine-arch-X3-source",
+      "facts": {},
+      "identifier": "evt-context-goal-spine-arch-X3-source-v1-grounding-selected-2cb10441fe7d2e14",
+      "producer": "context_engineering",
+      "type": "context.grounding.selected"
+    },
+    {
+      "correlation": "cor-spine-arch-X3-source",
+      "facts": {},
+      "identifier": "evt-plan-goal-spine-arch-X3-source-v1-plan-0003",
+      "producer": "planning",
+      "type": "plan.created"
+    },
+    {
+      "correlation": "cor-spine-arch-X3-source",
+      "facts": {},
+      "identifier": "evt-plan-goal-spine-arch-X3-source-v1-completed-0004",
+      "producer": "planning",
+      "type": "planning.completed"
+    },
+    {
+      "correlation": "cor-spine-arch-X3-source",
+      "facts": {},
+      "identifier": "evt-plan-goal-spine-arch-X3-source-v1-execution-plan-dd9bca5e69db262f",
+      "producer": "planning",
+      "type": "planning.execution_plan_assembled"
+    },
+    {
+      "correlation": "cor-spine-arch-X3-source",
+      "facts": {},
+      "identifier": "evt-rts-actuation-pkg-session-goal-spine-arch-X3-source-v1-node-draft-01-val-evidence-0001",
+      "producer": "validation",
+      "type": "validation.evidence_collected"
+    },
+    {
+      "correlation": "cor-spine-arch-X3-source",
+      "facts": {
+        "decision": "passed"
+      },
+      "identifier": "evt-rts-actuation-pkg-session-goal-spine-arch-X3-source-v1-node-draft-01-val-completed-0008",
+      "producer": "validation",
+      "type": "validation.completed"
+    },
+    {
+      "correlation": "cor-spine-arch-X3-source",
+      "facts": {},
+      "identifier": "evt-rts-actuation-pkg-session-goal-spine-arch-X3-source-v1-node-review-01-val-evidence-0001",
+      "producer": "validation",
+      "type": "validation.evidence_collected"
+    },
+    {
+      "correlation": "cor-spine-arch-X3-source",
+      "facts": {
+        "decision": "passed"
+      },
+      "identifier": "evt-rts-actuation-pkg-session-goal-spine-arch-X3-source-v1-node-review-01-val-completed-0008",
+      "producer": "validation",
+      "type": "validation.completed"
+    },
+    {
+      "correlation": "cor-spine-arch-X3-source",
+      "facts": {
+        "candidate": "kc-spine-spine-arch-X3-source-0000",
+        "subject_key": "ki-lesson-architecture-generation-summary"
+      },
+      "identifier": "evt-kc-spine-spine-arch-X3-source-0000-know-received-0000",
+      "producer": "knowledge",
+      "type": "knowledge.candidate_received"
+    },
+    {
+      "correlation": "cor-spine-arch-X3-source",
+      "facts": {
+        "candidate": "kc-spine-spine-arch-X3-source-0000",
+        "outcome": "accept_create",
+        "subject_key": "ki-lesson-architecture-generation-summary"
+      },
+      "identifier": "evt-kc-spine-spine-arch-X3-source-0000-know-accepted-0001",
+      "producer": "knowledge",
+      "type": "knowledge.candidate_accepted"
+    },
+    {
+      "correlation": "cor-spine-arch-X3-source",
+      "facts": {
+        "subject_key": "ki-lesson-architecture-generation-summary",
+        "version": 1
+      },
+      "identifier": "evt-kc-spine-spine-arch-X3-source-0000-know-created-0002",
+      "producer": "knowledge",
+      "type": "knowledge.item_created"
+    },
+    {
+      "correlation": "rts-actuation-pkg-session-goal-spine-arch-X3-source-v1-node-draft-01",
+      "facts": {
+        "actor": "phase5-fixture-operator",
+        "effect": "contradict",
+        "feedback_id": "phase5-X3-contradiction",
+        "subject_key": "ki-lesson-architecture-generation-summary"
+      },
+      "identifier": "evt-phase5-X3-contradiction-know-feedback-0000",
+      "producer": "knowledge",
+      "type": "knowledge.feedback_recorded"
+    },
+    {
+      "correlation": "rts-actuation-pkg-session-goal-spine-arch-X3-source-v1-node-draft-01",
+      "facts": {
+        "state": "deprecated",
+        "subject_key": "ki-lesson-architecture-generation-summary"
+      },
+      "identifier": "evt-ki-lesson-architecture-generation-summary-deprecated-know-deprecated-0000",
+      "producer": "knowledge",
+      "type": "knowledge.item_deprecated"
+    },
+    {
+      "correlation": "cor-spine-arch-X3-query",
+      "facts": {
+        "decision": "allow"
+      },
+      "identifier": "evt-pipe-spine-arch-X3-query-knowledge_grounded-56dded0647f7b8a8",
+      "producer": "pipeline",
+      "type": "pipeline.knowledge_grounded"
+    },
+    {
+      "correlation": "cor-spine-arch-X3-query",
+      "facts": {},
+      "identifier": "evt-cor-spine-arch-X3-query-eng-5d36efe507e6bf01",
+      "producer": "engineering",
+      "type": "engineering.strategized"
+    },
+    {
+      "correlation": "cor-spine-arch-X3-query",
+      "facts": {},
+      "identifier": "evt-context-goal-spine-arch-X3-query-v1-grounding-selected-2cb10441fe7d2e14",
+      "producer": "context_engineering",
+      "type": "context.grounding.selected"
+    },
+    {
+      "correlation": "cor-spine-arch-X3-query",
+      "facts": {},
+      "identifier": "evt-plan-goal-spine-arch-X3-query-v1-plan-0003",
+      "producer": "planning",
+      "type": "plan.created"
+    },
+    {
+      "correlation": "cor-spine-arch-X3-query",
+      "facts": {},
+      "identifier": "evt-plan-goal-spine-arch-X3-query-v1-completed-0004",
+      "producer": "planning",
+      "type": "planning.completed"
+    },
+    {
+      "correlation": "cor-spine-arch-X3-query",
+      "facts": {},
+      "identifier": "evt-plan-goal-spine-arch-X3-query-v1-execution-plan-bddae86bd1102d72",
+      "producer": "planning",
+      "type": "planning.execution_plan_assembled"
+    }
+  ],
+  "X4": [
+    {
+      "correlation": "policy.execution.allow-baseline",
+      "facts": {
+        "version": "1"
+      },
+      "identifier": "evt-policy-registered-policy.execution.allow-baseline-1",
+      "producer": "policy",
+      "type": "policy.registered"
+    },
+    {
+      "correlation": "policy.execution.deny-unapproved-runtime",
+      "facts": {
+        "version": "1"
+      },
+      "identifier": "evt-policy-registered-policy.execution.deny-unapproved-runtime-1",
+      "producer": "policy",
+      "type": "policy.registered"
+    },
+    {
+      "correlation": "policy.execution.deny-blacklisted-command",
+      "facts": {
+        "version": "1"
+      },
+      "identifier": "evt-policy-registered-policy.execution.deny-blacklisted-command-1",
+      "producer": "policy",
+      "type": "policy.registered"
+    },
+    {
+      "correlation": "policy.execution.deny-unapproved-runtime-policy",
+      "facts": {
+        "version": "1"
+      },
+      "identifier": "evt-policy-registered-policy.execution.deny-unapproved-runtime-policy-1",
+      "producer": "policy",
+      "type": "policy.registered"
+    },
+    {
+      "correlation": "policy.knowledge.allow-grounding-baseline",
+      "facts": {
+        "version": "1"
+      },
+      "identifier": "evt-policy-registered-policy.knowledge.allow-grounding-baseline-1",
+      "producer": "policy",
+      "type": "policy.registered"
+    },
+    {
+      "correlation": "cor-spine-arch-X4-old",
+      "facts": {
+        "decision": "allow"
+      },
+      "identifier": "evt-pipe-spine-arch-X4-old-knowledge_grounded-df91443942b41204",
+      "producer": "pipeline",
+      "type": "pipeline.knowledge_grounded"
+    },
+    {
+      "correlation": "cor-spine-arch-X4-old",
+      "facts": {},
+      "identifier": "evt-cor-spine-arch-X4-old-eng-abe7b338cfd4285c",
+      "producer": "engineering",
+      "type": "engineering.strategized"
+    },
+    {
+      "correlation": "cor-spine-arch-X4-old",
+      "facts": {},
+      "identifier": "evt-context-goal-spine-arch-X4-old-v1-grounding-selected-2cb10441fe7d2e14",
+      "producer": "context_engineering",
+      "type": "context.grounding.selected"
+    },
+    {
+      "correlation": "cor-spine-arch-X4-old",
+      "facts": {},
+      "identifier": "evt-plan-goal-spine-arch-X4-old-v1-plan-0003",
+      "producer": "planning",
+      "type": "plan.created"
+    },
+    {
+      "correlation": "cor-spine-arch-X4-old",
+      "facts": {},
+      "identifier": "evt-plan-goal-spine-arch-X4-old-v1-completed-0004",
+      "producer": "planning",
+      "type": "planning.completed"
+    },
+    {
+      "correlation": "cor-spine-arch-X4-old",
+      "facts": {},
+      "identifier": "evt-plan-goal-spine-arch-X4-old-v1-execution-plan-c6a34e2736862a5a",
+      "producer": "planning",
+      "type": "planning.execution_plan_assembled"
+    },
+    {
+      "correlation": "cor-spine-arch-X4-old",
+      "facts": {},
+      "identifier": "evt-rts-actuation-pkg-session-goal-spine-arch-X4-old-v1-node-draft-01-val-evidence-0001",
+      "producer": "validation",
+      "type": "validation.evidence_collected"
+    },
+    {
+      "correlation": "cor-spine-arch-X4-old",
+      "facts": {
+        "decision": "passed"
+      },
+      "identifier": "evt-rts-actuation-pkg-session-goal-spine-arch-X4-old-v1-node-draft-01-val-completed-0008",
+      "producer": "validation",
+      "type": "validation.completed"
+    },
+    {
+      "correlation": "cor-spine-arch-X4-old",
+      "facts": {},
+      "identifier": "evt-rts-actuation-pkg-session-goal-spine-arch-X4-old-v1-node-review-01-val-evidence-0001",
+      "producer": "validation",
+      "type": "validation.evidence_collected"
+    },
+    {
+      "correlation": "cor-spine-arch-X4-old",
+      "facts": {
+        "decision": "passed"
+      },
+      "identifier": "evt-rts-actuation-pkg-session-goal-spine-arch-X4-old-v1-node-review-01-val-completed-0008",
+      "producer": "validation",
+      "type": "validation.completed"
+    },
+    {
+      "correlation": "cor-spine-arch-X4-old",
+      "facts": {
+        "candidate": "kc-spine-spine-arch-X4-old-0000",
+        "subject_key": "ki-lesson-phase5-retired-subject"
+      },
+      "identifier": "evt-kc-spine-spine-arch-X4-old-0000-know-received-0000",
+      "producer": "knowledge",
+      "type": "knowledge.candidate_received"
+    },
+    {
+      "correlation": "cor-spine-arch-X4-old",
+      "facts": {
+        "candidate": "kc-spine-spine-arch-X4-old-0000",
+        "outcome": "accept_create",
+        "subject_key": "ki-lesson-phase5-retired-subject"
+      },
+      "identifier": "evt-kc-spine-spine-arch-X4-old-0000-know-accepted-0001",
+      "producer": "knowledge",
+      "type": "knowledge.candidate_accepted"
+    },
+    {
+      "correlation": "cor-spine-arch-X4-old",
+      "facts": {
+        "subject_key": "ki-lesson-phase5-retired-subject",
+        "version": 1
+      },
+      "identifier": "evt-kc-spine-spine-arch-X4-old-0000-know-created-0002",
+      "producer": "knowledge",
+      "type": "knowledge.item_created"
+    },
+    {
+      "correlation": "cor-spine-arch-X4-new",
+      "facts": {
+        "decision": "allow"
+      },
+      "identifier": "evt-pipe-spine-arch-X4-new-knowledge_grounded-f4f784b141de94ab",
+      "producer": "pipeline",
+      "type": "pipeline.knowledge_grounded"
+    },
+    {
+      "correlation": "cor-spine-arch-X4-new",
+      "facts": {},
+      "identifier": "evt-cor-spine-arch-X4-new-eng-c4757aae4427ca88",
+      "producer": "engineering",
+      "type": "engineering.strategized"
+    },
+    {
+      "correlation": "cor-spine-arch-X4-new",
+      "facts": {},
+      "identifier": "evt-context-goal-spine-arch-X4-new-v1-grounding-selected-2cb10441fe7d2e14",
+      "producer": "context_engineering",
+      "type": "context.grounding.selected"
+    },
+    {
+      "correlation": "cor-spine-arch-X4-new",
+      "facts": {},
+      "identifier": "evt-plan-goal-spine-arch-X4-new-v1-plan-0003",
+      "producer": "planning",
+      "type": "plan.created"
+    },
+    {
+      "correlation": "cor-spine-arch-X4-new",
+      "facts": {},
+      "identifier": "evt-plan-goal-spine-arch-X4-new-v1-completed-0004",
+      "producer": "planning",
+      "type": "planning.completed"
+    },
+    {
+      "correlation": "cor-spine-arch-X4-new",
+      "facts": {},
+      "identifier": "evt-plan-goal-spine-arch-X4-new-v1-execution-plan-191dc75242e12add",
+      "producer": "planning",
+      "type": "planning.execution_plan_assembled"
+    },
+    {
+      "correlation": "cor-spine-arch-X4-new",
+      "facts": {},
+      "identifier": "evt-rts-actuation-pkg-session-goal-spine-arch-X4-new-v1-node-draft-01-val-evidence-0001",
+      "producer": "validation",
+      "type": "validation.evidence_collected"
+    },
+    {
+      "correlation": "cor-spine-arch-X4-new",
+      "facts": {
+        "decision": "passed"
+      },
+      "identifier": "evt-rts-actuation-pkg-session-goal-spine-arch-X4-new-v1-node-draft-01-val-completed-0008",
+      "producer": "validation",
+      "type": "validation.completed"
+    },
+    {
+      "correlation": "cor-spine-arch-X4-new",
+      "facts": {},
+      "identifier": "evt-rts-actuation-pkg-session-goal-spine-arch-X4-new-v1-node-review-01-val-evidence-0001",
+      "producer": "validation",
+      "type": "validation.evidence_collected"
+    },
+    {
+      "correlation": "cor-spine-arch-X4-new",
+      "facts": {
+        "decision": "passed"
+      },
+      "identifier": "evt-rts-actuation-pkg-session-goal-spine-arch-X4-new-v1-node-review-01-val-completed-0008",
+      "producer": "validation",
+      "type": "validation.completed"
+    },
+    {
+      "correlation": "cor-spine-arch-X4-new",
+      "facts": {
+        "candidate": "kc-spine-spine-arch-X4-new-0000",
+        "subject_key": "ki-lesson-active-phase5-replacement"
+      },
+      "identifier": "evt-kc-spine-spine-arch-X4-new-0000-know-received-0000",
+      "producer": "knowledge",
+      "type": "knowledge.candidate_received"
+    },
+    {
+      "correlation": "cor-spine-arch-X4-new",
+      "facts": {
+        "candidate": "kc-spine-spine-arch-X4-new-0000",
+        "outcome": "accept_create",
+        "subject_key": "ki-lesson-active-phase5-replacement"
+      },
+      "identifier": "evt-kc-spine-spine-arch-X4-new-0000-know-accepted-0001",
+      "producer": "knowledge",
+      "type": "knowledge.candidate_accepted"
+    },
+    {
+      "correlation": "cor-spine-arch-X4-new",
+      "facts": {
+        "subject_key": "ki-lesson-active-phase5-replacement",
+        "version": 1
+      },
+      "identifier": "evt-kc-spine-spine-arch-X4-new-0000-know-created-0002",
+      "producer": "knowledge",
+      "type": "knowledge.item_created"
+    },
+    {
+      "correlation": "cor-spine-arch-X4-new",
+      "facts": {
+        "subject_key": "ki-lesson-active-phase5-replacement",
+        "superseded": "ki-lesson-phase5-retired-subject"
+      },
+      "identifier": "evt-kc-spine-spine-arch-X4-new-0000-know-superseded-0003",
+      "producer": "knowledge",
+      "type": "knowledge.item_superseded"
+    },
+    {
+      "correlation": "cor-spine-arch-X4-query",
+      "facts": {
+        "decision": "allow"
+      },
+      "identifier": "evt-pipe-spine-arch-X4-query-knowledge_grounded-ea2e0562f7f3e06f",
+      "producer": "pipeline",
+      "type": "pipeline.knowledge_grounded"
+    },
+    {
+      "correlation": "cor-spine-arch-X4-query",
+      "facts": {},
+      "identifier": "evt-cor-spine-arch-X4-query-eng-3a076540f9d8308e",
+      "producer": "engineering",
+      "type": "engineering.strategized"
+    },
+    {
+      "correlation": "cor-spine-arch-X4-query",
+      "facts": {},
+      "identifier": "evt-context-goal-spine-arch-X4-query-v1-grounding-selected-2cb10441fe7d2e14",
+      "producer": "context_engineering",
+      "type": "context.grounding.selected"
+    },
+    {
+      "correlation": "cor-spine-arch-X4-query",
+      "facts": {},
+      "identifier": "evt-plan-goal-spine-arch-X4-query-v1-plan-0003",
+      "producer": "planning",
+      "type": "plan.created"
+    },
+    {
+      "correlation": "cor-spine-arch-X4-query",
+      "facts": {},
+      "identifier": "evt-plan-goal-spine-arch-X4-query-v1-completed-0004",
+      "producer": "planning",
+      "type": "planning.completed"
+    },
+    {
+      "correlation": "cor-spine-arch-X4-query",
+      "facts": {},
+      "identifier": "evt-plan-goal-spine-arch-X4-query-v1-execution-plan-57c823895a5ad2e9",
+      "producer": "planning",
+      "type": "planning.execution_plan_assembled"
+    }
+  ],
+  "X5": [
+    {
+      "correlation": "policy.execution.allow-baseline",
+      "facts": {
+        "version": "1"
+      },
+      "identifier": "evt-policy-registered-policy.execution.allow-baseline-1",
+      "producer": "policy",
+      "type": "policy.registered"
+    },
+    {
+      "correlation": "policy.execution.deny-unapproved-runtime",
+      "facts": {
+        "version": "1"
+      },
+      "identifier": "evt-policy-registered-policy.execution.deny-unapproved-runtime-1",
+      "producer": "policy",
+      "type": "policy.registered"
+    },
+    {
+      "correlation": "policy.execution.deny-blacklisted-command",
+      "facts": {
+        "version": "1"
+      },
+      "identifier": "evt-policy-registered-policy.execution.deny-blacklisted-command-1",
+      "producer": "policy",
+      "type": "policy.registered"
+    },
+    {
+      "correlation": "policy.execution.deny-unapproved-runtime-policy",
+      "facts": {
+        "version": "1"
+      },
+      "identifier": "evt-policy-registered-policy.execution.deny-unapproved-runtime-policy-1",
+      "producer": "policy",
+      "type": "policy.registered"
+    },
+    {
+      "correlation": "policy.knowledge.allow-grounding-baseline",
+      "facts": {
+        "version": "1"
+      },
+      "identifier": "evt-policy-registered-policy.knowledge.allow-grounding-baseline-1",
+      "producer": "policy",
+      "type": "policy.registered"
+    },
+    {
+      "correlation": "cor-spine-arch-X5-unrelated",
+      "facts": {
+        "decision": "allow"
+      },
+      "identifier": "evt-pipe-spine-arch-X5-unrelated-knowledge_grounded-d8dc47c4f940d53a",
+      "producer": "pipeline",
+      "type": "pipeline.knowledge_grounded"
+    },
+    {
+      "correlation": "cor-spine-arch-X5-unrelated",
+      "facts": {},
+      "identifier": "evt-cor-spine-arch-X5-unrelated-eng-ce43677560768d71",
+      "producer": "engineering",
+      "type": "engineering.strategized"
+    },
+    {
+      "correlation": "cor-spine-arch-X5-unrelated",
+      "facts": {},
+      "identifier": "evt-context-goal-spine-arch-X5-unrelated-v1-grounding-selected-2cb10441fe7d2e14",
+      "producer": "context_engineering",
+      "type": "context.grounding.selected"
+    },
+    {
+      "correlation": "cor-spine-arch-X5-unrelated",
+      "facts": {},
+      "identifier": "evt-plan-goal-spine-arch-X5-unrelated-v1-plan-0003",
+      "producer": "planning",
+      "type": "plan.created"
+    },
+    {
+      "correlation": "cor-spine-arch-X5-unrelated",
+      "facts": {},
+      "identifier": "evt-plan-goal-spine-arch-X5-unrelated-v1-completed-0004",
+      "producer": "planning",
+      "type": "planning.completed"
+    },
+    {
+      "correlation": "cor-spine-arch-X5-unrelated",
+      "facts": {},
+      "identifier": "evt-plan-goal-spine-arch-X5-unrelated-v1-execution-plan-0a3297dea342f764",
+      "producer": "planning",
+      "type": "planning.execution_plan_assembled"
+    },
+    {
+      "correlation": "cor-spine-arch-X5-unrelated",
+      "facts": {},
+      "identifier": "evt-rts-actuation-pkg-session-goal-spine-arch-X5-unrelated-v1-node-draft-01-val-evidence-0001",
+      "producer": "validation",
+      "type": "validation.evidence_collected"
+    },
+    {
+      "correlation": "cor-spine-arch-X5-unrelated",
+      "facts": {
+        "decision": "passed"
+      },
+      "identifier": "evt-rts-actuation-pkg-session-goal-spine-arch-X5-unrelated-v1-node-draft-01-val-completed-0008",
+      "producer": "validation",
+      "type": "validation.completed"
+    },
+    {
+      "correlation": "cor-spine-arch-X5-unrelated",
+      "facts": {},
+      "identifier": "evt-rts-actuation-pkg-session-goal-spine-arch-X5-unrelated-v1-node-review-01-val-evidence-0001",
+      "producer": "validation",
+      "type": "validation.evidence_collected"
+    },
+    {
+      "correlation": "cor-spine-arch-X5-unrelated",
+      "facts": {
+        "decision": "passed"
+      },
+      "identifier": "evt-rts-actuation-pkg-session-goal-spine-arch-X5-unrelated-v1-node-review-01-val-completed-0008",
+      "producer": "validation",
+      "type": "validation.completed"
+    },
+    {
+      "correlation": "cor-spine-arch-X5-unrelated",
+      "facts": {
+        "candidate": "kc-spine-spine-arch-X5-unrelated-0000",
+        "subject_key": "ki-lesson-database-migration-runbook-unrelated"
+      },
+      "identifier": "evt-kc-spine-spine-arch-X5-unrelated-0000-know-received-0000",
+      "producer": "knowledge",
+      "type": "knowledge.candidate_received"
+    },
+    {
+      "correlation": "cor-spine-arch-X5-unrelated",
+      "facts": {
+        "candidate": "kc-spine-spine-arch-X5-unrelated-0000",
+        "outcome": "accept_create",
+        "subject_key": "ki-lesson-database-migration-runbook-unrelated"
+      },
+      "identifier": "evt-kc-spine-spine-arch-X5-unrelated-0000-know-accepted-0001",
+      "producer": "knowledge",
+      "type": "knowledge.candidate_accepted"
+    },
+    {
+      "correlation": "cor-spine-arch-X5-unrelated",
+      "facts": {
+        "subject_key": "ki-lesson-database-migration-runbook-unrelated",
+        "version": 1
+      },
+      "identifier": "evt-kc-spine-spine-arch-X5-unrelated-0000-know-created-0002",
+      "producer": "knowledge",
+      "type": "knowledge.item_created"
+    },
+    {
+      "correlation": "cor-spine-arch-X5-query",
+      "facts": {
+        "decision": "allow"
+      },
+      "identifier": "evt-pipe-spine-arch-X5-query-knowledge_grounded-9a7fe6c23ff649aa",
+      "producer": "pipeline",
+      "type": "pipeline.knowledge_grounded"
+    },
+    {
+      "correlation": "cor-spine-arch-X5-query",
+      "facts": {},
+      "identifier": "evt-cor-spine-arch-X5-query-eng-13cb9e65b51f943b",
+      "producer": "engineering",
+      "type": "engineering.strategized"
+    },
+    {
+      "correlation": "cor-spine-arch-X5-query",
+      "facts": {},
+      "identifier": "evt-context-goal-spine-arch-X5-query-v1-grounding-selected-2cb10441fe7d2e14",
+      "producer": "context_engineering",
+      "type": "context.grounding.selected"
+    },
+    {
+      "correlation": "cor-spine-arch-X5-query",
+      "facts": {},
+      "identifier": "evt-plan-goal-spine-arch-X5-query-v1-plan-0003",
+      "producer": "planning",
+      "type": "plan.created"
+    },
+    {
+      "correlation": "cor-spine-arch-X5-query",
+      "facts": {},
+      "identifier": "evt-plan-goal-spine-arch-X5-query-v1-completed-0004",
+      "producer": "planning",
+      "type": "planning.completed"
+    },
+    {
+      "correlation": "cor-spine-arch-X5-query",
+      "facts": {},
+      "identifier": "evt-plan-goal-spine-arch-X5-query-v1-execution-plan-100e471c293aecb1",
+      "producer": "planning",
+      "type": "planning.execution_plan_assembled"
+    }
+  ],
+  "X6": [
+    {
+      "correlation": "policy.execution.allow-baseline",
+      "facts": {
+        "version": "1"
+      },
+      "identifier": "evt-policy-registered-policy.execution.allow-baseline-1",
+      "producer": "policy",
+      "type": "policy.registered"
+    },
+    {
+      "correlation": "policy.execution.deny-unapproved-runtime",
+      "facts": {
+        "version": "1"
+      },
+      "identifier": "evt-policy-registered-policy.execution.deny-unapproved-runtime-1",
+      "producer": "policy",
+      "type": "policy.registered"
+    },
+    {
+      "correlation": "policy.execution.deny-blacklisted-command",
+      "facts": {
+        "version": "1"
+      },
+      "identifier": "evt-policy-registered-policy.execution.deny-blacklisted-command-1",
+      "producer": "policy",
+      "type": "policy.registered"
+    },
+    {
+      "correlation": "policy.execution.deny-unapproved-runtime-policy",
+      "facts": {
+        "version": "1"
+      },
+      "identifier": "evt-policy-registered-policy.execution.deny-unapproved-runtime-policy-1",
+      "producer": "policy",
+      "type": "policy.registered"
+    },
+    {
+      "correlation": "policy.knowledge.allow-grounding-baseline",
+      "facts": {
+        "version": "1"
+      },
+      "identifier": "evt-policy-registered-policy.knowledge.allow-grounding-baseline-1",
+      "producer": "policy",
+      "type": "policy.registered"
+    },
+    {
+      "correlation": "cor-spine-arch-X6-source",
+      "facts": {
+        "decision": "allow"
+      },
+      "identifier": "evt-pipe-spine-arch-X6-source-knowledge_grounded-d908302168d8c2c9",
+      "producer": "pipeline",
+      "type": "pipeline.knowledge_grounded"
+    },
+    {
+      "correlation": "cor-spine-arch-X6-source",
+      "facts": {},
+      "identifier": "evt-cor-spine-arch-X6-source-eng-c06b1258bf1137f0",
+      "producer": "engineering",
+      "type": "engineering.strategized"
+    },
+    {
+      "correlation": "cor-spine-arch-X6-source",
+      "facts": {},
+      "identifier": "evt-context-goal-spine-arch-X6-source-v1-grounding-selected-2cb10441fe7d2e14",
+      "producer": "context_engineering",
+      "type": "context.grounding.selected"
+    },
+    {
+      "correlation": "cor-spine-arch-X6-source",
+      "facts": {},
+      "identifier": "evt-plan-goal-spine-arch-X6-source-v1-plan-0003",
+      "producer": "planning",
+      "type": "plan.created"
+    },
+    {
+      "correlation": "cor-spine-arch-X6-source",
+      "facts": {},
+      "identifier": "evt-plan-goal-spine-arch-X6-source-v1-completed-0004",
+      "producer": "planning",
+      "type": "planning.completed"
+    },
+    {
+      "correlation": "cor-spine-arch-X6-source",
+      "facts": {},
+      "identifier": "evt-plan-goal-spine-arch-X6-source-v1-execution-plan-438db0507a7c2e69",
+      "producer": "planning",
+      "type": "planning.execution_plan_assembled"
+    },
+    {
+      "correlation": "cor-spine-arch-X6-source",
+      "facts": {},
+      "identifier": "evt-rts-actuation-pkg-session-goal-spine-arch-X6-source-v1-node-draft-01-val-evidence-0001",
+      "producer": "validation",
+      "type": "validation.evidence_collected"
+    },
+    {
+      "correlation": "cor-spine-arch-X6-source",
+      "facts": {
+        "decision": "passed"
+      },
+      "identifier": "evt-rts-actuation-pkg-session-goal-spine-arch-X6-source-v1-node-draft-01-val-completed-0008",
+      "producer": "validation",
+      "type": "validation.completed"
+    },
+    {
+      "correlation": "cor-spine-arch-X6-source",
+      "facts": {},
+      "identifier": "evt-rts-actuation-pkg-session-goal-spine-arch-X6-source-v1-node-review-01-val-evidence-0001",
+      "producer": "validation",
+      "type": "validation.evidence_collected"
+    },
+    {
+      "correlation": "cor-spine-arch-X6-source",
+      "facts": {
+        "decision": "passed"
+      },
+      "identifier": "evt-rts-actuation-pkg-session-goal-spine-arch-X6-source-v1-node-review-01-val-completed-0008",
+      "producer": "validation",
+      "type": "validation.completed"
+    },
+    {
+      "correlation": "cor-spine-arch-X6-source",
+      "facts": {
+        "candidate": "kc-spine-spine-arch-X6-source-0000",
+        "subject_key": "ki-lesson-architecture-generation-summary"
+      },
+      "identifier": "evt-kc-spine-spine-arch-X6-source-0000-know-received-0000",
+      "producer": "knowledge",
+      "type": "knowledge.candidate_received"
+    },
+    {
+      "correlation": "cor-spine-arch-X6-source",
+      "facts": {
+        "candidate": "kc-spine-spine-arch-X6-source-0000",
+        "outcome": "accept_create",
+        "subject_key": "ki-lesson-architecture-generation-summary"
+      },
+      "identifier": "evt-kc-spine-spine-arch-X6-source-0000-know-accepted-0001",
+      "producer": "knowledge",
+      "type": "knowledge.candidate_accepted"
+    },
+    {
+      "correlation": "cor-spine-arch-X6-source",
+      "facts": {
+        "subject_key": "ki-lesson-architecture-generation-summary",
+        "version": 1
+      },
+      "identifier": "evt-kc-spine-spine-arch-X6-source-0000-know-created-0002",
+      "producer": "knowledge",
+      "type": "knowledge.item_created"
+    },
+    {
+      "correlation": "policy.phase5.deny-grounding",
+      "facts": {
+        "version": "1"
+      },
+      "identifier": "evt-policy-registered-policy.phase5.deny-grounding-1",
+      "producer": "policy",
+      "type": "policy.registered"
+    },
+    {
+      "correlation": "cor-spine-arch-X6-query",
+      "facts": {
+        "decision": "deny"
+      },
+      "identifier": "evt-pipe-spine-arch-X6-query-knowledge_grounded-533102e9a5712bab",
+      "producer": "pipeline",
+      "type": "pipeline.knowledge_grounded"
+    },
+    {
+      "correlation": "cor-spine-arch-X6-query",
+      "facts": {},
+      "identifier": "evt-cor-spine-arch-X6-query-eng-59c414752b146d55",
+      "producer": "engineering",
+      "type": "engineering.strategized"
+    },
+    {
+      "correlation": "cor-spine-arch-X6-query",
+      "facts": {},
+      "identifier": "evt-context-goal-spine-arch-X6-query-v1-grounding-selected-2cb10441fe7d2e14",
+      "producer": "context_engineering",
+      "type": "context.grounding.selected"
+    },
+    {
+      "correlation": "cor-spine-arch-X6-query",
+      "facts": {},
+      "identifier": "evt-plan-goal-spine-arch-X6-query-v1-plan-0003",
+      "producer": "planning",
+      "type": "plan.created"
+    },
+    {
+      "correlation": "cor-spine-arch-X6-query",
+      "facts": {},
+      "identifier": "evt-plan-goal-spine-arch-X6-query-v1-completed-0004",
+      "producer": "planning",
+      "type": "planning.completed"
+    },
+    {
+      "correlation": "cor-spine-arch-X6-query",
+      "facts": {},
+      "identifier": "evt-plan-goal-spine-arch-X6-query-v1-execution-plan-2636a2a713d26b58",
+      "producer": "planning",
+      "type": "planning.execution_plan_assembled"
+    }
+  ]
+}

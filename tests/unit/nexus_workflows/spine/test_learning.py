@@ -73,8 +73,9 @@ def test_selection_is_deterministic() -> None:
     )
 
 
-def test_provenance_embeds_references_only() -> None:
-    provenance = _select(_selector()).provenance()
+def test_provenance_records_replayable_selection() -> None:
+    selection = _select(_selector())
+    provenance = selection.provenance()
     assert set(provenance) == {
         "subject",
         "kind",
@@ -84,5 +85,8 @@ def test_provenance_embeds_references_only() -> None:
         "references",
         "selected_ids",
         "count",
+        "item_snapshots",
     }
-    assert "items" not in provenance  # never the Knowledge objects — references only
+    assert [item["identity"] for item in provenance["item_snapshots"]] == list(
+        selection.selected_ids
+    )

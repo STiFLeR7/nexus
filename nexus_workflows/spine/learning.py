@@ -23,8 +23,8 @@ no semantic/LLM ranking.
 
 from __future__ import annotations
 
-from nexus_core.contracts.base import Reference, ValueObject
-from nexus_core.contracts.enums import KnowledgeType
+from nexus_core.contracts.base import Reference, Struct, ValueObject
+from nexus_core.contracts.enums import ConfidenceLadder, KnowledgeType
 from nexus_core.domain.goal import Goal
 from nexus_core.domain.knowledge import Knowledge
 from nexus_knowledge import KnowledgeEngine, KnowledgeQuery
@@ -70,7 +70,7 @@ class KnowledgeSelection(ValueObject):
         return len(self.items)
 
     def provenance(self) -> dict[str, object]:
-        """A JSON-safe, references-only record of the selection (the durable provenance fact)."""
+        """A replayable record of the exact selected immutable item projections."""
         return {
             "subject": self.subject,
             "kind": self.kind,
@@ -82,6 +82,7 @@ class KnowledgeSelection(ValueObject):
             ],
             "selected_ids": list(self.selected_ids),
             "count": self.consumed,
+            "item_snapshots": [item.model_dump(mode="json") for item in self.items],
         }
 
 
@@ -93,10 +94,25 @@ class KnowledgeSelector:
         self._policy = policy_engine
 
     def select(
-        self, *, goal: Goal, subject: str, kind: KnowledgeType, correlation: str
+        self,
+        *,
+        goal: Goal,
+        subject: str,
+        kind: KnowledgeType,
+        correlation: str,
+        applicability: Struct | None = None,
+        confidence_floor: ConfidenceLadder | None = None,
     ) -> KnowledgeSelection:
         """Serve prior Knowledge for the subject, then admit it only if governance allows."""
-        served = self._knowledge.serve(KnowledgeQuery(subject=subject, kind=kind))
+        served = self._knowledge.serve(
+            KnowledgeQuery(
+                subject=subject,
+                kind=kind,
+                domain=goal.domain,
+                applicability=applicability,
+                confidence_floor=confidence_floor,
+            )
+        )
         verdict = self._policy.simulate(
             DecisionRequest(
                 action_class=KNOWLEDGE_GROUNDING_ACTION,

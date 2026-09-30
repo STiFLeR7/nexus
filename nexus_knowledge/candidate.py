@@ -17,8 +17,8 @@ never imports the producer.
 
 from __future__ import annotations
 
-from nexus_core.contracts.base import Reference, ValueObject
-from nexus_core.contracts.enums import ConfidenceLadder, KnowledgeType
+from nexus_core.contracts.base import Reference, Struct, ValueObject
+from nexus_core.contracts.enums import ConfidenceLadder, Domain, KnowledgeType
 from nexus_knowledge.vocabulary import KNOWLEDGE_CANDIDATE_TARGET_TYPE
 
 
@@ -35,6 +35,12 @@ class KnowledgeCandidate(ValueObject):
     source_pattern_ref: Reference | None = None
     supersedes_subject: str | None = None
     correlation_identifier: str = ""
+    source_goal_ref: Reference | None = None
+    source_run_refs: tuple[Reference, ...] = ()
+    validation_report_refs: tuple[Reference, ...] = ()
+    feedback_refs: tuple[Reference, ...] = ()
+    domain: Domain | None = None
+    applicability: Struct | None = None
 
     def reference(self) -> Reference:
         """A typed by-id pointer to this candidate."""

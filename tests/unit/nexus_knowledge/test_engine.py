@@ -24,7 +24,7 @@ def _infra():  # type: ignore[no-untyped-def]
 
 def _knowledge(infra=None, *, policy=None):  # type: ignore[no-untyped-def]
     infra = infra or _infra()
-    kwargs = {"timestamps": FixedTimestampSource()}
+    kwargs = {"timestamps": FixedTimestampSource(), "require_source_lineage": False}
     if policy is not None:
         kwargs["policy"] = policy
     return build_knowledge(infra, **kwargs)

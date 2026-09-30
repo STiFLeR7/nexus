@@ -517,6 +517,24 @@ class ConstitutionalPipeline:
         """Read Knowledge through its sole owner (read-only serve — the engine is never user-callable)."""
         return self._knowledge.engine.serve(KnowledgeQuery(subject=subject, kind=kind))
 
+    def record_knowledge_feedback(
+        self,
+        subject_key: str,
+        *,
+        actor: str,
+        source_run_ref: Reference,
+        effect: str,
+        feedback_id: str,
+    ) -> Reference:
+        """Route attributable operator feedback to the Knowledge owner."""
+        return self._knowledge.engine.record_feedback(
+            subject_key,
+            actor=actor,
+            source_run_ref=source_run_ref,
+            effect=effect,
+            feedback_id=feedback_id,
+        )
+
     # -- restart seeding (reconstruct completed boundaries from the log) ------ #
 
     def _seed(self, events: tuple[Event, ...], ctx: _RunCtx, request: SpineRequest) -> SpineStage:
@@ -544,6 +562,33 @@ class ConstitutionalPipeline:
             ),
             None,
         )
+        selection_event = next(
+            (
+                event
+                for event in events
+                if event.type == pevents.PIPELINE_KNOWLEDGE_GROUNDED
+                and event.payload.get("session") == request.pipeline_session_id
+            ),
+            None,
+        )
+        if selection_event is not None:
+            selection_payload = selection_event.payload
+            item_snapshots = selection_payload.get("item_snapshots", [])
+            if isinstance(item_snapshots, list):
+                items = tuple(Knowledge.model_validate(item) for item in item_snapshots)
+                refs = tuple(
+                    Reference.model_validate(ref) for ref in selection_payload.get("references", [])
+                )
+                ctx.knowledge_selection = KnowledgeSelection(
+                    subject=str(selection_payload.get("subject", "")),
+                    kind=str(selection_payload.get("kind", "")),
+                    governed=bool(selection_payload.get("governed", False)),
+                    decision=str(selection_payload.get("decision", "")),
+                    reasoning=tuple(selection_payload.get("reasoning", [])),
+                    references=refs,
+                    selected_ids=tuple(selection_payload.get("selected_ids", [])),
+                    items=items,
+                )
         for event in events:
             if event.type == INTENT_RESOLVED and event.payload.get("intent") == request.identity:
                 ctx.intent_analysis = IntentAnalysis.model_validate(event.payload["analysis"])
@@ -717,6 +762,7 @@ class ConstitutionalPipeline:
             subject=request.knowledge_subject,
             kind=request.knowledge_kind,
             correlation=request.correlation,
+            applicability={"domain": ctx.goal.domain.value},
         )
         ctx.knowledge_selection = selection
         self._emit(request, pevents.PIPELINE_KNOWLEDGE_GROUNDED, selection.provenance())
@@ -947,7 +993,12 @@ class ConstitutionalPipeline:
     ) -> tuple[bool, Reference | None]:
         assert ctx.reflection is not None
         ctx.knowledge_item_ids = self._write_knowledge(
-            request, ctx.reflection, ctx.validation_reports
+            request,
+            ctx.reflection,
+            ctx.validation_reports,
+            ctx.goal_ref,
+            ctx.goal,
+            ctx.recovery_plans,
         )
         ref = (
             Reference(target_type="knowledge", identifier=ctx.knowledge_item_ids[0])
@@ -961,19 +1012,65 @@ class ConstitutionalPipeline:
         request: SpineRequest,
         reflection: ReflectionReport,
         reports: list[ValidationReport],
+        goal_ref: Reference | None,
+        goal: Goal | None,
+        recovery_plans: list[RecoveryPlan],
     ) -> tuple[str, ...]:
-        evidence = tuple(
-            Reference(target_type=_VALIDATION_TARGET_TYPE, identifier=r.identity) for r in reports
-        )
+        if goal_ref is None or goal is None:
+            return ()
         items: list[str] = []
         for advisory in reflection.knowledge_candidates:
+            pattern = next(
+                (
+                    item
+                    for item in reflection.patterns
+                    if advisory.source_pattern_ref is not None
+                    and item.identity == advisory.source_pattern_ref.identifier
+                ),
+                None,
+            )
+            pattern_refs = set()
+            if pattern is not None:
+                pattern_refs = {ref.identifier for ref in pattern.evidence_refs}
+            report_sessions = {
+                plan.session_ref.identifier
+                for plan in recovery_plans
+                if plan.identity in pattern_refs
+            }
+            matching_reports = tuple(
+                report
+                for report in reports
+                if (
+                    report.identity in pattern_refs
+                    or report.session_ref.identifier in pattern_refs
+                    or report.session_ref.identifier in report_sessions
+                    or (not pattern_refs and len(reports) == 1)
+                )
+            )
+            if not matching_reports:
+                continue
+            evidence = tuple(
+                {
+                    (ref.target_type, ref.identifier): ref
+                    for report in matching_reports
+                    for ref in report.evidence_refs
+                }.values()
+            )
+            if not evidence:
+                continue
             candidate = KnowledgeCandidate(
                 identity=advisory.identity,
                 kind=request.knowledge_kind,
                 subject=request.knowledge_subject,
-                statement=advisory.summary,
+                statement=f"{request.knowledge_subject}: {advisory.summary}",
                 confidence=ConfidenceLadder.OBSERVED,
                 evidence_refs=evidence,
+                source_goal_ref=goal_ref,
+                source_run_refs=tuple(report.session_ref for report in matching_reports),
+                validation_report_refs=tuple(report.reference() for report in matching_reports),
+                domain=goal.domain,
+                applicability={"domain": goal.domain.value},
+                supersedes_subject=request.knowledge_supersedes_subject,
                 originating_reflection_ref=reflection.reference(),
                 source_pattern_ref=advisory.source_pattern_ref,
                 correlation_identifier=reflection.correlation_identifier,

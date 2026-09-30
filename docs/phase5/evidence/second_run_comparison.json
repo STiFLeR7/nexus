@@ -1,0 +1,560 @@
+[
+  {
+    "baseline": {
+      "context_influences": [],
+      "engineering_influences": [
+        {
+          "knowledge_refs": [],
+          "recommendation_knowledge_influences": []
+        }
+      ],
+      "evidence_refs": [
+        {
+          "decision": "passed",
+          "evidence_refs": [
+            "ev-rts-actuation-pkg-session-goal-spine-arch-R1-second-v1-node-draft-01-artifact-0000",
+            "ev-rts-actuation-pkg-session-goal-spine-arch-R1-second-v1-node-draft-01-artifact-0001",
+            "ev-rts-actuation-pkg-session-goal-spine-arch-R1-second-v1-node-draft-01-metadata-0000",
+            "ev-rts-actuation-pkg-session-goal-spine-arch-R1-second-v1-node-draft-01-metric-0000"
+          ],
+          "report_ref": "vr-rts-actuation-pkg-session-goal-spine-arch-R1-second-v1-node-draft-01"
+        },
+        {
+          "decision": "passed",
+          "evidence_refs": [
+            "ev-rts-actuation-pkg-session-goal-spine-arch-R1-second-v1-node-review-01-artifact-0000",
+            "ev-rts-actuation-pkg-session-goal-spine-arch-R1-second-v1-node-review-01-artifact-0001",
+            "ev-rts-actuation-pkg-session-goal-spine-arch-R1-second-v1-node-review-01-metadata-0000",
+            "ev-rts-actuation-pkg-session-goal-spine-arch-R1-second-v1-node-review-01-metric-0000"
+          ],
+          "report_ref": "vr-rts-actuation-pkg-session-goal-spine-arch-R1-second-v1-node-review-01"
+        }
+      ],
+      "plan_fingerprint": "51ce35158105a798a21bd38613f6799a0711f890682c53f7fbdaca6fbac91058",
+      "selected_ids": [],
+      "validation_verdicts": [
+        "passed",
+        "passed"
+      ],
+      "work_item_ids": [
+        "wp-goal-spine-arch-R1-second-draft",
+        "wp-goal-spine-arch-R1-second-review"
+      ]
+    },
+    "case_id": "R1",
+    "causal_claim": false,
+    "observed_comparison": "unknown",
+    "seeded": {
+      "context_influences": [
+        "ki-lesson-architecture-generation-summary"
+      ],
+      "engineering_influences": [
+        {
+          "knowledge_refs": [
+            "ki-lesson-architecture-generation-summary"
+          ],
+          "recommendation_knowledge_influences": []
+        }
+      ],
+      "evidence_refs": [
+        {
+          "decision": "passed",
+          "evidence_refs": [
+            "ev-rts-actuation-pkg-session-goal-spine-arch-R1-second-v1-node-draft-01-artifact-0000",
+            "ev-rts-actuation-pkg-session-goal-spine-arch-R1-second-v1-node-draft-01-artifact-0001",
+            "ev-rts-actuation-pkg-session-goal-spine-arch-R1-second-v1-node-draft-01-metadata-0000",
+            "ev-rts-actuation-pkg-session-goal-spine-arch-R1-second-v1-node-draft-01-metric-0000"
+          ],
+          "report_ref": "vr-rts-actuation-pkg-session-goal-spine-arch-R1-second-v1-node-draft-01"
+        },
+        {
+          "decision": "passed",
+          "evidence_refs": [
+            "ev-rts-actuation-pkg-session-goal-spine-arch-R1-second-v1-node-review-01-artifact-0000",
+            "ev-rts-actuation-pkg-session-goal-spine-arch-R1-second-v1-node-review-01-artifact-0001",
+            "ev-rts-actuation-pkg-session-goal-spine-arch-R1-second-v1-node-review-01-metadata-0000",
+            "ev-rts-actuation-pkg-session-goal-spine-arch-R1-second-v1-node-review-01-metric-0000"
+          ],
+          "report_ref": "vr-rts-actuation-pkg-session-goal-spine-arch-R1-second-v1-node-review-01"
+        }
+      ],
+      "plan_fingerprint": "0e5522c8f1bfca9d4d10ef1d0e01b5e11019b84526671009c3ae92b5574c5733",
+      "selected_ids": [
+        "ki-lesson-architecture-generation-summary"
+      ],
+      "validation_verdicts": [
+        "passed",
+        "passed"
+      ],
+      "work_item_ids": [
+        "wp-goal-spine-arch-R1-second-draft",
+        "wp-goal-spine-arch-R1-second-review"
+      ]
+    }
+  },
+  {
+    "baseline": {
+      "context_influences": [],
+      "engineering_influences": [
+        {
+          "knowledge_refs": [],
+          "recommendation_knowledge_influences": []
+        }
+      ],
+      "evidence_refs": [
+        {
+          "decision": "passed",
+          "evidence_refs": [
+            "ev-rts-actuation-pkg-session-goal-spine-arch-R2-second-v1-node-draft-01-artifact-0000",
+            "ev-rts-actuation-pkg-session-goal-spine-arch-R2-second-v1-node-draft-01-artifact-0001",
+            "ev-rts-actuation-pkg-session-goal-spine-arch-R2-second-v1-node-draft-01-metadata-0000",
+            "ev-rts-actuation-pkg-session-goal-spine-arch-R2-second-v1-node-draft-01-metric-0000"
+          ],
+          "report_ref": "vr-rts-actuation-pkg-session-goal-spine-arch-R2-second-v1-node-draft-01"
+        },
+        {
+          "decision": "passed",
+          "evidence_refs": [
+            "ev-rts-actuation-pkg-session-goal-spine-arch-R2-second-v1-node-review-01-artifact-0000",
+            "ev-rts-actuation-pkg-session-goal-spine-arch-R2-second-v1-node-review-01-artifact-0001",
+            "ev-rts-actuation-pkg-session-goal-spine-arch-R2-second-v1-node-review-01-metadata-0000",
+            "ev-rts-actuation-pkg-session-goal-spine-arch-R2-second-v1-node-review-01-metric-0000"
+          ],
+          "report_ref": "vr-rts-actuation-pkg-session-goal-spine-arch-R2-second-v1-node-review-01"
+        }
+      ],
+      "plan_fingerprint": "789dcb2b399a08e0654859ef201fbe2b4dc8152fba4e16c3741f592e14a50fa1",
+      "selected_ids": [],
+      "validation_verdicts": [
+        "passed",
+        "passed"
+      ],
+      "work_item_ids": [
+        "wp-goal-spine-arch-R2-second-draft",
+        "wp-goal-spine-arch-R2-second-review"
+      ]
+    },
+    "case_id": "R2",
+    "causal_claim": false,
+    "observed_comparison": "unknown",
+    "seeded": {
+      "context_influences": [
+        "ki-lesson-architecture-generation-summary"
+      ],
+      "engineering_influences": [
+        {
+          "knowledge_refs": [
+            "ki-lesson-architecture-generation-summary"
+          ],
+          "recommendation_knowledge_influences": []
+        }
+      ],
+      "evidence_refs": [
+        {
+          "decision": "passed",
+          "evidence_refs": [
+            "ev-rts-actuation-pkg-session-goal-spine-arch-R2-second-v1-node-draft-01-artifact-0000",
+            "ev-rts-actuation-pkg-session-goal-spine-arch-R2-second-v1-node-draft-01-artifact-0001",
+            "ev-rts-actuation-pkg-session-goal-spine-arch-R2-second-v1-node-draft-01-metadata-0000",
+            "ev-rts-actuation-pkg-session-goal-spine-arch-R2-second-v1-node-draft-01-metric-0000"
+          ],
+          "report_ref": "vr-rts-actuation-pkg-session-goal-spine-arch-R2-second-v1-node-draft-01"
+        },
+        {
+          "decision": "passed",
+          "evidence_refs": [
+            "ev-rts-actuation-pkg-session-goal-spine-arch-R2-second-v1-node-review-01-artifact-0000",
+            "ev-rts-actuation-pkg-session-goal-spine-arch-R2-second-v1-node-review-01-artifact-0001",
+            "ev-rts-actuation-pkg-session-goal-spine-arch-R2-second-v1-node-review-01-metadata-0000",
+            "ev-rts-actuation-pkg-session-goal-spine-arch-R2-second-v1-node-review-01-metric-0000"
+          ],
+          "report_ref": "vr-rts-actuation-pkg-session-goal-spine-arch-R2-second-v1-node-review-01"
+        }
+      ],
+      "plan_fingerprint": "bcd323f4d2187db7cdf3dfb10ca99d6ae1930993a80f8616874072cd67e544c7",
+      "selected_ids": [
+        "ki-lesson-architecture-generation-summary"
+      ],
+      "validation_verdicts": [
+        "passed",
+        "passed"
+      ],
+      "work_item_ids": [
+        "wp-goal-spine-arch-R2-second-draft",
+        "wp-goal-spine-arch-R2-second-review"
+      ]
+    }
+  },
+  {
+    "baseline": {
+      "context_influences": [],
+      "engineering_influences": [
+        {
+          "knowledge_refs": [],
+          "recommendation_knowledge_influences": []
+        }
+      ],
+      "evidence_refs": [
+        {
+          "decision": "passed",
+          "evidence_refs": [
+            "ev-rts-actuation-pkg-session-goal-spine-arch-R3-second-v1-node-draft-01-artifact-0000",
+            "ev-rts-actuation-pkg-session-goal-spine-arch-R3-second-v1-node-draft-01-artifact-0001",
+            "ev-rts-actuation-pkg-session-goal-spine-arch-R3-second-v1-node-draft-01-metadata-0000",
+            "ev-rts-actuation-pkg-session-goal-spine-arch-R3-second-v1-node-draft-01-metric-0000"
+          ],
+          "report_ref": "vr-rts-actuation-pkg-session-goal-spine-arch-R3-second-v1-node-draft-01"
+        },
+        {
+          "decision": "passed",
+          "evidence_refs": [
+            "ev-rts-actuation-pkg-session-goal-spine-arch-R3-second-v1-node-review-01-artifact-0000",
+            "ev-rts-actuation-pkg-session-goal-spine-arch-R3-second-v1-node-review-01-artifact-0001",
+            "ev-rts-actuation-pkg-session-goal-spine-arch-R3-second-v1-node-review-01-metadata-0000",
+            "ev-rts-actuation-pkg-session-goal-spine-arch-R3-second-v1-node-review-01-metric-0000"
+          ],
+          "report_ref": "vr-rts-actuation-pkg-session-goal-spine-arch-R3-second-v1-node-review-01"
+        }
+      ],
+      "plan_fingerprint": "c531c6ddaec68a09ca47b049126e2aa63a7be57681b1d0e3f749e0defec6177e",
+      "selected_ids": [],
+      "validation_verdicts": [
+        "passed",
+        "passed"
+      ],
+      "work_item_ids": [
+        "wp-goal-spine-arch-R3-second-draft",
+        "wp-goal-spine-arch-R3-second-review"
+      ]
+    },
+    "case_id": "R3",
+    "causal_claim": false,
+    "observed_comparison": "unknown",
+    "seeded": {
+      "context_influences": [
+        "ki-lesson-architecture-generation-summary"
+      ],
+      "engineering_influences": [
+        {
+          "knowledge_refs": [
+            "ki-lesson-architecture-generation-summary"
+          ],
+          "recommendation_knowledge_influences": []
+        }
+      ],
+      "evidence_refs": [
+        {
+          "decision": "passed",
+          "evidence_refs": [
+            "ev-rts-actuation-pkg-session-goal-spine-arch-R3-second-v1-node-draft-01-artifact-0000",
+            "ev-rts-actuation-pkg-session-goal-spine-arch-R3-second-v1-node-draft-01-artifact-0001",
+            "ev-rts-actuation-pkg-session-goal-spine-arch-R3-second-v1-node-draft-01-metadata-0000",
+            "ev-rts-actuation-pkg-session-goal-spine-arch-R3-second-v1-node-draft-01-metric-0000"
+          ],
+          "report_ref": "vr-rts-actuation-pkg-session-goal-spine-arch-R3-second-v1-node-draft-01"
+        },
+        {
+          "decision": "passed",
+          "evidence_refs": [
+            "ev-rts-actuation-pkg-session-goal-spine-arch-R3-second-v1-node-review-01-artifact-0000",
+            "ev-rts-actuation-pkg-session-goal-spine-arch-R3-second-v1-node-review-01-artifact-0001",
+            "ev-rts-actuation-pkg-session-goal-spine-arch-R3-second-v1-node-review-01-metadata-0000",
+            "ev-rts-actuation-pkg-session-goal-spine-arch-R3-second-v1-node-review-01-metric-0000"
+          ],
+          "report_ref": "vr-rts-actuation-pkg-session-goal-spine-arch-R3-second-v1-node-review-01"
+        }
+      ],
+      "plan_fingerprint": "7a763897d9c575bc3e914e523cd715c64b006aa9a9d9107af327ba55892bdbce",
+      "selected_ids": [
+        "ki-lesson-architecture-generation-summary"
+      ],
+      "validation_verdicts": [
+        "passed",
+        "passed"
+      ],
+      "work_item_ids": [
+        "wp-goal-spine-arch-R3-second-draft",
+        "wp-goal-spine-arch-R3-second-review"
+      ]
+    }
+  },
+  {
+    "baseline": {
+      "context_influences": [],
+      "engineering_influences": [
+        {
+          "knowledge_refs": [],
+          "recommendation_knowledge_influences": []
+        }
+      ],
+      "evidence_refs": [
+        {
+          "decision": "passed",
+          "evidence_refs": [
+            "ev-rts-actuation-pkg-session-goal-spine-arch-R4-second-v1-node-draft-01-artifact-0000",
+            "ev-rts-actuation-pkg-session-goal-spine-arch-R4-second-v1-node-draft-01-artifact-0001",
+            "ev-rts-actuation-pkg-session-goal-spine-arch-R4-second-v1-node-draft-01-metadata-0000",
+            "ev-rts-actuation-pkg-session-goal-spine-arch-R4-second-v1-node-draft-01-metric-0000"
+          ],
+          "report_ref": "vr-rts-actuation-pkg-session-goal-spine-arch-R4-second-v1-node-draft-01"
+        },
+        {
+          "decision": "passed",
+          "evidence_refs": [
+            "ev-rts-actuation-pkg-session-goal-spine-arch-R4-second-v1-node-review-01-artifact-0000",
+            "ev-rts-actuation-pkg-session-goal-spine-arch-R4-second-v1-node-review-01-artifact-0001",
+            "ev-rts-actuation-pkg-session-goal-spine-arch-R4-second-v1-node-review-01-metadata-0000",
+            "ev-rts-actuation-pkg-session-goal-spine-arch-R4-second-v1-node-review-01-metric-0000"
+          ],
+          "report_ref": "vr-rts-actuation-pkg-session-goal-spine-arch-R4-second-v1-node-review-01"
+        }
+      ],
+      "plan_fingerprint": "cd53bca565ae6a5005439b153daec87a4a787841196b99da460287fe028fc1e5",
+      "selected_ids": [],
+      "validation_verdicts": [
+        "passed",
+        "passed"
+      ],
+      "work_item_ids": [
+        "wp-goal-spine-arch-R4-second-draft",
+        "wp-goal-spine-arch-R4-second-review"
+      ]
+    },
+    "case_id": "R4",
+    "causal_claim": false,
+    "observed_comparison": "unknown",
+    "seeded": {
+      "context_influences": [
+        "ki-lesson-phase5-replacement-subject"
+      ],
+      "engineering_influences": [
+        {
+          "knowledge_refs": [
+            "ki-lesson-phase5-replacement-subject"
+          ],
+          "recommendation_knowledge_influences": []
+        }
+      ],
+      "evidence_refs": [
+        {
+          "decision": "passed",
+          "evidence_refs": [
+            "ev-rts-actuation-pkg-session-goal-spine-arch-R4-second-v1-node-draft-01-artifact-0000",
+            "ev-rts-actuation-pkg-session-goal-spine-arch-R4-second-v1-node-draft-01-artifact-0001",
+            "ev-rts-actuation-pkg-session-goal-spine-arch-R4-second-v1-node-draft-01-metadata-0000",
+            "ev-rts-actuation-pkg-session-goal-spine-arch-R4-second-v1-node-draft-01-metric-0000"
+          ],
+          "report_ref": "vr-rts-actuation-pkg-session-goal-spine-arch-R4-second-v1-node-draft-01"
+        },
+        {
+          "decision": "passed",
+          "evidence_refs": [
+            "ev-rts-actuation-pkg-session-goal-spine-arch-R4-second-v1-node-review-01-artifact-0000",
+            "ev-rts-actuation-pkg-session-goal-spine-arch-R4-second-v1-node-review-01-artifact-0001",
+            "ev-rts-actuation-pkg-session-goal-spine-arch-R4-second-v1-node-review-01-metadata-0000",
+            "ev-rts-actuation-pkg-session-goal-spine-arch-R4-second-v1-node-review-01-metric-0000"
+          ],
+          "report_ref": "vr-rts-actuation-pkg-session-goal-spine-arch-R4-second-v1-node-review-01"
+        }
+      ],
+      "plan_fingerprint": "1dfcae837a6e518a6adc3e62de0b69c9197bcb47b6ecb4f5b86de9ec98372cbd",
+      "selected_ids": [
+        "ki-lesson-phase5-replacement-subject"
+      ],
+      "validation_verdicts": [
+        "passed",
+        "passed"
+      ],
+      "work_item_ids": [
+        "wp-goal-spine-arch-R4-second-draft",
+        "wp-goal-spine-arch-R4-second-review"
+      ]
+    }
+  },
+  {
+    "baseline": {
+      "context_influences": [],
+      "engineering_influences": [
+        {
+          "knowledge_refs": [],
+          "recommendation_knowledge_influences": []
+        }
+      ],
+      "evidence_refs": [
+        {
+          "decision": "passed",
+          "evidence_refs": [
+            "ev-rts-actuation-pkg-session-goal-spine-arch-R5-second-v1-node-draft-01-artifact-0000",
+            "ev-rts-actuation-pkg-session-goal-spine-arch-R5-second-v1-node-draft-01-artifact-0001",
+            "ev-rts-actuation-pkg-session-goal-spine-arch-R5-second-v1-node-draft-01-metadata-0000",
+            "ev-rts-actuation-pkg-session-goal-spine-arch-R5-second-v1-node-draft-01-metric-0000"
+          ],
+          "report_ref": "vr-rts-actuation-pkg-session-goal-spine-arch-R5-second-v1-node-draft-01"
+        },
+        {
+          "decision": "passed",
+          "evidence_refs": [
+            "ev-rts-actuation-pkg-session-goal-spine-arch-R5-second-v1-node-review-01-artifact-0000",
+            "ev-rts-actuation-pkg-session-goal-spine-arch-R5-second-v1-node-review-01-artifact-0001",
+            "ev-rts-actuation-pkg-session-goal-spine-arch-R5-second-v1-node-review-01-metadata-0000",
+            "ev-rts-actuation-pkg-session-goal-spine-arch-R5-second-v1-node-review-01-metric-0000"
+          ],
+          "report_ref": "vr-rts-actuation-pkg-session-goal-spine-arch-R5-second-v1-node-review-01"
+        }
+      ],
+      "plan_fingerprint": "7fe38dbf769ee8269a0be6f3b9313e89e6cacec5f3c366324b9a1ccef3119c6d",
+      "selected_ids": [],
+      "validation_verdicts": [
+        "passed",
+        "passed"
+      ],
+      "work_item_ids": [
+        "wp-goal-spine-arch-R5-second-draft",
+        "wp-goal-spine-arch-R5-second-review"
+      ]
+    },
+    "case_id": "R5",
+    "causal_claim": false,
+    "observed_comparison": "unknown",
+    "seeded": {
+      "context_influences": [
+        "ki-lesson-architecture-generation-summary"
+      ],
+      "engineering_influences": [
+        {
+          "knowledge_refs": [
+            "ki-lesson-architecture-generation-summary"
+          ],
+          "recommendation_knowledge_influences": []
+        }
+      ],
+      "evidence_refs": [
+        {
+          "decision": "passed",
+          "evidence_refs": [
+            "ev-rts-actuation-pkg-session-goal-spine-arch-R5-second-v1-node-draft-01-artifact-0000",
+            "ev-rts-actuation-pkg-session-goal-spine-arch-R5-second-v1-node-draft-01-artifact-0001",
+            "ev-rts-actuation-pkg-session-goal-spine-arch-R5-second-v1-node-draft-01-metadata-0000",
+            "ev-rts-actuation-pkg-session-goal-spine-arch-R5-second-v1-node-draft-01-metric-0000"
+          ],
+          "report_ref": "vr-rts-actuation-pkg-session-goal-spine-arch-R5-second-v1-node-draft-01"
+        },
+        {
+          "decision": "passed",
+          "evidence_refs": [
+            "ev-rts-actuation-pkg-session-goal-spine-arch-R5-second-v1-node-review-01-artifact-0000",
+            "ev-rts-actuation-pkg-session-goal-spine-arch-R5-second-v1-node-review-01-artifact-0001",
+            "ev-rts-actuation-pkg-session-goal-spine-arch-R5-second-v1-node-review-01-metadata-0000",
+            "ev-rts-actuation-pkg-session-goal-spine-arch-R5-second-v1-node-review-01-metric-0000"
+          ],
+          "report_ref": "vr-rts-actuation-pkg-session-goal-spine-arch-R5-second-v1-node-review-01"
+        }
+      ],
+      "plan_fingerprint": "7273c72a2aff7ff37db1d9b6c0f02a8e4baf2881255d48a5012811a21d47ae48",
+      "selected_ids": [
+        "ki-lesson-architecture-generation-summary"
+      ],
+      "validation_verdicts": [
+        "passed",
+        "passed"
+      ],
+      "work_item_ids": [
+        "wp-goal-spine-arch-R5-second-draft",
+        "wp-goal-spine-arch-R5-second-review"
+      ]
+    }
+  },
+  {
+    "baseline": {
+      "context_influences": [],
+      "engineering_influences": [
+        {
+          "knowledge_refs": [],
+          "recommendation_knowledge_influences": []
+        }
+      ],
+      "evidence_refs": [
+        {
+          "decision": "passed",
+          "evidence_refs": [
+            "ev-rts-actuation-pkg-session-goal-spine-arch-R6-second-v1-node-draft-01-artifact-0000",
+            "ev-rts-actuation-pkg-session-goal-spine-arch-R6-second-v1-node-draft-01-artifact-0001",
+            "ev-rts-actuation-pkg-session-goal-spine-arch-R6-second-v1-node-draft-01-metadata-0000",
+            "ev-rts-actuation-pkg-session-goal-spine-arch-R6-second-v1-node-draft-01-metric-0000"
+          ],
+          "report_ref": "vr-rts-actuation-pkg-session-goal-spine-arch-R6-second-v1-node-draft-01"
+        },
+        {
+          "decision": "passed",
+          "evidence_refs": [
+            "ev-rts-actuation-pkg-session-goal-spine-arch-R6-second-v1-node-review-01-artifact-0000",
+            "ev-rts-actuation-pkg-session-goal-spine-arch-R6-second-v1-node-review-01-artifact-0001",
+            "ev-rts-actuation-pkg-session-goal-spine-arch-R6-second-v1-node-review-01-metadata-0000",
+            "ev-rts-actuation-pkg-session-goal-spine-arch-R6-second-v1-node-review-01-metric-0000"
+          ],
+          "report_ref": "vr-rts-actuation-pkg-session-goal-spine-arch-R6-second-v1-node-review-01"
+        }
+      ],
+      "plan_fingerprint": "39ccd7b0e15a30cebf2ccd6157dc2d5d01aaebecdd28fb392137200c04c4b9d4",
+      "selected_ids": [],
+      "validation_verdicts": [
+        "passed",
+        "passed"
+      ],
+      "work_item_ids": [
+        "wp-goal-spine-arch-R6-second-draft",
+        "wp-goal-spine-arch-R6-second-review"
+      ]
+    },
+    "case_id": "R6",
+    "causal_claim": false,
+    "observed_comparison": "unknown",
+    "seeded": {
+      "context_influences": [
+        "ki-lesson-architecture-generation-summary"
+      ],
+      "engineering_influences": [
+        {
+          "knowledge_refs": [
+            "ki-lesson-architecture-generation-summary"
+          ],
+          "recommendation_knowledge_influences": []
+        }
+      ],
+      "evidence_refs": [
+        {
+          "decision": "passed",
+          "evidence_refs": [
+            "ev-rts-actuation-pkg-session-goal-spine-arch-R6-second-v1-node-draft-01-artifact-0000",
+            "ev-rts-actuation-pkg-session-goal-spine-arch-R6-second-v1-node-draft-01-artifact-0001",
+            "ev-rts-actuation-pkg-session-goal-spine-arch-R6-second-v1-node-draft-01-metadata-0000",
+            "ev-rts-actuation-pkg-session-goal-spine-arch-R6-second-v1-node-draft-01-metric-0000"
+          ],
+          "report_ref": "vr-rts-actuation-pkg-session-goal-spine-arch-R6-second-v1-node-draft-01"
+        },
+        {
+          "decision": "passed",
+          "evidence_refs": [
+            "ev-rts-actuation-pkg-session-goal-spine-arch-R6-second-v1-node-review-01-artifact-0000",
+            "ev-rts-actuation-pkg-session-goal-spine-arch-R6-second-v1-node-review-01-artifact-0001",
+            "ev-rts-actuation-pkg-session-goal-spine-arch-R6-second-v1-node-review-01-metadata-0000",
+            "ev-rts-actuation-pkg-session-goal-spine-arch-R6-second-v1-node-review-01-metric-0000"
+          ],
+          "report_ref": "vr-rts-actuation-pkg-session-goal-spine-arch-R6-second-v1-node-review-01"
+        }
+      ],
+      "plan_fingerprint": "1c7ef602e1b2502adceda08635708b39465ed5667166b62ea6007ae39b074acc",
+      "selected_ids": [
+        "ki-lesson-architecture-generation-summary"
+      ],
+      "validation_verdicts": [
+        "passed",
+        "passed"
+      ],
+      "work_item_ids": [
+        "wp-goal-spine-arch-R6-second-draft",
+        "wp-goal-spine-arch-R6-second-review"
+      ]
+    }
+  }
+]

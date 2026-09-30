@@ -27,6 +27,7 @@ __all__ = [
     "KNOWLEDGE_CANDIDATE_ACCEPTED",
     "KNOWLEDGE_CANDIDATE_RECEIVED",
     "KNOWLEDGE_CANDIDATE_REJECTED",
+    "KNOWLEDGE_FEEDBACK_RECORDED",
     "KNOWLEDGE_ITEM_ARCHIVED",
     "KNOWLEDGE_ITEM_CREATED",
     "KNOWLEDGE_ITEM_DEPRECATED",
@@ -58,6 +59,7 @@ KNOWLEDGE_ITEM_EXPIRED = "knowledge.item_expired"
 KNOWLEDGE_ITEM_ARCHIVED = "knowledge.item_archived"
 # Serving (optional, read-only-safe -- emitting changes no Knowledge state).
 KNOWLEDGE_ITEM_SERVED = "knowledge.item_served"
+KNOWLEDGE_FEEDBACK_RECORDED = "knowledge.feedback_recorded"
 
 
 def build_event(

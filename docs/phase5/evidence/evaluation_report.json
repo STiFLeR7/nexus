@@ -1,0 +1,3128 @@
+{
+  "cases": [
+    {
+      "accepted_versions": [
+        {
+          "applicability": {
+            "domain": "software"
+          },
+          "candidate_ref": {
+            "identifier": "kc-spine-spine-arch-R1-source-0000",
+            "target_type": "knowledge_candidate"
+          },
+          "confidence": "observed",
+          "correlation_identifier": "cor-spine-arch-R1-source",
+          "domain": "software",
+          "evidence_refs": [
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R1-source-v1-node-draft-01-artifact-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R1-source-v1-node-draft-01-artifact-0001",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R1-source-v1-node-draft-01-metadata-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R1-source-v1-node-draft-01-metric-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R1-source-v1-node-review-01-artifact-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R1-source-v1-node-review-01-artifact-0001",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R1-source-v1-node-review-01-metadata-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R1-source-v1-node-review-01-metric-0000",
+              "target_type": "evidence"
+            }
+          ],
+          "feedback_refs": [],
+          "kind": "lesson",
+          "policy_version": "persistence-policy/1",
+          "provenance_added": [
+            {
+              "identifier": "kc-spine-spine-arch-R1-source-0000",
+              "target_type": "knowledge_candidate"
+            },
+            {
+              "identifier": "pat-spine-spine-arch-R1-source-repeated_success-0000",
+              "target_type": "operational_pattern"
+            },
+            {
+              "identifier": "rr-spine-spine-arch-R1-source",
+              "target_type": "reflection_report"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R1-source-v1-node-draft-01-artifact-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R1-source-v1-node-draft-01-artifact-0001",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R1-source-v1-node-draft-01-metadata-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R1-source-v1-node-draft-01-metric-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R1-source-v1-node-review-01-artifact-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R1-source-v1-node-review-01-artifact-0001",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R1-source-v1-node-review-01-metadata-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R1-source-v1-node-review-01-metric-0000",
+              "target_type": "evidence"
+            }
+          ],
+          "rationale": "provenance: ok -- evidence present and validated | eligibility: ok -- confidence and kind clear policy | subject: new -- accept (create)",
+          "source_goal_ref": {
+            "identifier": "goal-spine-arch-R1-source",
+            "target_type": "goal"
+          },
+          "source_run_refs": [
+            {
+              "identifier": "rts-actuation-pkg-session-goal-spine-arch-R1-source-v1-node-draft-01",
+              "target_type": "runtime_session"
+            },
+            {
+              "identifier": "rts-actuation-pkg-session-goal-spine-arch-R1-source-v1-node-review-01",
+              "target_type": "runtime_session"
+            }
+          ],
+          "statement": "architecture summary generation: promote the reusable successful approach on claude-code",
+          "subject": "architecture summary generation",
+          "subject_key": "ki-lesson-architecture-generation-summary",
+          "supersedes": null,
+          "timestamp": "1970-01-01T00:00:00+00:00",
+          "validation_report_refs": [
+            {
+              "identifier": "vr-rts-actuation-pkg-session-goal-spine-arch-R1-source-v1-node-draft-01",
+              "target_type": "validation_report"
+            },
+            {
+              "identifier": "vr-rts-actuation-pkg-session-goal-spine-arch-R1-source-v1-node-review-01",
+              "target_type": "validation_report"
+            }
+          ],
+          "version": 1
+        },
+        {
+          "applicability": {
+            "domain": "software"
+          },
+          "candidate_ref": {
+            "identifier": "kc-spine-spine-arch-R1-second-0000",
+            "target_type": "knowledge_candidate"
+          },
+          "confidence": "validated",
+          "correlation_identifier": "cor-spine-arch-R1-second",
+          "domain": "software",
+          "evidence_refs": [
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R1-source-v1-node-draft-01-artifact-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R1-source-v1-node-draft-01-artifact-0001",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R1-source-v1-node-draft-01-metadata-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R1-source-v1-node-draft-01-metric-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R1-source-v1-node-review-01-artifact-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R1-source-v1-node-review-01-artifact-0001",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R1-source-v1-node-review-01-metadata-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R1-source-v1-node-review-01-metric-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R1-second-v1-node-draft-01-artifact-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R1-second-v1-node-draft-01-artifact-0001",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R1-second-v1-node-draft-01-metadata-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R1-second-v1-node-draft-01-metric-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R1-second-v1-node-review-01-artifact-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R1-second-v1-node-review-01-artifact-0001",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R1-second-v1-node-review-01-metadata-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R1-second-v1-node-review-01-metric-0000",
+              "target_type": "evidence"
+            }
+          ],
+          "feedback_refs": [],
+          "kind": "lesson",
+          "policy_version": "persistence-policy/1",
+          "provenance_added": [
+            {
+              "identifier": "kc-spine-spine-arch-R1-second-0000",
+              "target_type": "knowledge_candidate"
+            },
+            {
+              "identifier": "pat-spine-spine-arch-R1-second-repeated_success-0000",
+              "target_type": "operational_pattern"
+            },
+            {
+              "identifier": "rr-spine-spine-arch-R1-second",
+              "target_type": "reflection_report"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R1-second-v1-node-draft-01-artifact-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R1-second-v1-node-draft-01-artifact-0001",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R1-second-v1-node-draft-01-metadata-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R1-second-v1-node-draft-01-metric-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R1-second-v1-node-review-01-artifact-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R1-second-v1-node-review-01-artifact-0001",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R1-second-v1-node-review-01-metadata-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R1-second-v1-node-review-01-metric-0000",
+              "target_type": "evidence"
+            }
+          ],
+          "rationale": "provenance: ok -- evidence present and validated | eligibility: ok -- confidence and kind clear policy | duplicate: corroboration -- merge",
+          "source_goal_ref": {
+            "identifier": "goal-spine-arch-R1-second",
+            "target_type": "goal"
+          },
+          "source_run_refs": [
+            {
+              "identifier": "rts-actuation-pkg-session-goal-spine-arch-R1-source-v1-node-draft-01",
+              "target_type": "runtime_session"
+            },
+            {
+              "identifier": "rts-actuation-pkg-session-goal-spine-arch-R1-source-v1-node-review-01",
+              "target_type": "runtime_session"
+            },
+            {
+              "identifier": "rts-actuation-pkg-session-goal-spine-arch-R1-second-v1-node-draft-01",
+              "target_type": "runtime_session"
+            },
+            {
+              "identifier": "rts-actuation-pkg-session-goal-spine-arch-R1-second-v1-node-review-01",
+              "target_type": "runtime_session"
+            }
+          ],
+          "statement": "architecture summary generation: promote the reusable successful approach on claude-code",
+          "subject": "architecture summary generation",
+          "subject_key": "ki-lesson-architecture-generation-summary",
+          "supersedes": null,
+          "timestamp": "1970-01-01T00:00:00+00:00",
+          "validation_report_refs": [
+            {
+              "identifier": "vr-rts-actuation-pkg-session-goal-spine-arch-R1-source-v1-node-draft-01",
+              "target_type": "validation_report"
+            },
+            {
+              "identifier": "vr-rts-actuation-pkg-session-goal-spine-arch-R1-source-v1-node-review-01",
+              "target_type": "validation_report"
+            },
+            {
+              "identifier": "vr-rts-actuation-pkg-session-goal-spine-arch-R1-second-v1-node-draft-01",
+              "target_type": "validation_report"
+            },
+            {
+              "identifier": "vr-rts-actuation-pkg-session-goal-spine-arch-R1-second-v1-node-review-01",
+              "target_type": "validation_report"
+            }
+          ],
+          "version": 2
+        }
+      ],
+      "all_source_reports_passed": true,
+      "case_id": "R1",
+      "expected_identity": "ki-lesson-architecture-generation-summary",
+      "expected_label": "relevant",
+      "plan_fingerprint": "0e5522c8f1bfca9d4d10ef1d0e01b5e11019b84526671009c3ae92b5574c5733",
+      "replay_mismatches": [],
+      "selected_ids": [
+        "ki-lesson-architecture-generation-summary"
+      ],
+      "selected_label": "relevant",
+      "source_runs": 1,
+      "validation_verdicts": [
+        "passed",
+        "passed"
+      ]
+    },
+    {
+      "accepted_versions": [
+        {
+          "applicability": {
+            "domain": "software"
+          },
+          "candidate_ref": {
+            "identifier": "kc-spine-spine-arch-R2-source-0000",
+            "target_type": "knowledge_candidate"
+          },
+          "confidence": "observed",
+          "correlation_identifier": "cor-spine-arch-R2-source",
+          "domain": "software",
+          "evidence_refs": [
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R2-source-v1-node-draft-01-artifact-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R2-source-v1-node-draft-01-artifact-0001",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R2-source-v1-node-draft-01-metadata-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R2-source-v1-node-draft-01-metric-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R2-source-v1-node-review-01-artifact-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R2-source-v1-node-review-01-artifact-0001",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R2-source-v1-node-review-01-metadata-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R2-source-v1-node-review-01-metric-0000",
+              "target_type": "evidence"
+            }
+          ],
+          "feedback_refs": [],
+          "kind": "lesson",
+          "policy_version": "persistence-policy/1",
+          "provenance_added": [
+            {
+              "identifier": "kc-spine-spine-arch-R2-source-0000",
+              "target_type": "knowledge_candidate"
+            },
+            {
+              "identifier": "pat-spine-spine-arch-R2-source-repeated_success-0000",
+              "target_type": "operational_pattern"
+            },
+            {
+              "identifier": "rr-spine-spine-arch-R2-source",
+              "target_type": "reflection_report"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R2-source-v1-node-draft-01-artifact-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R2-source-v1-node-draft-01-artifact-0001",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R2-source-v1-node-draft-01-metadata-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R2-source-v1-node-draft-01-metric-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R2-source-v1-node-review-01-artifact-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R2-source-v1-node-review-01-artifact-0001",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R2-source-v1-node-review-01-metadata-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R2-source-v1-node-review-01-metric-0000",
+              "target_type": "evidence"
+            }
+          ],
+          "rationale": "provenance: ok -- evidence present and validated | eligibility: ok -- confidence and kind clear policy | subject: new -- accept (create)",
+          "source_goal_ref": {
+            "identifier": "goal-spine-arch-R2-source",
+            "target_type": "goal"
+          },
+          "source_run_refs": [
+            {
+              "identifier": "rts-actuation-pkg-session-goal-spine-arch-R2-source-v1-node-draft-01",
+              "target_type": "runtime_session"
+            },
+            {
+              "identifier": "rts-actuation-pkg-session-goal-spine-arch-R2-source-v1-node-review-01",
+              "target_type": "runtime_session"
+            }
+          ],
+          "statement": "architecture summary generation: promote the reusable successful approach on claude-code",
+          "subject": "architecture summary generation",
+          "subject_key": "ki-lesson-architecture-generation-summary",
+          "supersedes": null,
+          "timestamp": "1970-01-01T00:00:00+00:00",
+          "validation_report_refs": [
+            {
+              "identifier": "vr-rts-actuation-pkg-session-goal-spine-arch-R2-source-v1-node-draft-01",
+              "target_type": "validation_report"
+            },
+            {
+              "identifier": "vr-rts-actuation-pkg-session-goal-spine-arch-R2-source-v1-node-review-01",
+              "target_type": "validation_report"
+            }
+          ],
+          "version": 1
+        },
+        {
+          "applicability": {
+            "domain": "software"
+          },
+          "candidate_ref": {
+            "identifier": "kc-spine-spine-arch-R2-second-0000",
+            "target_type": "knowledge_candidate"
+          },
+          "confidence": "validated",
+          "correlation_identifier": "cor-spine-arch-R2-second",
+          "domain": "software",
+          "evidence_refs": [
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R2-source-v1-node-draft-01-artifact-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R2-source-v1-node-draft-01-artifact-0001",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R2-source-v1-node-draft-01-metadata-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R2-source-v1-node-draft-01-metric-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R2-source-v1-node-review-01-artifact-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R2-source-v1-node-review-01-artifact-0001",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R2-source-v1-node-review-01-metadata-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R2-source-v1-node-review-01-metric-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R2-second-v1-node-draft-01-artifact-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R2-second-v1-node-draft-01-artifact-0001",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R2-second-v1-node-draft-01-metadata-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R2-second-v1-node-draft-01-metric-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R2-second-v1-node-review-01-artifact-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R2-second-v1-node-review-01-artifact-0001",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R2-second-v1-node-review-01-metadata-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R2-second-v1-node-review-01-metric-0000",
+              "target_type": "evidence"
+            }
+          ],
+          "feedback_refs": [],
+          "kind": "lesson",
+          "policy_version": "persistence-policy/1",
+          "provenance_added": [
+            {
+              "identifier": "kc-spine-spine-arch-R2-second-0000",
+              "target_type": "knowledge_candidate"
+            },
+            {
+              "identifier": "pat-spine-spine-arch-R2-second-repeated_success-0000",
+              "target_type": "operational_pattern"
+            },
+            {
+              "identifier": "rr-spine-spine-arch-R2-second",
+              "target_type": "reflection_report"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R2-second-v1-node-draft-01-artifact-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R2-second-v1-node-draft-01-artifact-0001",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R2-second-v1-node-draft-01-metadata-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R2-second-v1-node-draft-01-metric-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R2-second-v1-node-review-01-artifact-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R2-second-v1-node-review-01-artifact-0001",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R2-second-v1-node-review-01-metadata-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R2-second-v1-node-review-01-metric-0000",
+              "target_type": "evidence"
+            }
+          ],
+          "rationale": "provenance: ok -- evidence present and validated | eligibility: ok -- confidence and kind clear policy | duplicate: corroboration -- merge",
+          "source_goal_ref": {
+            "identifier": "goal-spine-arch-R2-second",
+            "target_type": "goal"
+          },
+          "source_run_refs": [
+            {
+              "identifier": "rts-actuation-pkg-session-goal-spine-arch-R2-source-v1-node-draft-01",
+              "target_type": "runtime_session"
+            },
+            {
+              "identifier": "rts-actuation-pkg-session-goal-spine-arch-R2-source-v1-node-review-01",
+              "target_type": "runtime_session"
+            },
+            {
+              "identifier": "rts-actuation-pkg-session-goal-spine-arch-R2-second-v1-node-draft-01",
+              "target_type": "runtime_session"
+            },
+            {
+              "identifier": "rts-actuation-pkg-session-goal-spine-arch-R2-second-v1-node-review-01",
+              "target_type": "runtime_session"
+            }
+          ],
+          "statement": "architecture summary generation: promote the reusable successful approach on claude-code",
+          "subject": "architecture summary generation",
+          "subject_key": "ki-lesson-architecture-generation-summary",
+          "supersedes": null,
+          "timestamp": "1970-01-01T00:00:00+00:00",
+          "validation_report_refs": [
+            {
+              "identifier": "vr-rts-actuation-pkg-session-goal-spine-arch-R2-source-v1-node-draft-01",
+              "target_type": "validation_report"
+            },
+            {
+              "identifier": "vr-rts-actuation-pkg-session-goal-spine-arch-R2-source-v1-node-review-01",
+              "target_type": "validation_report"
+            },
+            {
+              "identifier": "vr-rts-actuation-pkg-session-goal-spine-arch-R2-second-v1-node-draft-01",
+              "target_type": "validation_report"
+            },
+            {
+              "identifier": "vr-rts-actuation-pkg-session-goal-spine-arch-R2-second-v1-node-review-01",
+              "target_type": "validation_report"
+            }
+          ],
+          "version": 2
+        }
+      ],
+      "all_source_reports_passed": true,
+      "case_id": "R2",
+      "expected_identity": "ki-lesson-architecture-generation-summary",
+      "expected_label": "relevant",
+      "plan_fingerprint": "bcd323f4d2187db7cdf3dfb10ca99d6ae1930993a80f8616874072cd67e544c7",
+      "replay_mismatches": [],
+      "selected_ids": [
+        "ki-lesson-architecture-generation-summary"
+      ],
+      "selected_label": "relevant",
+      "source_runs": 1,
+      "validation_verdicts": [
+        "passed",
+        "passed"
+      ]
+    },
+    {
+      "accepted_versions": [
+        {
+          "applicability": {
+            "domain": "software"
+          },
+          "candidate_ref": {
+            "identifier": "kc-spine-spine-arch-R3-source-0000",
+            "target_type": "knowledge_candidate"
+          },
+          "confidence": "observed",
+          "correlation_identifier": "cor-spine-arch-R3-source",
+          "domain": "software",
+          "evidence_refs": [
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R3-source-v1-node-draft-01-artifact-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R3-source-v1-node-draft-01-artifact-0001",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R3-source-v1-node-draft-01-metadata-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R3-source-v1-node-draft-01-metric-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R3-source-v1-node-review-01-artifact-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R3-source-v1-node-review-01-artifact-0001",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R3-source-v1-node-review-01-metadata-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R3-source-v1-node-review-01-metric-0000",
+              "target_type": "evidence"
+            }
+          ],
+          "feedback_refs": [],
+          "kind": "lesson",
+          "policy_version": "persistence-policy/1",
+          "provenance_added": [
+            {
+              "identifier": "kc-spine-spine-arch-R3-source-0000",
+              "target_type": "knowledge_candidate"
+            },
+            {
+              "identifier": "pat-spine-spine-arch-R3-source-repeated_success-0000",
+              "target_type": "operational_pattern"
+            },
+            {
+              "identifier": "rr-spine-spine-arch-R3-source",
+              "target_type": "reflection_report"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R3-source-v1-node-draft-01-artifact-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R3-source-v1-node-draft-01-artifact-0001",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R3-source-v1-node-draft-01-metadata-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R3-source-v1-node-draft-01-metric-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R3-source-v1-node-review-01-artifact-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R3-source-v1-node-review-01-artifact-0001",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R3-source-v1-node-review-01-metadata-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R3-source-v1-node-review-01-metric-0000",
+              "target_type": "evidence"
+            }
+          ],
+          "rationale": "provenance: ok -- evidence present and validated | eligibility: ok -- confidence and kind clear policy | subject: new -- accept (create)",
+          "source_goal_ref": {
+            "identifier": "goal-spine-arch-R3-source",
+            "target_type": "goal"
+          },
+          "source_run_refs": [
+            {
+              "identifier": "rts-actuation-pkg-session-goal-spine-arch-R3-source-v1-node-draft-01",
+              "target_type": "runtime_session"
+            },
+            {
+              "identifier": "rts-actuation-pkg-session-goal-spine-arch-R3-source-v1-node-review-01",
+              "target_type": "runtime_session"
+            }
+          ],
+          "statement": "architecture summary generation: promote the reusable successful approach on claude-code",
+          "subject": "architecture summary generation",
+          "subject_key": "ki-lesson-architecture-generation-summary",
+          "supersedes": null,
+          "timestamp": "1970-01-01T00:00:00+00:00",
+          "validation_report_refs": [
+            {
+              "identifier": "vr-rts-actuation-pkg-session-goal-spine-arch-R3-source-v1-node-draft-01",
+              "target_type": "validation_report"
+            },
+            {
+              "identifier": "vr-rts-actuation-pkg-session-goal-spine-arch-R3-source-v1-node-review-01",
+              "target_type": "validation_report"
+            }
+          ],
+          "version": 1
+        },
+        {
+          "applicability": {
+            "domain": "software"
+          },
+          "candidate_ref": {
+            "identifier": "kc-spine-spine-arch-R3-source2-0000",
+            "target_type": "knowledge_candidate"
+          },
+          "confidence": "validated",
+          "correlation_identifier": "cor-spine-arch-R3-source2",
+          "domain": "software",
+          "evidence_refs": [
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R3-source-v1-node-draft-01-artifact-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R3-source-v1-node-draft-01-artifact-0001",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R3-source-v1-node-draft-01-metadata-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R3-source-v1-node-draft-01-metric-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R3-source-v1-node-review-01-artifact-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R3-source-v1-node-review-01-artifact-0001",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R3-source-v1-node-review-01-metadata-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R3-source-v1-node-review-01-metric-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R3-source2-v1-node-draft-01-artifact-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R3-source2-v1-node-draft-01-artifact-0001",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R3-source2-v1-node-draft-01-metadata-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R3-source2-v1-node-draft-01-metric-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R3-source2-v1-node-review-01-artifact-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R3-source2-v1-node-review-01-artifact-0001",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R3-source2-v1-node-review-01-metadata-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R3-source2-v1-node-review-01-metric-0000",
+              "target_type": "evidence"
+            }
+          ],
+          "feedback_refs": [],
+          "kind": "lesson",
+          "policy_version": "persistence-policy/1",
+          "provenance_added": [
+            {
+              "identifier": "kc-spine-spine-arch-R3-source2-0000",
+              "target_type": "knowledge_candidate"
+            },
+            {
+              "identifier": "pat-spine-spine-arch-R3-source2-repeated_success-0000",
+              "target_type": "operational_pattern"
+            },
+            {
+              "identifier": "rr-spine-spine-arch-R3-source2",
+              "target_type": "reflection_report"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R3-source2-v1-node-draft-01-artifact-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R3-source2-v1-node-draft-01-artifact-0001",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R3-source2-v1-node-draft-01-metadata-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R3-source2-v1-node-draft-01-metric-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R3-source2-v1-node-review-01-artifact-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R3-source2-v1-node-review-01-artifact-0001",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R3-source2-v1-node-review-01-metadata-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R3-source2-v1-node-review-01-metric-0000",
+              "target_type": "evidence"
+            }
+          ],
+          "rationale": "provenance: ok -- evidence present and validated | eligibility: ok -- confidence and kind clear policy | duplicate: corroboration -- merge",
+          "source_goal_ref": {
+            "identifier": "goal-spine-arch-R3-source2",
+            "target_type": "goal"
+          },
+          "source_run_refs": [
+            {
+              "identifier": "rts-actuation-pkg-session-goal-spine-arch-R3-source-v1-node-draft-01",
+              "target_type": "runtime_session"
+            },
+            {
+              "identifier": "rts-actuation-pkg-session-goal-spine-arch-R3-source-v1-node-review-01",
+              "target_type": "runtime_session"
+            },
+            {
+              "identifier": "rts-actuation-pkg-session-goal-spine-arch-R3-source2-v1-node-draft-01",
+              "target_type": "runtime_session"
+            },
+            {
+              "identifier": "rts-actuation-pkg-session-goal-spine-arch-R3-source2-v1-node-review-01",
+              "target_type": "runtime_session"
+            }
+          ],
+          "statement": "architecture summary generation: promote the reusable successful approach on claude-code",
+          "subject": "architecture summary generation",
+          "subject_key": "ki-lesson-architecture-generation-summary",
+          "supersedes": null,
+          "timestamp": "1970-01-01T00:00:00+00:00",
+          "validation_report_refs": [
+            {
+              "identifier": "vr-rts-actuation-pkg-session-goal-spine-arch-R3-source-v1-node-draft-01",
+              "target_type": "validation_report"
+            },
+            {
+              "identifier": "vr-rts-actuation-pkg-session-goal-spine-arch-R3-source-v1-node-review-01",
+              "target_type": "validation_report"
+            },
+            {
+              "identifier": "vr-rts-actuation-pkg-session-goal-spine-arch-R3-source2-v1-node-draft-01",
+              "target_type": "validation_report"
+            },
+            {
+              "identifier": "vr-rts-actuation-pkg-session-goal-spine-arch-R3-source2-v1-node-review-01",
+              "target_type": "validation_report"
+            }
+          ],
+          "version": 2
+        },
+        {
+          "applicability": {
+            "domain": "software"
+          },
+          "candidate_ref": {
+            "identifier": "kc-spine-spine-arch-R3-second-0000",
+            "target_type": "knowledge_candidate"
+          },
+          "confidence": "proven",
+          "correlation_identifier": "cor-spine-arch-R3-second",
+          "domain": "software",
+          "evidence_refs": [
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R3-source-v1-node-draft-01-artifact-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R3-source-v1-node-draft-01-artifact-0001",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R3-source-v1-node-draft-01-metadata-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R3-source-v1-node-draft-01-metric-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R3-source-v1-node-review-01-artifact-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R3-source-v1-node-review-01-artifact-0001",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R3-source-v1-node-review-01-metadata-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R3-source-v1-node-review-01-metric-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R3-source2-v1-node-draft-01-artifact-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R3-source2-v1-node-draft-01-artifact-0001",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R3-source2-v1-node-draft-01-metadata-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R3-source2-v1-node-draft-01-metric-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R3-source2-v1-node-review-01-artifact-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R3-source2-v1-node-review-01-artifact-0001",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R3-source2-v1-node-review-01-metadata-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R3-source2-v1-node-review-01-metric-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R3-second-v1-node-draft-01-artifact-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R3-second-v1-node-draft-01-artifact-0001",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R3-second-v1-node-draft-01-metadata-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R3-second-v1-node-draft-01-metric-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R3-second-v1-node-review-01-artifact-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R3-second-v1-node-review-01-artifact-0001",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R3-second-v1-node-review-01-metadata-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R3-second-v1-node-review-01-metric-0000",
+              "target_type": "evidence"
+            }
+          ],
+          "feedback_refs": [],
+          "kind": "lesson",
+          "policy_version": "persistence-policy/1",
+          "provenance_added": [
+            {
+              "identifier": "kc-spine-spine-arch-R3-second-0000",
+              "target_type": "knowledge_candidate"
+            },
+            {
+              "identifier": "pat-spine-spine-arch-R3-second-repeated_success-0000",
+              "target_type": "operational_pattern"
+            },
+            {
+              "identifier": "rr-spine-spine-arch-R3-second",
+              "target_type": "reflection_report"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R3-second-v1-node-draft-01-artifact-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R3-second-v1-node-draft-01-artifact-0001",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R3-second-v1-node-draft-01-metadata-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R3-second-v1-node-draft-01-metric-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R3-second-v1-node-review-01-artifact-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R3-second-v1-node-review-01-artifact-0001",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R3-second-v1-node-review-01-metadata-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R3-second-v1-node-review-01-metric-0000",
+              "target_type": "evidence"
+            }
+          ],
+          "rationale": "provenance: ok -- evidence present and validated | eligibility: ok -- confidence and kind clear policy | duplicate: corroboration -- merge",
+          "source_goal_ref": {
+            "identifier": "goal-spine-arch-R3-second",
+            "target_type": "goal"
+          },
+          "source_run_refs": [
+            {
+              "identifier": "rts-actuation-pkg-session-goal-spine-arch-R3-source-v1-node-draft-01",
+              "target_type": "runtime_session"
+            },
+            {
+              "identifier": "rts-actuation-pkg-session-goal-spine-arch-R3-source-v1-node-review-01",
+              "target_type": "runtime_session"
+            },
+            {
+              "identifier": "rts-actuation-pkg-session-goal-spine-arch-R3-source2-v1-node-draft-01",
+              "target_type": "runtime_session"
+            },
+            {
+              "identifier": "rts-actuation-pkg-session-goal-spine-arch-R3-source2-v1-node-review-01",
+              "target_type": "runtime_session"
+            },
+            {
+              "identifier": "rts-actuation-pkg-session-goal-spine-arch-R3-second-v1-node-draft-01",
+              "target_type": "runtime_session"
+            },
+            {
+              "identifier": "rts-actuation-pkg-session-goal-spine-arch-R3-second-v1-node-review-01",
+              "target_type": "runtime_session"
+            }
+          ],
+          "statement": "architecture summary generation: promote the reusable successful approach on claude-code",
+          "subject": "architecture summary generation",
+          "subject_key": "ki-lesson-architecture-generation-summary",
+          "supersedes": null,
+          "timestamp": "1970-01-01T00:00:00+00:00",
+          "validation_report_refs": [
+            {
+              "identifier": "vr-rts-actuation-pkg-session-goal-spine-arch-R3-source-v1-node-draft-01",
+              "target_type": "validation_report"
+            },
+            {
+              "identifier": "vr-rts-actuation-pkg-session-goal-spine-arch-R3-source-v1-node-review-01",
+              "target_type": "validation_report"
+            },
+            {
+              "identifier": "vr-rts-actuation-pkg-session-goal-spine-arch-R3-source2-v1-node-draft-01",
+              "target_type": "validation_report"
+            },
+            {
+              "identifier": "vr-rts-actuation-pkg-session-goal-spine-arch-R3-source2-v1-node-review-01",
+              "target_type": "validation_report"
+            },
+            {
+              "identifier": "vr-rts-actuation-pkg-session-goal-spine-arch-R3-second-v1-node-draft-01",
+              "target_type": "validation_report"
+            },
+            {
+              "identifier": "vr-rts-actuation-pkg-session-goal-spine-arch-R3-second-v1-node-review-01",
+              "target_type": "validation_report"
+            }
+          ],
+          "version": 3
+        }
+      ],
+      "all_source_reports_passed": true,
+      "case_id": "R3",
+      "expected_identity": "ki-lesson-architecture-generation-summary",
+      "expected_label": "latest_relevant",
+      "plan_fingerprint": "7a763897d9c575bc3e914e523cd715c64b006aa9a9d9107af327ba55892bdbce",
+      "replay_mismatches": [],
+      "selected_ids": [
+        "ki-lesson-architecture-generation-summary"
+      ],
+      "selected_label": "latest_relevant",
+      "source_runs": 2,
+      "validation_verdicts": [
+        "passed",
+        "passed"
+      ]
+    },
+    {
+      "accepted_versions": [
+        {
+          "applicability": {
+            "domain": "software"
+          },
+          "candidate_ref": {
+            "identifier": "kc-spine-spine-arch-R4-old-0000",
+            "target_type": "knowledge_candidate"
+          },
+          "confidence": "observed",
+          "correlation_identifier": "cor-spine-arch-R4-old",
+          "domain": "software",
+          "evidence_refs": [
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R4-old-v1-node-draft-01-artifact-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R4-old-v1-node-draft-01-artifact-0001",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R4-old-v1-node-draft-01-metadata-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R4-old-v1-node-draft-01-metric-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R4-old-v1-node-review-01-artifact-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R4-old-v1-node-review-01-artifact-0001",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R4-old-v1-node-review-01-metadata-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R4-old-v1-node-review-01-metric-0000",
+              "target_type": "evidence"
+            }
+          ],
+          "feedback_refs": [],
+          "kind": "lesson",
+          "policy_version": "persistence-policy/1",
+          "provenance_added": [
+            {
+              "identifier": "kc-spine-spine-arch-R4-old-0000",
+              "target_type": "knowledge_candidate"
+            },
+            {
+              "identifier": "pat-spine-spine-arch-R4-old-repeated_success-0000",
+              "target_type": "operational_pattern"
+            },
+            {
+              "identifier": "rr-spine-spine-arch-R4-old",
+              "target_type": "reflection_report"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R4-old-v1-node-draft-01-artifact-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R4-old-v1-node-draft-01-artifact-0001",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R4-old-v1-node-draft-01-metadata-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R4-old-v1-node-draft-01-metric-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R4-old-v1-node-review-01-artifact-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R4-old-v1-node-review-01-artifact-0001",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R4-old-v1-node-review-01-metadata-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R4-old-v1-node-review-01-metric-0000",
+              "target_type": "evidence"
+            }
+          ],
+          "rationale": "provenance: ok -- evidence present and validated | eligibility: ok -- confidence and kind clear policy | subject: new -- accept (create)",
+          "source_goal_ref": {
+            "identifier": "goal-spine-arch-R4-old",
+            "target_type": "goal"
+          },
+          "source_run_refs": [
+            {
+              "identifier": "rts-actuation-pkg-session-goal-spine-arch-R4-old-v1-node-draft-01",
+              "target_type": "runtime_session"
+            },
+            {
+              "identifier": "rts-actuation-pkg-session-goal-spine-arch-R4-old-v1-node-review-01",
+              "target_type": "runtime_session"
+            }
+          ],
+          "statement": "phase5 previous subject: promote the reusable successful approach on claude-code",
+          "subject": "phase5 previous subject",
+          "subject_key": "ki-lesson-phase5-previous-subject",
+          "supersedes": null,
+          "timestamp": "1970-01-01T00:00:00+00:00",
+          "validation_report_refs": [
+            {
+              "identifier": "vr-rts-actuation-pkg-session-goal-spine-arch-R4-old-v1-node-draft-01",
+              "target_type": "validation_report"
+            },
+            {
+              "identifier": "vr-rts-actuation-pkg-session-goal-spine-arch-R4-old-v1-node-review-01",
+              "target_type": "validation_report"
+            }
+          ],
+          "version": 1
+        },
+        {
+          "applicability": {
+            "domain": "software"
+          },
+          "candidate_ref": {
+            "identifier": "kc-spine-spine-arch-R4-replacement-0000",
+            "target_type": "knowledge_candidate"
+          },
+          "confidence": "observed",
+          "correlation_identifier": "cor-spine-arch-R4-replacement",
+          "domain": "software",
+          "evidence_refs": [
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R4-replacement-v1-node-draft-01-artifact-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R4-replacement-v1-node-draft-01-artifact-0001",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R4-replacement-v1-node-draft-01-metadata-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R4-replacement-v1-node-draft-01-metric-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R4-replacement-v1-node-review-01-artifact-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R4-replacement-v1-node-review-01-artifact-0001",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R4-replacement-v1-node-review-01-metadata-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R4-replacement-v1-node-review-01-metric-0000",
+              "target_type": "evidence"
+            }
+          ],
+          "feedback_refs": [],
+          "kind": "lesson",
+          "policy_version": "persistence-policy/1",
+          "provenance_added": [
+            {
+              "identifier": "kc-spine-spine-arch-R4-replacement-0000",
+              "target_type": "knowledge_candidate"
+            },
+            {
+              "identifier": "pat-spine-spine-arch-R4-replacement-repeated_success-0000",
+              "target_type": "operational_pattern"
+            },
+            {
+              "identifier": "rr-spine-spine-arch-R4-replacement",
+              "target_type": "reflection_report"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R4-replacement-v1-node-draft-01-artifact-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R4-replacement-v1-node-draft-01-artifact-0001",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R4-replacement-v1-node-draft-01-metadata-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R4-replacement-v1-node-draft-01-metric-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R4-replacement-v1-node-review-01-artifact-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R4-replacement-v1-node-review-01-artifact-0001",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R4-replacement-v1-node-review-01-metadata-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R4-replacement-v1-node-review-01-metric-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ki-lesson-phase5-previous-subject",
+              "target_type": "knowledge"
+            }
+          ],
+          "rationale": "provenance: ok -- evidence present and validated | eligibility: ok -- confidence and kind clear policy | subject: new -- accept (create)",
+          "source_goal_ref": {
+            "identifier": "goal-spine-arch-R4-replacement",
+            "target_type": "goal"
+          },
+          "source_run_refs": [
+            {
+              "identifier": "rts-actuation-pkg-session-goal-spine-arch-R4-replacement-v1-node-draft-01",
+              "target_type": "runtime_session"
+            },
+            {
+              "identifier": "rts-actuation-pkg-session-goal-spine-arch-R4-replacement-v1-node-review-01",
+              "target_type": "runtime_session"
+            }
+          ],
+          "statement": "phase5 replacement subject: promote the reusable successful approach on claude-code",
+          "subject": "phase5 replacement subject",
+          "subject_key": "ki-lesson-phase5-replacement-subject",
+          "supersedes": {
+            "identifier": "ki-lesson-phase5-previous-subject",
+            "target_type": "knowledge"
+          },
+          "timestamp": "1970-01-01T00:00:00+00:00",
+          "validation_report_refs": [
+            {
+              "identifier": "vr-rts-actuation-pkg-session-goal-spine-arch-R4-replacement-v1-node-draft-01",
+              "target_type": "validation_report"
+            },
+            {
+              "identifier": "vr-rts-actuation-pkg-session-goal-spine-arch-R4-replacement-v1-node-review-01",
+              "target_type": "validation_report"
+            }
+          ],
+          "version": 1
+        },
+        {
+          "applicability": {
+            "domain": "software"
+          },
+          "candidate_ref": {
+            "identifier": "kc-spine-spine-arch-R4-second-0000",
+            "target_type": "knowledge_candidate"
+          },
+          "confidence": "validated",
+          "correlation_identifier": "cor-spine-arch-R4-second",
+          "domain": "software",
+          "evidence_refs": [
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R4-replacement-v1-node-draft-01-artifact-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R4-replacement-v1-node-draft-01-artifact-0001",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R4-replacement-v1-node-draft-01-metadata-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R4-replacement-v1-node-draft-01-metric-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R4-replacement-v1-node-review-01-artifact-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R4-replacement-v1-node-review-01-artifact-0001",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R4-replacement-v1-node-review-01-metadata-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R4-replacement-v1-node-review-01-metric-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R4-second-v1-node-draft-01-artifact-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R4-second-v1-node-draft-01-artifact-0001",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R4-second-v1-node-draft-01-metadata-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R4-second-v1-node-draft-01-metric-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R4-second-v1-node-review-01-artifact-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R4-second-v1-node-review-01-artifact-0001",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R4-second-v1-node-review-01-metadata-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R4-second-v1-node-review-01-metric-0000",
+              "target_type": "evidence"
+            }
+          ],
+          "feedback_refs": [],
+          "kind": "lesson",
+          "policy_version": "persistence-policy/1",
+          "provenance_added": [
+            {
+              "identifier": "kc-spine-spine-arch-R4-second-0000",
+              "target_type": "knowledge_candidate"
+            },
+            {
+              "identifier": "pat-spine-spine-arch-R4-second-repeated_success-0000",
+              "target_type": "operational_pattern"
+            },
+            {
+              "identifier": "rr-spine-spine-arch-R4-second",
+              "target_type": "reflection_report"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R4-second-v1-node-draft-01-artifact-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R4-second-v1-node-draft-01-artifact-0001",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R4-second-v1-node-draft-01-metadata-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R4-second-v1-node-draft-01-metric-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R4-second-v1-node-review-01-artifact-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R4-second-v1-node-review-01-artifact-0001",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R4-second-v1-node-review-01-metadata-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R4-second-v1-node-review-01-metric-0000",
+              "target_type": "evidence"
+            }
+          ],
+          "rationale": "provenance: ok -- evidence present and validated | eligibility: ok -- confidence and kind clear policy | duplicate: corroboration -- merge",
+          "source_goal_ref": {
+            "identifier": "goal-spine-arch-R4-second",
+            "target_type": "goal"
+          },
+          "source_run_refs": [
+            {
+              "identifier": "rts-actuation-pkg-session-goal-spine-arch-R4-replacement-v1-node-draft-01",
+              "target_type": "runtime_session"
+            },
+            {
+              "identifier": "rts-actuation-pkg-session-goal-spine-arch-R4-replacement-v1-node-review-01",
+              "target_type": "runtime_session"
+            },
+            {
+              "identifier": "rts-actuation-pkg-session-goal-spine-arch-R4-second-v1-node-draft-01",
+              "target_type": "runtime_session"
+            },
+            {
+              "identifier": "rts-actuation-pkg-session-goal-spine-arch-R4-second-v1-node-review-01",
+              "target_type": "runtime_session"
+            }
+          ],
+          "statement": "phase5 replacement subject: promote the reusable successful approach on claude-code",
+          "subject": "phase5 replacement subject",
+          "subject_key": "ki-lesson-phase5-replacement-subject",
+          "supersedes": null,
+          "timestamp": "1970-01-01T00:00:00+00:00",
+          "validation_report_refs": [
+            {
+              "identifier": "vr-rts-actuation-pkg-session-goal-spine-arch-R4-replacement-v1-node-draft-01",
+              "target_type": "validation_report"
+            },
+            {
+              "identifier": "vr-rts-actuation-pkg-session-goal-spine-arch-R4-replacement-v1-node-review-01",
+              "target_type": "validation_report"
+            },
+            {
+              "identifier": "vr-rts-actuation-pkg-session-goal-spine-arch-R4-second-v1-node-draft-01",
+              "target_type": "validation_report"
+            },
+            {
+              "identifier": "vr-rts-actuation-pkg-session-goal-spine-arch-R4-second-v1-node-review-01",
+              "target_type": "validation_report"
+            }
+          ],
+          "version": 2
+        }
+      ],
+      "all_source_reports_passed": true,
+      "case_id": "R4",
+      "expected_identity": "ki-lesson-phase5-replacement-subject",
+      "expected_label": "replacement",
+      "plan_fingerprint": "1dfcae837a6e518a6adc3e62de0b69c9197bcb47b6ecb4f5b86de9ec98372cbd",
+      "replay_mismatches": [],
+      "selected_ids": [
+        "ki-lesson-phase5-replacement-subject"
+      ],
+      "selected_label": "replacement",
+      "source_runs": 2,
+      "validation_verdicts": [
+        "passed",
+        "passed"
+      ]
+    },
+    {
+      "accepted_versions": [
+        {
+          "applicability": {
+            "domain": "software"
+          },
+          "candidate_ref": {
+            "identifier": "kc-spine-spine-arch-R5-source-0000",
+            "target_type": "knowledge_candidate"
+          },
+          "confidence": "observed",
+          "correlation_identifier": "cor-spine-arch-R5-source",
+          "domain": "software",
+          "evidence_refs": [
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R5-source-v1-node-draft-01-artifact-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R5-source-v1-node-draft-01-artifact-0001",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R5-source-v1-node-draft-01-metadata-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R5-source-v1-node-draft-01-metric-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R5-source-v1-node-review-01-artifact-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R5-source-v1-node-review-01-artifact-0001",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R5-source-v1-node-review-01-metadata-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R5-source-v1-node-review-01-metric-0000",
+              "target_type": "evidence"
+            }
+          ],
+          "feedback_refs": [],
+          "kind": "lesson",
+          "policy_version": "persistence-policy/1",
+          "provenance_added": [
+            {
+              "identifier": "kc-spine-spine-arch-R5-source-0000",
+              "target_type": "knowledge_candidate"
+            },
+            {
+              "identifier": "pat-spine-spine-arch-R5-source-repeated_success-0000",
+              "target_type": "operational_pattern"
+            },
+            {
+              "identifier": "rr-spine-spine-arch-R5-source",
+              "target_type": "reflection_report"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R5-source-v1-node-draft-01-artifact-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R5-source-v1-node-draft-01-artifact-0001",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R5-source-v1-node-draft-01-metadata-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R5-source-v1-node-draft-01-metric-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R5-source-v1-node-review-01-artifact-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R5-source-v1-node-review-01-artifact-0001",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R5-source-v1-node-review-01-metadata-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R5-source-v1-node-review-01-metric-0000",
+              "target_type": "evidence"
+            }
+          ],
+          "rationale": "provenance: ok -- evidence present and validated | eligibility: ok -- confidence and kind clear policy | subject: new -- accept (create)",
+          "source_goal_ref": {
+            "identifier": "goal-spine-arch-R5-source",
+            "target_type": "goal"
+          },
+          "source_run_refs": [
+            {
+              "identifier": "rts-actuation-pkg-session-goal-spine-arch-R5-source-v1-node-draft-01",
+              "target_type": "runtime_session"
+            },
+            {
+              "identifier": "rts-actuation-pkg-session-goal-spine-arch-R5-source-v1-node-review-01",
+              "target_type": "runtime_session"
+            }
+          ],
+          "statement": "architecture summary generation: promote the reusable successful approach on claude-code",
+          "subject": "architecture summary generation",
+          "subject_key": "ki-lesson-architecture-generation-summary",
+          "supersedes": null,
+          "timestamp": "1970-01-01T00:00:00+00:00",
+          "validation_report_refs": [
+            {
+              "identifier": "vr-rts-actuation-pkg-session-goal-spine-arch-R5-source-v1-node-draft-01",
+              "target_type": "validation_report"
+            },
+            {
+              "identifier": "vr-rts-actuation-pkg-session-goal-spine-arch-R5-source-v1-node-review-01",
+              "target_type": "validation_report"
+            }
+          ],
+          "version": 1
+        },
+        {
+          "applicability": {
+            "domain": "software"
+          },
+          "candidate_ref": {
+            "identifier": "kc-spine-spine-arch-R5-second-0000",
+            "target_type": "knowledge_candidate"
+          },
+          "confidence": "validated",
+          "correlation_identifier": "cor-spine-arch-R5-second",
+          "domain": "software",
+          "evidence_refs": [
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R5-source-v1-node-draft-01-artifact-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R5-source-v1-node-draft-01-artifact-0001",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R5-source-v1-node-draft-01-metadata-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R5-source-v1-node-draft-01-metric-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R5-source-v1-node-review-01-artifact-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R5-source-v1-node-review-01-artifact-0001",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R5-source-v1-node-review-01-metadata-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R5-source-v1-node-review-01-metric-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R5-second-v1-node-draft-01-artifact-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R5-second-v1-node-draft-01-artifact-0001",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R5-second-v1-node-draft-01-metadata-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R5-second-v1-node-draft-01-metric-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R5-second-v1-node-review-01-artifact-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R5-second-v1-node-review-01-artifact-0001",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R5-second-v1-node-review-01-metadata-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R5-second-v1-node-review-01-metric-0000",
+              "target_type": "evidence"
+            }
+          ],
+          "feedback_refs": [],
+          "kind": "lesson",
+          "policy_version": "persistence-policy/1",
+          "provenance_added": [
+            {
+              "identifier": "kc-spine-spine-arch-R5-second-0000",
+              "target_type": "knowledge_candidate"
+            },
+            {
+              "identifier": "pat-spine-spine-arch-R5-second-repeated_success-0000",
+              "target_type": "operational_pattern"
+            },
+            {
+              "identifier": "rr-spine-spine-arch-R5-second",
+              "target_type": "reflection_report"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R5-second-v1-node-draft-01-artifact-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R5-second-v1-node-draft-01-artifact-0001",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R5-second-v1-node-draft-01-metadata-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R5-second-v1-node-draft-01-metric-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R5-second-v1-node-review-01-artifact-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R5-second-v1-node-review-01-artifact-0001",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R5-second-v1-node-review-01-metadata-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R5-second-v1-node-review-01-metric-0000",
+              "target_type": "evidence"
+            }
+          ],
+          "rationale": "provenance: ok -- evidence present and validated | eligibility: ok -- confidence and kind clear policy | duplicate: corroboration -- merge",
+          "source_goal_ref": {
+            "identifier": "goal-spine-arch-R5-second",
+            "target_type": "goal"
+          },
+          "source_run_refs": [
+            {
+              "identifier": "rts-actuation-pkg-session-goal-spine-arch-R5-source-v1-node-draft-01",
+              "target_type": "runtime_session"
+            },
+            {
+              "identifier": "rts-actuation-pkg-session-goal-spine-arch-R5-source-v1-node-review-01",
+              "target_type": "runtime_session"
+            },
+            {
+              "identifier": "rts-actuation-pkg-session-goal-spine-arch-R5-second-v1-node-draft-01",
+              "target_type": "runtime_session"
+            },
+            {
+              "identifier": "rts-actuation-pkg-session-goal-spine-arch-R5-second-v1-node-review-01",
+              "target_type": "runtime_session"
+            }
+          ],
+          "statement": "architecture summary generation: promote the reusable successful approach on claude-code",
+          "subject": "architecture summary generation",
+          "subject_key": "ki-lesson-architecture-generation-summary",
+          "supersedes": null,
+          "timestamp": "1970-01-01T00:00:00+00:00",
+          "validation_report_refs": [
+            {
+              "identifier": "vr-rts-actuation-pkg-session-goal-spine-arch-R5-source-v1-node-draft-01",
+              "target_type": "validation_report"
+            },
+            {
+              "identifier": "vr-rts-actuation-pkg-session-goal-spine-arch-R5-source-v1-node-review-01",
+              "target_type": "validation_report"
+            },
+            {
+              "identifier": "vr-rts-actuation-pkg-session-goal-spine-arch-R5-second-v1-node-draft-01",
+              "target_type": "validation_report"
+            },
+            {
+              "identifier": "vr-rts-actuation-pkg-session-goal-spine-arch-R5-second-v1-node-review-01",
+              "target_type": "validation_report"
+            }
+          ],
+          "version": 2
+        }
+      ],
+      "all_source_reports_passed": true,
+      "case_id": "R5",
+      "expected_identity": "ki-lesson-architecture-generation-summary",
+      "expected_label": "relevant",
+      "plan_fingerprint": "7273c72a2aff7ff37db1d9b6c0f02a8e4baf2881255d48a5012811a21d47ae48",
+      "replay_mismatches": [],
+      "selected_ids": [
+        "ki-lesson-architecture-generation-summary"
+      ],
+      "selected_label": "relevant",
+      "source_runs": 1,
+      "validation_verdicts": [
+        "passed",
+        "passed"
+      ]
+    },
+    {
+      "accepted_versions": [
+        {
+          "applicability": {
+            "domain": "software"
+          },
+          "candidate_ref": {
+            "identifier": "kc-spine-spine-arch-R6-source-0000",
+            "target_type": "knowledge_candidate"
+          },
+          "confidence": "observed",
+          "correlation_identifier": "cor-spine-arch-R6-source",
+          "domain": "software",
+          "evidence_refs": [
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R6-source-v1-node-draft-01-artifact-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R6-source-v1-node-draft-01-artifact-0001",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R6-source-v1-node-draft-01-metadata-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R6-source-v1-node-draft-01-metric-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R6-source-v1-node-review-01-artifact-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R6-source-v1-node-review-01-artifact-0001",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R6-source-v1-node-review-01-metadata-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R6-source-v1-node-review-01-metric-0000",
+              "target_type": "evidence"
+            }
+          ],
+          "feedback_refs": [],
+          "kind": "lesson",
+          "policy_version": "persistence-policy/1",
+          "provenance_added": [
+            {
+              "identifier": "kc-spine-spine-arch-R6-source-0000",
+              "target_type": "knowledge_candidate"
+            },
+            {
+              "identifier": "pat-spine-spine-arch-R6-source-repeated_success-0000",
+              "target_type": "operational_pattern"
+            },
+            {
+              "identifier": "rr-spine-spine-arch-R6-source",
+              "target_type": "reflection_report"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R6-source-v1-node-draft-01-artifact-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R6-source-v1-node-draft-01-artifact-0001",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R6-source-v1-node-draft-01-metadata-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R6-source-v1-node-draft-01-metric-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R6-source-v1-node-review-01-artifact-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R6-source-v1-node-review-01-artifact-0001",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R6-source-v1-node-review-01-metadata-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R6-source-v1-node-review-01-metric-0000",
+              "target_type": "evidence"
+            }
+          ],
+          "rationale": "provenance: ok -- evidence present and validated | eligibility: ok -- confidence and kind clear policy | subject: new -- accept (create)",
+          "source_goal_ref": {
+            "identifier": "goal-spine-arch-R6-source",
+            "target_type": "goal"
+          },
+          "source_run_refs": [
+            {
+              "identifier": "rts-actuation-pkg-session-goal-spine-arch-R6-source-v1-node-draft-01",
+              "target_type": "runtime_session"
+            },
+            {
+              "identifier": "rts-actuation-pkg-session-goal-spine-arch-R6-source-v1-node-review-01",
+              "target_type": "runtime_session"
+            }
+          ],
+          "statement": "architecture summary generation: promote the reusable successful approach on claude-code",
+          "subject": "architecture summary generation",
+          "subject_key": "ki-lesson-architecture-generation-summary",
+          "supersedes": null,
+          "timestamp": "1970-01-01T00:00:00+00:00",
+          "validation_report_refs": [
+            {
+              "identifier": "vr-rts-actuation-pkg-session-goal-spine-arch-R6-source-v1-node-draft-01",
+              "target_type": "validation_report"
+            },
+            {
+              "identifier": "vr-rts-actuation-pkg-session-goal-spine-arch-R6-source-v1-node-review-01",
+              "target_type": "validation_report"
+            }
+          ],
+          "version": 1
+        },
+        {
+          "applicability": {
+            "domain": "software"
+          },
+          "candidate_ref": {
+            "identifier": "kc-spine-spine-arch-R6-second-0000",
+            "target_type": "knowledge_candidate"
+          },
+          "confidence": "validated",
+          "correlation_identifier": "cor-spine-arch-R6-second",
+          "domain": "software",
+          "evidence_refs": [
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R6-source-v1-node-draft-01-artifact-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R6-source-v1-node-draft-01-artifact-0001",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R6-source-v1-node-draft-01-metadata-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R6-source-v1-node-draft-01-metric-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R6-source-v1-node-review-01-artifact-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R6-source-v1-node-review-01-artifact-0001",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R6-source-v1-node-review-01-metadata-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R6-source-v1-node-review-01-metric-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R6-second-v1-node-draft-01-artifact-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R6-second-v1-node-draft-01-artifact-0001",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R6-second-v1-node-draft-01-metadata-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R6-second-v1-node-draft-01-metric-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R6-second-v1-node-review-01-artifact-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R6-second-v1-node-review-01-artifact-0001",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R6-second-v1-node-review-01-metadata-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R6-second-v1-node-review-01-metric-0000",
+              "target_type": "evidence"
+            }
+          ],
+          "feedback_refs": [],
+          "kind": "lesson",
+          "policy_version": "persistence-policy/1",
+          "provenance_added": [
+            {
+              "identifier": "kc-spine-spine-arch-R6-second-0000",
+              "target_type": "knowledge_candidate"
+            },
+            {
+              "identifier": "pat-spine-spine-arch-R6-second-repeated_success-0000",
+              "target_type": "operational_pattern"
+            },
+            {
+              "identifier": "rr-spine-spine-arch-R6-second",
+              "target_type": "reflection_report"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R6-second-v1-node-draft-01-artifact-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R6-second-v1-node-draft-01-artifact-0001",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R6-second-v1-node-draft-01-metadata-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R6-second-v1-node-draft-01-metric-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R6-second-v1-node-review-01-artifact-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R6-second-v1-node-review-01-artifact-0001",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R6-second-v1-node-review-01-metadata-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-R6-second-v1-node-review-01-metric-0000",
+              "target_type": "evidence"
+            }
+          ],
+          "rationale": "provenance: ok -- evidence present and validated | eligibility: ok -- confidence and kind clear policy | duplicate: corroboration -- merge",
+          "source_goal_ref": {
+            "identifier": "goal-spine-arch-R6-second",
+            "target_type": "goal"
+          },
+          "source_run_refs": [
+            {
+              "identifier": "rts-actuation-pkg-session-goal-spine-arch-R6-source-v1-node-draft-01",
+              "target_type": "runtime_session"
+            },
+            {
+              "identifier": "rts-actuation-pkg-session-goal-spine-arch-R6-source-v1-node-review-01",
+              "target_type": "runtime_session"
+            },
+            {
+              "identifier": "rts-actuation-pkg-session-goal-spine-arch-R6-second-v1-node-draft-01",
+              "target_type": "runtime_session"
+            },
+            {
+              "identifier": "rts-actuation-pkg-session-goal-spine-arch-R6-second-v1-node-review-01",
+              "target_type": "runtime_session"
+            }
+          ],
+          "statement": "architecture summary generation: promote the reusable successful approach on claude-code",
+          "subject": "architecture summary generation",
+          "subject_key": "ki-lesson-architecture-generation-summary",
+          "supersedes": null,
+          "timestamp": "1970-01-01T00:00:00+00:00",
+          "validation_report_refs": [
+            {
+              "identifier": "vr-rts-actuation-pkg-session-goal-spine-arch-R6-source-v1-node-draft-01",
+              "target_type": "validation_report"
+            },
+            {
+              "identifier": "vr-rts-actuation-pkg-session-goal-spine-arch-R6-source-v1-node-review-01",
+              "target_type": "validation_report"
+            },
+            {
+              "identifier": "vr-rts-actuation-pkg-session-goal-spine-arch-R6-second-v1-node-draft-01",
+              "target_type": "validation_report"
+            },
+            {
+              "identifier": "vr-rts-actuation-pkg-session-goal-spine-arch-R6-second-v1-node-review-01",
+              "target_type": "validation_report"
+            }
+          ],
+          "version": 2
+        }
+      ],
+      "all_source_reports_passed": true,
+      "case_id": "R6",
+      "expected_identity": "ki-lesson-architecture-generation-summary",
+      "expected_label": "relevant",
+      "plan_fingerprint": "1c7ef602e1b2502adceda08635708b39465ed5667166b62ea6007ae39b074acc",
+      "replay_mismatches": [],
+      "selected_ids": [
+        "ki-lesson-architecture-generation-summary"
+      ],
+      "selected_label": "relevant",
+      "source_runs": 1,
+      "validation_verdicts": [
+        "passed",
+        "passed"
+      ]
+    },
+    {
+      "accepted_versions": [],
+      "candidate_rejections": 3,
+      "case_id": "X1",
+      "expected_selected": [],
+      "lifecycle_facts": [],
+      "policy_decision": "allow",
+      "selected_ids": [],
+      "source_runs": 1
+    },
+    {
+      "accepted_versions": [
+        {
+          "applicability": {
+            "domain": "software"
+          },
+          "candidate_ref": {
+            "identifier": "kc-spine-spine-arch-X2-source-0000",
+            "target_type": "knowledge_candidate"
+          },
+          "confidence": "observed",
+          "correlation_identifier": "cor-spine-arch-X2-source",
+          "domain": "software",
+          "evidence_refs": [
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-X2-source-v1-node-draft-01-artifact-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-X2-source-v1-node-draft-01-artifact-0001",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-X2-source-v1-node-draft-01-metadata-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-X2-source-v1-node-draft-01-metric-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-X2-source-v1-node-review-01-artifact-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-X2-source-v1-node-review-01-artifact-0001",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-X2-source-v1-node-review-01-metadata-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-X2-source-v1-node-review-01-metric-0000",
+              "target_type": "evidence"
+            }
+          ],
+          "feedback_refs": [],
+          "kind": "lesson",
+          "policy_version": "persistence-policy/1",
+          "provenance_added": [
+            {
+              "identifier": "kc-spine-spine-arch-X2-source-0000",
+              "target_type": "knowledge_candidate"
+            },
+            {
+              "identifier": "pat-spine-spine-arch-X2-source-repeated_success-0000",
+              "target_type": "operational_pattern"
+            },
+            {
+              "identifier": "rr-spine-spine-arch-X2-source",
+              "target_type": "reflection_report"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-X2-source-v1-node-draft-01-artifact-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-X2-source-v1-node-draft-01-artifact-0001",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-X2-source-v1-node-draft-01-metadata-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-X2-source-v1-node-draft-01-metric-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-X2-source-v1-node-review-01-artifact-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-X2-source-v1-node-review-01-artifact-0001",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-X2-source-v1-node-review-01-metadata-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-X2-source-v1-node-review-01-metric-0000",
+              "target_type": "evidence"
+            }
+          ],
+          "rationale": "provenance: ok -- evidence present and validated | eligibility: ok -- confidence and kind clear policy | subject: new -- accept (create)",
+          "source_goal_ref": {
+            "identifier": "goal-spine-arch-X2-source",
+            "target_type": "goal"
+          },
+          "source_run_refs": [
+            {
+              "identifier": "rts-actuation-pkg-session-goal-spine-arch-X2-source-v1-node-draft-01",
+              "target_type": "runtime_session"
+            },
+            {
+              "identifier": "rts-actuation-pkg-session-goal-spine-arch-X2-source-v1-node-review-01",
+              "target_type": "runtime_session"
+            }
+          ],
+          "statement": "architecture summary generation: promote the reusable successful approach on claude-code",
+          "subject": "architecture summary generation",
+          "subject_key": "ki-lesson-architecture-generation-summary",
+          "supersedes": null,
+          "timestamp": "1970-01-01T00:00:00+00:00",
+          "validation_report_refs": [
+            {
+              "identifier": "vr-rts-actuation-pkg-session-goal-spine-arch-X2-source-v1-node-draft-01",
+              "target_type": "validation_report"
+            },
+            {
+              "identifier": "vr-rts-actuation-pkg-session-goal-spine-arch-X2-source-v1-node-review-01",
+              "target_type": "validation_report"
+            }
+          ],
+          "version": 1
+        }
+      ],
+      "candidate_rejections": 0,
+      "case_id": "X2",
+      "expected_selected": [],
+      "lifecycle_facts": [
+        "knowledge.item_expired"
+      ],
+      "policy_decision": "allow",
+      "selected_ids": [],
+      "source_runs": 1
+    },
+    {
+      "accepted_versions": [
+        {
+          "applicability": {
+            "domain": "software"
+          },
+          "candidate_ref": {
+            "identifier": "kc-spine-spine-arch-X3-source-0000",
+            "target_type": "knowledge_candidate"
+          },
+          "confidence": "observed",
+          "correlation_identifier": "cor-spine-arch-X3-source",
+          "domain": "software",
+          "evidence_refs": [
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-X3-source-v1-node-draft-01-artifact-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-X3-source-v1-node-draft-01-artifact-0001",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-X3-source-v1-node-draft-01-metadata-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-X3-source-v1-node-draft-01-metric-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-X3-source-v1-node-review-01-artifact-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-X3-source-v1-node-review-01-artifact-0001",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-X3-source-v1-node-review-01-metadata-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-X3-source-v1-node-review-01-metric-0000",
+              "target_type": "evidence"
+            }
+          ],
+          "feedback_refs": [],
+          "kind": "lesson",
+          "policy_version": "persistence-policy/1",
+          "provenance_added": [
+            {
+              "identifier": "kc-spine-spine-arch-X3-source-0000",
+              "target_type": "knowledge_candidate"
+            },
+            {
+              "identifier": "pat-spine-spine-arch-X3-source-repeated_success-0000",
+              "target_type": "operational_pattern"
+            },
+            {
+              "identifier": "rr-spine-spine-arch-X3-source",
+              "target_type": "reflection_report"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-X3-source-v1-node-draft-01-artifact-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-X3-source-v1-node-draft-01-artifact-0001",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-X3-source-v1-node-draft-01-metadata-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-X3-source-v1-node-draft-01-metric-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-X3-source-v1-node-review-01-artifact-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-X3-source-v1-node-review-01-artifact-0001",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-X3-source-v1-node-review-01-metadata-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-X3-source-v1-node-review-01-metric-0000",
+              "target_type": "evidence"
+            }
+          ],
+          "rationale": "provenance: ok -- evidence present and validated | eligibility: ok -- confidence and kind clear policy | subject: new -- accept (create)",
+          "source_goal_ref": {
+            "identifier": "goal-spine-arch-X3-source",
+            "target_type": "goal"
+          },
+          "source_run_refs": [
+            {
+              "identifier": "rts-actuation-pkg-session-goal-spine-arch-X3-source-v1-node-draft-01",
+              "target_type": "runtime_session"
+            },
+            {
+              "identifier": "rts-actuation-pkg-session-goal-spine-arch-X3-source-v1-node-review-01",
+              "target_type": "runtime_session"
+            }
+          ],
+          "statement": "architecture summary generation: promote the reusable successful approach on claude-code",
+          "subject": "architecture summary generation",
+          "subject_key": "ki-lesson-architecture-generation-summary",
+          "supersedes": null,
+          "timestamp": "1970-01-01T00:00:00+00:00",
+          "validation_report_refs": [
+            {
+              "identifier": "vr-rts-actuation-pkg-session-goal-spine-arch-X3-source-v1-node-draft-01",
+              "target_type": "validation_report"
+            },
+            {
+              "identifier": "vr-rts-actuation-pkg-session-goal-spine-arch-X3-source-v1-node-review-01",
+              "target_type": "validation_report"
+            }
+          ],
+          "version": 1
+        }
+      ],
+      "candidate_rejections": 0,
+      "case_id": "X3",
+      "expected_selected": [],
+      "lifecycle_facts": [
+        "knowledge.item_deprecated"
+      ],
+      "policy_decision": "allow",
+      "selected_ids": [],
+      "source_runs": 1
+    },
+    {
+      "accepted_versions": [
+        {
+          "applicability": {
+            "domain": "software"
+          },
+          "candidate_ref": {
+            "identifier": "kc-spine-spine-arch-X4-old-0000",
+            "target_type": "knowledge_candidate"
+          },
+          "confidence": "observed",
+          "correlation_identifier": "cor-spine-arch-X4-old",
+          "domain": "software",
+          "evidence_refs": [
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-X4-old-v1-node-draft-01-artifact-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-X4-old-v1-node-draft-01-artifact-0001",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-X4-old-v1-node-draft-01-metadata-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-X4-old-v1-node-draft-01-metric-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-X4-old-v1-node-review-01-artifact-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-X4-old-v1-node-review-01-artifact-0001",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-X4-old-v1-node-review-01-metadata-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-X4-old-v1-node-review-01-metric-0000",
+              "target_type": "evidence"
+            }
+          ],
+          "feedback_refs": [],
+          "kind": "lesson",
+          "policy_version": "persistence-policy/1",
+          "provenance_added": [
+            {
+              "identifier": "kc-spine-spine-arch-X4-old-0000",
+              "target_type": "knowledge_candidate"
+            },
+            {
+              "identifier": "pat-spine-spine-arch-X4-old-repeated_success-0000",
+              "target_type": "operational_pattern"
+            },
+            {
+              "identifier": "rr-spine-spine-arch-X4-old",
+              "target_type": "reflection_report"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-X4-old-v1-node-draft-01-artifact-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-X4-old-v1-node-draft-01-artifact-0001",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-X4-old-v1-node-draft-01-metadata-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-X4-old-v1-node-draft-01-metric-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-X4-old-v1-node-review-01-artifact-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-X4-old-v1-node-review-01-artifact-0001",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-X4-old-v1-node-review-01-metadata-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-X4-old-v1-node-review-01-metric-0000",
+              "target_type": "evidence"
+            }
+          ],
+          "rationale": "provenance: ok -- evidence present and validated | eligibility: ok -- confidence and kind clear policy | subject: new -- accept (create)",
+          "source_goal_ref": {
+            "identifier": "goal-spine-arch-X4-old",
+            "target_type": "goal"
+          },
+          "source_run_refs": [
+            {
+              "identifier": "rts-actuation-pkg-session-goal-spine-arch-X4-old-v1-node-draft-01",
+              "target_type": "runtime_session"
+            },
+            {
+              "identifier": "rts-actuation-pkg-session-goal-spine-arch-X4-old-v1-node-review-01",
+              "target_type": "runtime_session"
+            }
+          ],
+          "statement": "phase5 retired subject: promote the reusable successful approach on claude-code",
+          "subject": "phase5 retired subject",
+          "subject_key": "ki-lesson-phase5-retired-subject",
+          "supersedes": null,
+          "timestamp": "1970-01-01T00:00:00+00:00",
+          "validation_report_refs": [
+            {
+              "identifier": "vr-rts-actuation-pkg-session-goal-spine-arch-X4-old-v1-node-draft-01",
+              "target_type": "validation_report"
+            },
+            {
+              "identifier": "vr-rts-actuation-pkg-session-goal-spine-arch-X4-old-v1-node-review-01",
+              "target_type": "validation_report"
+            }
+          ],
+          "version": 1
+        },
+        {
+          "applicability": {
+            "domain": "software"
+          },
+          "candidate_ref": {
+            "identifier": "kc-spine-spine-arch-X4-new-0000",
+            "target_type": "knowledge_candidate"
+          },
+          "confidence": "observed",
+          "correlation_identifier": "cor-spine-arch-X4-new",
+          "domain": "software",
+          "evidence_refs": [
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-X4-new-v1-node-draft-01-artifact-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-X4-new-v1-node-draft-01-artifact-0001",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-X4-new-v1-node-draft-01-metadata-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-X4-new-v1-node-draft-01-metric-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-X4-new-v1-node-review-01-artifact-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-X4-new-v1-node-review-01-artifact-0001",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-X4-new-v1-node-review-01-metadata-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-X4-new-v1-node-review-01-metric-0000",
+              "target_type": "evidence"
+            }
+          ],
+          "feedback_refs": [],
+          "kind": "lesson",
+          "policy_version": "persistence-policy/1",
+          "provenance_added": [
+            {
+              "identifier": "kc-spine-spine-arch-X4-new-0000",
+              "target_type": "knowledge_candidate"
+            },
+            {
+              "identifier": "pat-spine-spine-arch-X4-new-repeated_success-0000",
+              "target_type": "operational_pattern"
+            },
+            {
+              "identifier": "rr-spine-spine-arch-X4-new",
+              "target_type": "reflection_report"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-X4-new-v1-node-draft-01-artifact-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-X4-new-v1-node-draft-01-artifact-0001",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-X4-new-v1-node-draft-01-metadata-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-X4-new-v1-node-draft-01-metric-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-X4-new-v1-node-review-01-artifact-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-X4-new-v1-node-review-01-artifact-0001",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-X4-new-v1-node-review-01-metadata-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-X4-new-v1-node-review-01-metric-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ki-lesson-phase5-retired-subject",
+              "target_type": "knowledge"
+            }
+          ],
+          "rationale": "provenance: ok -- evidence present and validated | eligibility: ok -- confidence and kind clear policy | subject: new -- accept (create)",
+          "source_goal_ref": {
+            "identifier": "goal-spine-arch-X4-new",
+            "target_type": "goal"
+          },
+          "source_run_refs": [
+            {
+              "identifier": "rts-actuation-pkg-session-goal-spine-arch-X4-new-v1-node-draft-01",
+              "target_type": "runtime_session"
+            },
+            {
+              "identifier": "rts-actuation-pkg-session-goal-spine-arch-X4-new-v1-node-review-01",
+              "target_type": "runtime_session"
+            }
+          ],
+          "statement": "phase5 active replacement: promote the reusable successful approach on claude-code",
+          "subject": "phase5 active replacement",
+          "subject_key": "ki-lesson-active-phase5-replacement",
+          "supersedes": {
+            "identifier": "ki-lesson-phase5-retired-subject",
+            "target_type": "knowledge"
+          },
+          "timestamp": "1970-01-01T00:00:00+00:00",
+          "validation_report_refs": [
+            {
+              "identifier": "vr-rts-actuation-pkg-session-goal-spine-arch-X4-new-v1-node-draft-01",
+              "target_type": "validation_report"
+            },
+            {
+              "identifier": "vr-rts-actuation-pkg-session-goal-spine-arch-X4-new-v1-node-review-01",
+              "target_type": "validation_report"
+            }
+          ],
+          "version": 1
+        }
+      ],
+      "candidate_rejections": 0,
+      "case_id": "X4",
+      "expected_selected": [],
+      "lifecycle_facts": [
+        "knowledge.item_superseded"
+      ],
+      "policy_decision": "allow",
+      "selected_ids": [],
+      "source_runs": 2
+    },
+    {
+      "accepted_versions": [
+        {
+          "applicability": {
+            "domain": "software"
+          },
+          "candidate_ref": {
+            "identifier": "kc-spine-spine-arch-X5-unrelated-0000",
+            "target_type": "knowledge_candidate"
+          },
+          "confidence": "observed",
+          "correlation_identifier": "cor-spine-arch-X5-unrelated",
+          "domain": "software",
+          "evidence_refs": [
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-X5-unrelated-v1-node-draft-01-artifact-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-X5-unrelated-v1-node-draft-01-artifact-0001",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-X5-unrelated-v1-node-draft-01-metadata-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-X5-unrelated-v1-node-draft-01-metric-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-X5-unrelated-v1-node-review-01-artifact-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-X5-unrelated-v1-node-review-01-artifact-0001",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-X5-unrelated-v1-node-review-01-metadata-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-X5-unrelated-v1-node-review-01-metric-0000",
+              "target_type": "evidence"
+            }
+          ],
+          "feedback_refs": [],
+          "kind": "lesson",
+          "policy_version": "persistence-policy/1",
+          "provenance_added": [
+            {
+              "identifier": "kc-spine-spine-arch-X5-unrelated-0000",
+              "target_type": "knowledge_candidate"
+            },
+            {
+              "identifier": "pat-spine-spine-arch-X5-unrelated-repeated_success-0000",
+              "target_type": "operational_pattern"
+            },
+            {
+              "identifier": "rr-spine-spine-arch-X5-unrelated",
+              "target_type": "reflection_report"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-X5-unrelated-v1-node-draft-01-artifact-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-X5-unrelated-v1-node-draft-01-artifact-0001",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-X5-unrelated-v1-node-draft-01-metadata-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-X5-unrelated-v1-node-draft-01-metric-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-X5-unrelated-v1-node-review-01-artifact-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-X5-unrelated-v1-node-review-01-artifact-0001",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-X5-unrelated-v1-node-review-01-metadata-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-X5-unrelated-v1-node-review-01-metric-0000",
+              "target_type": "evidence"
+            }
+          ],
+          "rationale": "provenance: ok -- evidence present and validated | eligibility: ok -- confidence and kind clear policy | subject: new -- accept (create)",
+          "source_goal_ref": {
+            "identifier": "goal-spine-arch-X5-unrelated",
+            "target_type": "goal"
+          },
+          "source_run_refs": [
+            {
+              "identifier": "rts-actuation-pkg-session-goal-spine-arch-X5-unrelated-v1-node-draft-01",
+              "target_type": "runtime_session"
+            },
+            {
+              "identifier": "rts-actuation-pkg-session-goal-spine-arch-X5-unrelated-v1-node-review-01",
+              "target_type": "runtime_session"
+            }
+          ],
+          "statement": "unrelated database migration runbook: promote the reusable successful approach on claude-code",
+          "subject": "unrelated database migration runbook",
+          "subject_key": "ki-lesson-database-migration-runbook-unrelated",
+          "supersedes": null,
+          "timestamp": "1970-01-01T00:00:00+00:00",
+          "validation_report_refs": [
+            {
+              "identifier": "vr-rts-actuation-pkg-session-goal-spine-arch-X5-unrelated-v1-node-draft-01",
+              "target_type": "validation_report"
+            },
+            {
+              "identifier": "vr-rts-actuation-pkg-session-goal-spine-arch-X5-unrelated-v1-node-review-01",
+              "target_type": "validation_report"
+            }
+          ],
+          "version": 1
+        }
+      ],
+      "candidate_rejections": 0,
+      "case_id": "X5",
+      "expected_selected": [],
+      "lifecycle_facts": [],
+      "policy_decision": "allow",
+      "selected_ids": [],
+      "source_runs": 1
+    },
+    {
+      "accepted_versions": [
+        {
+          "applicability": {
+            "domain": "software"
+          },
+          "candidate_ref": {
+            "identifier": "kc-spine-spine-arch-X6-source-0000",
+            "target_type": "knowledge_candidate"
+          },
+          "confidence": "observed",
+          "correlation_identifier": "cor-spine-arch-X6-source",
+          "domain": "software",
+          "evidence_refs": [
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-X6-source-v1-node-draft-01-artifact-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-X6-source-v1-node-draft-01-artifact-0001",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-X6-source-v1-node-draft-01-metadata-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-X6-source-v1-node-draft-01-metric-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-X6-source-v1-node-review-01-artifact-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-X6-source-v1-node-review-01-artifact-0001",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-X6-source-v1-node-review-01-metadata-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-X6-source-v1-node-review-01-metric-0000",
+              "target_type": "evidence"
+            }
+          ],
+          "feedback_refs": [],
+          "kind": "lesson",
+          "policy_version": "persistence-policy/1",
+          "provenance_added": [
+            {
+              "identifier": "kc-spine-spine-arch-X6-source-0000",
+              "target_type": "knowledge_candidate"
+            },
+            {
+              "identifier": "pat-spine-spine-arch-X6-source-repeated_success-0000",
+              "target_type": "operational_pattern"
+            },
+            {
+              "identifier": "rr-spine-spine-arch-X6-source",
+              "target_type": "reflection_report"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-X6-source-v1-node-draft-01-artifact-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-X6-source-v1-node-draft-01-artifact-0001",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-X6-source-v1-node-draft-01-metadata-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-X6-source-v1-node-draft-01-metric-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-X6-source-v1-node-review-01-artifact-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-X6-source-v1-node-review-01-artifact-0001",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-X6-source-v1-node-review-01-metadata-0000",
+              "target_type": "evidence"
+            },
+            {
+              "identifier": "ev-rts-actuation-pkg-session-goal-spine-arch-X6-source-v1-node-review-01-metric-0000",
+              "target_type": "evidence"
+            }
+          ],
+          "rationale": "provenance: ok -- evidence present and validated | eligibility: ok -- confidence and kind clear policy | subject: new -- accept (create)",
+          "source_goal_ref": {
+            "identifier": "goal-spine-arch-X6-source",
+            "target_type": "goal"
+          },
+          "source_run_refs": [
+            {
+              "identifier": "rts-actuation-pkg-session-goal-spine-arch-X6-source-v1-node-draft-01",
+              "target_type": "runtime_session"
+            },
+            {
+              "identifier": "rts-actuation-pkg-session-goal-spine-arch-X6-source-v1-node-review-01",
+              "target_type": "runtime_session"
+            }
+          ],
+          "statement": "architecture summary generation: promote the reusable successful approach on claude-code",
+          "subject": "architecture summary generation",
+          "subject_key": "ki-lesson-architecture-generation-summary",
+          "supersedes": null,
+          "timestamp": "1970-01-01T00:00:00+00:00",
+          "validation_report_refs": [
+            {
+              "identifier": "vr-rts-actuation-pkg-session-goal-spine-arch-X6-source-v1-node-draft-01",
+              "target_type": "validation_report"
+            },
+            {
+              "identifier": "vr-rts-actuation-pkg-session-goal-spine-arch-X6-source-v1-node-review-01",
+              "target_type": "validation_report"
+            }
+          ],
+          "version": 1
+        }
+      ],
+      "candidate_rejections": 0,
+      "case_id": "X6",
+      "expected_selected": [],
+      "lifecycle_facts": [],
+      "policy_decision": "deny",
+      "selected_ids": [],
+      "source_runs": 1
+    }
+  ],
+  "evidence_limitations": [
+    "The fixture uses deterministic local Claude stubs; it does not claim production model causality.",
+    "Plan and validation differences are observed comparisons only, not causal attribution."
+  ],
+  "failure_list": [],
+  "gate": "phase5-outcome-linked-cross-run-learning-v1",
+  "status": "passed",
+  "thresholds": {
+    "accepted_items_missing_source_goal_run_report_or_evidence_refs": 0,
+    "excluded_surfaced": 0,
+    "excluded_surfaced_maximum_met": true,
+    "failed_unknown_partial_or_unresolved_promoted_proven": 0,
+    "failures": [],
+    "feedback_decisions_missing_actor_event_or_source_run": 0,
+    "fresh_process_replay_mismatches": 0,
+    "relevant_cases_with_comparison": "6/6",
+    "relevant_comparisons_complete": true,
+    "relevant_surfaced": "6/6",
+    "relevant_surfaced_minimum_met": true,
+    "replay_no_new_runtime_or_acceptance": true
+  }
+}

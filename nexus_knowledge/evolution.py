@@ -40,6 +40,12 @@ class EvolutionEngine:
             statement=candidate.statement,
             confidence=confidence,
             evidence_refs=candidate.evidence_refs,
+            source_goal_ref=candidate.source_goal_ref,
+            source_run_refs=candidate.source_run_refs,
+            validation_report_refs=candidate.validation_report_refs,
+            feedback_refs=candidate.feedback_refs,
+            domain=candidate.domain,
+            applicability=candidate.applicability,
             provenance_added=self._provenance(candidate, candidate.evidence_refs),
             candidate_ref=candidate.reference(),
             policy_version=decision.policy_version,
@@ -68,6 +74,14 @@ class EvolutionEngine:
             statement=statement,
             confidence=confidence,
             evidence_refs=evidence,
+            source_goal_ref=candidate.source_goal_ref or prior.source_goal_ref,
+            source_run_refs=self._unique((*prior.source_run_refs, *candidate.source_run_refs)),
+            validation_report_refs=self._unique(
+                (*prior.validation_report_refs, *candidate.validation_report_refs)
+            ),
+            feedback_refs=self._unique((*prior.feedback_refs, *candidate.feedback_refs)),
+            domain=candidate.domain or prior.domain,
+            applicability=candidate.applicability or prior.applicability,
             provenance_added=self._provenance(candidate, decision.evidence_added),
             candidate_ref=candidate.reference(),
             policy_version=decision.policy_version,
@@ -88,6 +102,12 @@ class EvolutionEngine:
             statement=prior.statement,
             confidence=prior.confidence,
             evidence_refs=prior.evidence_refs,
+            source_goal_ref=prior.source_goal_ref,
+            source_run_refs=prior.source_run_refs,
+            validation_report_refs=prior.validation_report_refs,
+            feedback_refs=prior.feedback_refs,
+            domain=prior.domain,
+            applicability=prior.applicability,
             provenance_added=(superseded,),
             candidate_ref=prior.candidate_ref,
             supersedes=superseded,
@@ -125,3 +145,13 @@ class EvolutionEngine:
 
     def _rationale(self, decision: AcceptanceDecision) -> str:
         return " | ".join(decision.rationale)
+
+    def _unique(self, refs: tuple[Reference, ...]) -> tuple[Reference, ...]:
+        seen: set[tuple[str, str]] = set()
+        result: list[Reference] = []
+        for ref in refs:
+            key = (ref.target_type, ref.identifier)
+            if key not in seen:
+                seen.add(key)
+                result.append(ref)
+        return tuple(result)

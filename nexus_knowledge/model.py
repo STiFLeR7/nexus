@@ -15,9 +15,10 @@ grows across versions (INV-24).
 
 from __future__ import annotations
 
-from nexus_core.contracts.base import Reference, ValueObject
+from nexus_core.contracts.base import Reference, Struct, ValueObject
 from nexus_core.contracts.enums import (
     ConfidenceLadder,
+    Domain,
     Freshness,
     KnowledgeSource,
     KnowledgeType,
@@ -38,6 +39,12 @@ class KnowledgeVersion(ValueObject):
     statement: str
     confidence: ConfidenceLadder
     evidence_refs: tuple[Reference, ...] = ()
+    domain: Domain | None = None
+    applicability: Struct | None = None
+    source_goal_ref: Reference | None = None
+    source_run_refs: tuple[Reference, ...] = ()
+    validation_report_refs: tuple[Reference, ...] = ()
+    feedback_refs: tuple[Reference, ...] = ()
     provenance_added: tuple[Reference, ...] = ()
     candidate_ref: Reference | None = None
     supersedes: Reference | None = None
@@ -85,4 +92,16 @@ def build_item(
         candidate_ref=version.candidate_ref,
         superseded_by=superseded_by,
         rationale=version.rationale,
+        domain=version.domain,
+        applicability=version.applicability,
+        metadata={
+            "source_goal_ref": version.source_goal_ref.model_dump(mode="json")
+            if version.source_goal_ref
+            else None,
+            "source_run_refs": [ref.model_dump(mode="json") for ref in version.source_run_refs],
+            "validation_report_refs": [
+                ref.model_dump(mode="json") for ref in version.validation_report_refs
+            ],
+            "feedback_refs": [ref.model_dump(mode="json") for ref in version.feedback_refs],
+        },
     )

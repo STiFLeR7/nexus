@@ -22,6 +22,7 @@ from nexus_harness import HarnessContext, build_harness
 from nexus_infra import InfrastructureContext, InMemoryObservability, build_infrastructure
 from nexus_knowledge import KnowledgeContextBundle, build_knowledge
 from nexus_knowledge.persistence import KnowledgeRepositories
+from nexus_knowledge.policy import DEFAULT_PERSISTENCE_POLICY, PersistencePolicy
 from nexus_orchestration import (
     InMemoryHarnessRegistry,
     OrchestrationContext,
@@ -67,10 +68,14 @@ class PipelineBuilder:
         *,
         timestamps: TimestampSource | None = None,
         knowledge_repositories: KnowledgeRepositories | None = None,
+        knowledge_policy: PersistencePolicy = DEFAULT_PERSISTENCE_POLICY,
+        require_knowledge_source_lineage: bool = True,
         infrastructure: InfrastructureContext | None = None,
     ) -> None:
         self._timestamps = timestamps or FixedTimestampSource()
         self._knowledge_repositories = knowledge_repositories
+        self._knowledge_policy = knowledge_policy
+        self._require_knowledge_source_lineage = require_knowledge_source_lineage
         # The durable seam (P13/F-2): when an infrastructure context is injected the pipeline wires
         # every engine over it instead of a fresh in-memory one, so a durable (ADR-007) log carries
         # the whole Goal→Knowledge run and a reopened file replays/restarts it. Default is unchanged.
@@ -99,6 +104,10 @@ class PipelineBuilder:
             recovery=build_recovery(infra, timestamps=ts),
             reflection=build_reflection(infra, timestamps=ts),
             knowledge=build_knowledge(
-                infra, repositories=self._knowledge_repositories, timestamps=ts
+                infra,
+                repositories=self._knowledge_repositories,
+                timestamps=ts,
+                policy=self._knowledge_policy,
+                require_source_lineage=self._require_knowledge_source_lineage,
             ),
         )

@@ -142,9 +142,10 @@ def test_failure_scenario_engages_every_engine() -> None:
     assert run.validation_decisions == ("failed", "failed")
     assert run.recovery_decisions == ("retry", "retry")
     assert not run.succeeded
-    # Reflection still analyses the failure and Knowledge still persists the lesson.
+    # Reflection analyses the failure; Knowledge rejects unvalidated guidance.
     assert any("failure" in c for c in run.reflection_candidates)
-    assert run.knowledge_item_ids
+    assert not run.knowledge_item_ids
+    assert any(event.type == "knowledge.candidate_rejected" for event in run.events)
 
 
 # --- the Harness->Runtime projection seam ----------------------------------- #

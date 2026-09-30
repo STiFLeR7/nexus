@@ -66,7 +66,7 @@ def test_pipeline_events_carry_the_single_pipeline_producer() -> None:
     assert completed == list(_ALL_STAGES)
 
 
-def test_failure_propagates_and_still_records_knowledge() -> None:
+def test_failure_propagates_without_accepting_unvalidated_knowledge() -> None:
     _infra, run = _run(spine_reference_request(run="r1", fail=True))
     assert run.status is SpineStatus.COMPLETED  # the pipeline still reaches Knowledge
     assert not run.succeeded
@@ -75,4 +75,5 @@ def test_failure_propagates_and_still_records_knowledge() -> None:
     assert all(
         d == "retry" for d in run.recovery_decisions
     )  # Recovery decides continuation, bounded
-    assert run.knowledge_item_ids  # the lesson is still recorded
+    assert not run.knowledge_item_ids  # Failed validation cannot support accepted guidance.
+    assert any(event.type == "knowledge.candidate_rejected" for event in run.events)

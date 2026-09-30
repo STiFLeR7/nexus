@@ -42,8 +42,6 @@ from nexus_workflows.projection import project_intake
 from nexus_workflows.request import WorkflowRequest
 from nexus_workflows.timeline import TimelineRecorder, WorkflowTimeline
 
-_VALIDATION_TARGET_TYPE = "validation_report"
-
 AdapterFactory = Callable[["WorkflowRequest"], RuntimeAdapter]
 """Builds the runtime adapter for a request (the one cross-runtime substitution seam)."""
 
@@ -116,7 +114,7 @@ class WorkflowCoordinator:
 
         results, reports, plans = self._execute(adapter, sessions)
         reflection = self._reflect(request, results, reports, plans)
-        items = self._write_knowledge(request, reflection, reports)
+        items = self._write_knowledge(request, reflection, reports, plans)
         served = self._p.knowledge.engine.serve(
             KnowledgeQuery(kind=request.knowledge_kind, subject=request.knowledge_subject)
         )
@@ -304,13 +302,45 @@ class WorkflowCoordinator:
         request: WorkflowRequest,
         reflection: ReflectionReport,
         reports: list[ValidationReport],
+        plans: list[RecoveryPlan],
     ) -> tuple[str, ...]:
-        evidence = tuple(
-            Reference(target_type=_VALIDATION_TARGET_TYPE, identifier=r.identity) for r in reports
-        )
         self._rec.enter("knowledge", "knowledge_write")
         items: list[str] = []
         for advisory in reflection.knowledge_candidates:
+            pattern = next(
+                (
+                    pattern
+                    for pattern in reflection.patterns
+                    if advisory.source_pattern_ref is not None
+                    and pattern.identity == advisory.source_pattern_ref.identifier
+                ),
+                None,
+            )
+            pattern_refs = {ref.identifier for ref in pattern.evidence_refs} if pattern else set()
+            report_sessions = {
+                plan.session_ref.identifier for plan in plans if plan.identity in pattern_refs
+            }
+            matching_reports = tuple(
+                report
+                for report in reports
+                if (
+                    report.identity in pattern_refs
+                    or report.session_ref.identifier in pattern_refs
+                    or report.session_ref.identifier in report_sessions
+                    or (not pattern_refs and len(reports) == 1)
+                )
+            )
+            if not matching_reports:
+                continue
+            evidence = tuple(
+                {
+                    (ref.target_type, ref.identifier): ref
+                    for report in matching_reports
+                    for ref in report.evidence_refs
+                }.values()
+            )
+            if not evidence:
+                continue
             candidate = KnowledgeCandidate(
                 identity=advisory.identity,
                 kind=request.knowledge_kind,
@@ -318,6 +348,11 @@ class WorkflowCoordinator:
                 statement=advisory.summary,
                 confidence=ConfidenceLadder.OBSERVED,
                 evidence_refs=evidence,
+                source_goal_ref=Reference(target_type="goal", identifier=request.goal.identity),
+                source_run_refs=tuple(report.session_ref for report in matching_reports),
+                validation_report_refs=tuple(report.reference() for report in matching_reports),
+                domain=request.goal.domain,
+                applicability={"domain": request.goal.domain.value},
                 originating_reflection_ref=reflection.reference(),
                 source_pattern_ref=advisory.source_pattern_ref,
                 correlation_identifier=reflection.correlation_identifier,

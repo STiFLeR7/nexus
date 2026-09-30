@@ -1,0 +1,31 @@
+{
+  "gate": "phase5-outcome-linked-cross-run-learning-v1",
+  "status": "preregistered",
+  "frozen_before_implementation": true,
+  "cases": [
+    {"id": "R1", "label": "exact-subject-kind-passed", "relevant": true, "expected_selected": ["relevant"]},
+    {"id": "R2", "label": "matching-domain-applicability", "relevant": true, "expected_selected": ["relevant"]},
+    {"id": "R3", "label": "evolved-passing-provenance", "relevant": true, "expected_selected": ["latest_relevant"]},
+    {"id": "R4", "label": "accepted-superseding-replacement", "relevant": true, "expected_selected": ["replacement"]},
+    {"id": "R5", "label": "attributable-positive-feedback", "relevant": true, "expected_selected": ["relevant"]},
+    {"id": "R6", "label": "current-at-serving-floor", "relevant": true, "expected_selected": ["relevant"]},
+    {"id": "X1", "label": "failed-or-unknown-source-rejected", "relevant": false, "expected_selected": []},
+    {"id": "X2", "label": "deterministically-expired", "relevant": false, "expected_selected": []},
+    {"id": "X3", "label": "contradicted-and-deprecated", "relevant": false, "expected_selected": []},
+    {"id": "X4", "label": "superseded-old-subject", "relevant": false, "expected_selected": []},
+    {"id": "X5", "label": "unrelated-or-out-of-scope", "relevant": false, "expected_selected": []},
+    {"id": "X6", "label": "policy-denied-grounding", "relevant": false, "expected_selected": []}
+  ],
+  "thresholds": {
+    "relevant_surfaced_minimum": "5/6",
+    "excluded_surfaced_maximum": 0,
+    "failed_unknown_partial_or_unresolved_promoted_proven": 0,
+    "accepted_items_missing_source_goal_run_report_or_evidence_refs": 0,
+    "feedback_decisions_missing_actor_event_or_source_run": 0,
+    "relevant_cases_with_baseline_seeded_plan_outcome_comparison": "6/6",
+    "fresh_process_replay_selection_or_context_mismatches": 0,
+    "replay_new_retrieval_acceptance_model_or_lifecycle_actions": 0,
+    "strict_suite_skips": 0,
+    "strict_suite_warnings": 0
+  }
+}

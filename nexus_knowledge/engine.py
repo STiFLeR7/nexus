@@ -25,6 +25,7 @@ from dataclasses import dataclass
 from nexus_core.contracts.base import Reference, Struct
 from nexus_core.contracts.enums import Freshness
 from nexus_core.contracts.status import KnowledgeIngestionStatus
+from nexus_core.domain.event import Event
 from nexus_core.domain.knowledge import Knowledge
 from nexus_core.events.interfaces import EventEmitter
 from nexus_knowledge import events as kevents
@@ -37,6 +38,7 @@ from nexus_knowledge.model import KnowledgeVersion, build_item
 from nexus_knowledge.observability import KnowledgeObservability
 from nexus_knowledge.persistence import KnowledgeRepositories
 from nexus_knowledge.policy import DEFAULT_PERSISTENCE_POLICY, PersistencePolicy
+from nexus_knowledge.provenance import verify_candidate_sources
 from nexus_knowledge.retrieval import KnowledgeQuery, KnowledgeRetrieval
 from nexus_knowledge.vocabulary import (
     KNOWLEDGE_ITEM_TARGET_TYPE,
@@ -75,6 +77,8 @@ class KnowledgeEngine:
         policy: PersistencePolicy = DEFAULT_PERSISTENCE_POLICY,
         acceptance: AcceptanceEngine | None = None,
         evolution: EvolutionEngine | None = None,
+        event_reader: Callable[[], tuple[Event, ...]] | None = None,
+        require_source_lineage: bool = True,
     ) -> None:
         self._emitter = emitter
         self._repos = repositories
@@ -83,6 +87,8 @@ class KnowledgeEngine:
         self._policy = policy
         self._acceptance = acceptance or AcceptanceEngine()
         self._evolution = evolution or EvolutionEngine()
+        self._event_reader = event_reader
+        self._require_source_lineage = require_source_lineage
         self._terminally_rejected: set[str] = set()
         self._retrieval = (
             KnowledgeRetrieval(repositories.items, policy, self._obs) if repositories else None
@@ -119,7 +125,20 @@ class KnowledgeEngine:
         self._obs.candidate_received()
 
         state = self._subject_state(key)
-        decision = self._acceptance.evaluate(candidate, state, self._policy, key)
+        source_verifier = None
+        if self._require_source_lineage and self._event_reader is not None:
+            event_reader = self._event_reader
+
+            def source_verifier(item: KnowledgeCandidate) -> bool:
+                return verify_candidate_sources(item, event_reader())
+
+        decision = self._acceptance.evaluate(
+            candidate,
+            state,
+            self._policy,
+            key,
+            source_verifier=source_verifier,
+        )
 
         if decision.outcome is KnowledgeDecision.REJECT:
             return self._apply_rejection(candidate, decision, key, correlation, seq)
@@ -141,6 +160,7 @@ class KnowledgeEngine:
             correlation,
             {
                 "candidate": candidate.identity,
+                "candidate_data": candidate.model_dump(mode="json"),
                 "subject_key": key,
                 "failed_requirement": decision.failed_requirement,
                 "policy_version": decision.policy_version,
@@ -189,6 +209,13 @@ class KnowledgeEngine:
             freshness=Freshness.CURRENT,
             related_refs=related,
         )
+        prior_item = self._repos.items.get(key) if self._repos is not None else None
+        if prior_item is not None and prior_item.metadata is not None:
+            retained_feedback = prior_item.metadata.get("feedback_refs", [])
+            if isinstance(retained_feedback, list) and retained_feedback:
+                metadata = dict(item.metadata or {})
+                metadata["feedback_refs"] = retained_feedback
+                item = item.model_copy(update={"metadata": metadata})
         self._persist(item, version, candidate)
 
         seq = self._emit(
@@ -199,6 +226,7 @@ class KnowledgeEngine:
             correlation,
             {
                 "candidate": candidate.identity,
+                "candidate_data": candidate.model_dump(mode="json"),
                 "subject_key": key,
                 "outcome": decision.outcome.value,
             },
@@ -215,6 +243,8 @@ class KnowledgeEngine:
                 "version": version.version,
                 "confidence": version.confidence.value,
                 "evidence": len(version.evidence_refs),
+                "item_data": item.model_dump(mode="json"),
+                "version_data": version.model_dump(mode="json"),
             },
         )
         if decision.outcome is KnowledgeDecision.ACCEPT_CREATE:
@@ -257,7 +287,11 @@ class KnowledgeEngine:
             "superseded",
             seq,
             correlation,
-            {"subject_key": key, "superseded": superseded.identifier},
+            {
+                "subject_key": key,
+                "superseded": superseded.identifier,
+                "item_data": retired.model_dump(mode="json"),
+            },
         )
         self._obs.item_superseded()
 
@@ -295,6 +329,86 @@ class KnowledgeEngine:
             correlation,
             self._obs.item_archived,
         )
+
+    def record_feedback(
+        self,
+        subject_key: str,
+        *,
+        actor: str,
+        source_run_ref: Reference,
+        effect: str,
+        feedback_id: str,
+    ) -> Reference:
+        """Record attributable operator feedback; contradictory feedback deprecates the Item."""
+        if not actor.strip() or not feedback_id.strip():
+            raise ValueError("feedback requires actor and stable feedback_id")
+        if effect not in {"support", "contradict"}:
+            raise ValueError("feedback effect must be 'support' or 'contradict'")
+        if self._repos is None or self._repos.items.get(subject_key) is None:
+            raise ValueError(f"unknown Knowledge subject {subject_key!r}")
+        item = self._repos.items.get(subject_key)
+        assert item is not None
+        if source_run_ref.target_type != "runtime_session":
+            raise ValueError("feedback source_run_ref must identify a runtime session")
+        source_refs = (item.metadata or {}).get("source_run_refs", [])
+        if (
+            isinstance(source_refs, list)
+            and source_refs
+            and not any(
+                isinstance(ref, dict) and ref.get("identifier") == source_run_ref.identifier
+                for ref in source_refs
+            )
+        ):
+            raise ValueError("feedback source run is not part of this Knowledge item's provenance")
+        feedback_ref = Reference(
+            target_type="knowledge_feedback",
+            identifier=ids.event_id(feedback_id, "feedback", 0),
+        )
+        if self._event_reader is not None:
+            existing = next(
+                (
+                    event
+                    for event in self._event_reader()
+                    if event.identifier == feedback_ref.identifier
+                ),
+                None,
+            )
+            if existing is not None:
+                expected = {
+                    "feedback_id": feedback_id,
+                    "subject_key": subject_key,
+                    "actor": actor,
+                    "source_run_ref": source_run_ref.model_dump(mode="json"),
+                    "effect": effect,
+                }
+                if any(existing.payload.get(key) != value for key, value in expected.items()):
+                    raise ValueError("feedback_id already records different feedback")
+                return feedback_ref
+        metadata = dict(item.metadata or {})
+        prior_feedback = metadata.get("feedback_refs", [])
+        if not isinstance(prior_feedback, list):
+            prior_feedback = []
+        metadata["feedback_refs"] = [*prior_feedback, feedback_ref.model_dump(mode="json")]
+        updated_item = item.model_copy(update={"metadata": metadata})
+        self._repos.items.add(updated_item)
+        self._emit(
+            feedback_id,
+            kevents.KNOWLEDGE_FEEDBACK_RECORDED,
+            "feedback",
+            0,
+            source_run_ref.identifier,
+            {
+                "feedback_id": feedback_id,
+                "subject_key": subject_key,
+                "actor": actor,
+                "source_run_ref": source_run_ref.model_dump(mode="json"),
+                "effect": effect,
+                "item_data": updated_item.model_dump(mode="json"),
+            },
+        )
+        if effect == "contradict":
+            self.deprecate(subject_key, correlation=source_run_ref.identifier)
+        return feedback_ref
 
     def maintain(self, as_of: str) -> tuple[Knowledge, ...]:
         """A deterministic freshness pass: expire Active Items past the TTL (doc 11).
@@ -338,7 +452,11 @@ class KnowledgeEngine:
             kind,
             0,
             correlation or item.correlation_identifier,
-            {"subject_key": subject_key, "state": state.value},
+            {
+                "subject_key": subject_key,
+                "state": state.value,
+                "item_data": updated.model_dump(mode="json"),
+            },
         )
         counter()
         return updated

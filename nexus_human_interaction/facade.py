@@ -230,7 +230,10 @@ class HumanInteraction:
                 {
                     key: value
                     for key, value in grounding_event.payload.items()
-                    if key not in {"session", "count"}
+                    if key not in {"session", "count", "item_snapshots"}
+                }
+                | {
+                    "items": grounding_event.payload.get("item_snapshots", []),
                 }
             )
             if grounding_event is not None
@@ -298,6 +301,24 @@ class HumanInteraction:
     def approval_history(self, identity: str) -> tuple[ApprovalRequest, ...]:
         """The full approval-decision history for the session (via the Approval Exchange)."""
         return self._approval.history(_pipeline_session_id(identity))
+
+    def feedback_knowledge(
+        self,
+        subject_key: str,
+        *,
+        actor: str,
+        source_run_ref: Reference,
+        effect: str,
+        feedback_id: str,
+    ) -> Reference:
+        """Record attributable operator feedback through the Knowledge owner via the pipeline."""
+        return self._pipeline.record_knowledge_feedback(
+            subject_key,
+            actor=actor,
+            source_run_ref=source_run_ref,
+            effect=effect,
+            feedback_id=feedback_id,
+        )
 
     # -- inspect the platform (read-only projections) ------------------------ #
 

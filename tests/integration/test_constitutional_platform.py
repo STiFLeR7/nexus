@@ -222,7 +222,7 @@ def test_back_spine_is_deterministic_and_replays() -> None:
     assert replay.event_ids == tuple(e.identifier for e in run1.events)
 
 
-def test_failure_propagates_to_recovery_and_still_records_knowledge() -> None:
+def test_failure_propagates_to_recovery_without_accepting_unvalidated_knowledge() -> None:
     run = WorkflowCoordinator(PipelineBuilder().build()).run(reference_request(fail=True))
     assert not run.succeeded
     assert all(o == "failed" for o in run.execution_outcomes)  # execution reports failure
@@ -230,7 +230,9 @@ def test_failure_propagates_to_recovery_and_still_records_knowledge() -> None:
     assert all(
         d == "retry" for d in run.recovery_decisions
     )  # Recovery decides continuation, bounded
-    assert run.knowledge_item_ids  # the lesson is still recorded
+    assert run.reflection_candidates  # Reflection still proposes a lesson.
+    assert not run.knowledge_item_ids  # Failed outcomes cannot become accepted guidance.
+    assert any(event.type == "knowledge.candidate_rejected" for event in run.events)
 
 
 def test_knowledge_learned_in_one_run_feeds_a_second() -> None:
